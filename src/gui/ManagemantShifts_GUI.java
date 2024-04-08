@@ -4,8 +4,6 @@
  */
 package gui;
 
-import bus.ShiftsManagemant_BUS;
-import entity.Shift;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -13,6 +11,9 @@ import java.util.Date;
 import javax.swing.JLabel;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
+
+import bus.ShiftsManagemant_BUS;
+import entity.Shift;
 import utilities.SVGIcon;
 
 /**
@@ -127,7 +128,7 @@ public class ManagemantShifts_GUI extends javax.swing.JPanel {
         jPanel4.setLayout(new java.awt.GridLayout(1, 0));
 
         btn_filter.setText("Lọc");
-        btn_filter.setIcon(SVGIcon.getSVGIcon("imgs/public/filter.svg"));
+        btn_filter.setIcon(SVGIcon.getSVGIcon("resources/imgs/public/filter.svg"));
         btn_filter.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btn_filterActionPerformed(evt);
@@ -135,7 +136,7 @@ public class ManagemantShifts_GUI extends javax.swing.JPanel {
         });
         jPanel4.add(btn_filter);
 
-        btn_reload.setIcon(SVGIcon.getSVGIcon("imgs/public/update.svg"));
+        btn_reload.setIcon(SVGIcon.getSVGIcon("resources/imgs/public/update.svg"));
         btn_reload.setText("Làm mới");
         btn_reload.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {

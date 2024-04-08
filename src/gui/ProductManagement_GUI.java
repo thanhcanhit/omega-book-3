@@ -4,23 +4,8 @@
  */
 package gui;
 
-import bus.ProductManagement_BUS;
-import com.formdev.flatlaf.FlatClientProperties;
-import com.itextpdf.text.Document;
-import com.itextpdf.text.DocumentException;
-import com.itextpdf.text.Font;
-import com.itextpdf.text.Paragraph;
-import com.itextpdf.text.pdf.BaseFont;
-import com.itextpdf.text.pdf.PdfPTable;
-import com.itextpdf.text.pdf.PdfWriter;
-import entity.Book;
-import entity.Brand;
-import entity.Product;
-import entity.Stationery;
-import enums.BookCategory;
-import enums.BookType;
-import enums.StationeryType;
-import enums.Type;
+import static utilities.OrderPrinter.FONT;
+
 import java.awt.Desktop;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
@@ -32,27 +17,24 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.nio.file.Files;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
 import javax.imageio.ImageIO;
 import javax.swing.DefaultComboBoxModel;
-import javax.swing.JFileChooser;
-import javax.swing.JOptionPane;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.table.DefaultTableModel;
-import raven.toast.Notifications;
-import utilities.FormatNumber;
-import utilities.SVGIcon;
 import javax.swing.ImageIcon;
 import javax.swing.JComponent;
+import javax.swing.JFileChooser;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.event.ListSelectionEvent;
 import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumnModel;
-import java.io.FileOutputStream;
-import java.util.Date;
-import main.Application;
+
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.HorizontalAlignment;
@@ -62,8 +44,30 @@ import org.apache.poi.ss.usermodel.VerticalAlignment;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.util.CellRangeAddress;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+
+import com.formdev.flatlaf.FlatClientProperties;
+import com.itextpdf.text.Document;
+import com.itextpdf.text.DocumentException;
+import com.itextpdf.text.Font;
+import com.itextpdf.text.Paragraph;
+import com.itextpdf.text.pdf.BaseFont;
+import com.itextpdf.text.pdf.PdfPTable;
+import com.itextpdf.text.pdf.PdfWriter;
+
+import bus.ProductManagement_BUS;
+import entity.Book;
+import entity.Brand;
+import entity.Product;
+import entity.Stationery;
+import enums.BookCategory;
+import enums.BookType;
+import enums.StationeryType;
+import enums.Type;
+import main.Application;
+import raven.toast.Notifications;
 import utilities.BarcodeGenerator;
-import static utilities.OrderPrinter.FONT;
+import utilities.FormatNumber;
+import utilities.SVGIcon;
 
 /**
  *
@@ -679,7 +683,7 @@ public class ProductManagement_GUI extends javax.swing.JPanel {
         pnl_cartFooter.setLayout(new javax.swing.BoxLayout(pnl_cartFooter, javax.swing.BoxLayout.LINE_AXIS));
 
         btn_reset.setMinimumSize(new java.awt.Dimension(100, 50));
-        btn_reset.setIcon(SVGIcon.getSVGIcon("imgs/public/refresh.svg"));
+        btn_reset.setIcon(SVGIcon.getSVGIcon("resources/imgs/public/refresh.svg"));
         btn_reset.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btn_resetActionPerformed(evt);
@@ -688,7 +692,7 @@ public class ProductManagement_GUI extends javax.swing.JPanel {
         pnl_cartFooter.add(btn_reset);
 
         btn_previous.setMinimumSize(new java.awt.Dimension(100, 50));
-        btn_previous.setIcon(SVGIcon.getSVGIcon("imgs/public/prev.svg"));
+        btn_previous.setIcon(SVGIcon.getSVGIcon("resources/imgs/public/prev.svg"));
         btn_previous.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btn_previousActionPerformed(evt);
@@ -705,7 +709,7 @@ public class ProductManagement_GUI extends javax.swing.JPanel {
         pnl_cartFooter.add(lbl_pageNumber);
 
         btn_next.setMinimumSize(new java.awt.Dimension(100, 50));
-        btn_next.setIcon(SVGIcon.getSVGIcon("imgs/public/next.svg"));
+        btn_next.setIcon(SVGIcon.getSVGIcon("resources/imgs/public/next.svg"));
         btn_next.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btn_nextActionPerformed(evt);
@@ -722,14 +726,14 @@ public class ProductManagement_GUI extends javax.swing.JPanel {
                 btn_generateBarcodeActionPerformed(evt);
             }
         });
-        btn_generateBarcode.setIcon(SVGIcon.getSVGIcon("imgs/public/barcode.svg"));
+        btn_generateBarcode.setIcon(SVGIcon.getSVGIcon("resources/imgs/public/barcode.svg"));
         pnl_cartFooter.add(btn_generateBarcode);
 
         btn_exportExcel.setText("Xuất");
         btn_exportExcel.setActionCommand("");
         btn_exportExcel.setMaximumSize(null);
         btn_exportExcel.setMinimumSize(new java.awt.Dimension(100, 50));
-        btn_exportExcel.setIcon(SVGIcon.getSVGIcon("imgs/public/excel.svg"));
+        btn_exportExcel.setIcon(SVGIcon.getSVGIcon("resources/imgs/public/excel.svg"));
         btn_exportExcel.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btn_exportExcelActionPerformed(evt);
@@ -753,7 +757,7 @@ public class ProductManagement_GUI extends javax.swing.JPanel {
 
         btn_clear.setText("Xóa trắng");
         btn_clear.setToolTipText("");
-        btn_clear.setIcon(SVGIcon.getSVGIcon("imgs/public/clear.svg"));
+        btn_clear.setIcon(SVGIcon.getSVGIcon("resources/imgs/public/clear.svg"));
         btn_clear.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btn_clearActionPerformed(evt);
@@ -762,7 +766,7 @@ public class ProductManagement_GUI extends javax.swing.JPanel {
         pnl_control.add(btn_clear);
 
         btn_update.setText("Cập nhật");
-        btn_update.setIcon(SVGIcon.getSVGIcon("imgs/public/update.svg"));
+        btn_update.setIcon(SVGIcon.getSVGIcon("resources/imgs/public/update.svg"));
         btn_update.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btn_updateActionPerformed(evt);
@@ -772,7 +776,7 @@ public class ProductManagement_GUI extends javax.swing.JPanel {
 
         btn_add.setText("Thêm");
         btn_add.setActionCommand("");
-        btn_add.setIcon(SVGIcon.getSVGIcon("imgs/public/add.svg"));
+        btn_add.setIcon(SVGIcon.getSVGIcon("resources/imgs/public/add.svg"));
         btn_add.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btn_addActionPerformed(evt);
@@ -812,7 +816,7 @@ public class ProductManagement_GUI extends javax.swing.JPanel {
         pnl_productTopLeft.add(lbl_productImg, java.awt.BorderLayout.CENTER);
 
         btn_selectImg.setText("Chọn hình ảnh");
-        btn_selectImg.setIcon(SVGIcon.getSVGIcon("imgs/productManagement/imgEdit.svg"));
+        btn_selectImg.setIcon(SVGIcon.getSVGIcon("resources/imgs/productManagement/imgEdit.svg"));
         btn_selectImg.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btn_selectImgActionPerformed(evt);

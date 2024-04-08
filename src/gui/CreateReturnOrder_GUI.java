@@ -1,7 +1,17 @@
 package gui;
 
-import bus.ReturnOrderManagament_BUS;
+import java.awt.event.KeyEvent;
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+
 import com.formdev.flatlaf.FlatClientProperties;
+
+import bus.ReturnOrderManagament_BUS;
 import entity.Employee;
 import entity.Order;
 import entity.OrderDetail;
@@ -10,13 +20,6 @@ import entity.Promotion;
 import entity.ReturnOrder;
 import entity.ReturnOrderDetail;
 import enums.ReturnOrderStatus;
-import java.awt.event.KeyEvent;
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import javax.swing.JOptionPane;
-import javax.swing.table.DefaultTableModel;
 import main.Application;
 import raven.toast.Notifications;
 import utilities.FormatNumber;
@@ -614,7 +617,7 @@ public class CreateReturnOrder_GUI extends javax.swing.JPanel {
         pnl_createReturnOrder.setLayout(new java.awt.GridLayout(1, 0));
 
         btn_clearValue.setText("Xóa trắng");
-        btn_clearValue.setIcon(SVGIcon.getSVGIcon("imgs/public/clear.svg"));
+        btn_clearValue.setIcon(SVGIcon.getSVGIcon("resources/imgs/public/clear.svg"));
         btn_clearValue.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btn_clearValueActionPerformed(evt);
@@ -623,7 +626,7 @@ public class CreateReturnOrder_GUI extends javax.swing.JPanel {
         pnl_createReturnOrder.add(btn_clearValue);
 
         btn_addProduct.setText("Thêm SP");
-        btn_addProduct.setIcon(SVGIcon.getSVGIcon("imgs/public/add.svg"));
+        btn_addProduct.setIcon(SVGIcon.getSVGIcon("resources/imgs/public/add.svg"));
         btn_addProduct.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btn_addProductActionPerformed(evt);

@@ -27,17 +27,21 @@ public final class Promotion {
     private CustomerRank condition;
     private ArrayList<ProductPromotionDetail> listDetail;
 
-    //constructor đầy đủ
-    public Promotion(String promotionID, Date startedDate, Date endedDate, PromotionType typePromotion, DiscountType typeDiscount, double discount, CustomerRank condition, ArrayList<ProductPromotionDetail> listDetail) throws Exception {
+    public Promotion() {
+    }
+    //constructor theo mã khuyến mãi
+    public Promotion(String promotionID) throws Exception {
+        setPromotionID(promotionID);
+    }
+    public Promotion(String promotionID, Date startedDate, Date endedDate, PromotionType typePromotion, DiscountType typeDiscount, double discount) throws Exception {
         setPromotionID(promotionID);
         setStartedDate(startedDate);
         setEndedDate(endedDate);
         setTypePromotion(typePromotion);
         setTypeDiscount(typeDiscount);
         setDiscount(discount);
-        setCondition(condition);
-        setListDetail(listDetail);
     }
+
     //constructor khuyến mãi theo sản phẩm
     public Promotion(String promotionID, Date startedDate, Date endedDate, PromotionType typePromotion, DiscountType typeDiscount, double discount, ArrayList<ProductPromotionDetail> listDetail) throws Exception {
         setPromotionID(promotionID);
@@ -48,6 +52,7 @@ public final class Promotion {
         setDiscount(discount);
         setListDetail(listDetail);
     }
+    
     //constructor khuyến mãi theo hoá đơn
     public Promotion(String promotionID, Date startedDate, Date endedDate, PromotionType typePromotion, DiscountType typeDiscount, double discount, CustomerRank condition) throws Exception {
         setPromotionID(promotionID);
@@ -59,100 +64,17 @@ public final class Promotion {
         setCondition(condition);
     }
 
-    public Promotion(String promotionID, Date startedDate, Date endedDate, PromotionType typePromotion, DiscountType typeDiscount, double discount) throws Exception {
+    //constructor đầy đủ
+    public Promotion(String promotionID, Date startedDate, Date endedDate, PromotionType typePromotion, DiscountType typeDiscount, double discount, CustomerRank condition, ArrayList<ProductPromotionDetail> listDetail) throws Exception {
         setPromotionID(promotionID);
         setStartedDate(startedDate);
         setEndedDate(endedDate);
         setTypePromotion(typePromotion);
         setTypeDiscount(typeDiscount);
         setDiscount(discount);
-    }
-    
-    //constructor theo mã khuyến mãi
-    public Promotion(String promotionID) throws Exception {
-        setPromotionID(promotionID);
-    }
-
-    public Promotion() {
+        setCondition(condition);
+        setListDetail(listDetail);
     }   
-
-    public String getPromotionID() {
-        return promotionID;
-    }
-
-    public void setPromotionID(String promotionID) throws Exception {
-        String pattern = "^(KM)[0-9]{1}[0-9]{1}[0-9]{8}[0-9]{4}$";
-        if(!Pattern.matches(pattern, promotionID))
-            throw new Exception(PROMOTIONID_ERROR);
-        this.promotionID = promotionID;
-    }
-
-    public Date getStartedDate() {
-        return startedDate;
-    }
-
-    public void setStartedDate(Date startedDate) {
-        this.startedDate = startedDate;
-    }
-
-    public Date getEndedDate() {
-        return endedDate;
-    }
-
-    public void setEndedDate(Date endedDate) throws Exception {
-        if(endedDate.before(startedDate))
-            throw new Exception(ENDEDDATE_ERROR);
-        this.endedDate = endedDate;
-    }
-
-    public PromotionType getTypePromotion() {
-        return typePromotion;
-    }
-
-    public void setTypePromotion(PromotionType typePromotion) {
-        this.typePromotion = typePromotion;
-    }
-
-    public DiscountType getTypeDiscount() {
-        return typeDiscount;
-    }
-
-    public void setTypeDiscount(DiscountType typeDiscount) throws Exception {
-        if(discount < 0)
-            throw new Exception(DISCOUNT_ERROR);
-        this.typeDiscount = typeDiscount;
-    }
-
-    public double getDiscount() {
-        return discount;
-    }
-
-    public void setDiscount(double discount) {
-        this.discount = discount;
-    }
-
-    public CustomerRank getCondition() {
-        return condition;
-    }
-
-    public void setCondition(CustomerRank condition) {
-        this.condition = condition;
-    }
-
-    public ArrayList<ProductPromotionDetail> getListDetail() {
-        return listDetail;
-    }
-
-    public void setListDetail(ArrayList<ProductPromotionDetail> listDetail) {
-        this.listDetail = listDetail;
-    }
-
-    @Override
-    public int hashCode() {
-        int hash = 7;
-        hash = 37 * hash + Objects.hashCode(this.promotionID);
-        return hash;
-    }
 
     @Override
     public boolean equals(Object obj) {
@@ -167,6 +89,84 @@ public final class Promotion {
         }
         final Promotion other = (Promotion) obj;
         return Objects.equals(this.promotionID, other.promotionID);
+    }
+
+    public CustomerRank getCondition() {
+        return condition;
+    }
+
+    public double getDiscount() {
+        return discount;
+    }
+
+    public Date getEndedDate() {
+        return endedDate;
+    }
+
+    public ArrayList<ProductPromotionDetail> getListDetail() {
+        return listDetail;
+    }
+
+    public String getPromotionID() {
+        return promotionID;
+    }
+
+    public Date getStartedDate() {
+        return startedDate;
+    }
+
+    public DiscountType getTypeDiscount() {
+        return typeDiscount;
+    }
+
+    public PromotionType getTypePromotion() {
+        return typePromotion;
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 7;
+        hash = 37 * hash + Objects.hashCode(this.promotionID);
+        return hash;
+    }
+
+    public void setCondition(CustomerRank condition) {
+        this.condition = condition;
+    }
+
+    public void setDiscount(double discount) {
+        this.discount = discount;
+    }
+
+    public void setEndedDate(Date endedDate) throws Exception {
+        if(endedDate.before(startedDate))
+            throw new Exception(ENDEDDATE_ERROR);
+        this.endedDate = endedDate;
+    }
+
+    public void setListDetail(ArrayList<ProductPromotionDetail> listDetail) {
+        this.listDetail = listDetail;
+    }
+
+    public void setPromotionID(String promotionID) throws Exception {
+        String pattern = "^(KM)[0-9]{1}[0-9]{1}[0-9]{8}[0-9]{4}$";
+        if(!Pattern.matches(pattern, promotionID))
+            throw new Exception(PROMOTIONID_ERROR);
+        this.promotionID = promotionID;
+    }
+
+    public void setStartedDate(Date startedDate) {
+        this.startedDate = startedDate;
+    }
+
+    public void setTypeDiscount(DiscountType typeDiscount) throws Exception {
+        if(discount < 0)
+            throw new Exception(DISCOUNT_ERROR);
+        this.typeDiscount = typeDiscount;
+    }
+
+    public void setTypePromotion(PromotionType typePromotion) {
+        this.typePromotion = typePromotion;
     }
 
     

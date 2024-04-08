@@ -1,9 +1,5 @@
 package gui.menu;
 
-import com.formdev.flatlaf.FlatClientProperties;
-import com.formdev.flatlaf.extras.FlatSVGIcon;
-import com.formdev.flatlaf.ui.FlatUIUtils;
-import com.formdev.flatlaf.util.UIScale;
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Component;
@@ -17,10 +13,18 @@ import java.awt.RenderingHints;
 import java.awt.Shape;
 import java.awt.event.ActionEvent;
 import java.awt.geom.Path2D;
+import java.io.File;
 import java.util.List;
+
 import javax.swing.Icon;
 import javax.swing.JButton;
 import javax.swing.JPanel;
+
+import com.formdev.flatlaf.FlatClientProperties;
+import com.formdev.flatlaf.extras.FlatSVGIcon;
+import com.formdev.flatlaf.ui.FlatUIUtils;
+import com.formdev.flatlaf.util.UIScale;
+
 import raven.toast.Notifications;
 import utilities.SVGIcon;
 
@@ -79,7 +83,7 @@ public class MenuItem extends JPanel {
     private Icon getIcon() {
         Color lightColor = FlatUIUtils.getUIColor("Menu.icon.lightColor", Color.red);
         Color darkColor = FlatUIUtils.getUIColor("Menu.icon.darkColor", Color.red);
-        FlatSVGIcon icon = new FlatSVGIcon("imgs/menu/" + menuIndex + ".svg");
+        FlatSVGIcon icon = new FlatSVGIcon(new File("resources/imgs/menu/" + menuIndex + ".svg"));
         FlatSVGIcon.ColorFilter f = new FlatSVGIcon.ColorFilter();
         f.add(Color.decode("#969696"), lightColor, darkColor);
         icon.setColorFilter(f);

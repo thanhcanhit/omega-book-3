@@ -4,22 +4,21 @@
  */
 package gui;
 
-import bus.CustomerManagement_BUS;
-import com.formdev.flatlaf.FlatClientProperties;
-import entity.Customer;
 import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.util.ArrayList;
-import javax.swing.JFileChooser;
+
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.Font;
@@ -31,6 +30,10 @@ import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.util.CellRangeAddress;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
+import com.formdev.flatlaf.FlatClientProperties;
+
+import bus.CustomerManagement_BUS;
+import entity.Customer;
 import raven.toast.Notifications;
 import utilities.SVGIcon;
 
@@ -313,7 +316,7 @@ public class CustomerManagement_GUI extends javax.swing.JPanel {
         pnl_searchCustomer.add(pnl_filterCustomer);
 
         btn_filter.setText("Lọc");
-        btn_filter.setIcon(SVGIcon.getSVGIcon("imgs/public/filter.svg"));
+        btn_filter.setIcon(SVGIcon.getSVGIcon("resources/imgs/public/filter.svg"));
         btn_filter.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btn_filterActionPerformed(evt);
@@ -321,7 +324,7 @@ public class CustomerManagement_GUI extends javax.swing.JPanel {
         });
         pnl_searchCustomer.add(btn_filter);
 
-        btn_reloadList.setIcon(SVGIcon.getSVGIcon("imgs/public/refresh.svg"));
+        btn_reloadList.setIcon(SVGIcon.getSVGIcon("resources/imgs/public/refresh.svg"));
         btn_reloadList.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btn_reloadListActionPerformed(evt);
@@ -523,7 +526,7 @@ public class CustomerManagement_GUI extends javax.swing.JPanel {
 
         btn_reloadForm.setFont(btn_reloadForm.getFont().deriveFont((float)14));
         btn_reloadForm.setText("Xóa trắng");
-        btn_reloadForm.setIcon(SVGIcon.getSVGIcon("imgs/public/clear.svg"));
+        btn_reloadForm.setIcon(SVGIcon.getSVGIcon("resources/imgs/public/clear.svg"));
         btn_reloadForm.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btn_reloadFormActionPerformed(evt);
@@ -533,7 +536,7 @@ public class CustomerManagement_GUI extends javax.swing.JPanel {
 
         btn_update.setFont(btn_update.getFont().deriveFont((float)14));
         btn_update.setText("Cập nhật");
-        btn_update.setIcon(SVGIcon.getSVGIcon("imgs/public/update.svg"));
+        btn_update.setIcon(SVGIcon.getSVGIcon("resources/imgs/public/update.svg"));
         btn_update.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btn_updateActionPerformed(evt);
@@ -551,7 +554,7 @@ public class CustomerManagement_GUI extends javax.swing.JPanel {
         btn_create.setFont(btn_create.getFont().deriveFont((float)14));
         btn_create.setText("Thêm mới");
         btn_create.putClientProperty(FlatClientProperties.STYLE, "background: $Menu.background;"+"foreground: $Menu.foreground");
-        btn_create.setIcon(SVGIcon.getPrimarySVGIcon("imgs/public/add.svg"));
+        btn_create.setIcon(SVGIcon.getPrimarySVGIcon("resources/imgs/public/add.svg"));
         btn_create.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btn_createActionPerformed(evt);
@@ -561,7 +564,7 @@ public class CustomerManagement_GUI extends javax.swing.JPanel {
 
         btn_exportExcel.setFont(btn_exportExcel.getFont().deriveFont((float)14));
         btn_exportExcel.setText("Xuất file");
-        btn_exportExcel.setIcon(SVGIcon.getSVGIcon("imgs/public/excel.svg"));
+        btn_exportExcel.setIcon(SVGIcon.getSVGIcon("resources/imgs/public/excel.svg"));
         btn_exportExcel.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btn_exportExcelActionPerformed(evt);

@@ -24,43 +24,6 @@ public class CashCountSheetDetail {
         this.cashCountSheet = cashCountSheet;
     }
 
-    public boolean getIndex() {
-        return index;
-    }
-
-    public void setIndex(boolean index) {
-        this.index = index;
-    }
-
-    public Employee getEmployee() {
-        return employee;
-    }
-
-    public void setEmployee(Employee employee) {
-        this.employee = employee;
-    }
-
-    public CashCountSheet getCashCountSheet() {
-        return cashCountSheet;
-    }
-
-    public void setCashCountSheet(CashCountSheet cashCountSheet) {
-        this.cashCountSheet = cashCountSheet;
-    }
-
-    @Override
-    public String toString() {
-        return "CashCountSheetDetail{" + "employee=" + employee + ", cashCountSheet=" + cashCountSheet + '}';
-    }
-
-    @Override
-    public int hashCode() {
-        int hash = 3;
-        hash = 37 * hash + Objects.hashCode(this.employee);
-        hash = 37 * hash + Objects.hashCode(this.cashCountSheet);
-        return hash;
-    }
-
     @Override
     public boolean equals(Object obj) {
         if (this == obj) {
@@ -77,6 +40,43 @@ public class CashCountSheetDetail {
             return false;
         }
         return Objects.equals(this.cashCountSheet, other.cashCountSheet);
+    }
+
+    public CashCountSheet getCashCountSheet() {
+        return cashCountSheet;
+    }
+
+    public Employee getEmployee() {
+        return employee;
+    }
+
+    public boolean getIndex() {
+        return index;
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 3;
+        hash = 37 * hash + Objects.hashCode(this.employee);
+        hash = 37 * hash + Objects.hashCode(this.cashCountSheet);
+        return hash;
+    }
+
+    public void setCashCountSheet(CashCountSheet cashCountSheet) {
+        this.cashCountSheet = cashCountSheet;
+    }
+
+    public void setEmployee(Employee employee) {
+        this.employee = employee;
+    }
+
+    public void setIndex(boolean index) {
+        this.index = index;
+    }
+
+    @Override
+    public String toString() {
+        return "CashCountSheetDetail{" + "employee=" + employee + ", cashCountSheet=" + cashCountSheet + '}';
     }
     
     

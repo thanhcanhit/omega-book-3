@@ -4,18 +4,21 @@
  */
 package gui;
 
-import bus.SupplierManagement_BUS;
+import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.table.DefaultTableModel;
+
 import com.formdev.flatlaf.FlatClientProperties;
+
+import bus.SupplierManagement_BUS;
 import entity.Order;
 import entity.PurchaseOrder;
 import entity.PurchaseOrderDetail;
 import entity.Supplier;
-import java.util.ArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.swing.DefaultComboBoxModel;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.table.DefaultTableModel;
 import main.Application;
 import raven.toast.Notifications;
 import utilities.SVGIcon;
@@ -257,7 +260,7 @@ public class SupplierManagement_GUI extends javax.swing.JPanel {
         pnl_btnGroup.setLayout(new java.awt.GridLayout(1, 2, 5, 5));
 
         btn_clear.setText("Xóa trắng");
-        btn_clear.setIcon(SVGIcon.getSVGIcon("imgs/public/clear.svg"));
+        btn_clear.setIcon(SVGIcon.getSVGIcon("resources/imgs/public/clear.svg"));
         btn_clear.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btn_clearActionPerformed(evt);
@@ -266,7 +269,7 @@ public class SupplierManagement_GUI extends javax.swing.JPanel {
         pnl_btnGroup.add(btn_clear);
 
         btn_update.setText("Cập nhật");
-        btn_update.setIcon(SVGIcon.getSVGIcon("imgs/public/update.svg"));
+        btn_update.setIcon(SVGIcon.getSVGIcon("resources/imgs/public/update.svg"));
         btn_update.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btn_updateActionPerformed(evt);
@@ -278,7 +281,7 @@ public class SupplierManagement_GUI extends javax.swing.JPanel {
         btn_create.putClientProperty(FlatClientProperties.STYLE,""
             + "background:$Menu.background;"
             + "foreground:$Menu.foreground;");
-        btn_create.setIcon(SVGIcon.getPrimarySVGIcon("imgs/public/add.svg"));
+        btn_create.setIcon(SVGIcon.getPrimarySVGIcon("resources/imgs/public/add.svg"));
         btn_create.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btn_createActionPerformed(evt);

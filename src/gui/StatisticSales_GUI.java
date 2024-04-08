@@ -4,13 +4,13 @@
  */
 package gui;
 
+import java.awt.Color;
+import java.beans.PropertyChangeEvent;
+
 import bus.StatisticSales_BUS;
 import gui.customchart.ModelChart;
 import gui.customchart.piechart.ModelPolarAreaChart;
 import gui.customchart.piechart.PolarAreaChart;
-import java.awt.Color;
-import java.beans.PropertyChangeEvent;
-
 import utilities.FormatNumber;
 
 /**

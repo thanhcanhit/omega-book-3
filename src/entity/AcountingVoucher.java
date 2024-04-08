@@ -27,6 +27,14 @@ public class AcountingVoucher implements Comparable<AcountingVoucher>{
     public AcountingVoucher() {
     }
 
+    public AcountingVoucher(Date endedDate) {
+        this.endedDate = endedDate;
+    }
+
+    public AcountingVoucher(String accountingVoucherID) {
+        this.accountingVoucherID = accountingVoucherID;
+    }
+
     public AcountingVoucher(String accountingVoucherID, Date createdDate, Date endedDate, CashCountSheet cashCountSheet, ArrayList<Order> orderList) {
         setAcountingVoucherID(accountingVoucherID);
         setCreatedDate(createdDate);
@@ -42,106 +50,9 @@ public class AcountingVoucher implements Comparable<AcountingVoucher>{
 
     }
 
-    public AcountingVoucher(String accountingVoucherID) {
-        this.accountingVoucherID = accountingVoucherID;
-    }
-
-    public AcountingVoucher(Date endedDate) {
-        this.endedDate = endedDate;
-    }
-
-    public String getAcountingVoucherID() {
-        return accountingVoucherID;
-    }
-
-    public ArrayList<Order> getOrderList() {
-        return orderList;
-    }
-
-    public void setOrderList(ArrayList<Order> orderList) {
-        this.orderList = orderList;
-    }
-
-    public void setAcountingVoucherID(String accountingVoucherID) {
-        this.accountingVoucherID = accountingVoucherID;
-    }
-
-    public Date getCreatedDate() {
-        return createdDate;
-    }
-
-    public void setCreatedDate(Date createdDate) {
-        this.createdDate = createdDate;
-    }
-
-    public Date getEndedDate() {
-        return endedDate;
-    }
-
-    public void setEndedDate(Date endedDate) {
-        this.endedDate = endedDate;
-    }
-
-    private void setSale() {
-        double sum = 0;
-        for (Order order : orderList) {
-            sum += order.getTotalDue();
-        }
-        this.sale = sum;
-    }
-
-    public double getSale() {
-        return this.sale;
-    }
-
-    public double getPayViaATM() {
-        return payViaATM;
-    }
-
-    public void setPayViaATM() {
-        double sum = 0;
-        for (Order order : orderList) {
-            if (order.isPayment()) {
-                sum += order.getTotalDue();
-            }
-        }
-        this.payViaATM = sum;
-    }
-
-    public double getWithDraw() {
-        return withDraw;
-    }
-
-    public void setWithDraw() {
-        this.withDraw = this.sale - this.payViaATM;
-    }
-
-    public double getDifference() {
-        return difference;
-    }
-
-    private void setDifference() {
-        this.difference = cashCountSheet.getTotal() - withDraw - 1765000;
-    }
-
-    public CashCountSheet getCashCountSheet() {
-        return cashCountSheet;
-    }
-
-    public void setCashCountSheet(CashCountSheet cashCountSheet) {
-        this.cashCountSheet = cashCountSheet;
-    }
-
     @Override
-    public String toString() {
-        return "AccountingVoucher{" + "accountingVoucherID=" + accountingVoucherID + ", createdDate=" + createdDate + ", endedDate=" + endedDate + ", sale=" + sale + ", payViaATM=" + payViaATM + ", withDraw=" + withDraw + ", difference=" + difference + ", cashCountSheet=" + cashCountSheet + ", accoutinVoucherDetailList=" + '}';
-    }
-
-    @Override
-    public int hashCode() {
-        int hash = 5;
-        hash = 79 * hash + Objects.hashCode(this.accountingVoucherID);
-        return hash;
+    public int compareTo(AcountingVoucher o) {
+        return this.createdDate.compareTo(o.createdDate);
     }
 
     @Override
@@ -159,9 +70,98 @@ public class AcountingVoucher implements Comparable<AcountingVoucher>{
         return Objects.equals(this.accountingVoucherID, other.accountingVoucherID);
     }
 
+    public String getAcountingVoucherID() {
+        return accountingVoucherID;
+    }
+
+    public CashCountSheet getCashCountSheet() {
+        return cashCountSheet;
+    }
+
+    public Date getCreatedDate() {
+        return createdDate;
+    }
+
+    public double getDifference() {
+        return difference;
+    }
+
+    public Date getEndedDate() {
+        return endedDate;
+    }
+
+    public ArrayList<Order> getOrderList() {
+        return orderList;
+    }
+
+    public double getPayViaATM() {
+        return payViaATM;
+    }
+
+    public double getSale() {
+        return this.sale;
+    }
+
+    public double getWithDraw() {
+        return withDraw;
+    }
+
     @Override
-    public int compareTo(AcountingVoucher o) {
-        return this.createdDate.compareTo(o.createdDate);
+    public int hashCode() {
+        int hash = 5;
+        hash = 79 * hash + Objects.hashCode(this.accountingVoucherID);
+        return hash;
+    }
+
+    public void setAcountingVoucherID(String accountingVoucherID) {
+        this.accountingVoucherID = accountingVoucherID;
+    }
+
+    public void setCashCountSheet(CashCountSheet cashCountSheet) {
+        this.cashCountSheet = cashCountSheet;
+    }
+
+    public void setCreatedDate(Date createdDate) {
+        this.createdDate = createdDate;
+    }
+
+    private void setDifference() {
+        this.difference = cashCountSheet.getTotal() - withDraw - 1765000;
+    }
+
+    public void setEndedDate(Date endedDate) {
+        this.endedDate = endedDate;
+    }
+
+    public void setOrderList(ArrayList<Order> orderList) {
+        this.orderList = orderList;
+    }
+
+    public void setPayViaATM() {
+        double sum = 0;
+        for (Order order : orderList) {
+            if (order.isPayment()) {
+                sum += order.getTotalDue();
+            }
+        }
+        this.payViaATM = sum;
+    }
+
+    private void setSale() {
+        double sum = 0;
+        for (Order order : orderList) {
+            sum += order.getTotalDue();
+        }
+        this.sale = sum;
+    }
+
+    public void setWithDraw() {
+        this.withDraw = this.sale - this.payViaATM;
+    }
+
+    @Override
+    public String toString() {
+        return "AccountingVoucher{" + "accountingVoucherID=" + accountingVoucherID + ", createdDate=" + createdDate + ", endedDate=" + endedDate + ", sale=" + sale + ", payViaATM=" + payViaATM + ", withDraw=" + withDraw + ", difference=" + difference + ", cashCountSheet=" + cashCountSheet + ", accoutinVoucherDetailList=" + '}';
     }
 
 }

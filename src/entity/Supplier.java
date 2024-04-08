@@ -18,54 +18,17 @@ public class Supplier {
     private String name; 
     private String address;
 
-    public Supplier(String supplierID, String name, String address) throws Exception {
-        setSupplierID(supplierID);
-        setName(name);
-        setAddress(address);
+    public Supplier() {
     }
 
     public Supplier(String supplierID) throws Exception {
         setSupplierID(supplierID);
     }
 
-    public Supplier() {
-    }
-
-    public String getSupplierID() {
-        return supplierID;
-    }
-
-    public void setSupplierID(String supplierID) throws Exception {
-        if(supplierID.trim().equals("")) 
-            throw new Exception(ID_EMPTY);
-        this.supplierID = supplierID;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) throws Exception {
-        if(name.trim().equals("")) 
-            throw new Exception(NAME_EMPTY);
-        this.name = name;
-    }
-
-    public String getAddress() {
-        return address;
-    }
-
-    public void setAddress(String address) throws Exception {
-        if(address.trim().equals("")) 
-            throw new Exception(ADDRESS_EMPTY);
-        this.address = address;
-    }
-
-    @Override
-    public int hashCode() {
-        int hash = 3;
-        hash = 97 * hash + Objects.hashCode(this.supplierID);
-        return hash;
+    public Supplier(String supplierID, String name, String address) throws Exception {
+        setSupplierID(supplierID);
+        setName(name);
+        setAddress(address);
     }
 
     @Override
@@ -81,6 +44,43 @@ public class Supplier {
         }
         final Supplier other = (Supplier) obj;
         return Objects.equals(this.supplierID, other.supplierID);
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getSupplierID() {
+        return supplierID;
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 3;
+        hash = 97 * hash + Objects.hashCode(this.supplierID);
+        return hash;
+    }
+
+    public void setAddress(String address) throws Exception {
+        if(address.trim().equals("")) 
+            throw new Exception(ADDRESS_EMPTY);
+        this.address = address;
+    }
+
+    public void setName(String name) throws Exception {
+        if(name.trim().equals("")) 
+            throw new Exception(NAME_EMPTY);
+        this.name = name;
+    }
+
+    public void setSupplierID(String supplierID) throws Exception {
+        if(supplierID.trim().equals("")) 
+            throw new Exception(ID_EMPTY);
+        this.supplierID = supplierID;
     }
 
     @Override

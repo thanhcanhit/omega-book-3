@@ -25,6 +25,13 @@ public final class PurchaseOrder {
     private ArrayList<PurchaseOrderDetail> purchaseOrderDetailList;
     private double total;
 
+    public PurchaseOrder() {
+    }
+
+    public PurchaseOrder(String purchaseOrderID) throws Exception {
+        setPurchaseOrderID(purchaseOrderID);
+    }
+
     public PurchaseOrder(String purchaseOrderID, Date orderDate, Date receiveDate, String note, PurchaseOrderStatus status, Supplier supplier, Employee employee, ArrayList<PurchaseOrderDetail> purchaseOrderDetailList) throws Exception {
         setPurchaseOrderID(purchaseOrderID);
         setOrderDate(orderDate);
@@ -48,104 +55,6 @@ public final class PurchaseOrder {
         this.total = total;
     }
 
-    public PurchaseOrder(String purchaseOrderID) throws Exception {
-        setPurchaseOrderID(purchaseOrderID);
-    }
-
-    public PurchaseOrder() {
-    }
-
-    public String getPurchaseOrderID() {
-        return purchaseOrderID;
-    }
-
-    public void setPurchaseOrderID(String purchaseOrderID) throws Exception {
-        if (purchaseOrderID.trim().equals("")) {
-            throw new Exception(ID_EMPTY);
-        }
-        this.purchaseOrderID = purchaseOrderID;
-    }
-
-    public Date getOrderDate() {
-        return orderDate;
-    }
-
-    public void setOrderDate(Date orderDate) throws Exception {
-        if (orderDate.after(java.sql.Date.valueOf(LocalDate.now()))) {
-            throw new Exception(ORDERDATE_ERORR);
-        }
-        this.orderDate = orderDate;
-    }
-
-    public Date getReceiveDate() {
-        return receiveDate;
-    }
-
-    public void setReceiveDate(Date receiveDate) throws Exception {
-        if (receiveDate.before(orderDate)) {
-            throw new Exception(RECEIVEDATE_ERORR);
-        }
-        this.receiveDate = receiveDate;
-    }
-
-    public String getNote() {
-        return note;
-    }
-
-    public void setNote(String note) {
-        this.note = note;
-    }
-
-    public PurchaseOrderStatus getStatus() {
-        return status;
-    }
-
-    public void setStatus(PurchaseOrderStatus status) {
-        this.status = status;
-    }
-
-    public Supplier getSupplier() {
-        return supplier;
-    }
-
-    public void setSupplier(Supplier supplier) {
-        this.supplier = supplier;
-    }
-
-    public Employee getEmployee() {
-        return employee;
-    }
-
-    public void setEmployee(Employee employee) {
-        this.employee = employee;
-    }
-
-    public ArrayList<PurchaseOrderDetail> getPurchaseOrderDetailList() {
-        return purchaseOrderDetailList;
-    }
-
-    public void setPurchaseOrderDetailList(ArrayList<PurchaseOrderDetail> purchaseOrderDetailList) {
-        this.purchaseOrderDetailList = purchaseOrderDetailList;
-        setTotal();
-    }
-
-    public double getTotal() {
-        return total;
-    }
-
-    private void setTotal() {
-        for (PurchaseOrderDetail purchaseOrderDetail : purchaseOrderDetailList) {
-            this.total += purchaseOrderDetail.getLineTotal();
-        }
-    }
-
-    @Override
-    public int hashCode() {
-        int hash = 5;
-        hash = 79 * hash + Objects.hashCode(this.purchaseOrderID);
-        return hash;
-    }
-
     @Override
     public boolean equals(Object obj) {
         if (this == obj) {
@@ -159,6 +68,97 @@ public final class PurchaseOrder {
         }
         final PurchaseOrder other = (PurchaseOrder) obj;
         return Objects.equals(this.purchaseOrderID, other.purchaseOrderID);
+    }
+
+    public Employee getEmployee() {
+        return employee;
+    }
+
+    public String getNote() {
+        return note;
+    }
+
+    public Date getOrderDate() {
+        return orderDate;
+    }
+
+    public ArrayList<PurchaseOrderDetail> getPurchaseOrderDetailList() {
+        return purchaseOrderDetailList;
+    }
+
+    public String getPurchaseOrderID() {
+        return purchaseOrderID;
+    }
+
+    public Date getReceiveDate() {
+        return receiveDate;
+    }
+
+    public PurchaseOrderStatus getStatus() {
+        return status;
+    }
+
+    public Supplier getSupplier() {
+        return supplier;
+    }
+
+    public double getTotal() {
+        return total;
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 5;
+        hash = 79 * hash + Objects.hashCode(this.purchaseOrderID);
+        return hash;
+    }
+
+    public void setEmployee(Employee employee) {
+        this.employee = employee;
+    }
+
+    public void setNote(String note) {
+        this.note = note;
+    }
+
+    public void setOrderDate(Date orderDate) throws Exception {
+        if (orderDate.after(java.sql.Date.valueOf(LocalDate.now()))) {
+            throw new Exception(ORDERDATE_ERORR);
+        }
+        this.orderDate = orderDate;
+    }
+
+    public void setPurchaseOrderDetailList(ArrayList<PurchaseOrderDetail> purchaseOrderDetailList) {
+        this.purchaseOrderDetailList = purchaseOrderDetailList;
+        setTotal();
+    }
+
+    public void setPurchaseOrderID(String purchaseOrderID) throws Exception {
+        if (purchaseOrderID.trim().equals("")) {
+            throw new Exception(ID_EMPTY);
+        }
+        this.purchaseOrderID = purchaseOrderID;
+    }
+
+    public void setReceiveDate(Date receiveDate) throws Exception {
+        if (receiveDate.before(orderDate)) {
+            throw new Exception(RECEIVEDATE_ERORR);
+        }
+        this.receiveDate = receiveDate;
+    }
+
+    public void setStatus(PurchaseOrderStatus status) {
+        this.status = status;
+    }
+
+    public void setSupplier(Supplier supplier) {
+        this.supplier = supplier;
+    }
+
+    private void setTotal() {
+        for (PurchaseOrderDetail purchaseOrderDetail : purchaseOrderDetailList) {
+            this.total += purchaseOrderDetail.getLineTotal();
+        }
     }
 
     @Override

@@ -4,20 +4,19 @@
  */
 package gui;
 
-import bus.ViewAcountingVoucherList_BUS;
-import entity.AcountingVoucher;
-import entity.Employee;
-import entity.Order;
-import java.awt.event.MouseEvent;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+
 import javax.swing.JLabel;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
+
+import bus.ViewAcountingVoucherList_BUS;
+import entity.AcountingVoucher;
+import entity.Employee;
 import raven.toast.Notifications;
 import utilities.AcountingVoucherPrinter;
-import utilities.OrderPrinter;
 import utilities.SVGIcon;
 
 /**
@@ -222,7 +221,7 @@ public class ViewAcountingVoucherList_GUI extends javax.swing.JPanel {
 
         pnl_button.setLayout(new java.awt.GridLayout(2, 1));
 
-        btn_reload.setIcon(SVGIcon.getSVGIcon("imgs/public/refresh.svg"));
+        btn_reload.setIcon(SVGIcon.getSVGIcon("resources/imgs/public/refresh.svg"));
         btn_reload.setMaximumSize(new java.awt.Dimension(200, 30));
         btn_reload.setPreferredSize(new java.awt.Dimension(100, 30));
         btn_reload.addActionListener(new java.awt.event.ActionListener() {
@@ -233,7 +232,7 @@ public class ViewAcountingVoucherList_GUI extends javax.swing.JPanel {
         pnl_button.add(btn_reload);
 
         btn_filter.setText("Lọc");
-        btn_filter.setIcon(SVGIcon.getSVGIcon("imgs/public/filter.svg"));
+        btn_filter.setIcon(SVGIcon.getSVGIcon("resources/imgs/public/filter.svg"));
         btn_filter.setMaximumSize(new java.awt.Dimension(200, 30));
         btn_filter.setPreferredSize(new java.awt.Dimension(100, 30));
         pnl_button.add(btn_filter);

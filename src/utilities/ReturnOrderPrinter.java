@@ -54,7 +54,7 @@ import javax.print.attribute.standard.Sides;
 public class ReturnOrderPrinter {
     private final ReturnOrder returnOrder;
     public static final String FONT = "resources/fonts/arial-unicode-ms.ttf";
-    private static final String FILE_PATH = "lastReturnOrder.pdf";
+    private static final String FILE_PATH = "resources/temp/lastReturnOrder.pdf";
 
     public static enum PrintStatus {
         NOT_FOUND_FILE,

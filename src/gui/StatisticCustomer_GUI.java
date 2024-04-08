@@ -5,9 +5,7 @@
 package gui;
 
 import java.awt.Color;
-import org.knowm.xchart.PieChart;
-import org.knowm.xchart.PieChartBuilder;
-import org.knowm.xchart.XChartPanel;
+
 import bus.StatisticCustomer_BUS;
 import gui.customchart.piechart.ModelPolarAreaChart;
 import gui.customchart.piechart.PolarAreaChart;

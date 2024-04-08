@@ -17,37 +17,13 @@ public class ProductPromotionDetail {
     public ProductPromotionDetail() {
     }
 
-    public ProductPromotionDetail(Promotion promotion, Product product) {
-        this.promotion = promotion;
-        this.product = product;
-    }
-
     public ProductPromotionDetail(Product product) {
         this.product = product;
     }
 
-    public Promotion getPromotion() {
-        return promotion;
-    }
-
-    public void setPromotion(Promotion promotion) {
+    public ProductPromotionDetail(Promotion promotion, Product product) {
         this.promotion = promotion;
-    }
-
-    public Product getProduct() {
-        return product;
-    }
-
-    public void setProduct(Product product) {
         this.product = product;
-    }
-    
-    @Override
-    public int hashCode() {
-        int hash = 7;
-        hash = 11 * hash + Objects.hashCode(this.promotion);
-        hash = 11 * hash + Objects.hashCode(this.product);
-        return hash;
     }
 
     @Override
@@ -66,6 +42,30 @@ public class ProductPromotionDetail {
             return false;
         }
         return Objects.equals(this.product, other.product);
+    }
+
+    public Product getProduct() {
+        return product;
+    }
+
+    public Promotion getPromotion() {
+        return promotion;
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 7;
+        hash = 11 * hash + Objects.hashCode(this.promotion);
+        hash = 11 * hash + Objects.hashCode(this.product);
+        return hash;
+    }
+    
+    public void setProduct(Product product) {
+        this.product = product;
+    }
+
+    public void setPromotion(Promotion promotion) {
+        this.promotion = promotion;
     }
 
     @Override

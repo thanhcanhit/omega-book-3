@@ -35,6 +35,13 @@ public class Customer implements Serializable {
     private String rank;
     private String address;
 
+    public Customer() {
+    }
+
+    public Customer(String customerID) throws Exception {
+        setCustomerID(customerID);
+    }
+
     public Customer(String customerID, String name, boolean gender, Date dateOfBirth, int score, String phoneNumber, String address) throws Exception {
         setCustomerID(customerID);
         setName(name);
@@ -46,96 +53,43 @@ public class Customer implements Serializable {
         setAddress(address);
     }
 
-    public Customer(String customerID) throws Exception {
-        setCustomerID(customerID);
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Customer other = (Customer) obj;
+        return Objects.equals(this.customerID, other.customerID);
     }
 
-    public Customer() {
+    public String getAddress() {
+        return address;
     }
 
     public String getCustomerID() {
         return customerID;
     }
 
-    public void setCustomerID(String customerID) throws Exception {
-        String patternCustomerID = "^KH[0-9]{4}[0-9]{1}[0-9]{4}$";
-        if (!Pattern.matches(patternCustomerID, customerID)) {
-            throw new Exception(ID_EMPTY);
-        }
-        this.customerID = customerID;
+    public Date getDateOfBirth() {
+        return dateOfBirth;
     }
 
     public String getName() {
         return name;
     }
 
-    public void setName(String name) throws Exception {
-        if (name.trim().equals("")) {
-            throw new Exception(NAME_EMPTY);
-        }
-        this.name = name;
-    }
-
-    public int getScore() {
-        return score;
-    }
-
-    public void setScore(int score) throws Exception {
-        if (score < 0) {
-            throw new Exception(SCORE_ERROR);
-        }
-        this.score = +score;
-    }
-
-    public boolean isGender() {
-        return gender;
-    }
-
-    public void setGender(boolean gender) {
-        this.gender = gender;
-    }
-
-    public Date getDateOfBirth() {
-        return dateOfBirth;
-    }
-
-    public void setDateOfBirth(Date dateOfBirth) throws Exception {
-        if (dateOfBirth.after(java.sql.Date.valueOf(LocalDate.now()))) {
-            throw new Exception(DATEBIRTH_ERROR);
-        }
-        this.dateOfBirth = dateOfBirth;
-    }
-
     public String getPhoneNumber() {
         return phoneNumber;
     }
 
-    public void setPhoneNumber(String phoneNumber) throws Exception {
-        String patternPhone = "^(09|03|08|07|05|02)\\d{8}$";
-        if (!Pattern.matches(patternPhone, phoneNumber)) {
-            throw new Exception(PHONENUMBER_ERROR);
-        }
-        this.phoneNumber = phoneNumber;
-    }
-
     public String getRank() {
         return rank;
-    }
-
-    public void setRank() {
-        if (score < 1000) {
-            rank = "Không";
-        } else if (score < 10000) {
-            rank = "Bạc";
-        } else if (score < 30000) {
-            rank = "Vàng";
-        } else {
-            rank = "Kim cương";
-        }
-    }
-
-    public String getAddress() {
-        return address;
     }
 
     public CustomerRank getRankType() {
@@ -152,11 +106,8 @@ public class Customer implements Serializable {
         return CustomerRank.DIAMOND;
     }
 
-    public void setAddress(String address) throws Exception {
-        if (address.isBlank()) {
-            throw new Exception(ADDRESS_EMPTY);
-        }
-        this.address = address;
+    public int getScore() {
+        return score;
     }
 
     @Override
@@ -166,19 +117,68 @@ public class Customer implements Serializable {
         return hash;
     }
 
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj) {
-            return true;
+    public boolean isGender() {
+        return gender;
+    }
+
+    public void setAddress(String address) throws Exception {
+        if (address.isBlank()) {
+            throw new Exception(ADDRESS_EMPTY);
         }
-        if (obj == null) {
-            return false;
+        this.address = address;
+    }
+
+    public void setCustomerID(String customerID) throws Exception {
+        String patternCustomerID = "^KH[0-9]{4}[0-9]{1}[0-9]{4}$";
+        if (!Pattern.matches(patternCustomerID, customerID)) {
+            throw new Exception(ID_EMPTY);
         }
-        if (getClass() != obj.getClass()) {
-            return false;
+        this.customerID = customerID;
+    }
+
+    public void setDateOfBirth(Date dateOfBirth) throws Exception {
+        if (dateOfBirth.after(java.sql.Date.valueOf(LocalDate.now()))) {
+            throw new Exception(DATEBIRTH_ERROR);
         }
-        final Customer other = (Customer) obj;
-        return Objects.equals(this.customerID, other.customerID);
+        this.dateOfBirth = dateOfBirth;
+    }
+
+    public void setGender(boolean gender) {
+        this.gender = gender;
+    }
+
+    public void setName(String name) throws Exception {
+        if (name.trim().equals("")) {
+            throw new Exception(NAME_EMPTY);
+        }
+        this.name = name;
+    }
+
+    public void setPhoneNumber(String phoneNumber) throws Exception {
+        String patternPhone = "^(09|03|08|07|05|02)\\d{8}$";
+        if (!Pattern.matches(patternPhone, phoneNumber)) {
+            throw new Exception(PHONENUMBER_ERROR);
+        }
+        this.phoneNumber = phoneNumber;
+    }
+
+    public void setRank() {
+        if (score < 1000) {
+            rank = "Không";
+        } else if (score < 10000) {
+            rank = "Bạc";
+        } else if (score < 30000) {
+            rank = "Vàng";
+        } else {
+            rank = "Kim cương";
+        }
+    }
+
+    public void setScore(int score) throws Exception {
+        if (score < 0) {
+            throw new Exception(SCORE_ERROR);
+        }
+        this.score = +score;
     }
 
     @Override

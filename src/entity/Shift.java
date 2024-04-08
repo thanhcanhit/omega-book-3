@@ -24,61 +24,17 @@ public final class Shift {
     private Date endedAt;
     private Account account;
 
+    public Shift() {
+    }
+
+    public Shift(String shiftID) {
+        this.shiftID = shiftID;
+    }
+
     public Shift(String shiftID, Date startedAt, Account account) {
         this.shiftID = shiftID;
         this.startedAt = startedAt;
         this.account = account;
-    }
-
-    public String getShiftID() {
-        return shiftID;
-    }
-
-    public void setShiftID(String shiftID) throws Exception {
-        String regex = "^[P][H]\\d{2}(0[1-9]|1[0-2])(0[1-9]|[12]\\d|3[01])\\d{4}$";
-        Pattern pattern = Pattern.compile(regex);
-        if (!pattern.matcher(shiftID).matches()) {
-            this.shiftID = shiftID;
-        } else {
-            throw new Exception(ID_EMPTY);
-        }
-
-    }
-
-    public Date getStartedAt() {
-        return startedAt;
-    }
-
-    public void setStartedAt(Date startedAt) throws Exception {
-        if (startedAt != null) {
-            this.startedAt = startedAt;
-        } else {
-            throw new Exception(STARTEDAT_ERROR);
-        }
-    }
-
-    public Date getEndedAt() {
-        return endedAt;
-    }
-
-    public void setEndedAt(Date endedAt) throws Exception {
-        if (endedAt != null) {
-            this.endedAt = endedAt;
-        } else {
-            throw new Exception(ENDEDAD_ERROR);
-        }
-    }
-
-    public Account getAccount() {
-        return account;
-    }
-
-    public void setAccount(Account account) throws Exception {
-        if (account != null) {
-            this.account = account;
-        } else {
-            throw new Exception(ACCOUNT_ERROR);
-        }
     }
 
     public Shift(String shiftID, Date startedAt, Date endedAt, Account account) throws Exception {
@@ -86,20 +42,6 @@ public final class Shift {
         setStartedAt(startedAt);
         setEndedAt(endedAt);
         setShiftID(shiftID);
-    }
-
-    public Shift(String shiftID) {
-        this.shiftID = shiftID;
-    }
-
-    public Shift() {
-    }
-
-    @Override
-    public int hashCode() {
-        int hash = 7;
-        hash = 37 * hash + Objects.hashCode(this.shiftID);
-        return hash;
     }
 
     @Override
@@ -115,6 +57,64 @@ public final class Shift {
         }
         final Shift other = (Shift) obj;
         return Objects.equals(this.shiftID, other.shiftID);
+    }
+
+    public Account getAccount() {
+        return account;
+    }
+
+    public Date getEndedAt() {
+        return endedAt;
+    }
+
+    public String getShiftID() {
+        return shiftID;
+    }
+
+    public Date getStartedAt() {
+        return startedAt;
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 7;
+        hash = 37 * hash + Objects.hashCode(this.shiftID);
+        return hash;
+    }
+
+    public void setAccount(Account account) throws Exception {
+        if (account != null) {
+            this.account = account;
+        } else {
+            throw new Exception(ACCOUNT_ERROR);
+        }
+    }
+
+    public void setEndedAt(Date endedAt) throws Exception {
+        if (endedAt != null) {
+            this.endedAt = endedAt;
+        } else {
+            throw new Exception(ENDEDAD_ERROR);
+        }
+    }
+
+    public void setShiftID(String shiftID) throws Exception {
+        String regex = "^[P][H]\\d{2}(0[1-9]|1[0-2])(0[1-9]|[12]\\d|3[01])\\d{4}$";
+        Pattern pattern = Pattern.compile(regex);
+        if (!pattern.matcher(shiftID).matches()) {
+            this.shiftID = shiftID;
+        } else {
+            throw new Exception(ID_EMPTY);
+        }
+
+    }
+
+    public void setStartedAt(Date startedAt) throws Exception {
+        if (startedAt != null) {
+            this.startedAt = startedAt;
+        } else {
+            throw new Exception(STARTEDAT_ERROR);
+        }
     }
 
     @Override

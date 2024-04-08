@@ -4,18 +4,12 @@
  */
 package gui;
 
-import bus.CreatePurchaseOrder_BUS;
-import com.formdev.flatlaf.FlatClientProperties;
-import entity.Employee;
-import entity.Product;
-import entity.PurchaseOrder;
-import entity.PurchaseOrderDetail;
-import entity.Supplier;
 import java.awt.event.KeyEvent;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -23,6 +17,14 @@ import javax.swing.event.TableModelEvent;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumnModel;
+
+import com.formdev.flatlaf.FlatClientProperties;
+
+import bus.CreatePurchaseOrder_BUS;
+import entity.Product;
+import entity.PurchaseOrder;
+import entity.PurchaseOrderDetail;
+import entity.Supplier;
 import main.Application;
 import raven.toast.Notifications;
 import utilities.SVGIcon;
@@ -464,7 +466,7 @@ public class CreatePurchaseOrder_GUI extends javax.swing.JPanel {
         btn_create.putClientProperty(FlatClientProperties.STYLE,""
             + "background:$Menu.background;"
             + "foreground:$Menu.foreground;");
-        btn_create.setIcon(SVGIcon.getPrimarySVGIcon("imgs/public/add.svg"));
+        btn_create.setIcon(SVGIcon.getPrimarySVGIcon("resources/imgs/public/add.svg"));
         btn_create.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btn_createActionPerformed(evt);

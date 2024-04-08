@@ -19,11 +19,7 @@ public class ReturnOrderDetail {
     private int quantity;
     private double price;
 
-    public ReturnOrderDetail(ReturnOrder returnOrder, Product product, int quantity, double price) throws Exception {
-        setReturnOrder(returnOrder);
-        setProduct(product);
-        setQuantity(quantity);
-        setPrice(price);
+    public ReturnOrderDetail() {
     }
 
     public ReturnOrderDetail(Product product, int quantity, double price) throws Exception {
@@ -38,54 +34,11 @@ public class ReturnOrderDetail {
     }
     
 
-    public ReturnOrderDetail() {
-    }
-
-    public ReturnOrder getReturnOrder() {
-        return returnOrder;
-    }
-
-    public void setReturnOrder(ReturnOrder returnOrder) throws Exception {
-        if(returnOrder == null)
-            throw new Exception(ORDERID_EMPTY);
-        this.returnOrder = returnOrder;
-    }
-
-    public Product getProduct() {
-        return product;
-    }
-
-    public void setProduct(Product product) throws Exception {
-        if(product == null)
-            throw new Exception(PRODUCT_EMPTY);
-        this.product = product;
-    }
-
-    public int getQuantity() {
-        return quantity;
-    }
-
-    public void setQuantity(int quantity) throws Exception {
-        if(quantity < 0)
-            throw new Exception(QUANTITY_VALID);
-        this.quantity = quantity;
-    }
-
-    public double getPrice() {
-        return price;
-    }
-
-    public void setPrice(double price) {
-        this.price = price * quantity;
-    }
-    
-
-    @Override
-    public int hashCode() {
-        int hash = 7;
-        hash = 67 * hash + Objects.hashCode(this.returnOrder);
-        hash = 67 * hash + Objects.hashCode(this.product);
-        return hash;
+    public ReturnOrderDetail(ReturnOrder returnOrder, Product product, int quantity, double price) throws Exception {
+        setReturnOrder(returnOrder);
+        setProduct(product);
+        setQuantity(quantity);
+        setPrice(price);
     }
 
     @Override
@@ -104,6 +57,53 @@ public class ReturnOrderDetail {
             return false;
         }
         return Objects.equals(this.product, other.product);
+    }
+
+    public double getPrice() {
+        return price;
+    }
+
+    public Product getProduct() {
+        return product;
+    }
+
+    public int getQuantity() {
+        return quantity;
+    }
+
+    public ReturnOrder getReturnOrder() {
+        return returnOrder;
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 7;
+        hash = 67 * hash + Objects.hashCode(this.returnOrder);
+        hash = 67 * hash + Objects.hashCode(this.product);
+        return hash;
+    }
+
+    public void setPrice(double price) {
+        this.price = price * quantity;
+    }
+
+    public void setProduct(Product product) throws Exception {
+        if(product == null)
+            throw new Exception(PRODUCT_EMPTY);
+        this.product = product;
+    }
+    
+
+    public void setQuantity(int quantity) throws Exception {
+        if(quantity < 0)
+            throw new Exception(QUANTITY_VALID);
+        this.quantity = quantity;
+    }
+
+    public void setReturnOrder(ReturnOrder returnOrder) throws Exception {
+        if(returnOrder == null)
+            throw new Exception(ORDERID_EMPTY);
+        this.returnOrder = returnOrder;
     }
 
     @Override

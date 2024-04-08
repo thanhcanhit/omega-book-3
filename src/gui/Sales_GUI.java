@@ -4,17 +4,6 @@
  */
 package gui;
 
-import bus.Sales_BUS;
-import com.formdev.flatlaf.FlatClientProperties;
-import com.github.kwhat.jnativehook.GlobalScreen;
-import com.github.kwhat.jnativehook.keyboard.NativeKeyEvent;
-import com.github.kwhat.jnativehook.keyboard.NativeKeyListener;
-import entity.Customer;
-import entity.Order;
-import entity.OrderDetail;
-import entity.Product;
-import entity.Promotion;
-import enums.DiscountType;
 import java.awt.Component;
 import java.awt.Container;
 import java.awt.FocusTraversalPolicy;
@@ -32,6 +21,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -43,6 +33,19 @@ import javax.swing.event.TableModelEvent;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumnModel;
+
+import com.formdev.flatlaf.FlatClientProperties;
+import com.github.kwhat.jnativehook.GlobalScreen;
+import com.github.kwhat.jnativehook.keyboard.NativeKeyEvent;
+import com.github.kwhat.jnativehook.keyboard.NativeKeyListener;
+
+import bus.Sales_BUS;
+import entity.Customer;
+import entity.Order;
+import entity.OrderDetail;
+import entity.Product;
+import entity.Promotion;
+import enums.DiscountType;
 import main.Application;
 import raven.toast.Notifications;
 import utilities.OrderPrinter;

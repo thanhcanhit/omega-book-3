@@ -4,14 +4,10 @@
  */
 package gui;
 
-import bus.StatementCashCount_BUS;
-import com.formdev.flatlaf.FlatClientProperties;
-import entity.CashCount;
-import entity.CashCountSheet;
-import entity.Employee;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
@@ -20,11 +16,15 @@ import javax.swing.event.TableModelListener;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
+
+import com.formdev.flatlaf.FlatClientProperties;
+
+import bus.StatementCashCount_BUS;
+import entity.CashCount;
+import entity.Employee;
 import main.Application;
 import raven.toast.Notifications;
-import utilities.CashCountSheetPrinter;
 import utilities.FormatNumber;
-import utilities.OrderPrinter;
 import utilities.SVGIcon;
 
 /**
@@ -252,7 +252,7 @@ public class StatementCashCount_GUI extends javax.swing.JPanel {
         btn_saveCashCount.setFont(btn_saveCashCount.getFont().deriveFont(btn_saveCashCount.getFont().getStyle() | java.awt.Font.BOLD, 20));
         btn_saveCashCount.setText("Tạo báo cáo");
         btn_saveCashCount.putClientProperty(FlatClientProperties.STYLE, "background: $Menu.background;"+"foreground: $Menu.foreground;");
-        btn_saveCashCount.setIcon(SVGIcon.getPrimarySVGIcon("imgs/public/add.svg"));
+        btn_saveCashCount.setIcon(SVGIcon.getPrimarySVGIcon("resources/imgs/public/add.svg"));
         btn_saveCashCount.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btn_saveCashCountActionPerformed(evt);

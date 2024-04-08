@@ -22,18 +22,10 @@ public class CashCountSheet implements Comparable<CashCountSheet>{
     private double total;
     private double difference;
 
-    public double getDifference() {
-        return difference;
-    }
-
-    public void setDifference() {
-        difference = total - 1765000;
-    }
     private ArrayList<CashCountSheetDetail> cashCountSheetDetailList;
 
     public CashCountSheet() {
     }
-
     public CashCountSheet(String cashCountSheetID) {
         this.cashCountSheetID = cashCountSheetID;
     }
@@ -48,71 +40,9 @@ public class CashCountSheet implements Comparable<CashCountSheet>{
         this.cashCountSheetDetailList = cashCountSheetDetailList;
     }
 
-    public String getCashCountSheetID() {
-        return cashCountSheetID;
-    }
-
-    public void setCashCountSheetID(String cashCountSheetID) {
-        this.cashCountSheetID = cashCountSheetID;
-    }
-
-    public List<CashCount> getCashCountList() {
-        return cashCountList;
-    }
-
-    public void setCashCountList(ArrayList<CashCount> cashCountList) {
-        this.cashCountList = cashCountList;
-        setTotal();
-        setDifference();
-    }
-
-    public Date getCreatedDate() {
-        return createdDate;
-    }
-
-    public void setCreatedDate(Date createdDate) {
-        this.createdDate = createdDate;
-    }
-
-    public Date getEndedDate() {
-        return endedDate;
-    }
-
-    public void setEndedDate(Date endedDate) {
-        this.endedDate = endedDate;
-    }
-
-    public double getTotal() {
-        return total;
-    }
-
-    private void setTotal() {
-        double sum = 0;
-        for (CashCount cashCount : cashCountList) {
-            sum += cashCount.getTotal();
-        }
-        this.total = sum;
-    }
-
-    public ArrayList<CashCountSheetDetail> getCashCountSheetDetailList() {
-        return cashCountSheetDetailList;
-    }
-
-    public void setCashCountSheetDetailList(ArrayList<CashCountSheetDetail> cashCountSheetDetailList) {
-        this.cashCountSheetDetailList = cashCountSheetDetailList;
-    }
-
-    
     @Override
-    public String toString() {
-        return "CashCountSheet{" + "cashCountSheetID=" + cashCountSheetID + ", cashCountList=" + cashCountList + ", createdDate=" + createdDate + ", endedDate=" + endedDate + ", total=" + total + '}';
-    }
-
-    @Override
-    public int hashCode() {
-        int hash = 7;
-        hash = 83 * hash + Objects.hashCode(this.cashCountSheetID);
-        return hash;
+    public int compareTo(CashCountSheet o) {
+        return this.createdDate.compareTo(o.createdDate);
     }
 
     @Override
@@ -130,9 +60,79 @@ public class CashCountSheet implements Comparable<CashCountSheet>{
         return Objects.equals(this.cashCountSheetID, other.cashCountSheetID);
     }
 
+    public List<CashCount> getCashCountList() {
+        return cashCountList;
+    }
+
+    public ArrayList<CashCountSheetDetail> getCashCountSheetDetailList() {
+        return cashCountSheetDetailList;
+    }
+
+    public String getCashCountSheetID() {
+        return cashCountSheetID;
+    }
+
+    public Date getCreatedDate() {
+        return createdDate;
+    }
+
+    public double getDifference() {
+        return difference;
+    }
+
+    public Date getEndedDate() {
+        return endedDate;
+    }
+
+    public double getTotal() {
+        return total;
+    }
+
     @Override
-    public int compareTo(CashCountSheet o) {
-        return this.createdDate.compareTo(o.createdDate);
+    public int hashCode() {
+        int hash = 7;
+        hash = 83 * hash + Objects.hashCode(this.cashCountSheetID);
+        return hash;
+    }
+
+    public void setCashCountList(ArrayList<CashCount> cashCountList) {
+        this.cashCountList = cashCountList;
+        setTotal();
+        setDifference();
+    }
+
+    public void setCashCountSheetDetailList(ArrayList<CashCountSheetDetail> cashCountSheetDetailList) {
+        this.cashCountSheetDetailList = cashCountSheetDetailList;
+    }
+
+    public void setCashCountSheetID(String cashCountSheetID) {
+        this.cashCountSheetID = cashCountSheetID;
+    }
+
+    public void setCreatedDate(Date createdDate) {
+        this.createdDate = createdDate;
+    }
+
+    
+    public void setDifference() {
+        difference = total - 1765000;
+    }
+
+    public void setEndedDate(Date endedDate) {
+        this.endedDate = endedDate;
+    }
+
+    private void setTotal() {
+        double sum = 0;
+        for (CashCount cashCount : cashCountList) {
+            sum += cashCount.getTotal();
+        }
+        this.total = sum;
+    }
+
+    @Override
+    public String toString() {
+        return "CashCountSheet{" + "cashCountSheetID=" + cashCountSheetID + ", cashCountList=" + cashCountList + ", createdDate=" + createdDate + ", endedDate=" + endedDate + ", total=" + total + '}';
     }
     
     

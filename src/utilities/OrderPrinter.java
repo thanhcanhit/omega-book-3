@@ -52,7 +52,7 @@ public class OrderPrinter {
 
     private final Order order;
     public static final String FONT = "resources/fonts/arial-unicode-ms.ttf";
-    private static final String FILE_PATH = "lastOrder.pdf";
+    private static final String FILE_PATH = "resources/temp/lastOrder.pdf";
 
     public static enum PrintStatus {
         NOT_FOUND_FILE,

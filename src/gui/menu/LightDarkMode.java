@@ -1,11 +1,5 @@
 package gui.menu;
 
-import com.formdev.flatlaf.FlatClientProperties;
-import com.formdev.flatlaf.FlatLaf;
-import com.formdev.flatlaf.extras.FlatAnimatedLafChange;
-import com.formdev.flatlaf.extras.FlatSVGIcon;
-import com.formdev.flatlaf.themes.FlatMacDarkLaf;
-import com.formdev.flatlaf.themes.FlatMacLightLaf;
 import java.awt.Component;
 import java.awt.Container;
 import java.awt.Dimension;
@@ -13,9 +7,18 @@ import java.awt.EventQueue;
 import java.awt.Insets;
 import java.awt.LayoutManager;
 import java.awt.event.ActionEvent;
+import java.io.File;
+
 import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+
+import com.formdev.flatlaf.FlatClientProperties;
+import com.formdev.flatlaf.FlatLaf;
+import com.formdev.flatlaf.extras.FlatAnimatedLafChange;
+import com.formdev.flatlaf.extras.FlatSVGIcon;
+import com.formdev.flatlaf.themes.FlatMacDarkLaf;
+import com.formdev.flatlaf.themes.FlatMacLightLaf;
 
 /**
  *
@@ -48,8 +51,8 @@ public class LightDarkMode extends JPanel {
         putClientProperty(FlatClientProperties.STYLE, ""
                 + "arc:999;"
                 + "background:$Menu.lightdark.background");
-        buttonLight = new JButton("Light", new FlatSVGIcon("imgs/menu/light.svg"));
-        buttonDark = new JButton("Dark", new FlatSVGIcon("imgs/menu/dark.svg"));
+        buttonLight = new JButton("Light", new FlatSVGIcon(new File("resources/imgs/menu/light.svg")));
+        buttonDark = new JButton("Dark", new FlatSVGIcon(new File("resources/imgs/menu/dark.svg")));
         buttonLighDark = new JButton();
         buttonLighDark.putClientProperty(FlatClientProperties.STYLE, ""
                 + "arc:999;"
@@ -101,9 +104,9 @@ public class LightDarkMode extends JPanel {
         addStyle(buttonLight, !isDark);
         addStyle(buttonDark, isDark);
         if (isDark) {
-            buttonLighDark.setIcon(new FlatSVGIcon("imgs/menu/dark.svg"));
+            buttonLighDark.setIcon(new FlatSVGIcon(new File("resources/imgs/menu/dark.svg")));
         } else {
-            buttonLighDark.setIcon(new FlatSVGIcon("imgs/menu/light.svg"));
+            buttonLighDark.setIcon(new FlatSVGIcon("resources/imgs/menu/light.svg"));
         }
     }
 

@@ -82,31 +82,27 @@
  */
 package gui;
 
-import bus.OrderManagement_BUS;
-import bus.ProductManagement_BUS;
-import entity.Customer;
-import entity.Order;
-import entity.OrderDetail;
 import java.awt.event.MouseEvent;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import javax.swing.JFileChooser;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
-import utilities.FormatNumber;
-import com.formdev.flatlaf.FlatClientProperties;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.util.Date;
-import javax.swing.JFileChooser;
-import javax.swing.JOptionPane;
+
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellStyle;
+import org.apache.poi.ss.usermodel.Font;
 import org.apache.poi.ss.usermodel.HorizontalAlignment;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
@@ -114,10 +110,16 @@ import org.apache.poi.ss.usermodel.VerticalAlignment;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.util.CellRangeAddress;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+
+import bus.OrderManagement_BUS;
+import bus.ProductManagement_BUS;
+import entity.Customer;
+import entity.Order;
+import entity.OrderDetail;
+import raven.toast.Notifications;
+import utilities.FormatNumber;
 import utilities.OrderPrinter;
 import utilities.SVGIcon;
-import org.apache.poi.ss.usermodel.Font;
-import raven.toast.Notifications;
 
 /**
  *
@@ -524,7 +526,7 @@ public final class OrderManagement_GUI extends javax.swing.JPanel {
         pnl_refreshButton.setLayout(new java.awt.GridLayout(1, 0));
 
         btn_refresh.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        btn_refresh.setIcon(SVGIcon.getSVGIcon("imgs/public/refresh.svg"));
+        btn_refresh.setIcon(SVGIcon.getSVGIcon("resources/imgs/public/refresh.svg"));
         btn_refresh.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btn_refreshActionPerformed(evt);
@@ -534,7 +536,7 @@ public final class OrderManagement_GUI extends javax.swing.JPanel {
 
         btn_wfile.setText("Xuất file");
         btn_wfile.setPreferredSize(new java.awt.Dimension(80, 23));
-        btn_wfile.setIcon(SVGIcon.getSVGIcon("imgs/public/excel.svg"));
+        btn_wfile.setIcon(SVGIcon.getSVGIcon("resources/imgs/public/excel.svg"));
         btn_wfile.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btn_wfileActionPerformed(evt);
@@ -561,7 +563,7 @@ public final class OrderManagement_GUI extends javax.swing.JPanel {
         pnl_cartFooter.setPreferredSize(new java.awt.Dimension(800, 40));
         pnl_cartFooter.setLayout(new javax.swing.BoxLayout(pnl_cartFooter, javax.swing.BoxLayout.LINE_AXIS));
 
-        btn_previous.setIcon(SVGIcon.getSVGIcon("imgs/public/prev.svg"));
+        btn_previous.setIcon(SVGIcon.getSVGIcon("resources/imgs/public/prev.svg"));
         btn_previous.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btn_previousActionPerformed(evt);
@@ -575,7 +577,7 @@ public final class OrderManagement_GUI extends javax.swing.JPanel {
         lbl_pageNumber.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
         pnl_cartFooter.add(lbl_pageNumber);
 
-        btn_next.setIcon(SVGIcon.getSVGIcon("imgs/public/next.svg"));
+        btn_next.setIcon(SVGIcon.getSVGIcon("resources/imgs/public/next.svg"));
         btn_next.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btn_nextActionPerformed(evt);
@@ -589,7 +591,7 @@ public final class OrderManagement_GUI extends javax.swing.JPanel {
                 btn_viewPDFActionPerformed(evt);
             }
         });
-        btn_viewPDF.setIcon(SVGIcon.getSVGIcon("imgs/orderManagement/order.svg"));
+        btn_viewPDF.setIcon(SVGIcon.getSVGIcon("resources/imgs/orderManagement/order.svg"));
         pnl_cartFooter.add(btn_viewPDF);
 
         pnl_center.add(pnl_cartFooter, java.awt.BorderLayout.PAGE_END);

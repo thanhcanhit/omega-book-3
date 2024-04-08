@@ -4,25 +4,25 @@
  */
 package gui;
 
-import bus.StatisticProduct_BUS;
-import com.itextpdf.text.log.Logger;
-import gui.customchart.ModelChart;
-import entity.Product;
 import java.awt.Color;
 import java.beans.PropertyChangeEvent;
-import java.lang.System.Logger.Level;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+
 import javax.swing.JLabel;
-
 import javax.swing.JTable;
-
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
-import org.knowm.xchart.*;
+
+import org.knowm.xchart.CategoryChart;
+import org.knowm.xchart.XChartPanel;
+
+import bus.StatisticProduct_BUS;
+import entity.Product;
+import gui.customchart.ModelChart;
 import utilities.FormatNumber;
 
 /**

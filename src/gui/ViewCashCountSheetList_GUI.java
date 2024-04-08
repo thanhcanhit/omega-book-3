@@ -4,15 +4,17 @@
  */
 package gui;
 
-import bus.ViewCashCountSheetList_BUS;
-import entity.CashCountSheet;
-import entity.Employee;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+
 import javax.swing.JLabel;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
+
+import bus.ViewCashCountSheetList_BUS;
+import entity.CashCountSheet;
+import entity.Employee;
 import utilities.CashCountSheetPrinter;
 import utilities.SVGIcon;
 
@@ -223,13 +225,13 @@ public class ViewCashCountSheetList_GUI extends javax.swing.JPanel {
 
         pnl_buttons.setLayout(new java.awt.GridLayout(2, 1));
 
-        btn_filter1.setIcon(SVGIcon.getSVGIcon("imgs/public/refresh.svg"));
+        btn_filter1.setIcon(SVGIcon.getSVGIcon("resources/imgs/public/refresh.svg"));
         btn_filter1.setMaximumSize(new java.awt.Dimension(200, 30));
         btn_filter1.setPreferredSize(new java.awt.Dimension(100, 30));
         pnl_buttons.add(btn_filter1);
 
         btn_filter.setText("Lọc");
-        btn_filter.setIcon(SVGIcon.getSVGIcon("imgs/public/filter.svg"));
+        btn_filter.setIcon(SVGIcon.getSVGIcon("resources/imgs/public/filter.svg"));
         btn_filter.setMaximumSize(new java.awt.Dimension(200, 30));
         btn_filter.setPreferredSize(new java.awt.Dimension(100, 30));
         pnl_buttons.add(btn_filter);

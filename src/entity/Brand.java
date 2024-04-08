@@ -13,14 +13,14 @@ import java.util.regex.Pattern;
  */
 public final class Brand {
 
-    private String brandID;
-    private String name;
-    private String country;
-
-//    Hằng báo lỗi
+    //    Hằng báo lỗi
     public static final String BRAND_ID_INVALID = "Brand id không hợp lệ";
     public static final String NAME_EMPTY = "Brand name không được rỗng";
     public static final String COUNTRY_EMPTY = "Brand country không được rỗng";
+
+private String brandID;
+    private String name;
+    private String country;
 
     public Brand() {
     }
@@ -33,49 +33,6 @@ public final class Brand {
         setBrandID(brandID);
         setName(name);
         setCountry(country);
-    }
-
-    public String getBrandID() {
-        return brandID;
-    }
-
-    public void setBrandID(String brandID) throws Exception {
-        String regex = "^TH[0-9]{4}$";
-        Pattern pattern = Pattern.compile(regex);
-
-        if (!pattern.matcher(brandID).matches()) {
-            throw new Exception(BRAND_ID_INVALID);
-        }
-        this.brandID = brandID;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) throws Exception {
-        if (name.isBlank()) {
-            throw new Exception(NAME_EMPTY);
-        }
-        this.name = name;
-    }
-
-    public String getCountry() {
-        return country;
-    }
-
-    public void setCountry(String country) throws Exception {
-        if (country.isBlank()) {
-            throw new Exception(COUNTRY_EMPTY);
-        }
-        this.country = country;
-    }
-
-    @Override
-    public int hashCode() {
-        int hash = 5;
-        hash = 97 * hash + Objects.hashCode(this.brandID);
-        return hash;
     }
 
     @Override
@@ -91,6 +48,49 @@ public final class Brand {
         }
         final Brand other = (Brand) obj;
         return Objects.equals(this.brandID, other.brandID);
+    }
+
+    public String getBrandID() {
+        return brandID;
+    }
+
+    public String getCountry() {
+        return country;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 5;
+        hash = 97 * hash + Objects.hashCode(this.brandID);
+        return hash;
+    }
+
+    public void setBrandID(String brandID) throws Exception {
+        String regex = "^TH[0-9]{4}$";
+        Pattern pattern = Pattern.compile(regex);
+
+        if (!pattern.matcher(brandID).matches()) {
+            throw new Exception(BRAND_ID_INVALID);
+        }
+        this.brandID = brandID;
+    }
+
+    public void setCountry(String country) throws Exception {
+        if (country.isBlank()) {
+            throw new Exception(COUNTRY_EMPTY);
+        }
+        this.country = country;
+    }
+
+    public void setName(String name) throws Exception {
+        if (name.isBlank()) {
+            throw new Exception(NAME_EMPTY);
+        }
+        this.name = name;
     }
 
     @Override

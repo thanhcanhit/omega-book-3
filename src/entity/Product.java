@@ -15,35 +15,28 @@ import java.util.regex.Pattern;
  */
 public class Product {
 
-    protected String productID;
-    protected String name;
-    protected Double costPrice;
-    protected byte[] image;
-    protected Double VAT;
-    protected Integer inventory;
-    protected Double price;
-    private Type type;
-
-//  Hằng số mô tả lỗi
+    //  Hằng số mô tả lỗi
     public static final String PRODUCT_ID_INVALID = "Product id không hợp lệ";
     public static final String NAME_EMPTY = "Product name không thể rỗng";
     public static final String COST_PRICE_LOWER_ZERO = "Product costPrice không được bé hơn 0";
     public static final String PRICE_INVALID = "Product price không được bé hơn 0 và bé hơn costPrice";
     public static final String INVENTORY_LOWER_ZERO = "Product inventory không thể bé hơn 0";
     public static final String VAT_LOWER_ZERO = "Product VAT không thể bé hơn 0";
+    protected String productID;
+    protected String name;
+
+protected Double costPrice;
+    protected byte[] image;
+    protected Double VAT;
+    protected Integer inventory;
+    protected Double price;
+    private Type type;
 
     public Product() {
     }
 
-    public Product(String productID, String name, Double costPrice, Double price, byte[] image, Double VAT, Integer inventory, Type type) throws Exception {
+    public Product(String productID) throws Exception {
         setProductID(productID);
-        setName(name);
-        setCostPrice(costPrice);
-        setImage(image);
-        setVAT(VAT);
-        setInventory(inventory);
-        setType(type);
-        this.price = price;
     }
 
     public Product(String productID, String name, Double costPrice, byte[] image, Double VAT, Integer inventory, Type type) throws Exception {
@@ -57,38 +50,69 @@ public class Product {
         setPrice();
     }
 
-    public Product(String productID) throws Exception {
+    public Product(String productID, String name, Double costPrice, Double price, byte[] image, Double VAT, Integer inventory, Type type) throws Exception {
         setProductID(productID);
+        setName(name);
+        setCostPrice(costPrice);
+        setImage(image);
+        setVAT(VAT);
+        setInventory(inventory);
+        setType(type);
+        this.price = price;
     }
 
-    public String getProductID() {
-        return productID;
-    }
-
-    public void setProductID(String productID) throws Exception {
-        String regex = "^SP[1-3]\\d{2}\\d\\d{4}$";
-        Pattern pattern = Pattern.compile(regex);
-
-        if (!pattern.matcher(productID).matches()) {
-            throw new Exception(PRODUCT_ID_INVALID);
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
         }
-        this.productID = productID;
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Product other = (Product) obj;
+        return Objects.equals(this.productID, other.productID);
+    }
+
+    public Double getCostPrice() {
+        return costPrice;
+    }
+
+    public byte[] getImage() {
+        return image;
+    }
+
+    public Integer getInventory() {
+        return inventory;
     }
 
     public String getName() {
         return name;
     }
 
-    public final void setName(String name) throws Exception {
-        if (name.isBlank()) {
-            throw new Exception(NAME_EMPTY);
-        }
-
-        this.name = name;
+    public final Double getPrice() {
+        return this.price;
     }
 
-    public Double getCostPrice() {
-        return costPrice;
+    public String getProductID() {
+        return productID;
+    }
+
+    public Type getType() {
+        return type;
+    }
+
+    public Double getVAT() {
+        return VAT;
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 5;
+        hash = 53 * hash + Objects.hashCode(this.productID);
+        return hash;
     }
 
     public final void setCostPrice(Double costPrice) throws Exception {
@@ -98,27 +122,8 @@ public class Product {
         this.costPrice = costPrice;
     }
 
-    public byte[] getImage() {
-        return image;
-    }
-
     public final void setImage(byte[] image) {
         this.image = image;
-    }
-
-    public Double getVAT() {
-        return VAT;
-    }
-
-    public final void setVAT(Double VAT) throws Exception {
-        if (VAT < 0) {
-            throw new Exception(VAT_LOWER_ZERO);
-        }
-        this.VAT = VAT;
-    }
-
-    public Integer getInventory() {
-        return inventory;
     }
 
     public final void setInventory(Integer inventory) throws Exception {
@@ -128,8 +133,12 @@ public class Product {
         this.inventory = inventory;
     }
 
-    public final Double getPrice() {
-        return this.price;
+    public final void setName(String name) throws Exception {
+        if (name.isBlank()) {
+            throw new Exception(NAME_EMPTY);
+        }
+
+        this.name = name;
     }
 
     /**
@@ -166,34 +175,25 @@ public class Product {
         this.price = priceWithVAT;
     }
 
-    public Type getType() {
-        return type;
+    public void setProductID(String productID) throws Exception {
+        String regex = "^SP[1-3]\\d{2}\\d\\d{4}$";
+        Pattern pattern = Pattern.compile(regex);
+
+        if (!pattern.matcher(productID).matches()) {
+            throw new Exception(PRODUCT_ID_INVALID);
+        }
+        this.productID = productID;
     }
 
     public final void setType(Type type) {
         this.type = type;
     }
 
-    @Override
-    public int hashCode() {
-        int hash = 5;
-        hash = 53 * hash + Objects.hashCode(this.productID);
-        return hash;
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj) {
-            return true;
+    public final void setVAT(Double VAT) throws Exception {
+        if (VAT < 0) {
+            throw new Exception(VAT_LOWER_ZERO);
         }
-        if (obj == null) {
-            return false;
-        }
-        if (getClass() != obj.getClass()) {
-            return false;
-        }
-        final Product other = (Product) obj;
-        return Objects.equals(this.productID, other.productID);
+        this.VAT = VAT;
     }
 
     @Override

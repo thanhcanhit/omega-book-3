@@ -17,8 +17,31 @@ public class Account {
     private String passWord;
     private Employee employee;
 
+    public Account() {
+    }
+
+    public Account(Employee employee) throws Exception {
+        setEmployee(employee);
+    }
+
+    public Account(String passWord, Employee employee) throws Exception {
+        setPassWord(passWord);
+        setEmployee(employee);
+    }
+
+    public Employee getEmployee() {
+        return employee;
+    }
+
     public String getPassWord() {
         return passWord;
+    }
+    
+    public void setEmployee(Employee employee) throws Exception{
+//        if(employee!=null)
+            this.employee = employee;
+//        else
+//            throw new Exception(EMPLOYEE_ERROR);
     }
 
     public void setPassWord(String passWord) throws Exception {
@@ -27,29 +50,6 @@ public class Account {
             this.passWord = passWord;
 //        else
 //            throw new Exception(PASSWORD_ERROR);
-    }
-
-    public Employee getEmployee() {
-        return employee;
-    }
-
-    public void setEmployee(Employee employee) throws Exception{
-//        if(employee!=null)
-            this.employee = employee;
-//        else
-//            throw new Exception(EMPLOYEE_ERROR);
-    }
-
-    public Account(String passWord, Employee employee) throws Exception {
-        setPassWord(passWord);
-        setEmployee(employee);
-    }
-    
-    public Account(Employee employee) throws Exception {
-        setEmployee(employee);
-    }
-
-    public Account() {
     }
 
     @Override

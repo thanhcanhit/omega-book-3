@@ -23,83 +23,6 @@ public final class OrderDetail {
     private double VAT;
     private double seasonalDiscount = 0;
 
-    public double getVAT() {
-        return VAT;
-    }
-
-    public void setVAT(double VAT) {
-        this.VAT = VAT;
-    }
-
-    public double getSeasonalDiscount() {
-        return seasonalDiscount;
-    }
-
-    public void setSeasonalDiscount(double seasonalDiscount) {
-        this.seasonalDiscount = seasonalDiscount;
-        setLineTotal();
-    }
-
-    public Order getOrder() {
-        return order;
-    }
-
-    public void setOrder(Order order) throws Exception {
-        if (order != null) {
-            this.order = order;
-        } else {
-            throw new Exception(ORDER_ERROR);
-        }
-
-    }
-
-    public Product getProduct() {
-        return product;
-    }
-
-    public void setProduct(Product product) throws Exception {
-        if (product != null) {
-            this.product = product;
-        } else {
-            throw new Exception(PRODUCT_ERROR);
-        }
-
-    }
-
-    public int getQuantity() {
-        return quantity;
-    }
-
-    public void setQuantity(int quantity) throws Exception {
-        if (quantity > 0) {
-            this.quantity = quantity;
-            setLineTotal();
-        } else {
-            throw new Exception(QUANTITY_ERROR);
-        }
-    }
-
-    public double getPrice() {
-        return price;
-    }
-
-    public void setPrice(double price) throws Exception {
-        if (price > 0) {
-            this.price = price;
-            setLineTotal();
-        } else {
-            throw new Exception(PRICE_ERROR);
-        }
-    }
-
-    public double getLineTotal() {
-        return lineTotal;
-    }
-
-    private void setLineTotal() {
-        this.lineTotal = this.price * this.quantity - this.seasonalDiscount;
-    }
-
     public OrderDetail() {
     }
 
@@ -121,6 +44,83 @@ public final class OrderDetail {
         this.lineTotal = lineTotal;
         this.VAT = VAT;
         this.seasonalDiscount = seasonalDiscount;
+    }
+
+    public double getLineTotal() {
+        return lineTotal;
+    }
+
+    public Order getOrder() {
+        return order;
+    }
+
+    public double getPrice() {
+        return price;
+    }
+
+    public Product getProduct() {
+        return product;
+    }
+
+    public int getQuantity() {
+        return quantity;
+    }
+
+    public double getSeasonalDiscount() {
+        return seasonalDiscount;
+    }
+
+    public double getVAT() {
+        return VAT;
+    }
+
+    private void setLineTotal() {
+        this.lineTotal = this.price * this.quantity - this.seasonalDiscount;
+    }
+
+    public void setOrder(Order order) throws Exception {
+        if (order != null) {
+            this.order = order;
+        } else {
+            throw new Exception(ORDER_ERROR);
+        }
+
+    }
+
+    public void setPrice(double price) throws Exception {
+        if (price > 0) {
+            this.price = price;
+            setLineTotal();
+        } else {
+            throw new Exception(PRICE_ERROR);
+        }
+    }
+
+    public void setProduct(Product product) throws Exception {
+        if (product != null) {
+            this.product = product;
+        } else {
+            throw new Exception(PRODUCT_ERROR);
+        }
+
+    }
+
+    public void setQuantity(int quantity) throws Exception {
+        if (quantity > 0) {
+            this.quantity = quantity;
+            setLineTotal();
+        } else {
+            throw new Exception(QUANTITY_ERROR);
+        }
+    }
+
+    public void setSeasonalDiscount(double seasonalDiscount) {
+        this.seasonalDiscount = seasonalDiscount;
+        setLineTotal();
+    }
+
+    public void setVAT(double VAT) {
+        this.VAT = VAT;
     }
 
     @Override

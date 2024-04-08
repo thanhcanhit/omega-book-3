@@ -1,11 +1,5 @@
 package gui;
 
-import bus.PromotionManagament_BUS;
-import com.formdev.flatlaf.FlatClientProperties;
-import entity.Promotion;
-import enums.DiscountType;
-import enums.CustomerRank;
-import enums.PromotionType;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -13,13 +7,20 @@ import java.text.DecimalFormat;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import java.util.regex.Pattern;
+
 import javax.swing.ButtonModel;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
+
+import com.formdev.flatlaf.FlatClientProperties;
+
+import bus.PromotionManagament_BUS;
+import entity.Promotion;
+import enums.CustomerRank;
+import enums.DiscountType;
+import enums.PromotionType;
 import raven.toast.Notifications;
 import utilities.SVGIcon;
 
@@ -299,7 +300,7 @@ public class OrderPromotionManagement_GUI extends javax.swing.JPanel implements 
         btn_searchFilterPromo.setActionCommand("");
         btn_searchFilterPromo.setMaximumSize(new java.awt.Dimension(72, 35));
         btn_searchFilterPromo.setPreferredSize(new java.awt.Dimension(72, 35));
-        btn_searchFilterPromo.setIcon(SVGIcon.getSVGIcon("imgs/public/filter.svg"));
+        btn_searchFilterPromo.setIcon(SVGIcon.getSVGIcon("resources/imgs/public/filter.svg"));
         btn_searchFilterPromo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btn_searchFilterPromoActionPerformed(evt);
@@ -312,7 +313,7 @@ public class OrderPromotionManagement_GUI extends javax.swing.JPanel implements 
                 btn_refreshActionPerformed(evt);
             }
         });
-        btn_refresh.setIcon(SVGIcon.getSVGIcon("imgs/public/refresh.svg"));
+        btn_refresh.setIcon(SVGIcon.getSVGIcon("resources/imgs/public/refresh.svg"));
         pnl_filterPromo.add(btn_refresh);
 
         pnl_searchPromotion.add(pnl_filterPromo);
@@ -513,7 +514,7 @@ public class OrderPromotionManagement_GUI extends javax.swing.JPanel implements 
         pnl_buttonPromo.setLayout(new java.awt.GridLayout(1, 0));
 
         btn_clearValue.setText("Xóa trắng");
-        btn_clearValue.setIcon(SVGIcon.getSVGIcon("imgs/public/clear.svg"));
+        btn_clearValue.setIcon(SVGIcon.getSVGIcon("resources/imgs/public/clear.svg"));
         btn_clearValue.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btn_clearValueActionPerformed(evt);
@@ -522,7 +523,7 @@ public class OrderPromotionManagement_GUI extends javax.swing.JPanel implements 
         pnl_buttonPromo.add(btn_clearValue);
 
         btn_removePromo.setText("Dừng KM");
-        btn_removePromo.setIcon(SVGIcon.getSVGIcon("imgs/public/update.svg"));
+        btn_removePromo.setIcon(SVGIcon.getSVGIcon("resources/imgs/public/update.svg"));
         btn_removePromo.setActionCommand("");
         btn_removePromo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -532,7 +533,7 @@ public class OrderPromotionManagement_GUI extends javax.swing.JPanel implements 
         pnl_buttonPromo.add(btn_removePromo);
 
         btn_createPromo.setText("Tạo mới");
-        btn_createPromo.setIcon(SVGIcon.getPrimarySVGIcon("imgs/public/add.svg"));
+        btn_createPromo.setIcon(SVGIcon.getPrimarySVGIcon("resources/imgs/public/add.svg"));
         btn_createPromo.setPreferredSize(new java.awt.Dimension(79, 50));
         btn_createPromo.putClientProperty(FlatClientProperties.STYLE,""
             + "background:$Menu.background;"

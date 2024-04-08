@@ -1,13 +1,30 @@
 package main;
 
-import bus.ShiftsManagemant_BUS;
+import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.io.File;
+import java.sql.SQLException;
+import java.util.Date;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
+import javax.swing.SwingUtilities;
+import javax.swing.Timer;
+import javax.swing.UIManager;
+
 import com.formdev.flatlaf.FlatLaf;
 import com.formdev.flatlaf.extras.FlatAnimatedLafChange;
+import com.formdev.flatlaf.extras.FlatSVGIcon;
 import com.formdev.flatlaf.fonts.roboto.FlatRobotoFont;
 import com.formdev.flatlaf.themes.FlatMacLightLaf;
-import com.formdev.flatlaf.extras.FlatSVGIcon;
 import com.github.kwhat.jnativehook.GlobalScreen;
 import com.github.kwhat.jnativehook.NativeHookException;
+
+import bus.ShiftsManagemant_BUS;
 import database.ConnectDB;
 import entity.Account;
 import entity.Employee;
@@ -15,19 +32,6 @@ import entity.Shift;
 import gui.Login_GUI;
 import gui.MainView;
 import gui.Welcome_GUI;
-import java.awt.Component;
-import java.awt.Dimension;
-import java.awt.Font;
-import java.awt.event.ActionEvent;
-import java.sql.SQLException;
-import java.util.Date;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.swing.JFrame;
-import javax.swing.JOptionPane;
-import javax.swing.SwingUtilities;
-import javax.swing.Timer;
-import javax.swing.UIManager;
 import raven.toast.Notifications;
 
 /**
@@ -49,7 +53,7 @@ public class Application extends javax.swing.JFrame {
         setLocationRelativeTo(null);
         setSize(new Dimension(1366, 768));
         setTitle("Omega Book");
-        setIconImage(new FlatSVGIcon("imgs/icon.svg").getImage());
+        setIconImage(new FlatSVGIcon(new File("resources/imgs/icon.svg")).getImage());
         mainForm = new MainView();
         loginForm = new Login_GUI();
         setContentPane(loginForm);
