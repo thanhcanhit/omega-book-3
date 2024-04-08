@@ -14,6 +14,5 @@ nb-configuration.xml
 *.war
 *.ear
 
-lastOrder.pdf
 /bin/
 /target/
