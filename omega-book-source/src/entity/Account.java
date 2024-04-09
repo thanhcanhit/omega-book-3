@@ -4,10 +4,15 @@
  */
 package entity;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToOne;
+
 /**
  *
  * @author KienTran
  */
+@Entity
 public class Account {
     
     private final String PASSWORD_ERROR = "Mật khẩu phải ít nhất 8 kí tự (Bao gồm chữ hoa, chữ thường và số)!";
@@ -15,6 +20,8 @@ public class Account {
 
   
     private String passWord;
+    @OneToOne
+    @JoinColumn(name="employeeID")
     private Employee employee;
 
     public Account() {

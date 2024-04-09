@@ -8,20 +8,32 @@ import java.util.Date;
 import java.util.Objects;
 import java.util.regex.Pattern;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Temporal;
+import jakarta.persistence.TemporalType;
+
 /**
  *
  * @author KienTran
  */
+@Entity
 public final class Shift {
 
     private final String ID_EMPTY = "ID không được rỗng !";
     private final String STARTEDAT_ERROR = "StartedAt không được rỗng !";
     private final String ENDEDAD_ERROR = "EndedAt Không được rỗng !";
     private final String ACCOUNT_ERROR = "Account không được rỗng !";
-
+    @Id
     private String shiftID;
+    @Temporal(TemporalType.TIMESTAMP)
     private Date startedAt;
+    @Temporal(TemporalType.TIMESTAMP)
     private Date endedAt;
+    @ManyToOne
+    @JoinColumn(name="accountID")
     private Account account;
 
     public Shift() {
