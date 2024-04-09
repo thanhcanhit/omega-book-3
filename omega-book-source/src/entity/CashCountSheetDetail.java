@@ -6,13 +6,24 @@ package entity;
 
 import java.util.Objects;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToOne;
+
 /**
  *
  * @author Hoàng Khang
  */
+@Entity
 public class CashCountSheetDetail {
+	@Id
     private boolean index;
+	@Id
+	@JoinColumn(name = "employeeID")
     private Employee employee;
+	@OneToOne
+	@JoinColumn(name = "cashCountSheetID")
     private CashCountSheet cashCountSheet;
 
     public CashCountSheetDetail() {

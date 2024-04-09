@@ -4,12 +4,18 @@
  */
 package entity;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+
 /**
  *
  * @author Hoàng Khang
  */
+@Entity
 public class CashCount {
+	@Id
     private int quantity;
+	@Id
     private double value;
     private double total;
 
