@@ -6,20 +6,19 @@ package entity;
 
 import java.util.Objects;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.IdClass;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.*;
 
 /**
  *
  * @author Như Tâm
  */
-@IdClass(Promotion.class)
+@Entity
 public class ProductPromotionDetail {
+	@Id
 	@ManyToOne
 	@JoinColumn(name = "promotionID")
     private Promotion promotion;
+	@Id
 	@ManyToOne
 	@JoinColumn(name = "productID")
     private Product product;

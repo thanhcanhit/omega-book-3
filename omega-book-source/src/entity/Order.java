@@ -8,15 +8,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
-
-import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.Temporal;
-import jakarta.persistence.TemporalType;
+import jakarta.persistence.*;
 
 /**
  *
@@ -25,12 +17,12 @@ import jakarta.persistence.TemporalType;
 @Entity
 public final class Order {
 
-    private final String ORDERID_ERROR = "Mã hoá đơn không hợp lệ !";
-    private final String ORDERAT_ERROR = "Ngày tạo hoá đơn không hợp lệ !";
-    private final String PROMOTION_ERROR = "Khuyến mãi không được rỗng !";
-    private final String EMPLOYEE_ERROR = "Nhân viên không được rỗng !";
-    private final String CUSTOMER_ERROR = "Khách hàng không được rỗng !";
-    private final String ORDERDETAIL_ERROR = "Chi tiết hoá đơn không được rỗng !";
+    private static final String ORDERID_ERROR = "Mã hoá đơn không hợp lệ !";
+    private static final String ORDERAT_ERROR = "Ngày tạo hoá đơn không hợp lệ !";
+    private static final String PROMOTION_ERROR = "Khuyến mãi không được rỗng !";
+    private static final String EMPLOYEE_ERROR = "Nhân viên không được rỗng !";
+    private static final String CUSTOMER_ERROR = "Khách hàng không được rỗng !";
+    private static final String ORDERDETAIL_ERROR = "Chi tiết hoá đơn không được rỗng !";
     
     @Id
     private String orderID;

@@ -4,6 +4,7 @@
  */
 package entity;
 
+import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 import java.util.regex.Pattern;
@@ -20,6 +21,7 @@ import jakarta.persistence.InheritanceType;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
+import jakarta.persistence.OneToMany;
 
 /**
  *
@@ -47,6 +49,8 @@ public class Product {
 	protected Double VAT;
 	protected Integer inventory;
 	protected Double price;
+	@OneToMany(mappedBy = "product", fetch = FetchType.LAZY)
+	private List<OrderDetail> orderDetails;
 
 	@Enumerated(EnumType.ORDINAL)
 	private Type type;

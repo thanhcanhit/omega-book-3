@@ -22,10 +22,10 @@ import jakarta.persistence.TemporalType;
 @Entity
 public final class Shift {
 
-    private final String ID_EMPTY = "ID không được rỗng !";
-    private final String STARTEDAT_ERROR = "StartedAt không được rỗng !";
-    private final String ENDEDAD_ERROR = "EndedAt Không được rỗng !";
-    private final String ACCOUNT_ERROR = "Account không được rỗng !";
+    private static final String ID_EMPTY = "ID không được rỗng !";
+    private static final String STARTEDAT_ERROR = "StartedAt không được rỗng !";
+    private static final String ENDEDAD_ERROR = "EndedAt Không được rỗng !";
+    private static final String ACCOUNT_ERROR = "Account không được rỗng !";
     @Id
     private String shiftID;
     @Temporal(TemporalType.TIMESTAMP)

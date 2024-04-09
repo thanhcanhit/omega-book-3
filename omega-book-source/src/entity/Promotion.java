@@ -8,12 +8,7 @@ import java.util.regex.Pattern;
 import enums.CustomerRank;
 import enums.DiscountType;
 import enums.PromotionType;
-import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.Id;
-import jakarta.persistence.Temporal;
-import jakarta.persistence.TemporalType;
+import jakarta.persistence.*;
 
 /**
  *
@@ -39,7 +34,7 @@ public final class Promotion {
 	private double discount;
 	@Enumerated(EnumType.ORDINAL)
 	private CustomerRank condition;
-	
+	@OneToMany(mappedBy = "promotion", fetch = FetchType.LAZY)
 	private List<ProductPromotionDetail> details;
 
 	public Promotion() {

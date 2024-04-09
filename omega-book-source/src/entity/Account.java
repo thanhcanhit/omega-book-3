@@ -16,8 +16,8 @@ import jakarta.persistence.OneToOne;
 @Entity
 public class Account {
     
-    private final String PASSWORD_ERROR = "Mật khẩu phải ít nhất 8 kí tự (Bao gồm chữ hoa, chữ thường và số)!";
-    private final String EMPLOYEE_ERROR = "Employee không được rỗng !";
+    private static final String PASSWORD_ERROR = "Mật khẩu phải ít nhất 8 kí tự (Bao gồm chữ hoa, chữ thường và số)!";
+    private static final String EMPLOYEE_ERROR = "Employee không được rỗng !";
 
   
     private String passWord;

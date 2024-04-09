@@ -25,11 +25,11 @@ import java.util.regex.Pattern;
  */
 @Entity
 public class ReturnOrder {
-    private final String ORDER_ERROR="Order không được rỗng";
-    private final String EMPLOYEE_ERROR="Employee không được rỗng";
-    private final String REASON_EMPTY = "Lý do không được rỗng";
-    private final String TYPE_EMPTY = "Loại đơn đổi trả không được rỗng";
-    private final String RETURNORDERID_VALID = "Mã đơn đổi trả không đúng cú pháp";
+    private static final String ORDER_ERROR="Order không được rỗng";
+    private static final String EMPLOYEE_ERROR="Employee không được rỗng";
+    private static final String REASON_EMPTY = "Lý do không được rỗng";
+    private static final String TYPE_EMPTY = "Loại đơn đổi trả không được rỗng";
+    private static final String RETURNORDERID_VALID = "Mã đơn đổi trả không đúng cú pháp";
 
     
     @Temporal(TemporalType.TIMESTAMP)
