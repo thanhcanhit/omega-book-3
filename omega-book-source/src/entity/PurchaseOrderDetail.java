@@ -2,10 +2,13 @@ package entity;
 
 import java.util.Objects;
 
+import jakarta.persistence.*;
+
 /**
  *
  * @author Như Tâm
  */
+@Entity
 public class PurchaseOrderDetail {
 
     /* Hằng báo lỗi*/
@@ -16,7 +19,11 @@ public class PurchaseOrderDetail {
     private int quantity;
     private double costPrice;
     private double lineTotal;
+    @ManyToOne
+    @JoinColumn(name = "purchaseOrderID")
     private PurchaseOrder purchaseOrder;
+    @ManyToOne
+    @JoinColumn(name = "productID")
     private Product product;
 
     public PurchaseOrderDetail(PurchaseOrder purchaseOrder, Product product) throws Exception {

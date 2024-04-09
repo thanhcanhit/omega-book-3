@@ -5,15 +5,18 @@
 package entity;
 
 import java.time.LocalDate;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.Objects;
+
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
 /**
  *
  * @author Hoàng Khang
  */
+@Entity
 public class Employee {
-
+	@Id
     private String employeeID;
     private String citizenIdentification;
     private String role;

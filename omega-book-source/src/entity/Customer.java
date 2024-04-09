@@ -5,6 +5,8 @@
 package entity;
 
 import enums.CustomerRank;
+import jakarta.persistence.*;
+
 import java.io.*;
 import java.time.LocalDate;
 import java.util.*;
@@ -14,6 +16,7 @@ import java.util.regex.Pattern;
  *
  * @author Nhu Tam
  */
+@Entity
 public class Customer implements Serializable {
 
     /*Hằng báo lỗi*/
@@ -26,6 +29,7 @@ public class Customer implements Serializable {
     public static final String SCORE_ERROR = "Điểm tích luỹ không được nhỏ hơn không";
 //    public static final String RANK_EMPTY = "Hạng không được phép rỗng";
 
+    @Id
     private String customerID;
     private String name;
     private int score;
