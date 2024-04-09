@@ -44,8 +44,6 @@ public class PurchaseOrder_DAO implements DAOBase<PurchaseOrder> {
 
 
                 result = new PurchaseOrder(id, orderDate, receiveDate, note, PurchaseOrderStatus.fromInt(status),new Supplier(supplierID), new Employee(employeeID),purchaseOrderDetail);
-            
-
             }
         } catch (Exception e) {
             e.printStackTrace();
