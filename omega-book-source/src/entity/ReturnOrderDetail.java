@@ -2,10 +2,13 @@ package entity;
 
 import java.util.Objects;
 
+import jakarta.persistence.*;
+
 /**
  *
  * @author Như Tâm
  */
+@Entity
 public class ReturnOrderDetail {
     
     /* Hằng báo lỗi*/
@@ -13,8 +16,11 @@ public class ReturnOrderDetail {
     public static final String PRODUCT_EMPTY = "Sản phẩm không được phép rỗng";
     public static final String QUANTITY_VALID = "Số lượng phải là số dương";
 
-    
+    @ManyToOne
+    @JoinColumn(name = "returnOrderID")
     private ReturnOrder returnOrder;
+    @ManyToOne
+    @JoinColumn(name = "productID")
     private Product product;
     private int quantity;
     private double price;

@@ -1,6 +1,8 @@
 package entity;
 
 import enums.PurchaseOrderStatus;
+import jakarta.persistence.*;
+
 import java.time.LocalDate;
 import java.util.*;
 
@@ -8,6 +10,7 @@ import java.util.*;
  *
  * @author Nhu Tam
  */
+@Entity
 public final class PurchaseOrder {
 
     /* Hằng báo lỗi*/
@@ -15,13 +18,22 @@ public final class PurchaseOrder {
     public static final String ORDERDATE_ERORR = "Ngày tạo đơn nhập không hợp lệ";
     public static final String RECEIVEDATE_ERORR = "Ngày nhập không hợp lệ";
 
+    @Id
     private String purchaseOrderID;
+    @Temporal(TemporalType.TIMESTAMP)
     private Date orderDate;
+    @Temporal(TemporalType.TIMESTAMP)
     private Date receiveDate;
     private String note;
+    @Enumerated(EnumType.ORDINAL)
     private PurchaseOrderStatus status;
+    @ManyToOne
+    @JoinColumn(name = "supplierID")
     private Supplier supplier;
+    @ManyToOne
+    @JoinColumn(name = "employeeID")
     private Employee employee;
+    @OneToMany(mappedBy = "purchaseOrder")
     private ArrayList<PurchaseOrderDetail> purchaseOrderDetailList;
     private double total;
 

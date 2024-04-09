@@ -1,19 +1,24 @@
 
 package entity;
 
+import java.io.Serializable;
 import java.util.Objects;
+
+import jakarta.persistence.*;
 
 /**
  *
  * @author Nhu Tam
  */
-public class Supplier {
+@Entity
+public class Supplier implements Serializable {
     
     /* Hằng báo lỗi*/
     public static final String ID_EMPTY = "Mã nhà cung cấp không được phép rỗng";
     public static final String NAME_EMPTY = "Tên nhà cung cấp không được phép rỗng";
     public static final String ADDRESS_EMPTY = "Địa chỉ không được phép rỗng";
     
+    @Id
     private String supplierID;
     private String name; 
     private String address;

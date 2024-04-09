@@ -2,10 +2,13 @@
 package entity;
 import java.util.*;
 
+import jakarta.persistence.*;
+
 /**
  *
  * @author Như Tâm
  */
+@Entity
 public class Store {
     
      /* Hằng báo lỗi*/
@@ -13,6 +16,7 @@ public class Store {
     public static final String NAME_EMPTY = "Tên cửa hàng không được phép rỗng";
     public static final String ADDRESS_EMPTY = "Địa chỉ không được phép rỗng";
     
+    @Id
     private String storeID;
     private String name;
     private String address;
