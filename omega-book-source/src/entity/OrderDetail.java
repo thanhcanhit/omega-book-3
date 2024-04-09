@@ -4,18 +4,32 @@
  */
 package entity;
 
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.IdClass;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+
 /**
  *
  * @author KienTran
  */
+@Entity
+@IdClass(Order.class)
 public final class OrderDetail {
 
     private final String QUANTITY_ERROR = "Số lượng sản phẩm không được nhỏ hơn 1 !";
     private final String PRICE_ERROR = "Giá bán phải lớn hơn giá nhập, không được rỗng và lớn hơn 0 !";
     private final String ORDER_ERROR = "Hoá đơn không được rỗng !";
     private final String PRODUCT_ERROR = "Sản phẩm không được rỗng !";
-
+    @Id
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name="orderID")
     private Order order;
+    @Id
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name="productID")
     private Product product;
     private int quantity;
     private double price;

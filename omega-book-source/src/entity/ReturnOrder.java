@@ -1,8 +1,21 @@
 package entity;
 
 import enums.ReturnOrderStatus;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
+import jakarta.persistence.Temporal;
+import jakarta.persistence.TemporalType;
+
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Objects;
 import java.util.regex.Pattern;
 
@@ -10,6 +23,7 @@ import java.util.regex.Pattern;
  *
  * @author KienTran
  */
+@Entity
 public class ReturnOrder {
     private final String ORDER_ERROR="Order không được rỗng";
     private final String EMPLOYEE_ERROR="Employee không được rỗng";
@@ -18,15 +32,22 @@ public class ReturnOrder {
     private final String RETURNORDERID_VALID = "Mã đơn đổi trả không đúng cú pháp";
 
     
-    
+    @Temporal(TemporalType.TIMESTAMP)
     private Date orderDate;
+    @Enumerated(EnumType.ORDINAL)
     private ReturnOrderStatus status;
+    @Id
     private String returnOrderID;
+    @ManyToOne
+    @JoinColumn(name="employeeID")
     private Employee employee;
+    @OneToOne
+    @JoinColumn(name="orderID")
     private Order order;
     private boolean type;
     private double refund;
-    private ArrayList<ReturnOrderDetail> listDetail;
+    @OneToMany(mappedBy = "returnOrder",fetch = FetchType.LAZY)
+    private List<ReturnOrderDetail> listDetail;
     private String reason;
 
     public ReturnOrder() {
@@ -67,7 +88,7 @@ public class ReturnOrder {
         return employee;
     }
 
-    public ArrayList<ReturnOrderDetail> getListDetail() {
+    public List<ReturnOrderDetail> getListDetail() {
         return listDetail;
     }
 

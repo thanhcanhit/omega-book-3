@@ -6,12 +6,23 @@ package entity;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Objects;
+
+import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.Temporal;
+import jakarta.persistence.TemporalType;
 
 /**
  *
  * @author KienTran
  */
+@Entity
 public final class Order {
 
     private final String ORDERID_ERROR = "Mã hoá đơn không hợp lệ !";
@@ -20,17 +31,25 @@ public final class Order {
     private final String EMPLOYEE_ERROR = "Nhân viên không được rỗng !";
     private final String CUSTOMER_ERROR = "Khách hàng không được rỗng !";
     private final String ORDERDETAIL_ERROR = "Chi tiết hoá đơn không được rỗng !";
-
+    @Id
     private String orderID;
+    @Temporal(TemporalType.TIMESTAMP)
     private Date orderAt;
     private boolean status;
     private double subTotal;
     private double totalDue;
     private boolean payment;
+    @ManyToOne
+    @JoinColumn(name="promotionID")
     private Promotion promotion;
+    @ManyToOne
+    @JoinColumn(name="employeeID")
     private Employee employee;
+    @ManyToOne
+    @JoinColumn(name="customerID")
     private Customer customer;
-    private ArrayList<OrderDetail> orderDetail;
+    @OneToMany(mappedBy = "order",fetch = FetchType.LAZY)
+    private List<OrderDetail> orderDetail;
     private double moneyGiven;
 
     public Order() {
@@ -125,7 +144,7 @@ public final class Order {
         return orderAt;
     }
 
-    public ArrayList<OrderDetail> getOrderDetail() {
+    public List<OrderDetail> getOrderDetail() {
         return orderDetail;
     }
 
@@ -188,7 +207,7 @@ public final class Order {
         }
     }
 
-    public void setOrderDetail(ArrayList<OrderDetail> orderDetail) throws Exception {
+    public void setOrderDetail(List<OrderDetail> orderDetail) throws Exception {
         if (!orderDetail.isEmpty()) {
             this.orderDetail = orderDetail;
         } else {
@@ -199,8 +218,10 @@ public final class Order {
     }
 
     public void setOrderID(String orderID) throws Exception {
-
-        this.orderID = orderID;
+    	if(orderID.trim().length()>0)
+    		this.orderID = orderID;
+    	else
+    		throw new Exception(ORDERID_ERROR);
 
     }
 
@@ -209,7 +230,10 @@ public final class Order {
     }
 
     public void setPromotion(Promotion promotion) throws Exception {
-        this.promotion = promotion;
+    	if(promotion!=null)
+    		this.promotion = promotion;
+    	else
+    		throw new Exception(PROMOTION_ERROR);
     }
 
     public void setStatus(boolean status) {
