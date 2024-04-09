@@ -51,10 +51,6 @@ public class Product {
 	@Enumerated(EnumType.ORDINAL)
 	private Type type;
 
-	@ManyToMany(fetch = FetchType.LAZY)
-	@JoinTable(name = "ProductPromotionDetail", joinColumns = @JoinColumn(name = "productID"), inverseJoinColumns = @JoinColumn(name = "promotionID"))
-	private Set<Promotion> promotions;
-
 	public Product() {
 	}
 
