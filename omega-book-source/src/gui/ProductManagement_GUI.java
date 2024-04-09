@@ -54,7 +54,7 @@ import com.itextpdf.text.pdf.BaseFont;
 import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
 
-import bus.ProductManagement_BUS;
+import bus.impl.ProductManagement_BUSImpl;
 import entity.Book;
 import entity.Brand;
 import entity.Product;
@@ -78,7 +78,7 @@ public class ProductManagement_GUI extends javax.swing.JPanel {
     /**
      * Creates new form Sales_GUI
      */
-    private ProductManagement_BUS bus;
+    private ProductManagement_BUSImpl bus;
 
 //    Model
     private DefaultTableModel tblModel_products;
@@ -103,7 +103,7 @@ public class ProductManagement_GUI extends javax.swing.JPanel {
     }
 
     private void init() {
-        bus = new ProductManagement_BUS();
+        bus = new ProductManagement_BUSImpl();
 
 //        Frame
         fileChooser_productImg = new javax.swing.JFileChooser();

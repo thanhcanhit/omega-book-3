@@ -39,7 +39,7 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import com.formdev.flatlaf.FlatClientProperties;
 
-import bus.EmployeeManagament_BUS;
+import bus.impl.EmployeeManagament_BUSImpl;
 import entity.Employee;
 import entity.Store;
 import main.Application;
@@ -52,7 +52,7 @@ import utilities.SVGIcon;
  */
 public class EmployeeManagement_GUI extends javax.swing.JPanel {
 
-    private EmployeeManagament_BUS bus;
+    private EmployeeManagament_BUSImpl bus;
     private DefaultTableModel tblModel_employee;
     private Employee currentEmployee;
     private DefaultComboBoxModel cmbModel_role;
@@ -71,7 +71,7 @@ public class EmployeeManagement_GUI extends javax.swing.JPanel {
     }
     
     private void init() {
-        bus = new EmployeeManagament_BUS();
+        bus = new EmployeeManagament_BUSImpl();
         //model
         tblModel_employee = new DefaultTableModel(new String[] {"Mã nhân viên", "Tên nhân viên", "Ngày sinh", "Trạng thái"}, 0);
         tbl_employeeInfor.setModel(tblModel_employee);

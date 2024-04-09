@@ -8,7 +8,7 @@ import javax.swing.table.DefaultTableModel;
 
 import com.formdev.flatlaf.FlatClientProperties;
 
-import bus.ReturnOrderManagament_BUS;
+import bus.impl.ReturnOrderManagament_BUSImpl;
 import entity.ReturnOrder;
 import entity.ReturnOrderDetail;
 import enums.ReturnOrderStatus;
@@ -23,7 +23,7 @@ import utilities.SVGIcon;
  */
 public class ReturnOrderManagemant_GUI extends javax.swing.JPanel {
     
-    private ReturnOrderManagament_BUS bus;
+    private ReturnOrderManagament_BUSImpl bus;
     private DefaultTableModel tblModel_returnOrder;
     private DefaultTableModel tblModel_product;
     private ReturnOrder currentReturnOrder;
@@ -39,7 +39,7 @@ public class ReturnOrderManagemant_GUI extends javax.swing.JPanel {
         init();
     }
     private void init(){
-        bus = new ReturnOrderManagament_BUS();
+        bus = new ReturnOrderManagament_BUSImpl();
         //model
         tblModel_returnOrder = new DefaultTableModel(new String[]{"Mã hoá đơn đổi trả", "Mã hoá đơn", "Ngày đổi trả", "Trạng thái"}, 0);
         tbl_inforReturnOrder.setModel(tblModel_returnOrder);

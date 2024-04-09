@@ -12,7 +12,7 @@ import javax.swing.JLabel;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 
-import bus.ViewAcountingVoucherList_BUS;
+import bus.impl.ViewAcountingVoucherList_BUSImpl;
 import entity.AcountingVoucher;
 import entity.Employee;
 import raven.toast.Notifications;
@@ -26,7 +26,7 @@ import utilities.SVGIcon;
 public class ViewAcountingVoucherList_GUI extends javax.swing.JPanel {
 
     private DefaultTableModel tblModel_acountingVoucherList;
-    private ViewAcountingVoucherList_BUS viewAcountingVoucherList_BUS = new ViewAcountingVoucherList_BUS();
+    private ViewAcountingVoucherList_BUSImpl viewAcountingVoucherList_BUS = new ViewAcountingVoucherList_BUSImpl();
 
     /**
      * Creates new form ViewAcountingVoucherList_GUI

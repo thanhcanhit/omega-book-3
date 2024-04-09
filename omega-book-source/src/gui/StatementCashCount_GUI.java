@@ -19,7 +19,7 @@ import javax.swing.table.TableModel;
 
 import com.formdev.flatlaf.FlatClientProperties;
 
-import bus.StatementCashCount_BUS;
+import bus.impl.StatementCashCount_BUSImpl;
 import entity.CashCount;
 import entity.Employee;
 import main.Application;
@@ -35,7 +35,7 @@ public class StatementCashCount_GUI extends javax.swing.JPanel {
 
     private DefaultTableModel tbl_modalCashCounts = new DefaultTableModel();
     private double sum = 0;
-    private StatementCashCount_BUS statementCashCount_BUS = new StatementCashCount_BUS();
+    private StatementCashCount_BUSImpl statementCashCount_BUS = new StatementCashCount_BUSImpl();
     private Employee employee1 = Application.employee;
     private Employee employee2;
     private Date createAt;

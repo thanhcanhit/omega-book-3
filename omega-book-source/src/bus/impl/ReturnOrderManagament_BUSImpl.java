@@ -1,4 +1,4 @@
-package bus;
+package bus.impl;
 
 import dao.OrderDetail_DAO;
 import dao.Order_DAO;
@@ -21,7 +21,7 @@ import java.util.logging.Logger;
  *
  * @author Như Tâm
  */
-public class ReturnOrderManagament_BUS {
+public class ReturnOrderManagament_BUSImpl {
     private ReturnOrder_DAO dao = new ReturnOrder_DAO();
     private ReturnOrderDetail_DAO detail_dao = new ReturnOrderDetail_DAO();
     private Order_DAO order_dao = new Order_DAO();

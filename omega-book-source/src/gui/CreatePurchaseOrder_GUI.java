@@ -20,7 +20,7 @@ import javax.swing.table.TableColumnModel;
 
 import com.formdev.flatlaf.FlatClientProperties;
 
-import bus.CreatePurchaseOrder_BUS;
+import bus.impl.CreatePurchaseOrder_BUSImpl;
 import entity.Product;
 import entity.PurchaseOrder;
 import entity.PurchaseOrderDetail;
@@ -38,7 +38,7 @@ public class CreatePurchaseOrder_GUI extends javax.swing.JPanel {
     /**
      * Creates new form Sales_GUI
      */
-    private CreatePurchaseOrder_BUS bus;
+    private CreatePurchaseOrder_BUSImpl bus;
 
     //
     private PurchaseOrder purchaseOrder;
@@ -52,7 +52,7 @@ public class CreatePurchaseOrder_GUI extends javax.swing.JPanel {
     }
 
     private void init() {
-        bus = new CreatePurchaseOrder_BUS();
+        bus = new CreatePurchaseOrder_BUSImpl();
         try {
             purchaseOrder = bus.createNewPurchaseOrder();
             txt_orderID.setText(purchaseOrder.getPurchaseOrderID());

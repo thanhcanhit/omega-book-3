@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package bus;
+package bus.impl;
 
 import dao.ProductPromotionDetail_DAO;
 import dao.Product_DAO;
@@ -20,10 +20,10 @@ import java.util.Date;
  *
  * @author Như Tâm
  */
-public class PromotionManagament_BUS {
+public class PromotionManagament_BUSImpl {
     private Promotion_DAO promotion_DAO = new Promotion_DAO();
 
-    public PromotionManagament_BUS() {
+    public PromotionManagament_BUSImpl() {
     }
     
     public ArrayList<Promotion> getAllPromotion(){

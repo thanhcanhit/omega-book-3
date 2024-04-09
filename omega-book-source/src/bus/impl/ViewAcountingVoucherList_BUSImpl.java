@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package bus;
+package bus.impl;
 
 import dao.AcountingVoucher_DAO;
 import dao.CashCountSheet_DAO;
@@ -15,7 +15,7 @@ import java.util.Date;
  *
  * @author Hoàng Khang
  */
-public class ViewAcountingVoucherList_BUS {
+public class ViewAcountingVoucherList_BUSImpl {
 
     private AcountingVoucher_DAO acountingVoucher_DAO = new AcountingVoucher_DAO();
     private CashCountSheet_DAO cashCountSheet_DAO = new CashCountSheet_DAO();

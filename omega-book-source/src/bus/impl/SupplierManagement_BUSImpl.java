@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package bus;
+package bus.impl;
 
 import dao.Supplier_DAO;
 import entity.Supplier;
@@ -12,7 +12,7 @@ import java.util.ArrayList;
  *
  * @author KienTran
  */
-public class SupplierManagement_BUS {
+public class SupplierManagement_BUSImpl {
         private Supplier_DAO supplierDAO = new Supplier_DAO();
         
         public ArrayList<Supplier> getAll(){

@@ -111,8 +111,8 @@ import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.util.CellRangeAddress;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
-import bus.OrderManagement_BUS;
-import bus.ProductManagement_BUS;
+import bus.impl.OrderManagement_BUSImpl;
+import bus.impl.ProductManagement_BUSImpl;
 import entity.Customer;
 import entity.Order;
 import entity.OrderDetail;
@@ -127,7 +127,7 @@ import utilities.SVGIcon;
  */
 public final class OrderManagement_GUI extends javax.swing.JPanel {
 
-    private OrderManagement_BUS bus;
+    private OrderManagement_BUSImpl bus;
 
     private DefaultTableModel tblModel_order;
     private DefaultTableModel tblModel_orderDetail;
@@ -146,7 +146,7 @@ public final class OrderManagement_GUI extends javax.swing.JPanel {
     }
 
     public void init() {
-        bus = new OrderManagement_BUS();
+        bus = new OrderManagement_BUSImpl();
 
         tblModel_order = new DefaultTableModel(new String[]{"Mã hoá đơn", "Nhân viên", "Khách hàng", "Ngày mua", "Thành tiền"}, 0);
         tbl_order.setModel(tblModel_order);
@@ -226,7 +226,7 @@ public final class OrderManagement_GUI extends javax.swing.JPanel {
     private void renderOrderDetailTable(ArrayList<OrderDetail> list) {
         tblModel_orderDetail.setRowCount(0);
         for (OrderDetail orderDetail : list) {
-            ProductManagement_BUS productBUS = new ProductManagement_BUS();
+            ProductManagement_BUSImpl productBUS = new ProductManagement_BUSImpl();
             Object[] newRow = new Object[]{orderDetail.getProduct().getProductID(), productBUS.getProduct(orderDetail.getProduct().getProductID()).getName(), orderDetail.getQuantity(), orderDetail.getPrice(), FormatNumber.toVND(orderDetail.getLineTotal())};
 
             tblModel_orderDetail.addRow(newRow);

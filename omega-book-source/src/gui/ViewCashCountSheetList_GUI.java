@@ -12,7 +12,7 @@ import javax.swing.JLabel;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 
-import bus.ViewCashCountSheetList_BUS;
+import bus.impl.ViewCashCountSheetList_BUSImpl;
 import entity.CashCountSheet;
 import entity.Employee;
 import utilities.CashCountSheetPrinter;
@@ -25,7 +25,7 @@ import utilities.SVGIcon;
 public class ViewCashCountSheetList_GUI extends javax.swing.JPanel {
 
     private DefaultTableModel tblModel_cashCountSheetList;
-    private ViewCashCountSheetList_BUS cashCountSheet_BUS = new ViewCashCountSheetList_BUS();
+    private ViewCashCountSheetList_BUSImpl cashCountSheet_BUS = new ViewCashCountSheetList_BUSImpl();
 
     /**
      * Creates new form ViewCashCountSheetList

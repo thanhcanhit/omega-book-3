@@ -16,7 +16,7 @@ import javax.swing.table.DefaultTableModel;
 
 import com.formdev.flatlaf.FlatClientProperties;
 
-import bus.PurchaseOrderManagement_BUS;
+import bus.impl.PurchaseOrderManagement_BUSImpl;
 import entity.PurchaseOrder;
 import entity.PurchaseOrderDetail;
 import enums.PurchaseOrderStatus;
@@ -31,7 +31,7 @@ import utilities.SVGIcon;
  */
 public final class PurchaseOrderManagement_GUI extends javax.swing.JPanel {
 
-    private PurchaseOrderManagement_BUS bus;
+    private PurchaseOrderManagement_BUSImpl bus;
 
     private DefaultTableModel tblModel_purchaseOrder;
     private DefaultTableModel tblModel_purchaseOrderDetail;
@@ -46,7 +46,7 @@ public final class PurchaseOrderManagement_GUI extends javax.swing.JPanel {
     }
 
     public final void init() {
-        bus = new PurchaseOrderManagement_BUS();
+        bus = new PurchaseOrderManagement_BUSImpl();
         
         ButtonGroup buttonGroup = new ButtonGroup();
         buttonGroup.add(rad_decline);

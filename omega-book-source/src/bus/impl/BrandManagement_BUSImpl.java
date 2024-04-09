@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package bus;
+package bus.impl;
 
 import dao.Brand_DAO;
 import entity.Brand;
@@ -12,7 +12,7 @@ import java.util.ArrayList;
  *
  * @author Như Tâm
  */
-public class BrandManagement_BUS {
+public class BrandManagement_BUSImpl {
     private Brand_DAO brand_DAO = new Brand_DAO();
     
     public ArrayList<Brand> getALLBrand(){

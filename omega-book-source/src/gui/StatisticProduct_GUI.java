@@ -20,7 +20,7 @@ import javax.swing.table.DefaultTableModel;
 import org.knowm.xchart.CategoryChart;
 import org.knowm.xchart.XChartPanel;
 
-import bus.StatisticProduct_BUS;
+import bus.impl.StatisticProduct_BUSImpl;
 import entity.Product;
 import gui.customchart.ModelChart;
 import utilities.FormatNumber;
@@ -32,7 +32,7 @@ import utilities.FormatNumber;
 public final class StatisticProduct_GUI extends javax.swing.JPanel {
 
     private DefaultTableModel tblModel_product;
-    private StatisticProduct_BUS bus;
+    private StatisticProduct_BUSImpl bus;
 
     private XChartPanel<CategoryChart> chartPanel;
 
@@ -47,7 +47,7 @@ public final class StatisticProduct_GUI extends javax.swing.JPanel {
     }
 
     public void init() {
-        bus = new StatisticProduct_BUS();
+        bus = new StatisticProduct_BUSImpl();
         tblModel_product = new DefaultTableModel(new String[]{"Mã sản phẩm", "Tên sản phẩm", "Số lượng", "Giá tiền", "Tổng doanh thu"
         }, 0);
         tbl_topProduct.setModel(tblModel_product);

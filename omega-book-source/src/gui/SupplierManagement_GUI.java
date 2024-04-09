@@ -14,7 +14,7 @@ import javax.swing.table.DefaultTableModel;
 
 import com.formdev.flatlaf.FlatClientProperties;
 
-import bus.SupplierManagement_BUS;
+import bus.impl.SupplierManagement_BUSImpl;
 import entity.Order;
 import entity.PurchaseOrder;
 import entity.PurchaseOrderDetail;
@@ -32,7 +32,7 @@ public class SupplierManagement_GUI extends javax.swing.JPanel {
     /**
      * Creates new form Sales_GUI
      */
-    private SupplierManagement_BUS bus;
+    private SupplierManagement_BUSImpl bus;
 
     //
     private PurchaseOrder purchaseOrder;
@@ -46,7 +46,7 @@ public class SupplierManagement_GUI extends javax.swing.JPanel {
     }
 
     private void init() {
-        bus = new SupplierManagement_BUS();
+        bus = new SupplierManagement_BUSImpl();
 
 
 //        table

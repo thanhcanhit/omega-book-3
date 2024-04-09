@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package bus;
+package bus.impl;
 
 import dao.Customer_DAO;
 import dao.OrderDetail_DAO;
@@ -28,7 +28,7 @@ import java.util.logging.Logger;
  *
  * @author thanhcanhit
  */
-public class Sales_BUS {
+public class Sales_BUSImpl {
 
     private final Order_DAO orderDAO = new Order_DAO();
     private final OrderDetail_DAO orderDetailDAO = new OrderDetail_DAO();
@@ -135,7 +135,7 @@ public class Sales_BUS {
                 item.setCustomer(fullInfoCustomer);
 
             } catch (Exception ex) {
-                Logger.getLogger(Sales_BUS.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(Sales_BUSImpl.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
 
@@ -154,7 +154,7 @@ public class Sales_BUS {
                 item.setProduct(productDAO.getOne(item.getProduct().getProductID()));
             }
         } catch (Exception ex) {
-            Logger.getLogger(Sales_BUS.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(Sales_BUSImpl.class.getName()).log(Level.SEVERE, null, ex);
             ex.printStackTrace();
         }
         return result;

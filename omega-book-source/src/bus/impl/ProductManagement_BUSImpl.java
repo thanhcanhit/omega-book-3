@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package bus;
+package bus.impl;
 
 import dao.Brand_DAO;
 import dao.Product_DAO;
@@ -21,7 +21,7 @@ import java.util.logging.Logger;
  *
  * @author thanhcanhit
  */
-public class ProductManagement_BUS {
+public class ProductManagement_BUSImpl {
 
     private final Product_DAO productDAO = new Product_DAO();
     private final Brand_DAO brandDAO = new Brand_DAO();
@@ -70,7 +70,7 @@ public class ProductManagement_BUS {
         try {
             productWithoutId.setProductID(finalID);
         } catch (Exception ex) {
-            Logger.getLogger(ProductManagement_BUS.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(ProductManagement_BUSImpl.class.getName()).log(Level.SEVERE, null, ex);
             return false;
         }
         productDAO.create(productWithoutId);
