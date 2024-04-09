@@ -8,20 +8,38 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.Objects;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
+import jakarta.persistence.Temporal;
+import jakarta.persistence.TemporalType;
+
 /**
  *
  * @author Hoàng Khang
  */
-public class AcountingVoucher implements Comparable<AcountingVoucher>{
-
+@Entity
+public class AcountingVoucher{
+	@Id
     private String accountingVoucherID;
+	@Temporal(TemporalType.TIMESTAMP)
     private Date createdDate;
+	@Temporal(TemporalType.TIMESTAMP)
     private Date endedDate;
     private double sale;
     private double payViaATM;
     private double withDraw;
     private double difference;
+    
+    @OneToOne
+    @JoinColumn(name = "cashCountSheetID")
     private CashCountSheet cashCountSheet;
+    
+    @OneToMany(fetch = FetchType.LAZY)
+    @JoinColumn(name = "accountingVoucherID")
     private ArrayList<Order> orderList;
 
     public AcountingVoucher() {
@@ -50,10 +68,10 @@ public class AcountingVoucher implements Comparable<AcountingVoucher>{
 
     }
 
-    @Override
-    public int compareTo(AcountingVoucher o) {
-        return this.createdDate.compareTo(o.createdDate);
-    }
+//    @Override
+//    public int compareTo(AcountingVoucher o) {
+//        return this.createdDate.compareTo(o.createdDate);
+//    }
 
     @Override
     public boolean equals(Object obj) {

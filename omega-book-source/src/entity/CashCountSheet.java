@@ -9,19 +9,33 @@ import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.Temporal;
+import jakarta.persistence.TemporalType;
+
 /**
  *
  * @author Hoàng Khang
  */
-public class CashCountSheet implements Comparable<CashCountSheet>{
-
+@Entity
+public class CashCountSheet{
+	@Id
     private String cashCountSheetID;
+	@OneToMany
+	@JoinColumn(name = "cashCountSheetID")
     private ArrayList<CashCount> cashCountList;
+	@Temporal(TemporalType.TIMESTAMP)
     private Date createdDate;
+	@Temporal(TemporalType.TIMESTAMP)
     private Date endedDate;
     private double total;
     private double difference;
 
+    @OneToMany
+    @JoinColumn(name = "cashCountSheetID")
     private ArrayList<CashCountSheetDetail> cashCountSheetDetailList;
 
     public CashCountSheet() {
@@ -40,10 +54,10 @@ public class CashCountSheet implements Comparable<CashCountSheet>{
         this.cashCountSheetDetailList = cashCountSheetDetailList;
     }
 
-    @Override
-    public int compareTo(CashCountSheet o) {
-        return this.createdDate.compareTo(o.createdDate);
-    }
+//    @Override
+//    public int compareTo(CashCountSheet o) {
+//        return this.createdDate.compareTo(o.createdDate);
+//    }
 
     @Override
     public boolean equals(Object obj) {
