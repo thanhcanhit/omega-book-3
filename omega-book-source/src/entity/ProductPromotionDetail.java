@@ -12,7 +12,7 @@ import jakarta.persistence.*;
  *
  * @author Như Tâm
  */
-@Entity
+@IdClass(Promotion.class)
 public class ProductPromotionDetail {
 	@ManyToOne
 	@JoinColumn(name = "promotionID")

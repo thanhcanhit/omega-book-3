@@ -16,7 +16,7 @@ import jakarta.persistence.ManyToOne;
  * @author KienTran
  */
 @Entity
-@IdClass(Order.class)
+//@IdClass(Order.class)
 public final class OrderDetail {
 
     private final String QUANTITY_ERROR = "Số lượng sản phẩm không được nhỏ hơn 1 !";

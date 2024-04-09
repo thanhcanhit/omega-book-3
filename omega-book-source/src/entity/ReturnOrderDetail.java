@@ -16,9 +16,11 @@ public class ReturnOrderDetail {
     public static final String PRODUCT_EMPTY = "Sản phẩm không được phép rỗng";
     public static final String QUANTITY_VALID = "Số lượng phải là số dương";
 
+    @Id
     @ManyToOne
     @JoinColumn(name = "returnOrderID")
     private ReturnOrder returnOrder;
+    @Id
     @ManyToOne
     @JoinColumn(name = "productID")
     private Product product;

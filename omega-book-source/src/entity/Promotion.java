@@ -21,10 +21,10 @@ import jakarta.persistence.TemporalType;
  */
 @Entity
 public final class Promotion {
-	public final String PROMOTIONID_ERROR = "Mã chương trình khuyến mãi không hợp lệ!";
-	public final String STARTEDDATE_ERROR = "Ngày tạo chương trình khuyến mãi không được rỗng!";
-	public final String ENDEDDATE_ERROR = "Ngày kết thúc phải sau ngày tạo chương trình khuyến mãi!";
-	public final String DISCOUNT_ERROR = "Giảm giá phải là số dương!";
+	public static final String PROMOTIONID_ERROR = "Mã chương trình khuyến mãi không hợp lệ!";
+	public static final String STARTEDDATE_ERROR = "Ngày tạo chương trình khuyến mãi không được rỗng!";
+	public static final String ENDEDDATE_ERROR = "Ngày kết thúc phải sau ngày tạo chương trình khuyến mãi!";
+	public static final String DISCOUNT_ERROR = "Giảm giá phải là số dương!";
 
 	@Id
 	private String promotionID;

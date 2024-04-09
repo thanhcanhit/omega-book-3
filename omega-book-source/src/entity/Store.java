@@ -3,6 +3,7 @@ package entity;
 import java.util.*;
 
 import jakarta.persistence.*;
+import lombok.ToString;
 
 /**
  *
@@ -20,6 +21,9 @@ public class Store {
     private String storeID;
     private String name;
     private String address;
+    @OneToMany(mappedBy = "store", fetch = FetchType.LAZY)
+    @ToString.Exclude
+    private List<Employee> employee;
 
     public Store() {
     }

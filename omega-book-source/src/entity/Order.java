@@ -31,6 +31,7 @@ public final class Order {
     private final String EMPLOYEE_ERROR = "Nhân viên không được rỗng !";
     private final String CUSTOMER_ERROR = "Khách hàng không được rỗng !";
     private final String ORDERDETAIL_ERROR = "Chi tiết hoá đơn không được rỗng !";
+    
     @Id
     private String orderID;
     @Temporal(TemporalType.TIMESTAMP)

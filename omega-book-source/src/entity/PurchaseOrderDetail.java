@@ -19,9 +19,11 @@ public class PurchaseOrderDetail {
     private int quantity;
     private double costPrice;
     private double lineTotal;
+    @Id
     @ManyToOne
     @JoinColumn(name = "purchaseOrderID")
     private PurchaseOrder purchaseOrder;
+    @Id
     @ManyToOne
     @JoinColumn(name = "productID")
     private Product product;

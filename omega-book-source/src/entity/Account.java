@@ -5,6 +5,7 @@
 package entity;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToOne;
 
@@ -20,6 +21,7 @@ public class Account {
 
   
     private String passWord;
+    @Id
     @OneToOne
     @JoinColumn(name="employeeID")
     private Employee employee;

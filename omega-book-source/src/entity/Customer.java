@@ -34,6 +34,7 @@ public class Customer implements Serializable {
     private String name;
     private int score;
     private boolean gender;
+    @Temporal(TemporalType.DATE)
     private Date dateOfBirth;
     private String phoneNumber;
     private String rank;

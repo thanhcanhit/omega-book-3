@@ -4,18 +4,18 @@
  */
 package entity;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.Date;
 import java.util.Objects;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 /**
  *
  * @author Hoàng Khang
  */
 @Entity
-public class Employee {
+public class Employee implements Serializable {
 	@Id
     private String employeeID;
     private String citizenIdentification;
@@ -26,6 +26,8 @@ public class Employee {
     private boolean gender;
     private Date dateOfBirth;
     private String address;
+    @ManyToOne
+    @JoinColumn(name="storeID")
     private Store store;
 
     public Employee() {

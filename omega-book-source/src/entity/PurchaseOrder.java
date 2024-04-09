@@ -33,7 +33,7 @@ public final class PurchaseOrder {
     @ManyToOne
     @JoinColumn(name = "employeeID")
     private Employee employee;
-    @OneToMany(mappedBy = "purchaseOrder")
+    @OneToMany(mappedBy = "purchaseOrder", fetch = FetchType.LAZY)
     private ArrayList<PurchaseOrderDetail> purchaseOrderDetailList;
     private double total;
 
