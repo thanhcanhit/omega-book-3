@@ -17,13 +17,15 @@ import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Date;
+
+import bus.CreatePurchaseOrder_BUS;
 import main.Application;
 
 /**
  *
  * @author thanhcanhit
  */
-public class CreatePurchaseOrder_BUSImpl {
+public class CreatePurchaseOrder_BUSImpl implements CreatePurchaseOrder_BUS{
 
     private final Product_DAO productDAO = new Product_DAO();
     private final Supplier_DAO suplierDAO = new Supplier_DAO();

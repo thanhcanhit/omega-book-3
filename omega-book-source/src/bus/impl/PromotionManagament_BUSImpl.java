@@ -16,11 +16,13 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
+import bus.PromotionManagement_BUS;
+
 /**
  *
  * @author Như Tâm
  */
-public class PromotionManagament_BUSImpl {
+public class PromotionManagament_BUSImpl implements PromotionManagement_BUS{
     private Promotion_DAO promotion_DAO = new Promotion_DAO();
 
     public PromotionManagament_BUSImpl() {

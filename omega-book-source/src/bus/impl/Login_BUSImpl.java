@@ -10,13 +10,15 @@ import dao.Employee_DAO;
 import entity.Account;
 import entity.Employee;
 import java.util.regex.Pattern;
+
+import bus.Login_BUS;
 import utilities.PasswordHash;
 
 /**
  *
  * @author Hoàng Khang
  */
-public class Login_BUSImpl {
+public class Login_BUSImpl implements Login_BUS{
 
     private final Account_DAO accountDAO = new Account_DAO();
     private final Employee_DAO employeeDAO = new Employee_DAO();

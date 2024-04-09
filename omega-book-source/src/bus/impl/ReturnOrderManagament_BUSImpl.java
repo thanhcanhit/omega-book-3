@@ -17,11 +17,13 @@ import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import bus.ReturnOrderManagement_BUS;
+
 /**
  *
  * @author Như Tâm
  */
-public class ReturnOrderManagament_BUSImpl {
+public class ReturnOrderManagament_BUSImpl implements ReturnOrderManagement_BUS{
     private ReturnOrder_DAO dao = new ReturnOrder_DAO();
     private ReturnOrderDetail_DAO detail_dao = new ReturnOrderDetail_DAO();
     private Order_DAO order_dao = new Order_DAO();

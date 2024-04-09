@@ -11,11 +11,13 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 
+import bus.ViewAccoutingVoucherList_BUS;
+
 /**
  *
  * @author Hoàng Khang
  */
-public class ViewAcountingVoucherList_BUSImpl {
+public class ViewAcountingVoucherList_BUSImpl implements ViewAccoutingVoucherList_BUS{
 
     private AcountingVoucher_DAO acountingVoucher_DAO = new AcountingVoucher_DAO();
     private CashCountSheet_DAO cashCountSheet_DAO = new CashCountSheet_DAO();

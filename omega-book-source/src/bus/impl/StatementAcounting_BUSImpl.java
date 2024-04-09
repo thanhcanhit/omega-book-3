@@ -18,6 +18,8 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+
+import bus.StatementAccounting_BUS;
 import main.Application;
 import raven.toast.Notifications;
 import utilities.AcountingVoucherPrinter;
@@ -26,7 +28,7 @@ import utilities.AcountingVoucherPrinter;
  *
  * @author Hoàng Khang
  */
-public class StatementAcounting_BUSImpl {
+public class StatementAcounting_BUSImpl implements StatementAccounting_BUS{
 
     private AcountingVoucher_DAO acountingVoucher_DAO = new AcountingVoucher_DAO();
     private CashCountSheet_DAO cashCountSheet_DAO = new CashCountSheet_DAO();

@@ -19,11 +19,13 @@ import entity.Promotion;
 import java.util.ArrayList;
 import java.util.Date;
 
+import bus.OrderManagement_BUS;
+
 /**
  *
  * @author KienTran
  */
-public class OrderManagement_BUSImpl {
+public class OrderManagement_BUSImpl implements OrderManagement_BUS{
 
     private final Order_DAO orderDAO = new Order_DAO();
     private final OrderDetail_DAO orderDetailDAO = new OrderDetail_DAO();

@@ -16,11 +16,13 @@ import entity.PurchaseOrderDetail;
 import entity.Supplier;
 import java.util.ArrayList;
 
+import bus.PurchaseOrderManagement_BUS;
+
 /**
  *
  * @author KienTran
  */
-public class PurchaseOrderManagement_BUSImpl {
+public class PurchaseOrderManagement_BUSImpl implements PurchaseOrderManagement_BUS{
     private final PurchaseOrder_DAO purchaseOrderDAO = new PurchaseOrder_DAO();
     private final PurchaseOrderDetail_DAO orderDetailDAO = new PurchaseOrderDetail_DAO();
  

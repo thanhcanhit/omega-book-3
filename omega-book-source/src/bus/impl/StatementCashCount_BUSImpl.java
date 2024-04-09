@@ -15,13 +15,15 @@ import dao.Employee_DAO;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+
+import bus.StatementCashCount_BUS;
 import utilities.CashCountSheetPrinter;
 
 /**
  *
  * @author Hoàng Khang
  */
-public class StatementCashCount_BUSImpl {
+public class StatementCashCount_BUSImpl implements StatementCashCount_BUS {
 
     private Employee_DAO employee_DAO = new Employee_DAO();
     private CashCount_DAO cashCount_DAO = new CashCount_DAO();

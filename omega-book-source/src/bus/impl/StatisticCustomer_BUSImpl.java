@@ -6,10 +6,12 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.concurrent.TimeUnit;
 
+import bus.StatisticCustomer_BUS;
+
 /**
  * StatisticCustomer_BUS Tính toán thống kê khách hàng theo tuổi và giới tính
  */
-public class StatisticCustomer_BUSImpl {
+public class StatisticCustomer_BUSImpl implements StatisticCustomer_BUS{
 
     Customer_DAO customer_DAO = new Customer_DAO(); // Gợi ý: Bạn cần phải sử dụng đối tượng này để lấy danh sách khách hàng
     ArrayList<Customer> list = customer_DAO.getAll();

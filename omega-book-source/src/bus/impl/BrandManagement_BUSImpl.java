@@ -8,11 +8,13 @@ import dao.Brand_DAO;
 import entity.Brand;
 import java.util.ArrayList;
 
+import bus.BrandManagement_BUS;
+
 /**
  *
  * @author Như Tâm
  */
-public class BrandManagement_BUSImpl {
+public class BrandManagement_BUSImpl implements BrandManagement_BUS{
     private Brand_DAO brand_DAO = new Brand_DAO();
     
     public ArrayList<Brand> getALLBrand(){

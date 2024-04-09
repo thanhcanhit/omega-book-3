@@ -9,11 +9,13 @@ import entity.Shift;
 import java.util.ArrayList;
 import java.util.Date;
 
+import bus.ShiftsManagement_BUS;
+
 /**
  *
  * @author Hoàng Khang
  */
-public class ShiftsManagemant_BUSImpl {
+public class ShiftsManagemant_BUSImpl implements ShiftsManagement_BUS{
 
     private Shift_DAO shift_DAO = new Shift_DAO();
 
