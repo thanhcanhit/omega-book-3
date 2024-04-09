@@ -6,13 +6,17 @@ package entity;
 
 import java.util.Objects;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Entity;
+import jakarta.persistence.IdClass;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 
 /**
  *
  * @author Như Tâm
  */
 @Entity
+@IdClass(Promotion.class)
 public class ProductPromotionDetail {
 	@ManyToOne
 	@JoinColumn(name = "promotionID")

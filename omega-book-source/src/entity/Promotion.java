@@ -1,17 +1,17 @@
 package entity;
 
-import enums.DiscountType;
-import enums.CustomerRank;
-import enums.PromotionType;
-import java.util.*;
+import java.util.Date;
+import java.util.List;
+import java.util.Objects;
 import java.util.regex.Pattern;
 
+import enums.CustomerRank;
+import enums.DiscountType;
+import enums.PromotionType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
-import jakarta.persistence.FetchType;
 import jakarta.persistence.Id;
-import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
 
@@ -39,9 +39,8 @@ public final class Promotion {
 	private double discount;
 	@Enumerated(EnumType.ORDINAL)
 	private CustomerRank condition;
-
-	@ManyToMany(mappedBy = "promotions", fetch = FetchType.LAZY)
-	private Set<Product> products;
+	
+	private List<ProductPromotionDetail> details;
 
 	public Promotion() {
 	}
@@ -63,14 +62,14 @@ public final class Promotion {
 
 	// constructor khuyến mãi theo sản phẩm
 	public Promotion(String promotionID, Date startedDate, Date endedDate, PromotionType typePromotion,
-			DiscountType typeDiscount, double discount, Set<Product> listDetail) throws Exception {
+			DiscountType typeDiscount, double discount, List<ProductPromotionDetail> listDetail) throws Exception {
 		setPromotionID(promotionID);
 		setStartedDate(startedDate);
 		setEndedDate(endedDate);
 		setTypePromotion(typePromotion);
 		setTypeDiscount(typeDiscount);
 		setDiscount(discount);
-		setProducts(listDetail);
+		setDetails(listDetail);
 	}
 
 	// constructor khuyến mãi theo hoá đơn
@@ -87,7 +86,7 @@ public final class Promotion {
 
 	// constructor đầy đủ
 	public Promotion(String promotionID, Date startedDate, Date endedDate, PromotionType typePromotion,
-			DiscountType typeDiscount, double discount, CustomerRank condition, Set<Product> listDetail)
+			DiscountType typeDiscount, double discount, CustomerRank condition, List<ProductPromotionDetail> listDetail)
 			throws Exception {
 		setPromotionID(promotionID);
 		setStartedDate(startedDate);
@@ -96,7 +95,7 @@ public final class Promotion {
 		setTypeDiscount(typeDiscount);
 		setDiscount(discount);
 		setCondition(condition);
-		setProducts(listDetail);
+		setDetails(listDetail);
 	}
 
 	@Override
@@ -193,12 +192,13 @@ public final class Promotion {
 				+ condition;
 	}
 
-	public Set<Product> getProducts() {
-		return products;
+	public List<ProductPromotionDetail> getDetails() {
+		return details;
 	}
 
-	public void setProducts(Set<Product> products) {
-		this.products = products;
+	public void setDetails(List<ProductPromotionDetail> details) {
+		this.details = details;
 	}
+
 
 }

@@ -5,7 +5,7 @@ import java.text.DecimalFormat;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.Set;
+import java.util.List;
 
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
@@ -86,16 +86,17 @@ public class ProductPromotionManagament_GUI extends javax.swing.JPanel {
 
 		chooseStartDate.setDate(currentPromotion.getStartedDate());
 		chooseEndDate.setDate(currentPromotion.getEndedDate());
-		renderProductPromotionTables(currentPromotion.getProducts());
+		renderProductPromotionTables(currentPromotion.getDetails());
 	}
 
-	private void renderProductPromotionTables(Set<Product> listDetail) {
-		tblModel_productPromotion.setRowCount(0);
-		for (Product product : listDetail) {
-			String[] newRow = { product.getProductID(), product.getName() };
-			tblModel_productPromotion.addRow(newRow);
-		}
-	};
+	private void renderProductPromotionTables(List<ProductPromotionDetail> listDetail) {
+        tblModel_productPromotion.setRowCount(0);
+        for (ProductPromotionDetail productPromotionDetail : listDetail) {
+            Product product = bus.getProduct(productPromotionDetail.getProduct().getProductID());
+            String[] newRow = {product.getProductID(), product.getName()};
+            tblModel_productPromotion.addRow(newRow);
+        }
+    };
 
 	private void renderPromotionTables(ArrayList<Promotion> allPromotionForCustomer) {
 		tblModel_inforProductPromotion.setRowCount(0);
