@@ -11,6 +11,10 @@ import jakarta.persistence.*;
  * @author Nhu Tam
  */
 @Entity
+@NamedQueries({
+		@NamedQuery(name = "Supplier.findBySupplierID", query = "SELECT s FROM Supplier s WHERE s.supplierID = :supplierID"),
+		@NamedQuery(name = "Supplier.findAll", query = "SELECT s FROM Supplier s") 
+})
 public class Supplier implements Serializable {
     
     /* Hằng báo lỗi*/

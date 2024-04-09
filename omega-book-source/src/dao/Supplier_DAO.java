@@ -5,8 +5,11 @@
 package dao;
 
 import database.ConnectDB;
+import database.HibernateConnect;
 import entity.*;
 import interfaces.DAOBase;
+import jakarta.persistence.*;
+
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
@@ -17,25 +20,29 @@ import java.util.ArrayList;
  * @author Như Tâm
  */
 public class Supplier_DAO implements DAOBase<Supplier>{
+	EntityManager entityManager;
+	public Supplier_DAO() {
+		entityManager = HibernateConnect.createEntityManager();
+	}
 
     @Override
     public Supplier getOne(String id) {
-        Supplier supplier = null;
-        try {
-            PreparedStatement st = ConnectDB.conn.prepareStatement("SELECT * FROM Supplier WHERE supplierID = ?");
-            st.setString(1, id);
-            ResultSet rs = st.executeQuery();
-            
-            while (rs.next()) {
-                String supplierID = rs.getString("supplierID");
-                String name = rs.getString("name");
-                String address = rs.getString("address");
-                supplier = new Supplier(supplierID, name, address);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return supplier;
+//        Supplier supplier = null;
+//        try {
+//            PreparedStatement st = ConnectDB.conn.prepareStatement("SELECT * FROM Supplier WHERE supplierID = ?");
+//            st.setString(1, id);
+//            ResultSet rs = st.executeQuery();
+//            
+//            while (rs.next()) {
+//                String supplierID = rs.getString("supplierID");
+//                String name = rs.getString("name");
+//                String address = rs.getString("address");
+//                supplier = new Supplier(supplierID, name, address);
+//            }
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+        return entityManager.createNamedQuery("Supplier.findBySupplierID", Supplier.class).setParameter("supplierID", id).getSingleResult();
     }
 
     @Override
