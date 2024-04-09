@@ -13,7 +13,7 @@ import javax.swing.table.DefaultTableModel;
 
 import com.formdev.flatlaf.FlatClientProperties;
 
-import bus.PromotionManagament_BUS;
+import bus.impl.PromotionManagament_BUSImpl;
 import entity.Product;
 import entity.ProductPromotionDetail;
 import entity.Promotion;
@@ -28,7 +28,7 @@ import utilities.SVGIcon;
  */
 public class ProductPromotionManagament_GUI extends javax.swing.JPanel {
 
-	private PromotionManagament_BUS bus;
+	private PromotionManagament_BUSImpl bus;
 	private Promotion currentPromotion;
 	private DefaultComboBoxModel cmbModel_type;
 	private DefaultComboBoxModel cmbModel_status;
@@ -46,7 +46,7 @@ public class ProductPromotionManagament_GUI extends javax.swing.JPanel {
 	}
 
 	private void init() {
-		bus = new PromotionManagament_BUS();
+		bus = new PromotionManagament_BUSImpl();
 		cart = new ArrayList<>();
 		// model
 		tblModel_inforProductPromotion = new DefaultTableModel(

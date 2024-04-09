@@ -11,8 +11,7 @@ import java.util.Date;
 import javax.swing.JLabel;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
-
-import bus.ShiftsManagemant_BUS;
+import bus.impl.ShiftsManagemant_BUSImpl;
 import entity.Shift;
 import utilities.SVGIcon;
 
@@ -23,7 +22,7 @@ import utilities.SVGIcon;
 public class ManagemantShifts_GUI extends javax.swing.JPanel {
 
     private DefaultTableModel tblModel_shift;
-    private ShiftsManagemant_BUS shift_bus = new ShiftsManagemant_BUS();
+    private ShiftsManagemant_BUSImpl shift_bus = new ShiftsManagemant_BUSImpl();
 
     /**
      * Creates new form ManagemantShifts_GUI

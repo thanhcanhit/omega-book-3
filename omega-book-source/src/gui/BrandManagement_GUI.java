@@ -14,7 +14,7 @@ import javax.swing.table.DefaultTableModel;
 
 import com.formdev.flatlaf.FlatClientProperties;
 
-import bus.BrandManagement_BUS;
+import bus.impl.BrandManagement_BUSImpl;
 import entity.Brand;
 import entity.Order;
 import entity.PurchaseOrder;
@@ -32,7 +32,7 @@ public class BrandManagement_GUI extends javax.swing.JPanel {
     /**
      * Creates new form Sales_GUI
      */
-    private BrandManagement_BUS bus;
+    private BrandManagement_BUSImpl bus;
 
     //
     private PurchaseOrder purchaseOrder;
@@ -46,7 +46,7 @@ public class BrandManagement_GUI extends javax.swing.JPanel {
     }
 
     private void init() {
-        bus = new BrandManagement_BUS();
+        bus = new BrandManagement_BUSImpl();
 
 
 //        table

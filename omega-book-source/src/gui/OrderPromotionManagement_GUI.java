@@ -15,8 +15,7 @@ import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
 import com.formdev.flatlaf.FlatClientProperties;
-
-import bus.PromotionManagament_BUS;
+import bus.impl.PromotionManagament_BUSImpl;
 import entity.Promotion;
 import enums.CustomerRank;
 import enums.DiscountType;
@@ -33,7 +32,7 @@ public class OrderPromotionManagement_GUI extends javax.swing.JPanel implements 
     /**
      * Creates new form OrderPromotionManagement_GUI
      */
-    private PromotionManagament_BUS bus;
+    private PromotionManagament_BUSImpl bus;
     private Promotion currentPromotion = null;
     //Model
     private DefaultTableModel tblModel_promotion;
@@ -49,7 +48,7 @@ public class OrderPromotionManagement_GUI extends javax.swing.JPanel implements 
     }
     
     private void init() {
-        bus = new PromotionManagament_BUS();
+        bus = new PromotionManagament_BUSImpl();
         //model
         tblModel_promotion = new DefaultTableModel(new String[]{"Mã khuyến mãi", "Loại", "Giảm giá", "Hạng khách hàng", "Trạng thái"}, 0);
         tbl_inforPromo.setModel(tblModel_promotion);

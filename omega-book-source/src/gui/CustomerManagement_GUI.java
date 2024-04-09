@@ -32,7 +32,7 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import com.formdev.flatlaf.FlatClientProperties;
 
-import bus.CustomerManagement_BUS;
+import bus.impl.CustomerManagement_BUSImpl;
 import entity.Customer;
 import raven.toast.Notifications;
 import utilities.SVGIcon;
@@ -44,7 +44,7 @@ import utilities.SVGIcon;
 public class CustomerManagement_GUI extends javax.swing.JPanel {
 
     private DefaultTableModel tblModel_customer;
-    private CustomerManagement_BUS customer_BUS = new CustomerManagement_BUS();
+    private CustomerManagement_BUSImpl customer_BUS = new CustomerManagement_BUSImpl();
 
     /**
      * Creates new form CustomerManagement_GUI

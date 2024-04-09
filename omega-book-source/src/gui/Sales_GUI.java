@@ -39,7 +39,7 @@ import com.github.kwhat.jnativehook.GlobalScreen;
 import com.github.kwhat.jnativehook.keyboard.NativeKeyEvent;
 import com.github.kwhat.jnativehook.keyboard.NativeKeyListener;
 
-import bus.Sales_BUS;
+import bus.impl.Sales_BUSImpl;
 import entity.Customer;
 import entity.Order;
 import entity.OrderDetail;
@@ -59,7 +59,7 @@ public class Sales_GUI extends javax.swing.JPanel {
     /**
      * Creates new form Sales_GUI
      */
-    private Sales_BUS bus;
+    private Sales_BUSImpl bus;
 
     //
     private Order order;
@@ -219,7 +219,7 @@ public class Sales_GUI extends javax.swing.JPanel {
     }
 
     private void init() {
-        bus = new Sales_BUS();
+        bus = new Sales_BUSImpl();
         txt_orderId.setEditable(false);
         txt_orderDate.setEditable(false);
         txt_orderPay.setEditable(false);

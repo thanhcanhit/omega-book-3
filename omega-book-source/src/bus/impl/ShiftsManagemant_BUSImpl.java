@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package bus;
+package bus.impl;
 
 import dao.Shift_DAO;
 import entity.Shift;
@@ -13,7 +13,7 @@ import java.util.Date;
  *
  * @author Hoàng Khang
  */
-public class ShiftsManagemant_BUS {
+public class ShiftsManagemant_BUSImpl {
 
     private Shift_DAO shift_DAO = new Shift_DAO();
 

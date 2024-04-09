@@ -9,7 +9,7 @@ import java.awt.Toolkit;
 
 import com.formdev.flatlaf.FlatClientProperties;
 
-import bus.Login_BUS;
+import bus.impl.Login_BUSImpl;
 import entity.Employee;
 import main.Application;
 import raven.toast.Notifications;
@@ -20,7 +20,7 @@ import raven.toast.Notifications;
  */
 public class Login_GUI extends javax.swing.JPanel {
 
-	private final Login_BUS log_BUS = new Login_BUS();
+	private final Login_BUSImpl log_BUS = new Login_BUSImpl();
 
 	/**
 	 * Creates new form Login

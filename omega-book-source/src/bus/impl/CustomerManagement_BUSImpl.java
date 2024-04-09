@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package bus;
+package bus.impl;
 
 import entity.Customer;
 import dao.Customer_DAO;
@@ -15,7 +15,7 @@ import java.util.concurrent.TimeUnit;
  *
  * @author Hoàng Khang
  */
-public class CustomerManagement_BUS {
+public class CustomerManagement_BUSImpl {
 
     private Customer_DAO customer_DAO = new Customer_DAO();
 

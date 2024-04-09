@@ -6,7 +6,7 @@ package gui;
 
 import java.awt.Color;
 
-import bus.StatisticCustomer_BUS;
+import bus.impl.StatisticCustomer_BUSImpl;
 import gui.customchart.piechart.ModelPolarAreaChart;
 import gui.customchart.piechart.PolarAreaChart;
 
@@ -16,7 +16,7 @@ import gui.customchart.piechart.PolarAreaChart;
  */
 public class StatisticCustomer_GUI extends javax.swing.JPanel {
 
-    StatisticCustomer_BUS statisticCustomer_BUS = new StatisticCustomer_BUS();
+    StatisticCustomer_BUSImpl statisticCustomer_BUS = new StatisticCustomer_BUSImpl();
     int data[] = statisticCustomer_BUS.filterCustomers();
     int numCus = statisticCustomer_BUS.getNumberCus();
 

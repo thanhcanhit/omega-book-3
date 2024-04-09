@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package bus;
+package bus.impl;
 
 import dao.CashCountSheetDetail_DAO;
 import dao.CashCountSheet_DAO;
@@ -21,7 +21,7 @@ import utilities.CashCountSheetPrinter;
  *
  * @author Hoàng Khang
  */
-public class StatementCashCount_BUS {
+public class StatementCashCount_BUSImpl {
 
     private Employee_DAO employee_DAO = new Employee_DAO();
     private CashCount_DAO cashCount_DAO = new CashCount_DAO();

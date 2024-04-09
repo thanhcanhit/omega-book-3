@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package bus;
+package bus.impl;
 
 import dao.Order_DAO;
 import dao.Product_DAO;
@@ -13,7 +13,7 @@ import dao.ReturnOrder_DAO;
  *
  * @author KienTran
  */
-public class StatisticSales_BUS {
+public class StatisticSales_BUSImpl {
     private final Order_DAO orderDAO = new Order_DAO();
     private final PurchaseOrder_DAO purchaseOrderDAO = new PurchaseOrder_DAO();
     private final ReturnOrder_DAO returnOrderDAO = new ReturnOrder_DAO();

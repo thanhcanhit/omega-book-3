@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package bus;
+package bus.impl;
 
 import dao.Product_DAO;
 import entity.Product;
@@ -12,7 +12,7 @@ import java.util.ArrayList;
  *
  * @author KienTran
  */
-public class StatisticProduct_BUS {
+public class StatisticProduct_BUSImpl {
     Product_DAO productDAO = new Product_DAO();
     
     public double getTotalProduct(String productID, String date){

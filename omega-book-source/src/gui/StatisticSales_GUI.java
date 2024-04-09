@@ -7,7 +7,7 @@ package gui;
 import java.awt.Color;
 import java.beans.PropertyChangeEvent;
 
-import bus.StatisticSales_BUS;
+import bus.impl.StatisticSales_BUSImpl;
 import gui.customchart.ModelChart;
 import gui.customchart.piechart.ModelPolarAreaChart;
 import gui.customchart.piechart.PolarAreaChart;
@@ -20,7 +20,7 @@ import utilities.FormatNumber;
 public final class StatisticSales_GUI extends javax.swing.JPanel {
 
 
-    private final StatisticSales_BUS bus = new StatisticSales_BUS();
+    private final StatisticSales_BUSImpl bus = new StatisticSales_BUSImpl();
     private final PolarAreaChart polarAreaChart = new PolarAreaChart();
 
     /**

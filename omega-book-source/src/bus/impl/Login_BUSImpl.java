@@ -3,7 +3,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package bus;
+package bus.impl;
 
 import dao.Account_DAO;
 import dao.Employee_DAO;
@@ -16,7 +16,7 @@ import utilities.PasswordHash;
  *
  * @author Hoàng Khang
  */
-public class Login_BUS {
+public class Login_BUSImpl {
 
     private final Account_DAO accountDAO = new Account_DAO();
     private final Employee_DAO employeeDAO = new Employee_DAO();
