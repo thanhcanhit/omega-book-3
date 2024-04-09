@@ -207,7 +207,7 @@ public final class Order {
         }
     }
 
-    public void setOrderDetail(ArrayList<OrderDetail> orderDetail) throws Exception {
+    public void setOrderDetail(List<OrderDetail> orderDetail) throws Exception {
         if (!orderDetail.isEmpty()) {
             this.orderDetail = orderDetail;
         } else {

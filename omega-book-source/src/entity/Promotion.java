@@ -3,13 +3,9 @@ package entity;
 import enums.DiscountType;
 import enums.CustomerRank;
 import enums.PromotionType;
-import jakarta.persistence.*;
 import java.util.*;
 import java.util.regex.Pattern;
 
-import enums.CustomerRank;
-import enums.DiscountType;
-import enums.PromotionType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -25,26 +21,10 @@ import jakarta.persistence.TemporalType;
  */
 @Entity
 public final class Promotion {
-    public final String PROMOTIONID_ERROR="Mã chương trình khuyến mãi không hợp lệ!";
-    public final String STARTEDDATE_ERROR="Ngày tạo chương trình khuyến mãi không được rỗng!";
-    public final String ENDEDDATE_ERROR="Ngày kết thúc phải sau ngày tạo chương trình khuyến mãi!";
-    public final String DISCOUNT_ERROR="Giảm giá phải là số dương!";
-    
-    @Id
-    private String promotionID; 
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date startedDate;
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date endedDate;
-    @Enumerated(EnumType.ORDINAL)
-    private PromotionType typePromotion;
-    @Enumerated(EnumType.ORDINAL)
-    private DiscountType typeDiscount;
-    private double discount;
-    @Enumerated(EnumType.ORDINAL)
-    private CustomerRank condition;
-    @OneToMany(mappedBy = "promotion")
-    private ArrayList<ProductPromotionDetail> listDetail;
+	public final String PROMOTIONID_ERROR = "Mã chương trình khuyến mãi không hợp lệ!";
+	public final String STARTEDDATE_ERROR = "Ngày tạo chương trình khuyến mãi không được rỗng!";
+	public final String ENDEDDATE_ERROR = "Ngày kết thúc phải sau ngày tạo chương trình khuyến mãi!";
+	public final String DISCOUNT_ERROR = "Giảm giá phải là số dương!";
 
 	@Id
 	private String promotionID;

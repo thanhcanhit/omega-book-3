@@ -64,7 +64,7 @@ public class Sales_GUI extends javax.swing.JPanel {
     //
     private Order order;
     private Customer customer = null;
-    private ArrayList<OrderDetail> cart;
+    private List<OrderDetail> cart;
     private DefaultTableModel tblModel_cart;
     private Customer defaultCustomer;
     private final JButton[] btnOptionsList;
