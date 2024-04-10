@@ -8,6 +8,9 @@ import database.ConnectDB;
 import entity.Account;
 import entity.Employee;
 import interfaces.DAOBase;
+import jakarta.persistence.EntityManager;
+import utilities.AccessDatabase;
+
 import java.util.ArrayList;
 import java.sql.*;
 import java.util.logging.Level;
@@ -18,106 +21,80 @@ import java.util.logging.Logger;
  * @author thanhcanhit
  */
 public class Account_DAO implements DAOBase<Account> {
+	EntityManager em;
 
-//    Lấy tài khoản dựa vào mã nhân viên
-    @Override
-    public Account getOne(String id) {
-        Account result = null;
-        try {
-            PreparedStatement st = ConnectDB.conn.prepareStatement("Select * from Account where employeeID = ?");
-            st.setString(1, id);
-            ResultSet rs = st.executeQuery();
-            while (rs.next()) {
-                String employeeID = rs.getString("employeeID");
-                String password = rs.getString("password");
-                result = new Account(password, new Employee(employeeID));
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } catch (Exception ex) {
-            Logger.getLogger(Account_DAO.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        return result;
-    }
+	public Account_DAO() {
+		em = AccessDatabase.getEntityManager();
+	}
 
-    public boolean validateAccount(String id, String password) {
-        boolean isValid = false;
-        try {
-            PreparedStatement st = ConnectDB.conn.prepareStatement("Select * from Account where employeeID = ? and password = ?");
-            st.setString(1, id);
-            st.setString(2, password);
-            ResultSet rs = st.executeQuery();
-            if (rs.next()) {
-                isValid = true;
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } catch (Exception ex) {
-            Logger.getLogger(Account_DAO.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        return isValid;
-    }
+	@Override
+	public Account getOne(String id) {
+		return em.find(Account.class, id);
+	}
 
-    @Override
-    public ArrayList<Account> getAll() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
+	public boolean validateAccount(String id, String password) {
+		Account result = em.createNamedQuery("Account.validate", Account.class).setParameter("employeeID", id)
+				.setParameter("password", password).getSingleResult();
+		if (result != null) {
+			return true;
+		}
+		return false;
+	}
 
-    @Override
-    public String generateID() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
+	@Override
+	public ArrayList<Account> getAll() {
+		throw new UnsupportedOperationException("Not supported yet."); // Generated from
+																		// nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+	}
 
-    @Override
-    public Boolean create(Account object) {
-        int n = 0;
-        try {
-            PreparedStatement st = ConnectDB.conn.prepareStatement("insert into Account "
-                    + " values(?,?)");
-            st.setString(1, object.getEmployee().getEmployeeID());
-            st.setString(2, object.getPassWord());
+	@Override
+	public String generateID() {
+		throw new UnsupportedOperationException("Not supported yet."); // Generated from
+																		// nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+	}
 
-            n = st.executeUpdate();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return n > 0;
-    }
+	@Override
+	public Boolean create(Account object) {
+		int n = 0;
+		n = em.createNamedQuery("Account.create").executeUpdate();
+		return n > 0;
+	}
 
-    @Override
-    public Boolean update(String id, Account newObject) {
-        int n = 0;
-        try {
-            PreparedStatement st = ConnectDB.conn.prepareStatement("update Account set "
-                    + "password = ? where employeeID = ?");
-            st.setString(1, id);
-            st.setString(2, newObject.getPassWord());
+	@Override
+	public Boolean update(String id, Account newObject) {
+		int n = 0;
+		try {
+			PreparedStatement st = ConnectDB.conn
+					.prepareStatement("update Account set " + "password = ? where employeeID = ?");
+			st.setString(1, id);
+			st.setString(2, newObject.getPassword());
 
-            n = st.executeUpdate();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return n > 0;
-    }
+			n = st.executeUpdate();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return n > 0;
+	}
 
-    public Boolean updatePass(String id, String newPass) {
-        int n = 0;
-        try {
-            PreparedStatement st = ConnectDB.conn.prepareStatement("update Account set "
-                    + "password = ? where employeeID = ?");
-            st.setString(1, newPass);
-            st.setString(2, id);
+	public Boolean updatePass(String id, String newPass) {
+		int n = 0;
+		try {
+			PreparedStatement st = ConnectDB.conn
+					.prepareStatement("update Account set " + "password = ? where employeeID = ?");
+			st.setString(1, newPass);
+			st.setString(2, id);
 
-            n = st.executeUpdate();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return n > 0;
-    }
+			n = st.executeUpdate();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return n > 0;
+	}
 
-    @Override
-    public Boolean delete(String id) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
+	@Override
+	public Boolean delete(String id) {
+		throw new UnsupportedOperationException("Not supported yet."); // Generated from
+																		// nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+	}
 
 }

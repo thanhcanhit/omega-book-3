@@ -1,9 +1,13 @@
 
 package entity;
-import java.util.*;
 
-import jakarta.persistence.*;
-import lombok.ToString;
+import java.util.List;
+import java.util.Objects;
+
+import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 
 /**
  *
@@ -11,87 +15,86 @@ import lombok.ToString;
  */
 @Entity
 public class Store {
-    
-     /* Hằng báo lỗi*/
-    public static final String ID_EMPTY = "Mã cửa hàng không được phép rỗng";
-    public static final String NAME_EMPTY = "Tên cửa hàng không được phép rỗng";
-    public static final String ADDRESS_EMPTY = "Địa chỉ không được phép rỗng";
-    
-    @Id
-    private String storeID;
-    private String name;
-    private String address;
-    @OneToMany(mappedBy = "store", fetch = FetchType.LAZY)
-    @ToString.Exclude
-    private List<Employee> employee;
 
-    public Store() {
-    }
+	/* Hằng báo lỗi */
+	public static final String ID_EMPTY = "Mã cửa hàng không được phép rỗng";
+	public static final String NAME_EMPTY = "Tên cửa hàng không được phép rỗng";
+	public static final String ADDRESS_EMPTY = "Địa chỉ không được phép rỗng";
 
-    public Store(String storeID) throws Exception {
-        setStoreID(storeID);
-    }
+	@Id
+	private String storeID;
+	private String name;
+	private String address;
+	@OneToMany(mappedBy = "store", fetch = FetchType.LAZY)
+	private List<Employee> employee;
 
-    public Store(String storeID, String name, String address) throws Exception {
-        setStoreID(storeID);
-        setName(name);
-        setAddress(address);
-    }
+	public Store() {
+	}
 
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (obj == null) {
-            return false;
-        }
-        if (getClass() != obj.getClass()) {
-            return false;
-        }
-        final Store other = (Store) obj;
-        return Objects.equals(this.storeID, other.storeID);
-    }
+	public Store(String storeID) throws Exception {
+		setStoreID(storeID);
+	}
 
-    public String getAddress() {
-        return address;
-    }
+	public Store(String storeID, String name, String address) throws Exception {
+		setStoreID(storeID);
+		setName(name);
+		setAddress(address);
+	}
 
-    public String getName() {
-        return name;
-    }
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) {
+			return true;
+		}
+		if (obj == null) {
+			return false;
+		}
+		if (getClass() != obj.getClass()) {
+			return false;
+		}
+		final Store other = (Store) obj;
+		return Objects.equals(this.storeID, other.storeID);
+	}
 
-    public String getStoreID() {
-        return storeID;
-    }
+	public String getAddress() {
+		return address;
+	}
 
-    @Override
-    public int hashCode() {
-        int hash = 7;
-        hash = 73 * hash + Objects.hashCode(this.storeID);
-        return hash;
-    }
+	public String getName() {
+		return name;
+	}
 
-    public void setAddress(String address) throws Exception {
-        if(address.trim().equals("")) 
-            throw new Exception(ADDRESS_EMPTY);
-        this.address = address;
-    }
+	public String getStoreID() {
+		return storeID;
+	}
 
-    public void setName(String name) throws Exception {
-        if(name.trim().equals("")) 
-            throw new Exception(NAME_EMPTY);
-        this.name = name;
-    }
+	@Override
+	public int hashCode() {
+		int hash = 7;
+		hash = 73 * hash + Objects.hashCode(this.storeID);
+		return hash;
+	}
 
-    public void setStoreID(String storeID) throws Exception {
-        if(storeID.trim().equals("")) 
-            throw new Exception(ID_EMPTY);
-        this.storeID = storeID;
-    }
+	public void setAddress(String address) throws Exception {
+		if (address.trim().equals(""))
+			throw new Exception(ADDRESS_EMPTY);
+		this.address = address;
+	}
 
-    @Override
-    public String toString() {
-        return storeID + "," + name + "," + address;
-    }
+	public void setName(String name) throws Exception {
+		if (name.trim().equals(""))
+			throw new Exception(NAME_EMPTY);
+		this.name = name;
+	}
+
+	public void setStoreID(String storeID) throws Exception {
+		if (storeID.trim().equals(""))
+			throw new Exception(ID_EMPTY);
+		this.storeID = storeID;
+	}
+
+	@Override
+	public String toString() {
+		return storeID + "," + name + "," + address;
+	}
 }

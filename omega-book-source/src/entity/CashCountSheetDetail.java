@@ -22,69 +22,66 @@ public class CashCountSheetDetail {
 	@ManyToOne
 	@JoinColumn(name = "employeeID")
 	private Employee employee;
-	
+
 	@Id
 	@ManyToOne
 	@JoinColumn(name = "cashCountSheetID")
 	private CashCountSheet cashCountSheet;
-	
-    private boolean isChecker;
 
-    public CashCountSheetDetail() {
-    }
+	private boolean isChecker;
 
-    public CashCountSheetDetail(boolean isChecker, Employee employee, CashCountSheet cashCountSheet) {
-        this.isChecker = isChecker;
-        this.employee = employee;
-        this.cashCountSheet = cashCountSheet;
-    }
+	public CashCountSheetDetail() {
+	}
 
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (obj == null) {
-            return false;
-        }
-        if (getClass() != obj.getClass()) {
-            return false;
-        }
-        final CashCountSheetDetail other = (CashCountSheetDetail) obj;
-        if (!Objects.equals(this.employee, other.employee)) {
-            return false;
-        }
-        return Objects.equals(this.cashCountSheet, other.cashCountSheet);
-    }
+	public CashCountSheetDetail(boolean isChecker, Employee employee, CashCountSheet cashCountSheet) {
+		this.isChecker = isChecker;
+		this.employee = employee;
+		this.cashCountSheet = cashCountSheet;
+	}
 
-    public CashCountSheet getCashCountSheet() {
-        return cashCountSheet;
-    }
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) {
+			return true;
+		}
+		if (obj == null) {
+			return false;
+		}
+		if (getClass() != obj.getClass()) {
+			return false;
+		}
+		final CashCountSheetDetail other = (CashCountSheetDetail) obj;
+		if (!Objects.equals(this.employee, other.employee)) {
+			return false;
+		}
+		return Objects.equals(this.cashCountSheet, other.cashCountSheet);
+	}
 
-    public Employee getEmployee() {
-        return employee;
-    }
+	public CashCountSheet getCashCountSheet() {
+		return cashCountSheet;
+	}
 
+	public Employee getEmployee() {
+		return employee;
+	}
 
-    @Override
-    public int hashCode() {
-        int hash = 3;
-        hash = 37 * hash + Objects.hashCode(this.employee);
-        hash = 37 * hash + Objects.hashCode(this.cashCountSheet);
-        return hash;
-    }
+	@Override
+	public int hashCode() {
+		int hash = 3;
+		hash = 37 * hash + Objects.hashCode(this.employee);
+		hash = 37 * hash + Objects.hashCode(this.cashCountSheet);
+		return hash;
+	}
 
-    public void setCashCountSheet(CashCountSheet cashCountSheet) {
-        this.cashCountSheet = cashCountSheet;
-    }
+	public void setCashCountSheet(CashCountSheet cashCountSheet) {
+		this.cashCountSheet = cashCountSheet;
+	}
 
-    public void setEmployee(Employee employee) {
-        this.employee = employee;
-    }
+	public void setEmployee(Employee employee) {
+		this.employee = employee;
+	}
 
-    
-
-    public boolean isChecker() {
+	public boolean isChecker() {
 		return isChecker;
 	}
 
@@ -93,9 +90,8 @@ public class CashCountSheetDetail {
 	}
 
 	@Override
-    public String toString() {
-        return "CashCountSheetDetail{" + "employee=" + employee + ", cashCountSheet=" + cashCountSheet + '}';
-    }
-    
-    
+	public String toString() {
+		return "CashCountSheetDetail{" + "employee=" + employee + ", cashCountSheet=" + cashCountSheet + '}';
+	}
+
 }
