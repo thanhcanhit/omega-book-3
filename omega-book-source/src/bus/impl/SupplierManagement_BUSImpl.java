@@ -21,7 +21,6 @@ public class SupplierManagement_BUSImpl implements SupplierManagement_BUS{
             return supplierDAO.getAll();
         }
         public boolean update(String id, Supplier supplier){
-            
             return supplierDAO.update(id, supplier);
         }
         public boolean create(String Name, String address) throws Exception{

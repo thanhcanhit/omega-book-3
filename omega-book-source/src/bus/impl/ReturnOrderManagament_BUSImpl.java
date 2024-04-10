@@ -50,10 +50,10 @@ public class ReturnOrderManagament_BUSImpl implements ReturnOrderManagement_BUS{
     public ArrayList<ReturnOrder> searchById(String returnOrderID) {
         return dao.findById(returnOrderID);
     }
-
-    public ArrayList<ReturnOrder> filter(int type, int status) {
-        return dao.filter(type, status);
-    }
+//
+//    public ArrayList<ReturnOrder> filter(int type, int status) {
+//        return dao.filter(type, status);
+//    }
 
     public ArrayList<OrderDetail> getAllOrderDetail(String orderID) {
         return new OrderDetail_DAO().getAll(orderID);
@@ -67,24 +67,7 @@ public class ReturnOrderManagament_BUSImpl implements ReturnOrderManagement_BUS{
     }
     
     public String generateID(Date returnDate) {
-        //Khởi tạo mã đơn đổi trả HDT
-        String prefix = "HDT";
-        //8 kí tự tiếp theo là ngày tháng năm lập đơn đổi trả
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat();
-        simpleDateFormat.applyPattern("ddMMyyyy");
-        String formatDate = simpleDateFormat.format(returnDate);        
-        prefix += formatDate;
-        //Tìm mã có tiền tố là code và xxxx lớn nhất
-        String maxID = ReturnOrder_DAO.getMaxSequence(prefix);
-        if (maxID == null) {
-            prefix += "0000";
-        } else {
-            String lastFourChars = maxID.substring(maxID.length() - 4);
-            int num = Integer.parseInt(lastFourChars);
-            num++;
-            prefix += String.format("%04d", num);
-        }
-        return prefix;
+    	return dao.generateID(returnDate);
     }
 
     public boolean createNew(ReturnOrder newReturnOrder) {
@@ -132,4 +115,10 @@ public class ReturnOrderManagament_BUSImpl implements ReturnOrderManagement_BUS{
     public Promotion getDiscount(String orderID) {
         return order_dao.getDiscount(orderID);
     }
+
+	@Override
+	public ArrayList<ReturnOrder> filter(int type, int status) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

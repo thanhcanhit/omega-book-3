@@ -15,6 +15,15 @@ import jakarta.persistence.*;
  * @author Như Tâm
  */
 @Entity
+@NamedQueries({ 
+	@NamedQuery(name = "Promotion.findAll", query = "SELECT p FROM Promotion p"),
+	@NamedQuery(name = "Promotion.findByPromotionID", query = "SELECT p FROM Promotion p WHERE p.promotionID = :promotionID"),
+	@NamedQuery(name = "Promotion.findByStartedDate", query = "SELECT p FROM Promotion p WHERE p.startedDate = :startedDate"),
+	@NamedQuery(name = "Promotion.findByEndedDate", query = "SELECT p FROM Promotion p WHERE p.endedDate = :endedDate"),
+	@NamedQuery(name = "Promotion.findByTypePromotion", query = "SELECT p FROM Promotion p WHERE p.typePromotion = :typePromotion"),
+	@NamedQuery(name = "Promotion.findByTypeDiscount", query = "SELECT p FROM Promotion p WHERE p.typeDiscount = :typeDiscount"),
+	@NamedQuery(name = "Promotion.findByCondition", query = "SELECT p FROM Promotion p WHERE p.typePromotion = 1 AND p.condition = :condition") 
+})
 public final class Promotion {
 	public static final String PROMOTIONID_ERROR = "Mã chương trình khuyến mãi không hợp lệ!";
 	public static final String STARTEDDATE_ERROR = "Ngày tạo chương trình khuyến mãi không được rỗng!";

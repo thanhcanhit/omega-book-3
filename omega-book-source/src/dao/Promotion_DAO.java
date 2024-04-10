@@ -5,160 +5,73 @@
 package dao;
 
 import interfaces.DAOBase;
-import java.util.ArrayList;
-import java.sql.*;
-import database.ConnectDB;
+import jakarta.persistence.*;
+import utilities.AccessDatabase;
 import entity.*;
-import enums.BookCategory;
 import enums.DiscountType;
 import enums.CustomerRank;
 import enums.PromotionType;
-import java.util.Date;
+
+import java.text.SimpleDateFormat;
+import java.time.*;
+import java.util.*;
 
 /**
  *
  * @author Như Tâm
  */
 public class Promotion_DAO implements DAOBase<Promotion> {
+	EntityManager em;
+	public Promotion_DAO() {
+		em = AccessDatabase.getEntityManager();
+	}
 
     @Override
     public Promotion getOne(String id) {
-        Promotion promo = null;
-        try {
-            PreparedStatement st = ConnectDB.conn.prepareStatement("SELECT * FROM Promotion WHERE promotionID = ?");
-            st.setString(1, id);
-            ResultSet rs = st.executeQuery();
-
-            while (rs.next()) {
-                int typeDiscount = rs.getInt("typeDiscount");
-                int typePromotion = rs.getInt("promotionType");
-                double discount = rs.getDouble("discount");
-                Date startedDate = rs.getDate("startedDate");
-                Date endedDate = rs.getDate("endedDate");
-                int rankCustomer = rs.getInt("condition");
-                ArrayList<ProductPromotionDetail> listDetail = new ProductPromotionDetail_DAO().getAllForPromotion(id);
-                promo = new Promotion(id, startedDate, endedDate, PromotionType.fromInt(typePromotion), DiscountType.fromInt(typeDiscount), discount, CustomerRank.fromInt(rankCustomer), listDetail);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return promo;
+		return em.createNamedQuery("Promotion.findByPromotionID", Promotion.class).setParameter("promotionID", id)
+				.getSingleResult();
     }
 
     public ArrayList<Promotion> getAllForOrder() {
-        ArrayList<Promotion> result = new ArrayList<>();
-        try {
-            Statement st = ConnectDB.conn.createStatement();
-            ResultSet rs = st.executeQuery("SELECT * FROM Promotion WHERE promotionType = 1");
-
-            while (rs.next()) {
-                String promotionID = rs.getString("promotionID");
-                int typeDiscount = rs.getInt("typeDiscount");
-                double discount = rs.getDouble("discount");
-                Date startedDate = rs.getDate("startedDate");
-                Date endedDate = rs.getDate("endedDate");
-                int rankCustomer = rs.getInt("condition");
-                Promotion promo = new Promotion(promotionID, startedDate, endedDate, PromotionType.ORDER, DiscountType.fromInt(typeDiscount), discount, CustomerRank.fromInt(rankCustomer));
-                result.add(promo);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return result;
+    	return (ArrayList<Promotion>) em.createNamedQuery("Promotion.findByTypePromotion", Promotion.class).setParameter("typePromotion", 1)
+    			                .getResultList();
     }
 
     public ArrayList<Promotion> getAllForOrderFilterRank(int rank) {
-        ArrayList<Promotion> result = new ArrayList<>();
-        try {
-            PreparedStatement st = ConnectDB.conn.prepareStatement("SELECT * FROM Promotion WHERE promotionType = 1 "
-                    + "and condition = ?");
-            st.setInt(1, rank);
-            ResultSet rs = st.executeQuery();
-            while (rs.next()) {
-                String promotionID = rs.getString("promotionID");
-                int typeDiscount = rs.getInt("typeDiscount");
-                double discount = rs.getDouble("discount");
-                Date startedDate = rs.getDate("startedDate");
-                Date endedDate = rs.getDate("endedDate");
-                Promotion promo = new Promotion(promotionID, startedDate, endedDate, PromotionType.ORDER, DiscountType.fromInt(typeDiscount), discount, CustomerRank.fromInt(rank));
-                result.add(promo);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return result;
+    	return (ArrayList<Promotion>) em.createNamedQuery("Promotion.findByCondition", Promotion.class).setParameter("condition", rank).getResultList();
     }
 
     public ArrayList<Promotion> getAllForProduct() {
-        ArrayList<Promotion> result = new ArrayList<>();
-        try {
-            Statement st = ConnectDB.conn.createStatement();
-            ResultSet rs = st.executeQuery("SELECT * FROM Promotion WHERE promotionType = 0");
-
-            while (rs.next()) {
-                String promotionID = rs.getString("promotionID");
-                int typeDiscount = rs.getInt("typeDiscount");
-                int promotionType = rs.getInt("promotionType");
-                double discount = rs.getDouble("discount");
-                Date startedDate = rs.getDate("startedDate");
-                Date endedDate = rs.getDate("endedDate");
-                ArrayList<ProductPromotionDetail> listDetail = new ProductPromotionDetail_DAO().getAllForPromotion(promotionID);
-                Promotion promo = new Promotion(promotionID, startedDate, endedDate, PromotionType.fromInt(promotionType), DiscountType.fromInt(typeDiscount), discount, listDetail);
-                result.add(promo);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return result;
+    	return (ArrayList<Promotion>) em.createNamedQuery("Promotion.findByTypePromotion", Promotion.class).setParameter("typePromotion", 0)
+                .getResultList();
     }
 
-    public ArrayList<Promotion> getAllForProductFilterProduct(String productID) {
-        ArrayList<Promotion> result = new ArrayList<>();
-        try {
-            Statement st = ConnectDB.conn.createStatement();
-            ResultSet rs = st.executeQuery("SELECT * FROM Promotion WHERE promotionType = 0");
-
-            while (rs.next()) {
-                String promotionID = rs.getString("promotionID");
-                int typeDiscount = rs.getInt("typeDiscount");
-                int promotionType = rs.getInt("promotionType");
-                double discount = rs.getDouble("discount");
-                Date startedDate = rs.getDate("startedDate");
-                Date endedDate = rs.getDate("endedDate");
-                ArrayList<ProductPromotionDetail> listDetail = new ProductPromotionDetail_DAO().getAllForProduct(productID);
-                Promotion promo = new Promotion(promotionID, startedDate, endedDate, PromotionType.fromInt(promotionType), DiscountType.fromInt(typeDiscount), discount, listDetail);
-                result.add(promo);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return result;
-    }
+//    public ArrayList<Promotion> getAllForProductFilterProduct(String productID) {
+//        ArrayList<Promotion> result = new ArrayList<>();
+//        try {
+//            Statement st = ConnectDB.conn.createStatement();
+//            ResultSet rs = st.executeQuery("SELECT * FROM Promotion WHERE promotionType = 0");
+//
+//            while (rs.next()) {
+//                String promotionID = rs.getString("promotionID");
+//                int typeDiscount = rs.getInt("typeDiscount");
+//                int promotionType = rs.getInt("promotionType");
+//                double discount = rs.getDouble("discount");
+//                Date startedDate = rs.getDate("startedDate");
+//                Date endedDate = rs.getDate("endedDate");
+//                ArrayList<ProductPromotionDetail> listDetail = new ProductPromotionDetail_DAO().getAllForProduct(productID);
+//                Promotion promo = new Promotion(promotionID, startedDate, endedDate, PromotionType.fromInt(promotionType), DiscountType.fromInt(typeDiscount), discount, listDetail);
+//                result.add(promo);
+//            }
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//        return result;
+//    }
 
     @Override
     public ArrayList<Promotion> getAll() {
-        ArrayList<Promotion> result = new ArrayList<>();
-        try {
-            Statement st = ConnectDB.conn.createStatement();
-            ResultSet rs = st.executeQuery("SELECT * FROM Promotion");
-
-            while (rs.next()) {
-                String promotionID = rs.getString("promotionID");
-                int typeDiscount = rs.getInt("typeDiscount");
-                int promotionType = rs.getInt("promotionType");
-                double discount = rs.getDouble("discount");
-                Date startedDate = rs.getDate("startedDate");
-                Date endedDate = rs.getDate("endedDate");
-                int rankCustomer = rs.getInt("condition");
-                ArrayList<ProductPromotionDetail> listDetail = new ProductPromotionDetail_DAO().getAllForPromotion(promotionID);
-
-                Promotion promo = new Promotion(promotionID, startedDate, endedDate, PromotionType.fromInt(promotionType), DiscountType.fromInt(typeDiscount), discount, CustomerRank.fromInt(rankCustomer), listDetail);
-                result.add(promo);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return result;
+    	return (ArrayList<Promotion>) em.createNamedQuery("Promotion.findAll", Promotion.class).getResultList();
     }
 
     @Override
@@ -168,354 +81,331 @@ public class Promotion_DAO implements DAOBase<Promotion> {
 
     @Override
     public Boolean delete(String id) {
-        int n = 0;
-        try {
-            PreparedStatement st = ConnectDB.conn.prepareStatement("DELETE FROM Promotion WHERE promotionID = ?");
-            st.setString(1, id);
-            n = st.executeUpdate();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return n > 0;
+    	throw new UnsupportedOperationException("Not supported yet.");
     }
 
     @Override
     public Boolean create(Promotion promo) {
         int n = 0;
         try {
-            PreparedStatement st = ConnectDB.conn.prepareStatement("insert into Promotion"
-                    + "([promotionID], [typeDiscount], [promotionType], [discount], [startedDate], [endedDate], [condition])"
-                    + "VALUES(?, ?, ?, ?, ?, ?, ?)");
-            st.setString(1, promo.getPromotionID());
-            st.setInt(2, promo.getTypeDiscount().getValue());
-            st.setInt(3, promo.getTypePromotion().getValue());
-            st.setDouble(4, promo.getDiscount());
-            st.setDate(5, new java.sql.Date(promo.getStartedDate().getTime()));
-            st.setDate(6, new java.sql.Date(promo.getEndedDate().getTime()));
-            st.setInt(7, promo.getCondition().getValue());
-            n = st.executeUpdate();
-        } catch (Exception e) {
-            e.printStackTrace();
+			em.getTransaction().begin();
+			em.persist(promo);
+			em.getTransaction().commit();
+			n = 1;
+		} catch (Exception e) {
+			em.getTransaction().rollback();
+	        e.printStackTrace();
         }
         return n > 0;
     }
 
-    public Boolean createForProduct(Promotion promo) {
-        int n = 0;
-        try {
-            PreparedStatement st = ConnectDB.conn.prepareStatement("insert into Promotion"
-                    + "([promotionID], [typeDiscount], [promotionType], [discount], [startedDate], [endedDate])"
-                    + "VALUES(?, ?, ?, ?, ?, ?)");
-            st.setString(1, promo.getPromotionID());
-            st.setInt(2, promo.getTypeDiscount().getValue());
-            st.setInt(3, promo.getTypePromotion().getValue());
-            st.setDouble(4, promo.getDiscount());
-            st.setDate(5, new java.sql.Date(promo.getStartedDate().getTime()));
-            st.setDate(6, new java.sql.Date(promo.getEndedDate().getTime()));
-            n = st.executeUpdate();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return n > 0;
-    }
+//    public Boolean createForProduct(Promotion promo) {
+//        int n = 0;
+//        try {
+//            PreparedStatement st = ConnectDB.conn.prepareStatement("insert into Promotion"
+//                    + "([promotionID], [typeDiscount], [promotionType], [discount], [startedDate], [endedDate])"
+//                    + "VALUES(?, ?, ?, ?, ?, ?)");
+//            st.setString(1, promo.getPromotionID());
+//            st.setInt(2, promo.getTypeDiscount().getValue());
+//            st.setInt(3, promo.getTypePromotion().getValue());
+//            st.setDouble(4, promo.getDiscount());
+//            st.setDate(5, new java.sql.Date(promo.getStartedDate().getTime()));
+//            st.setDate(6, new java.sql.Date(promo.getEndedDate().getTime()));
+//            n = st.executeUpdate();
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//        return n > 0;
+//    }
 
     @Override
     public Boolean update(String id, Promotion newObject) {
         int n = 0;
         try {
-            PreparedStatement st = ConnectDB.conn.prepareCall("UPDATE Promotion "
-                    + "SET endedDate = GETDATE() "
-                    + "WHERE promotionID = ?");
-            st.setString(1, id);
-            n = st.executeUpdate();
+			em.getTransaction().begin();
+			Promotion promo = em.find(Promotion.class, id);
+			promo.setEndedDate(java.sql.Timestamp.valueOf(LocalDateTime.now()));
+			em.getTransaction().commit();
+			n = 1;
         } catch (Exception e) {
             e.printStackTrace();
         }
         return n > 0;
     }
 
-    public Boolean updateDate(String id) {
-        int n = 0;
-        try {
-            PreparedStatement st = ConnectDB.conn.prepareCall("UPDATE Promotion "
-                    + "SET endedDate = GETDATE() "
-                    + "WHERE promotionID = ?");
-            st.setString(1, id);
-            n = st.executeUpdate();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return n > 0;
-    }
+//    public String getMaxSequence(String prefix) {
+//        try {
+//            prefix += "%";
+//            String sql = "  SELECT TOP 1  * FROM Promotion WHERE promotionID LIKE '" + prefix + "' ORDER BY promotionID DESC;";
+//            PreparedStatement st = ConnectDB.conn.prepareStatement(sql);
+//            ResultSet rs = st.executeQuery();
+//            if (rs.next()) {
+//                String promotionID = rs.getString("promotionID");
+//                return promotionID;
+//            }
+//        } catch (SQLException e) {
+//            e.printStackTrace();
+//        }
+//        return null;
+//    }
 
-    public String getMaxSequence(String prefix) {
-        try {
-            prefix += "%";
-            String sql = "  SELECT TOP 1  * FROM Promotion WHERE promotionID LIKE '" + prefix + "' ORDER BY promotionID DESC;";
-            PreparedStatement st = ConnectDB.conn.prepareStatement(sql);
-            ResultSet rs = st.executeQuery();
-            if (rs.next()) {
-                String promotionID = rs.getString("promotionID");
-                return promotionID;
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
-
-    public ArrayList<Promotion> findById(String searchQuery) {
-        ArrayList<Promotion> result = new ArrayList<>();
+    @SuppressWarnings("unchecked")
+	public ArrayList<Promotion> findById(String searchQuery) {
+//        ArrayList<Promotion> result = new ArrayList<>();
         String query = """
                        SELECT * FROM Promotion
                        where promotionID LIKE ?
                        """;
-        try {
-
-            PreparedStatement st = ConnectDB.conn.prepareStatement(query);
-            st.setString(1, searchQuery + "%");
-            ResultSet rs = st.executeQuery();
-            while (rs.next()) {
-                if (rs != null) {
-                    result.add(getPromotionData(rs));
-                }
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
-        return result;
+        return (ArrayList<Promotion>) em.createNativeQuery(query, Promotion.class).setParameter(1, searchQuery).getResultList();
     }
 
-    private Promotion getPromotionData(ResultSet rs) throws SQLException, Exception {
-        Promotion result = null;
+//    private Promotion getPromotionData(ResultSet rs) throws SQLException, Exception {
+//        Promotion result = null;
+//
+//        //Lấy thông tin tổng quát của lớp promotion
+//        String promotionID = rs.getString("promotionID");
+//        int typePromotion = rs.getInt("promotionType");
+//        int typeDiscount = rs.getInt("typeDiscount");
+//        double discount = rs.getDouble("discount");
+//        Date startedDate = rs.getDate("startedDate");
+//        Date endedDate = rs.getDate("endedDate");
+//        int rankCustomer = rs.getInt("condition");
+//        ArrayList<ProductPromotionDetail> listDetail = new ProductPromotionDetail_DAO().getAllForPromotion(promotionID);
+//
+//        result = new Promotion(promotionID, startedDate, endedDate, PromotionType.fromInt(typePromotion), DiscountType.fromInt(typeDiscount), discount, CustomerRank.fromInt(rankCustomer), listDetail);
+//        return result;
+//    }
 
-        //Lấy thông tin tổng quát của lớp promotion
-        String promotionID = rs.getString("promotionID");
-        int typePromotion = rs.getInt("promotionType");
-        int typeDiscount = rs.getInt("typeDiscount");
-        double discount = rs.getDouble("discount");
-        Date startedDate = rs.getDate("startedDate");
-        Date endedDate = rs.getDate("endedDate");
-        int rankCustomer = rs.getInt("condition");
-        ArrayList<ProductPromotionDetail> listDetail = new ProductPromotionDetail_DAO().getAllForPromotion(promotionID);
+//    public ArrayList<Promotion> filter(int type, int status) {
+//        ArrayList<Promotion> result = new ArrayList<>();
+////        Index tự động tăng phụ thuộc vào số lượng biến số có
+//        int index = 1;
+//        String query = "select * from Promotion WHERE promotionID like '%'";
+////        Xét loại khuyến mãi
+//        if (type != 0) {
+//            query += " and typeDiscount = ?";
+//        }
+////            Xét trạng thái khuyến mãi
+//        if (status == 1) {
+//            query += " and endedDate > GETDATE()";
+//        } else if (status == 2) {
+//            query += " and endedDate < GETDATE()";
+//        }
+//        try {
+//        	
+//            PreparedStatement st = ConnectDB.conn.prepareStatement(query);
+//
+//            if (type == 1) {
+//                st.setInt(index++, 1);
+//            } else if (type == 2) {
+//                st.setInt(index++, 0);
+//            }
+//
+//            ResultSet rs = st.executeQuery();
+//            while (rs.next()) {
+//                if (rs != null) {
+//                    result.add(getPromotionData(rs));
+//                }
+//            }
+//        	
+//        } catch (SQLException e) {
+//            e.printStackTrace();
+//        } catch (Exception ex) {
+//            ex.printStackTrace();
+//        }
+//        return result;
+//    }
 
-        result = new Promotion(promotionID, startedDate, endedDate, PromotionType.fromInt(typePromotion), DiscountType.fromInt(typeDiscount), discount, CustomerRank.fromInt(rankCustomer), listDetail);
-        return result;
-    }
-
-    public ArrayList<Promotion> filter(int type, int status) {
-        ArrayList<Promotion> result = new ArrayList<>();
-//        Index tự động tăng phụ thuộc vào số lượng biến số có
-        int index = 1;
-        String query = "select * from Promotion WHERE promotionID like '%'";
-//        Xét loại khuyến mãi
-        if (type != 0) {
-            query += " and typeDiscount = ?";
-        }
-//            Xét trạng thái khuyến mãi
-        if (status == 1) {
-            query += " and endedDate > GETDATE()";
-        } else if (status == 2) {
-            query += " and endedDate < GETDATE()";
-        }
-        try {
-            PreparedStatement st = ConnectDB.conn.prepareStatement(query);
-
-            if (type == 1) {
-                st.setInt(index++, 1);
-            } else if (type == 2) {
-                st.setInt(index++, 0);
-            }
-
-            ResultSet rs = st.executeQuery();
-            while (rs.next()) {
-                if (rs != null) {
-                    result.add(getPromotionData(rs));
-                }
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
-        return result;
-    }
-
-    public ArrayList<Promotion> findForOrderById(String searchQuery) {
-        ArrayList<Promotion> result = new ArrayList<>();
-        try {
-            PreparedStatement st = ConnectDB.conn.prepareStatement("SELECT * FROM Promotion WHERE promotionType = 1 "
-                    + "and promotionID like '%?'");
-            st.setString(1, searchQuery);
-            ResultSet rs = st.executeQuery();
-            while (rs.next()) {
-                String promotionID = rs.getString("promotionID");
-                int typeDiscount = rs.getInt("typeDiscount");
-                double discount = rs.getDouble("discount");
-                Date startedDate = rs.getDate("startedDate");
-                Date endedDate = rs.getDate("endedDate");
-                int rankCustomer = rs.getInt("condition");
-                Promotion promo = new Promotion(promotionID, startedDate, endedDate, PromotionType.ORDER, DiscountType.fromInt(typeDiscount), discount, CustomerRank.fromInt(rankCustomer));
-                result.add(promo);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return result;
-    }
+//    public ArrayList<Promotion> findForOrderById(String searchQuery) {
+//        ArrayList<Promotion> result = new ArrayList<>();
+//        try {
+//            PreparedStatement st = ConnectDB.conn.prepareStatement("SELECT * FROM Promotion WHERE promotionType = 1 "
+//                    + "and promotionID like '%?'");
+//            st.setString(1, searchQuery);
+//            ResultSet rs = st.executeQuery();
+//            while (rs.next()) {
+//                String promotionID = rs.getString("promotionID");
+//                int typeDiscount = rs.getInt("typeDiscount");
+//                double discount = rs.getDouble("discount");
+//                Date startedDate = rs.getDate("startedDate");
+//                Date endedDate = rs.getDate("endedDate");
+//                int rankCustomer = rs.getInt("condition");
+//                Promotion promo = new Promotion(promotionID, startedDate, endedDate, PromotionType.ORDER, DiscountType.fromInt(typeDiscount), discount, CustomerRank.fromInt(rankCustomer));
+//                result.add(promo);
+//            }
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//        return result;
+//    }
 
     public ArrayList<Promotion> getPromotionOrderAvailable(int rank) {
-        ArrayList<Promotion> result = new ArrayList<>();
-        try {
-            PreparedStatement st = ConnectDB.conn.prepareStatement("select * from Promotion where promotionType = 1 and endedDate > GETDATE() and condition <= ?");
-            st.setInt(1, rank);
-            ResultSet rs = st.executeQuery();
-
-            while (rs.next()) {
-                String promotionID = rs.getString("promotionID");
-                int typeDiscount = rs.getInt("typeDiscount");
-                int promotionType = rs.getInt("promotionType");
-                double discount = rs.getDouble("discount");
-                Date startedDate = rs.getDate("startedDate");
-                Date endedDate = rs.getDate("endedDate");
-                int rankCustomer = rs.getInt("condition");
-                ArrayList<ProductPromotionDetail> listDetail = new ProductPromotionDetail_DAO().getAllForPromotion(promotionID);
-
-                Promotion promo = new Promotion(promotionID, startedDate, endedDate, PromotionType.fromInt(promotionType), DiscountType.fromInt(typeDiscount), discount, CustomerRank.fromInt(rankCustomer), listDetail);
-                result.add(promo);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return result;
+//    	"select * from Promotion where promotionType = 1 and endedDate > GETDATE() and condition <= ?"
+        String query = "SELECT p FROM Promotion p WHERE p.typePromotion = 1 AND p.endedDate > :date AND p.condition <= :rank";
+        Date now = java.sql.Timestamp.valueOf(LocalDateTime.now());
+        return (ArrayList<Promotion>) em.createQuery(query, Promotion.class).setParameter("date", now).setParameter("rank", rank).getResultList();
     }
 
     public boolean updateDateStart(Promotion pm) {
         int n = 0;
         try {
-            PreparedStatement st = ConnectDB.conn.prepareCall("UPDATE Promotion "
-                    + "SET startedDate = GETDATE()"
-                    + "WHERE promotionID = ?");
-            st.setString(1, pm.getPromotionID());
-            n = st.executeUpdate();
-            if (updateDateEnd(pm) == false) {
-                return false;
-            }
+           em.getTransaction().begin();
+           Promotion promo = em.find(Promotion.class, pm.getPromotionID());
+           promo.setStartedDate(java.sql.Timestamp.valueOf(LocalDateTime.now()));
+           em.getTransaction().commit();
+           n = 1;
         } catch (Exception e) {
             e.printStackTrace();
         }
         return n > 0;
     }
 
-    private boolean updateDateEnd(Promotion pm) {
-        int n = 0;
-        try {
-            PreparedStatement st = ConnectDB.conn.prepareCall("UPDATE Promotion "
-                    + "SET endedDate = GETDATE()"
-                    + "WHERE promotionID = ?");
-            st.setString(1, pm.getPromotionID());
-            n = st.executeUpdate();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return n > 0;
-    }
+//    private boolean updateDateEnd(Promotion pm) {
+//        int n = 0;
+//        try {
+//            PreparedStatement st = ConnectDB.conn.prepareCall("UPDATE Promotion "
+//                    + "SET endedDate = GETDATE()"
+//                    + "WHERE promotionID = ?");
+//            st.setString(1, pm.getPromotionID());
+//            n = st.executeUpdate();
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//        return n > 0;
+//    }
 
     public boolean createForOrder(Promotion promo) {
         int n = 0;
-        try {
-            PreparedStatement st = ConnectDB.conn.prepareStatement("insert into Promotion"
-                    + "([promotionID], [typeDiscount], [promotionType], [discount], [startedDate], [endedDate], [condition])"
-                    + "VALUES(?, ?, ?, ?, ?, ?, ?)");
-            st.setString(1, promo.getPromotionID());
-            st.setInt(2, promo.getTypeDiscount().getValue());
-            st.setInt(3, promo.getTypePromotion().getValue());
-            st.setDouble(4, promo.getDiscount());
-            st.setDate(5, new java.sql.Date(promo.getStartedDate().getTime()));
-            st.setDate(6, new java.sql.Date(promo.getEndedDate().getTime()));
-            st.setInt(7, promo.getCondition().getValue());
-            n = st.executeUpdate();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+//        try {
+//            PreparedStatement st = ConnectDB.conn.prepareStatement("insert into Promotion"
+//                    + "([promotionID], [typeDiscount], [promotionType], [discount], [startedDate], [endedDate], [condition])"
+//                    + "VALUES(?, ?, ?, ?, ?, ?, ?)");
+//            st.setString(1, promo.getPromotionID());
+//            st.setInt(2, promo.getTypeDiscount().getValue());
+//            st.setInt(3, promo.getTypePromotion().getValue());
+//            st.setDouble(4, promo.getDiscount());
+//            st.setDate(5, new java.sql.Date(promo.getStartedDate().getTime()));
+//            st.setDate(6, new java.sql.Date(promo.getEndedDate().getTime()));
+//            st.setInt(7, promo.getCondition().getValue());
+//            n = st.executeUpdate();
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
         return n > 0;
     }
 
-    public ArrayList<Promotion> filterForProduct(int type, int status) {
-        ArrayList<Promotion> result = new ArrayList<>();
-//        Index tự động tăng phụ thuộc vào số lượng biến số có
-        int index = 1;
-        String query = "select * from Promotion WHERE promotionType = 0 and promotionID like '%'";
-//        Xét loại khuyến mãi
-        if (type != 0) {
-            query += " and typeDiscount = ?";
-        }
-//            Xét trạng thái khuyến mãi
-        if (status == 1) {
-            query += " and endedDate > GETDATE()";
-        } else if (status == 2) {
-            query += " and endedDate < GETDATE()";
-        }
-        try {
-            PreparedStatement st = ConnectDB.conn.prepareStatement(query);
+	public String generateID(PromotionType promotionType, DiscountType typeDiscount, Date ended) {
+        String prefix = "KM";
+        if(typeDiscount.compare(1))
+            prefix += 1;
+        else
+            prefix += 0;
+        if(promotionType.compare(1))
+            prefix += 1;
+        else
+            prefix += 0;
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat();
+        simpleDateFormat.applyPattern("ddMMyyyy");
+        String formatEnded = simpleDateFormat.format(ended);
+        
+        prefix += formatEnded;
+        String query = """
+				select top 1 * from Promotion
+				where promotionID like ?
+				order by promotionID desc
+				""";
+		try {
+			TypedQuery<Promotion> query1 = em.createQuery(query, Promotion.class);
+			query1.setParameter(1, prefix + "%");
+			List<Promotion> rs = query1.getResultList();
+			if (rs.size() > 0) {
 
-            if (type == 1) {
-                st.setInt(index++, 1);
-            } else if (type == 2) {
-                st.setInt(index++, 0);
-            }
+				String lastID = rs.get(0).getPromotionID();
+				String sNumber = lastID.substring(lastID.length() - 2);
+				int num = Integer.parseInt(sNumber) + 1;
+				prefix += String.format("%04d", num);
+			} else {
+				prefix += String.format("%04d", 0);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+        return prefix;
+	}
 
-            ResultSet rs = st.executeQuery();
-            while (rs.next()) {
-                if (rs != null) {
-                    result.add(getPromotionData(rs));
-                }
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
-        return result;
-    }
+//    public ArrayList<Promotion> filterForProduct(int type, int status) {
+//        ArrayList<Promotion> result = new ArrayList<>();
+////        Index tự động tăng phụ thuộc vào số lượng biến số có
+//        int index = 1;
+//        String query = "select * from Promotion WHERE promotionType = 0 and promotionID like '%'";
+////        Xét loại khuyến mãi
+//        if (type != 0) {
+//            query += " and typeDiscount = ?";
+//        }
+////            Xét trạng thái khuyến mãi
+//        if (status == 1) {
+//            query += " and endedDate > GETDATE()";
+//        } else if (status == 2) {
+//            query += " and endedDate < GETDATE()";
+//        }
+//        try {
+//            PreparedStatement st = ConnectDB.conn.prepareStatement(query);
+//
+//            if (type == 1) {
+//                st.setInt(index++, 1);
+//            } else if (type == 2) {
+//                st.setInt(index++, 0);
+//            }
+//
+//            ResultSet rs = st.executeQuery();
+//            while (rs.next()) {
+//                if (rs != null) {
+//                    result.add(getPromotionData(rs));
+//                }
+//            }
+//        } catch (SQLException e) {
+//            e.printStackTrace();
+//        } catch (Exception ex) {
+//            ex.printStackTrace();
+//        }
+//        return result;
+//    }
 
-    public ArrayList<Promotion> filterForOrder(int type, int status) {
-        ArrayList<Promotion> result = new ArrayList<>();
-//        Index tự động tăng phụ thuộc vào số lượng biến số có
-        int index = 1;
-        String query = "select * from Promotion WHERE promotionType = 1 and promotionID like '%'";
-//        Xét loại khuyến mãi
-        if (type != 0) {
-            query += " and typeDiscount = ?";
-        }
-//            Xét trạng thái khuyến mãi
-        if (status == 1) {
-            query += " and endedDate > GETDATE()";
-        } else if (status == 2) {
-            query += " and endedDate < GETDATE()";
-        }
-        try {
-            PreparedStatement st = ConnectDB.conn.prepareStatement(query);
-
-            if (type == 1) {
-                st.setInt(index++, 1);
-            } else if (type == 2) {
-                st.setInt(index++, 0);
-            }
-
-            ResultSet rs = st.executeQuery();
-            while (rs.next()) {
-                if (rs != null) {
-                    result.add(getPromotionData(rs));
-                }
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
-        return result;
-    }
+//    public ArrayList<Promotion> filterForOrder(int type, int status) {
+//        ArrayList<Promotion> result = new ArrayList<>();
+////        Index tự động tăng phụ thuộc vào số lượng biến số có
+//        int index = 1;
+//        String query = "select * from Promotion WHERE promotionType = 1 and promotionID like '%'";
+////        Xét loại khuyến mãi
+//        if (type != 0) {
+//            query += " and typeDiscount = ?";
+//        }
+////            Xét trạng thái khuyến mãi
+//        if (status == 1) {
+//            query += " and endedDate > GETDATE()";
+//        } else if (status == 2) {
+//            query += " and endedDate < GETDATE()";
+//        }
+//        try {
+//            PreparedStatement st = ConnectDB.conn.prepareStatement(query);
+//
+//            if (type == 1) {
+//                st.setInt(index++, 1);
+//            } else if (type == 2) {
+//                st.setInt(index++, 0);
+//            }
+//
+//            ResultSet rs = st.executeQuery();
+//            while (rs.next()) {
+//                if (rs != null) {
+//                    result.add(getPromotionData(rs));
+//                }
+//            }
+//        } catch (SQLException e) {
+//            e.printStackTrace();
+//        } catch (Exception ex) {
+//            ex.printStackTrace();
+//        }
+//        return result;
+//    }
 }

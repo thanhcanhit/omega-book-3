@@ -1,16 +1,13 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package dao;
 
-import database.*;
 import entity.Product;
 import entity.ProductPromotionDetail;
 import entity.Promotion;
 import interfaces.DAOBase;
-import java.util.ArrayList;
-import java.sql.*;
+import jakarta.persistence.*;
+import utilities.AccessDatabase;
+
+import java.util.*;
 import java.time.LocalDate;
 
 /**
@@ -18,6 +15,10 @@ import java.time.LocalDate;
  * @author Như Tâm
  */
 public class ProductPromotionDetail_DAO implements DAOBase<ProductPromotionDetail> {
+	EntityManager em;
+	public ProductPromotionDetail_DAO() {
+		em = AccessDatabase.getEntityManager();
+	}
 
     public ProductPromotionDetail getOne(String promotionID, String productID) throws Exception {
         ProductPromotionDetail productPromotionDetail = null;
@@ -42,99 +43,49 @@ public class ProductPromotionDetail_DAO implements DAOBase<ProductPromotionDetai
     }
 
     public ArrayList<ProductPromotionDetail> getAllForProduct(String productID) {
-        ArrayList<ProductPromotionDetail> result = new ArrayList<ProductPromotionDetail>();
-        try {
-            PreparedStatement st = ConnectDB.conn.prepareStatement("SELECT * FROM ProductPromotionDetail "
-                    + "WHERE productID = ?");
-            st.setString(1, productID);
-            ResultSet rs = st.executeQuery();
-            while (rs.next()) {
-                String promotionID = rs.getString("promotionID");
-                Promotion promotion = new Promotion(promotionID);
-                Product product = new Product(productID);
-
-                ProductPromotionDetail productPromotionDetail = new ProductPromotionDetail(promotion, product);
-                result.add(productPromotionDetail);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return result;
+		return (ArrayList<ProductPromotionDetail>) em.createNamedQuery("ProductPromotionDetail.findByProduct", ProductPromotionDetail.class)
+				.setParameter("product.productID", productID).getResultList();
     }
 
     public ArrayList<ProductPromotionDetail> getAllForPromotion(String promotionID) {
-        ArrayList<ProductPromotionDetail> result = new ArrayList<ProductPromotionDetail>();
-        try {
-            PreparedStatement st = ConnectDB.conn.prepareStatement("SELECT * FROM ProductPromotionDetail "
-                    + "WHERE promotionID = ?");
-            st.setString(1, promotionID);
-            ResultSet rs = st.executeQuery();
-            while (rs.next()) {
-                String productID = rs.getString("productID");
-                Promotion promotion = new Promotion(promotionID);
-                Product product = new Product(productID);
-
-                ProductPromotionDetail productPromotionDetail = getOne(promotionID, productID);
-                result.add(productPromotionDetail);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return result;
+        return (ArrayList<ProductPromotionDetail>) em.createNamedQuery("ProductPromotionDetail.findByPromotion", ProductPromotionDetail.class)
+        		.setParameter("promotion.promotionID", promotionID).getResultList();
     }
 
-    public ArrayList<ProductPromotionDetail> getAllForProductAndAvailable(String productID) {
-        ArrayList<ProductPromotionDetail> result = new ArrayList<ProductPromotionDetail>();
-        LocalDate now = LocalDate.now();
-        
+    @SuppressWarnings("unchecked")
+	public ArrayList<ProductPromotionDetail> getAllForProductAndAvailable(String productID) {        
         String query = """
                        select * 
                        from ProductPromotionDetail as pd join Promotion as p 
                        on pd.promotionID = p.promotionID
                        where endedDate > GETDATE() and productID = ?
                        """;
-        try {
-            PreparedStatement st = ConnectDB.conn.prepareStatement(query);
-            st.setString(1, productID);
-            ResultSet rs = st.executeQuery();
-            while (rs.next()) {
-                String promotionID = rs.getString("promotionID");
-                Promotion promotion = new Promotion(promotionID);
-                Product product = new Product(productID);
-
-                ProductPromotionDetail productPromotionDetail = new ProductPromotionDetail(promotion, product);
-                result.add(productPromotionDetail);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return result;
+        return (ArrayList<ProductPromotionDetail>) em.createNativeQuery(query, ProductPromotionDetail.class).setParameter(1, productID).getResultList();
     }
 
     @Override
     public ProductPromotionDetail getOne(String id) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        throw new UnsupportedOperationException("Not supported yet."); 
     }
 
     @Override
     public ArrayList<ProductPromotionDetail> getAll() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    	return (ArrayList<ProductPromotionDetail>) em.createNamedQuery("ProductPromotionDetail.findAll", ProductPromotionDetail.class).getResultList();
+
     }
 
     @Override
     public String generateID() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    	throw new UnsupportedOperationException("Not supported yet.");
     }
 
     @Override
     public Boolean create(ProductPromotionDetail productPromotionDetail) {
         int n = 0;
         try {
-            PreparedStatement st = ConnectDB.conn.prepareStatement("INSERT INTO ProductPromotionDetail(promotionID, productID)  "
-                    + "VALUES (?,?)");
-            st.setString(1, productPromotionDetail.getPromotion().getPromotionID());
-            st.setString(2, productPromotionDetail.getProduct().getProductID());
-            n = st.executeUpdate();
+			em.getTransaction().begin();
+			em.persist(productPromotionDetail);
+			em.getTransaction().commit();
         } catch (Exception e) {
             e.printStackTrace();
         }

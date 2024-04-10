@@ -1,18 +1,7 @@
 package entity;
 
 import enums.ReturnOrderStatus;
-import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.OneToOne;
-import jakarta.persistence.Temporal;
-import jakarta.persistence.TemporalType;
-
+import jakarta.persistence.*;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -24,6 +13,10 @@ import java.util.regex.Pattern;
  * @author KienTran
  */
 @Entity
+@NamedQueries({
+		@NamedQuery(name = "ReturnOrder.findByReturnOrderID", query = "SELECT r FROM ReturnOrder r WHERE r.returnOrderID = :returnOrderID"),
+		@NamedQuery(name = "ReturnOrder.findAll", query = "SELECT r FROM ReturnOrder r") 
+})
 public class ReturnOrder {
     private static final String ORDER_ERROR="Order không được rỗng";
     private static final String EMPLOYEE_ERROR="Employee không được rỗng";
