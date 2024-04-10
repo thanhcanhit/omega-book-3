@@ -15,6 +15,10 @@ import jakarta.persistence.*;
  * @author KienTran
  */
 @Entity
+@NamedQueries({
+	@NamedQuery(name = "Order.getAll", query = "SELECT o FROM Order o ORDER BY o.orderAt DESC"),
+	
+})
 public final class Order {
 
     private static final String ORDERID_ERROR = "Mã hoá đơn không hợp lệ !";
