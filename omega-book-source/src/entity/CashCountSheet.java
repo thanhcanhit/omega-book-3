@@ -11,7 +11,7 @@ import java.util.Objects;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
+import jakarta.persistence.NamedQuery;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
@@ -21,6 +21,10 @@ import jakarta.persistence.TemporalType;
  * @author Hoàng Khang
  */
 @Entity
+//Query
+@NamedQuery(name = "CashCountSheet.findAll", query = "SELECT c FROM CashCountSheet c")
+//Lấy tất cả các CashCount trong CashCountSheet
+@NamedQuery(name = "CashCountSheet.findAllCashCount", query = "SELECT c.cashCountList FROM CashCountSheet c")
 public class CashCountSheet{
 	@Id
     private String cashCountSheetID;
