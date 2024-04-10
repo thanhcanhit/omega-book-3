@@ -4,12 +4,17 @@
  */
 package dao;
 
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.util.ArrayList;
+
 import database.ConnectDB;
 import entity.CashCountSheet;
 import entity.CashCountSheetDetail;
 import entity.Employee;
-import java.util.ArrayList;
-import java.sql.*;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.NamedQuery;
+import utilities.AccessDatabase;
 
 /**
  *
@@ -18,8 +23,10 @@ import java.sql.*;
 public class CashCountSheetDetail_DAO implements interfaces.DAOBase<CashCountSheetDetail> {
 
 	private Employee_DAO emp_DAO = new Employee_DAO();
+	EntityManager entityManager;
 
 	public CashCountSheetDetail_DAO() {
+		entityManager = AccessDatabase.getEntityManager();
 	}
 
 	@Override
@@ -30,7 +37,7 @@ public class CashCountSheetDetail_DAO implements interfaces.DAOBase<CashCountShe
 			String sql = "SELECT * FROM CashCountSheetDetail WHERE cashCountSheetID = ?";
 			PreparedStatement preparedStatement = ConnectDB.conn.prepareStatement(sql);
 			preparedStatement.setString(1, cashCountSheetID);
-
+			
 			ResultSet resultSet = preparedStatement.executeQuery();
 
 			if (resultSet.next()) {
@@ -53,31 +60,36 @@ public class CashCountSheetDetail_DAO implements interfaces.DAOBase<CashCountShe
 																		// nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
 	}
 
+//	@NamedQuery(name = "CashCountSheetDetail.findAllByCashCountSheetID", query = "SELECT c FROM CashCountSheetDetail c WHERE c.cashCountSheet.id = :cashCountSheetID")
 	public ArrayList<CashCountSheetDetail> getAllCashCountSheetDetailInCashCountSheet(String cashCountSheetID) {
-		ArrayList<CashCountSheetDetail> cashCountSheetDetails = new ArrayList<>();
-
-		try {
-			String sql = "SELECT * FROM CashCountSheetDetail WHERE cashCountSheetID = ?";
-			PreparedStatement preparedStatement = ConnectDB.conn.prepareStatement(sql);
-			preparedStatement.setString(1, cashCountSheetID);
-
-			ResultSet resultSet = preparedStatement.executeQuery();
-
-			while (resultSet.next()) {
-				boolean index = resultSet.getBoolean("auditorIndex");
-				String employeeID = resultSet.getString("employeeID");
-
-				Employee employee = emp_DAO.getOne(employeeID);
-				CashCountSheet cashCountSheet = new CashCountSheet(cashCountSheetID);
-
-				CashCountSheetDetail cashCountSheetDetail = new CashCountSheetDetail(index, employee, cashCountSheet);
-				cashCountSheetDetails.add(cashCountSheetDetail);
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-
-		return cashCountSheetDetails;
+//		ArrayList<CashCountSheetDetail> cashCountSheetDetails = new ArrayList<>();
+//
+//		try {
+//			String sql = "SELECT * FROM CashCountSheetDetail WHERE cashCountSheetID = ?";
+//			PreparedStatement preparedStatement = ConnectDB.conn.prepareStatement(sql);
+//			preparedStatement.setString(1, cashCountSheetID);
+//
+//			ResultSet resultSet = preparedStatement.executeQuery();
+//
+//			while (resultSet.next()) {
+//				boolean index = resultSet.getBoolean("auditorIndex");
+//				String employeeID = resultSet.getString("employeeID");
+//
+//				Employee employee = emp_DAO.getOne(employeeID);
+//				CashCountSheet cashCountSheet = new CashCountSheet(cashCountSheetID);
+//
+//				CashCountSheetDetail cashCountSheetDetail = new CashCountSheetDetail(index, employee, cashCountSheet);
+//				cashCountSheetDetails.add(cashCountSheetDetail);
+//			}
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//		}
+//
+//		return cashCountSheetDetails;
+		
+		return (ArrayList<CashCountSheetDetail>) entityManager
+				.createNamedQuery("CashCountSheetDetail.findAllByCashCountSheetID", CashCountSheetDetail.class)
+				.setParameter("cashCountSheetID", cashCountSheetID).getResultList();
 	}
 
 	@Override
@@ -88,21 +100,31 @@ public class CashCountSheetDetail_DAO implements interfaces.DAOBase<CashCountShe
 
 	@Override
 	public Boolean create(CashCountSheetDetail cashCountSheetDetail) {
+//		try {
+//			String sql = "INSERT INTO CashCountSheetDetail (auditorIndex, cashCountSheetID, employeeID) VALUES (?, ?, ?)";
+//			PreparedStatement preparedStatement = ConnectDB.conn.prepareStatement(sql);
+//
+//			preparedStatement.setBoolean(1, cashCountSheetDetail.isChecker());
+//			preparedStatement.setString(2, cashCountSheetDetail.getCashCountSheet().getCashCountSheetID());
+//			preparedStatement.setString(3, cashCountSheetDetail.getEmployee().getEmployeeID());
+//			int rowsAffected = preparedStatement.executeUpdate();
+//			if (rowsAffected > 0) {
+//				return true; // Thành công
+//			}
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//		}
+//		return false; // Thất bại
 		try {
-			String sql = "INSERT INTO CashCountSheetDetail (auditorIndex, cashCountSheetID, employeeID) VALUES (?, ?, ?)";
-			PreparedStatement preparedStatement = ConnectDB.conn.prepareStatement(sql);
-
-			preparedStatement.setBoolean(1, cashCountSheetDetail.isChecker());
-			preparedStatement.setString(2, cashCountSheetDetail.getCashCountSheet().getCashCountSheetID());
-			preparedStatement.setString(3, cashCountSheetDetail.getEmployee().getEmployeeID());
-			int rowsAffected = preparedStatement.executeUpdate();
-			if (rowsAffected > 0) {
-				return true; // Thành công
-			}
+			entityManager.getTransaction().begin();
+			entityManager.persist(cashCountSheetDetail);
+			entityManager.getTransaction().commit();
+			return true;
 		} catch (Exception e) {
 			e.printStackTrace();
+			entityManager.getTransaction().rollback();
+			return false;
 		}
-		return false; // Thất bại
 	}
 
 	@Override
