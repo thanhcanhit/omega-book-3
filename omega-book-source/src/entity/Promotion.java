@@ -34,8 +34,12 @@ public final class Promotion {
 	private double discount;
 	@Enumerated(EnumType.ORDINAL)
 	private CustomerRank condition;
+	
 	@OneToMany(mappedBy = "promotion", fetch = FetchType.LAZY)
 	private List<ProductPromotionDetail> details;
+	
+	@OneToMany(mappedBy = "promotion", fetch = FetchType.LAZY)
+	private List<Order> order;
 
 	public Promotion() {
 	}

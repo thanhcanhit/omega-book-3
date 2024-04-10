@@ -11,10 +11,14 @@ import entity.Order;
 import entity.OrderDetail;
 import entity.Promotion;
 import interfaces.DAOBase;
+import jakarta.persistence.EntityManager;
+import utilities.AccessDatabase;
+
 import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.List;
 import java.sql.*;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -25,72 +29,20 @@ import java.time.format.DateTimeFormatter;
  */
 public class Order_DAO implements DAOBase<Order> {
 
+	EntityManager entityManager;
+	public Order_DAO() {
+		entityManager = AccessDatabase.getEntityManager();
+	}
     @Override
     public Order getOne(String id) {
-        Order order = null;
-        try {
-            String sql = "SELECT * FROM [Order] WHERE orderID = ?";
-            PreparedStatement preparedStatement = ConnectDB.conn.prepareStatement(sql);
-            preparedStatement.setString(1, id);
-
-            ResultSet resultSet = preparedStatement.executeQuery();
-
-            if (resultSet.next()) {
-                boolean status = resultSet.getBoolean("status");
-                Date orderAt = resultSet.getDate("orderAt");
-                boolean payment = resultSet.getBoolean("payment");
-                String employeeID = resultSet.getString("employeeID");
-                String customerID = resultSet.getString("customerID");
-                String promotionID = resultSet.getString("promotionID");
-                Double totalDue = resultSet.getDouble("totalDue");
-                Double subTotal = resultSet.getDouble("subTotal");
-
-                Double moneyGiven = resultSet.getDouble("moneyGiven");
-
-                Promotion promotion = new Promotion_DAO().getOne(promotionID);
-                Employee employee = new Employee_DAO().getOne(employeeID);
-                Customer customer = new Customer_DAO().getOne(customerID);
-                ArrayList<OrderDetail> detail = new OrderDetail_DAO().getAll(id);
-                if (promotionID != null) {
-                    order = new Order(id, orderAt, payment, status, promotion, employee, customer, detail, subTotal, totalDue, moneyGiven);
-                } else {
-                    order = new Order(id, orderAt, payment, status, employee, customer, detail, subTotal, totalDue, moneyGiven);
-                }
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return order;
+        return entityManager.find(Order.class, id);
     }
 
     @Override
     public ArrayList<Order> getAll() {
-        ArrayList<Order> result = new ArrayList<>();
-        try {
-            Statement statement = ConnectDB.conn.createStatement();
-            ResultSet resultSet = statement.executeQuery("SELECT * FROM [Order] ORDER BY orderAt desc");
-
-            while (resultSet.next()) {
-                String orderID = resultSet.getString("orderID");
-                boolean status = resultSet.getBoolean("status");
-                Timestamp orderAt = resultSet.getTimestamp("orderAt");
-                boolean payment = resultSet.getBoolean("payment");
-                String employeeID = resultSet.getString("employeeID");
-                String customerID = resultSet.getString("customerID");
-                String promotionID = resultSet.getString("promotionID");
-                Double totalDue = resultSet.getDouble("totalDue");
-                Double subTotal = resultSet.getDouble("subTotal");
-
-                Double moneyGiven = resultSet.getDouble("moneyGiven");
-                Order order = null;
-                order = new Order(orderID, orderAt, payment, status, new Promotion_DAO().getOne(promotionID), new Employee_DAO().getOne(employeeID), new Customer_DAO().getOne(customerID), new OrderDetail_DAO().getAll(orderID), subTotal, totalDue, moneyGiven);
-
-                result.add(order);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return result;
+    	List<Order> list= entityManager.createNamedQuery("Order.getAll", Order.class).getResultList();
+    	ArrayList<Order> result = new ArrayList<>(list);
+        return  result;
     }
 
     @Override

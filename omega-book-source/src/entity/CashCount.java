@@ -23,7 +23,6 @@ public class CashCount {
 	private CashCountSheet cashCountSheet;
     private int quantity;
     private double total;
-
     public CashCount() {
     }
 

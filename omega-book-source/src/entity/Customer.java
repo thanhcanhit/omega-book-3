@@ -39,6 +39,8 @@ public class Customer implements Serializable {
     private String phoneNumber;
     private String rank;
     private String address;
+    @OneToMany(mappedBy = "customer", fetch = FetchType.LAZY)
+    private List<Order> order;
 
     public Customer() {
     }

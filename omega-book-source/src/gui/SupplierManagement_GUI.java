@@ -4,7 +4,7 @@
  */
 package gui;
 
-import java.util.ArrayList;
+import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -75,7 +75,7 @@ public class SupplierManagement_GUI extends javax.swing.JPanel {
 
     }
 
-    private void renderSupplierTable(ArrayList<Supplier> list) {
+    private void renderSupplierTable(List<Supplier> list) {
         tblModel_cart.setRowCount(0);
 
         for (Supplier supplier : list) {
