@@ -1,13 +1,13 @@
 package bus;
 
-import java.util.ArrayList;
+import java.util.*;
 
 import entity.Supplier;
 
 public interface SupplierManagement_BUS {
 
-    public ArrayList<Supplier> getAll();
+    public List<Supplier> getAll();
     public boolean update(String id, Supplier supplier);
     public boolean create(String Name, String address) throws Exception ;
-    public ArrayList<Supplier> search(String id);
+    public List<Supplier> search(String id);
 }

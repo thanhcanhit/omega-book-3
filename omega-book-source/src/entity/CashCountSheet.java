@@ -41,14 +41,14 @@ public class CashCountSheet implements Serializable{
         this.cashCountSheetID = cashCountSheetID;
     }
 
-    public CashCountSheet(String cashCountSheetID, ArrayList<CashCount> cashCountList, List<CashCountSheetDetail> cashCountSheetDetailList, Date createdDate, Date endedDate) {
+    public CashCountSheet(String cashCountSheetID, ArrayList<CashCount> cashCountList, ArrayList<CashCountSheetDetail> cashCountSheetDetailList, Date createdDate, Date endedDate) {
         this.cashCountSheetID = cashCountSheetID;
         this.cashCountList = cashCountList;
         this.createdDate = createdDate;
         this.endedDate = endedDate;
         setTotal();
         setDifference();
-        this.cashCountSheetDetail = cashCountSheetDetailList;
+        this.cashCountSheetDetailList = cashCountSheetDetailList;
     }
 
 //    @Override
@@ -75,8 +75,8 @@ public class CashCountSheet implements Serializable{
         return cashCountList;
     }
 
-    public List<CashCountSheetDetail> getCashCountSheetDetailList() {
-        return cashCountSheetDetail;
+    public ArrayList<CashCountSheetDetail> getCashCountSheetDetailList() {
+        return cashCountSheetDetailList;
     }
 
     public String getCashCountSheetID() {
@@ -112,8 +112,8 @@ public class CashCountSheet implements Serializable{
         setDifference();
     }
 
-    public void setCashCountSheetDetailList(List<CashCountSheetDetail> cashCountSheetDetailList) {
-        this.cashCountSheetDetail = cashCountSheetDetailList;
+    public void setCashCountSheetDetailList(ArrayList<CashCountSheetDetail> cashCountSheetDetailList) {
+        this.cashCountSheetDetailList = cashCountSheetDetailList;
     }
 
     public void setCashCountSheetID(String cashCountSheetID) {

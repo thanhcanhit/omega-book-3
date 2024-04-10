@@ -32,9 +32,6 @@ public class Employee implements Serializable {
     
     @OneToMany(mappedBy = "employee", fetch = FetchType.LAZY)
     private List<Order> order;
-//    
-//    @OneToMany(mappedBy = "employee", fetch = FetchType.LAZY)
-//    private List<CashCountSheetDetail> cashCountSheetDetail;
 
     public Employee() {
     }

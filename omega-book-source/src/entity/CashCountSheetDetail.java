@@ -17,13 +17,7 @@ import jakarta.persistence.ManyToOne;
  * @author Hoàng Khang
  */
 @Entity
-@Table(name = "Details")
 public class CashCountSheetDetail {
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
-
 	@Id
 	@ManyToOne
 	@JoinColumn(name = "employeeID")

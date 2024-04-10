@@ -1,19 +1,10 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package dao;
 
-import database.ConnectDB;
-import database.HibernateConnect;
 import entity.*;
 import interfaces.DAOBase;
 import jakarta.persistence.*;
-
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.Statement;
-import java.util.ArrayList;
+import utilities.AccessDatabase;
+import java.util.*;
 
 /**
  *
@@ -22,47 +13,18 @@ import java.util.ArrayList;
 public class Supplier_DAO implements DAOBase<Supplier>{
 	EntityManager entityManager;
 	public Supplier_DAO() {
-		entityManager = HibernateConnect.createEntityManager();
+		entityManager = AccessDatabase.getEntityManager();
 	}
 
     @Override
     public Supplier getOne(String id) {
-//        Supplier supplier = null;
-//        try {
-//            PreparedStatement st = ConnectDB.conn.prepareStatement("SELECT * FROM Supplier WHERE supplierID = ?");
-//            st.setString(1, id);
-//            ResultSet rs = st.executeQuery();
-//            
-//            while (rs.next()) {
-//                String supplierID = rs.getString("supplierID");
-//                String name = rs.getString("name");
-//                String address = rs.getString("address");
-//                supplier = new Supplier(supplierID, name, address);
-//            }
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
         return entityManager.createNamedQuery("Supplier.findBySupplierID", Supplier.class).setParameter("supplierID", id).getSingleResult();
     }
 
-    @Override
+    @SuppressWarnings("unchecked")
+	@Override
     public ArrayList<Supplier> getAll() {
-        ArrayList<Supplier> result = new ArrayList<>();
-        try {
-            Statement st = ConnectDB.conn.createStatement();
-            ResultSet rs = st.executeQuery("SELECT * FROM Supplier");
-            
-            while (rs.next()) {                
-                String storeID = rs.getString("supplierID");
-                String name = rs.getString("name");
-                String address = rs.getString("address");
-                Supplier supplier = new Supplier(storeID, name, address);
-                result.add(supplier);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return result;
+        return (ArrayList<Supplier>) entityManager.createNamedQuery("Supplier.findAll").getResultList();
     }
 
     @Override
@@ -76,18 +38,18 @@ public class Supplier_DAO implements DAOBase<Supplier>{
                        """;
 
         try {
-            PreparedStatement st = ConnectDB.conn.prepareStatement(query);
-            st.setString(1, result + "%");
-            ResultSet rs = st.executeQuery();
+			TypedQuery<Supplier> query1 = entityManager.createQuery(query, Supplier.class);
+			query1.setParameter(1, result + "%");
+			List<Supplier> rs = query1.getResultList();
 
-            if (rs.next()) {
-                String lastID = rs.getString("supplierID");
-                String sNumber = lastID.substring(lastID.length() - 2);
-                int num = Integer.parseInt(sNumber) + 1;
-                result += String.format("%04d", num);
-            } else {
-                result += String.format("%04d", 0);
-            }
+			if (rs.size() > 0) {
+				String lastID = rs.get(0).getSupplierID();
+				String sNumber = lastID.substring(lastID.length() - 2);
+				int num = Integer.parseInt(sNumber) + 1;
+				result += String.format("%04d", num);
+			} else {
+				result += String.format("%04d", 0);
+			}
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -99,34 +61,32 @@ public class Supplier_DAO implements DAOBase<Supplier>{
     public Boolean create(Supplier supplier) {
         int n = 0;
         try {
-            PreparedStatement st = ConnectDB.conn.prepareStatement("INSERT INTO Supplier "
-                    + "VALUES (?,?,?)");
-            st.setString(1, supplier.getSupplierID());
-            st.setString(2, supplier.getName());
-            st.setString(3, supplier.getAddress());
-            n = st.executeUpdate();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        	entityManager.getTransaction().begin();
+            entityManager.persist(supplier);
+            entityManager.getTransaction().commit();
+            n = 1;
+            } catch (Exception e) {
+				entityManager.getTransaction().rollback();
+				e.printStackTrace();
+			}
         return n > 0;
     }
 
     @Override
     public Boolean update(String id, Supplier supplier) {
-        int n = 0;
-        try {
-            PreparedStatement st = ConnectDB.conn.prepareStatement("UPDATE Supplier "
-                    + "SET name = ?, address = ? "
-                    + "WHERE supplierID = ?");
-            
-            st.setString(1, supplier.getName());
-            st.setString(2, supplier.getAddress());
-            st.setString(3, id);
-            n = st.executeUpdate();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return n > 0;
+		int n = 0;
+		try {
+		     entityManager.getTransaction().begin();
+		        Supplier s = entityManager.find(Supplier.class, id);
+		        s.setName(supplier.getName());
+		        s.setAddress(supplier.getAddress());
+		        entityManager.getTransaction().commit();
+		        n = 1;
+		    } catch (Exception e) {
+		        entityManager.getTransaction().rollback();
+		        e.printStackTrace();
+		    }
+		return n > 0;
     }
 
     @Override

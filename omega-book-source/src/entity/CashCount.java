@@ -23,10 +23,6 @@ public class CashCount {
 	private CashCountSheet cashCountSheet;
     private int quantity;
     private double total;
-
-    @ManyToOne
-    @JoinColumn(name = "cashCountSheetID")
-    private CashCountSheet cashCountSheet;
     public CashCount() {
     }
 

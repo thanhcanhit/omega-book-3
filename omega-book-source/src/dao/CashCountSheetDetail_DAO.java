@@ -89,7 +89,7 @@ public class CashCountSheetDetail_DAO implements interfaces.DAOBase<CashCountShe
         String sql = "INSERT INTO CashCountSheetDetail (auditorIndex, cashCountSheetID, employeeID) VALUES (?, ?, ?)";
         PreparedStatement preparedStatement = ConnectDB.conn.prepareStatement(sql);
 
-        preparedStatement.setBoolean(1, cashCountSheetDetail.getIndex());
+        preparedStatement.setBoolean(1, cashCountSheetDetail.isChecker());
         preparedStatement.setString(2, cashCountSheetDetail.getCashCountSheet().getCashCountSheetID());
         preparedStatement.setString(3, cashCountSheetDetail.getEmployee().getEmployeeID());
         int rowsAffected = preparedStatement.executeUpdate();

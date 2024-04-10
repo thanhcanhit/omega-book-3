@@ -6,7 +6,7 @@ package bus.impl;
 
 import dao.Supplier_DAO;
 import entity.Supplier;
-import java.util.ArrayList;
+import java.util.*;
 
 import bus.SupplierManagement_BUS;
 
@@ -17,7 +17,7 @@ import bus.SupplierManagement_BUS;
 public class SupplierManagement_BUSImpl implements SupplierManagement_BUS{
         private Supplier_DAO supplierDAO = new Supplier_DAO();
         
-        public ArrayList<Supplier> getAll(){
+        public List<Supplier> getAll(){
             return supplierDAO.getAll();
         }
         public boolean update(String id, Supplier supplier){
