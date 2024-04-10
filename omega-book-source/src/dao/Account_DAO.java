@@ -44,8 +44,8 @@ public class Account_DAO implements DAOBase<Account> {
 
 	@Override
 	public ArrayList<Account> getAll() {
-		throw new UnsupportedOperationException("Not supported yet."); // Generated from
-																		// nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+		throw new UnsupportedOperationException("Not szggupported yet."); // Generated from
+																			// nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
 	}
 
 	@Override
@@ -56,14 +56,11 @@ public class Account_DAO implements DAOBase<Account> {
 
 	@Override
 	public Boolean create(Account object) {
-		int n = 0;
-
 		em.getTransaction().begin();
-		n = em.createNamedQuery("Account.create").setParameter("employeeID", object.getEmployee().getEmployeeID())
-				.setParameter("password", object.getPassword()).executeUpdate();
-
+		em.persist(object);
 		em.getTransaction().commit();
-		return n > 0;
+
+		return em.find(Account.class, object.getEmployee().getEmployeeID()) != null;
 	}
 
 	@Override
