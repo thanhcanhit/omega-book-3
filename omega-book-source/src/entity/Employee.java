@@ -6,8 +6,7 @@ package entity;
 
 import java.io.Serializable;
 import java.time.LocalDate;
-import java.util.Date;
-import java.util.Objects;
+import java.util.*;
 
 import jakarta.persistence.*;
 /**
@@ -26,9 +25,13 @@ public class Employee implements Serializable {
     private boolean gender;
     private Date dateOfBirth;
     private String address;
+    
     @ManyToOne
     @JoinColumn(name="storeID")
     private Store store;
+    
+    @OneToMany(mappedBy = "employee", fetch = FetchType.LAZY)
+    private List<Order> order;
 
     public Employee() {
     }
@@ -164,8 +167,6 @@ public class Employee implements Serializable {
     public void setStatus(boolean status) {
         this.status = status;
     }
-
-    
 
     public void setStore(Store store) {
         this.store = store;

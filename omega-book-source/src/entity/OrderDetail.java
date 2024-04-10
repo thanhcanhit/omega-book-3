@@ -23,11 +23,11 @@ public final class OrderDetail {
     private static final String PRODUCT_ERROR = "Sản phẩm không được rỗng !";
     
     @Id
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name="orderID")
     private Order order;
     @Id
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name="productID")
     private Product product;
     private int quantity;

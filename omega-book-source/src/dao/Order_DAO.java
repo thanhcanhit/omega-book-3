@@ -5,7 +5,6 @@
 package dao;
 
 import database.ConnectDB;
-import database.HibernateConnect;
 import entity.Customer;
 import entity.Employee;
 import entity.Order;
