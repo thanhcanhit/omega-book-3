@@ -24,9 +24,10 @@ import jakarta.persistence.TemporalType;
 public class CashCountSheet{
 	@Id
     private String cashCountSheetID;
-	@OneToMany
-	@JoinColumn(name = "cashCountSheetID")
+	
+	@OneToMany(mappedBy = "cashCountSheet")
     private ArrayList<CashCount> cashCountList;
+	
 	@Temporal(TemporalType.TIMESTAMP)
     private Date createdDate;
 	@Temporal(TemporalType.TIMESTAMP)
@@ -34,8 +35,7 @@ public class CashCountSheet{
     private double total;
     private double difference;
 
-    @OneToMany
-    @JoinColumn(name = "cashCountSheetID")
+    @OneToMany(mappedBy = "cashCountSheet")
     private ArrayList<CashCountSheetDetail> cashCountSheetDetailList;
 
     public CashCountSheet() {

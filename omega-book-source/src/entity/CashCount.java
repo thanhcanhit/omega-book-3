@@ -6,6 +6,8 @@ package entity;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 
 /**
  *
@@ -14,9 +16,12 @@ import jakarta.persistence.Id;
 @Entity
 public class CashCount {
 	@Id
-    private int quantity;
+	private double value;
 	@Id
-    private double value;
+	@ManyToOne
+	@JoinColumn(name = "cashCountSheetID")
+	private CashCountSheet cashCountSheet;
+    private int quantity;
     private double total;
 
     public CashCount() {
