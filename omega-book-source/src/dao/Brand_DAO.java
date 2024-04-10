@@ -4,60 +4,33 @@
  */
 package dao;
 
-import database.ConnectDB;
 import entity.Brand;
 import entity.Supplier;
 import interfaces.DAOBase;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import jakarta.persistence.*;
+import utilities.AccessDatabase;
+
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
  * @author Như Tâm
  */
 public class Brand_DAO implements DAOBase<Brand> {
-
+	EntityManager em;
+	public Brand_DAO() {
+		em = AccessDatabase.getEntityManager();
+	}
     @Override
     public Brand getOne(String id) {
-        Brand brand = null;
-        try {
-            PreparedStatement st = ConnectDB.conn.prepareStatement("SELECT * FROM Brand WHERE brandID = ?");
-            st.setString(1, id);
-            ResultSet rs = st.executeQuery();
-            
-            while (rs.next()) {
-                String brandID = rs.getString("brandID");
-                String name = rs.getString("name");
-                String country = rs.getString("country");
-                brand = new Brand(brandID, name, country);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return brand;
+        return em.createNamedQuery("Brand.findByBrandID", Brand.class).setParameter("brandID", id).getSingleResult();
     }
 
-    @Override
+    @SuppressWarnings("unchecked")
+	@Override
     public ArrayList<Brand> getAll() {
-        ArrayList result = new ArrayList<>();
-        try {
-            Statement st = ConnectDB.conn.createStatement();
-            ResultSet rs = st.executeQuery("SELECT * FROM Brand");
-            
-            while (rs.next()) {                
-                String brandID = rs.getString("brandID");
-                String name = rs.getString("name");
-                String country = rs.getString("country");
-                Brand brand = new Brand(brandID, name, country);
-                result.add(brand);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return result;
+        return (ArrayList<Brand>) em.createNamedQuery("Brand.findAll").getResultList();
     }
 
     @Override
@@ -69,12 +42,11 @@ public class Brand_DAO implements DAOBase<Brand> {
                       + "order by brandID desc ";
 
         try {
-            PreparedStatement st = ConnectDB.conn.prepareStatement(query);
-            st.setString(1, result + "%");
-            ResultSet rs = st.executeQuery();
-
-            if (rs.next()) {
-                String lastID = rs.getString("brandID");
+            TypedQuery<Brand> query1 = em.createQuery(query, Brand.class);
+            query1.setParameter(1, result + "%");
+            List<Brand> rs = query1.getResultList();
+            if(rs.size() > 0) {
+                String lastID = rs.get(0).getBrandID();
                 String sNumber = lastID.substring(lastID.length() - 2);
                 int num = Integer.parseInt(sNumber) + 1;
                 result += String.format("%04d", num);
@@ -90,35 +62,31 @@ public class Brand_DAO implements DAOBase<Brand> {
 
     @Override
     public Boolean create(Brand brand) {
-        int n = 0;
-        try {
-            PreparedStatement st = ConnectDB.conn.prepareStatement("INSERT INTO Brand "
-                    + "VALUES (?,?,?)");
-            st.setString(1, brand.getBrandID());
-            st.setString(2, brand.getName());
-            st.setString(3, brand.getCountry());
-            n = st.executeUpdate();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return n > 0;
+		int n = 0;
+		try {
+			em.getTransaction().begin();
+			em.persist(brand);
+			em.getTransaction().commit();
+			n = 1;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return n > 0;
     }
 
     @Override
     public Boolean update(String id, Brand brand) {
-         int n = 0;
-        try {
-            PreparedStatement st = ConnectDB.conn.prepareStatement("UPDATE Brand "
-                    + "SET name = ?, country = ? "
-                    + "WHERE brandID = ?");
-            int i = 1;
-            st.setString(i++, brand.getName());
-            st.setString(i++, brand.getCountry());
-            st.setString(i++, id);
-            n = st.executeUpdate();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+    	int n = 0;
+		try {
+			em.getTransaction().begin();
+			Brand b = em.find(Brand.class, id);
+			b.setName(brand.getName());
+			b.setCountry(brand.getCountry());
+			em.getTransaction().commit();
+			n = 1;
+		} catch (Exception e) {
+		    e.printStackTrace();
+		}
         return n > 0;
     }
 
@@ -127,20 +95,20 @@ public class Brand_DAO implements DAOBase<Brand> {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
-    public String getMaxSequence(String code) {
-        try {
-        code += "%";
-        String sql = "  SELECT TOP 1  * FROM Brand WHERE brandID LIKE '"+code+"' ORDER BY brandID DESC;";
-        PreparedStatement st = ConnectDB.conn.prepareStatement(sql);
-        ResultSet rs = st.executeQuery();
-        if (rs.next()) {
-            String brandID = rs.getString("brandID");
-            return brandID;
-        }
-    } catch (SQLException e) {
-        e.printStackTrace();
-    }
-    return null;
-    }
+//    public String getMaxSequence(String code) {
+//        try {
+//        code += "%";
+//        String sql = "  SELECT TOP 1  * FROM Brand WHERE brandID LIKE '"+code+"' ORDER BY brandID DESC;";
+//        PreparedStatement st = ConnectDB.conn.prepareStatement(sql);
+//        ResultSet rs = st.executeQuery();
+//        if (rs.next()) {
+//            String brandID = rs.getString("brandID");
+//            return brandID;
+//        }
+//    } catch (SQLException e) {
+//        e.printStackTrace();
+//    }
+//    return null;
+//    }
     
 }

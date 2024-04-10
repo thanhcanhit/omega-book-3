@@ -6,15 +6,17 @@ package entity;
 
 import java.util.Objects;
 import java.util.regex.Pattern;
-
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 
 /**
  *
  * @author thanhcanhit
  */
 @Entity
+@NamedQueries({
+	@NamedQuery(name = "Brand.findByBrandID", query = "SELECT b FROM Brand b WHERE b.brandID = :brandID"),
+	@NamedQuery(name = "Brand.findAll", query = "SELECT b FROM Brand b") 
+})
 public final class Brand {
 
 	// Hằng báo lỗi
