@@ -118,7 +118,11 @@
 			<artifactId>mssql-jdbc</artifactId>
 			<version>12.3.0.jre17-preview</version>
 		</dependency>
-
+		<dependency>
+			<groupId>org.apache.logging.log4j</groupId>
+			<artifactId>log4j-spring-boot</artifactId>
+			<version>2.20.0</version>
+		</dependency>
 
 		<!-- https://mvnrepository.com/artifact/org.projectlombok/lombok -->
 		<dependency>

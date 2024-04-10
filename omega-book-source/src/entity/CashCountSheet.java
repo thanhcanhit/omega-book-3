@@ -4,28 +4,23 @@
  */
 package entity;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Objects;
-
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.Temporal;
-import jakarta.persistence.TemporalType;
+import java.io.Serializable;
+import java.util.*;
+import jakarta.persistence.*;
 
 /**
  *
  * @author Hoàng Khang
  */
 @Entity
-public class CashCountSheet{
+public class CashCountSheet implements Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 2549476946541562785L;
+
 	@Id
     private String cashCountSheetID;
-	@OneToMany
-	@JoinColumn(name = "cashCountSheetID")
     private ArrayList<CashCount> cashCountList;
 	@Temporal(TemporalType.TIMESTAMP)
     private Date createdDate;
@@ -33,10 +28,8 @@ public class CashCountSheet{
     private Date endedDate;
     private double total;
     private double difference;
-
-    @OneToMany
-    @JoinColumn(name = "cashCountSheetID")
-    private ArrayList<CashCountSheetDetail> cashCountSheetDetailList;
+    @OneToMany(mappedBy = "cashCountSheet", fetch = FetchType.LAZY)
+    private List<CashCountSheetDetail> cashCountSheetDetail;
 
     public CashCountSheet() {
     }
@@ -44,14 +37,14 @@ public class CashCountSheet{
         this.cashCountSheetID = cashCountSheetID;
     }
 
-    public CashCountSheet(String cashCountSheetID, ArrayList<CashCount> cashCountList,ArrayList<CashCountSheetDetail> cashCountSheetDetailList, Date createdDate, Date endedDate) {
+    public CashCountSheet(String cashCountSheetID, ArrayList<CashCount> cashCountList, List<CashCountSheetDetail> cashCountSheetDetailList, Date createdDate, Date endedDate) {
         this.cashCountSheetID = cashCountSheetID;
         this.cashCountList = cashCountList;
         this.createdDate = createdDate;
         this.endedDate = endedDate;
         setTotal();
         setDifference();
-        this.cashCountSheetDetailList = cashCountSheetDetailList;
+        this.cashCountSheetDetail = cashCountSheetDetailList;
     }
 
 //    @Override
@@ -78,8 +71,8 @@ public class CashCountSheet{
         return cashCountList;
     }
 
-    public ArrayList<CashCountSheetDetail> getCashCountSheetDetailList() {
-        return cashCountSheetDetailList;
+    public List<CashCountSheetDetail> getCashCountSheetDetailList() {
+        return cashCountSheetDetail;
     }
 
     public String getCashCountSheetID() {
@@ -115,8 +108,8 @@ public class CashCountSheet{
         setDifference();
     }
 
-    public void setCashCountSheetDetailList(ArrayList<CashCountSheetDetail> cashCountSheetDetailList) {
-        this.cashCountSheetDetailList = cashCountSheetDetailList;
+    public void setCashCountSheetDetailList(List<CashCountSheetDetail> cashCountSheetDetailList) {
+        this.cashCountSheetDetail = cashCountSheetDetailList;
     }
 
     public void setCashCountSheetID(String cashCountSheetID) {

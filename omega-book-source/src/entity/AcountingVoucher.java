@@ -38,8 +38,7 @@ public class AcountingVoucher{
     @JoinColumn(name = "cashCountSheetID")
     private CashCountSheet cashCountSheet;
     
-    @OneToMany(fetch = FetchType.LAZY)
-    @JoinColumn(name = "accountingVoucherID")
+    @OneToMany(mappedBy = "acountingVoucher",fetch = FetchType.LAZY)
     private ArrayList<Order> orderList;
 
     public AcountingVoucher() {

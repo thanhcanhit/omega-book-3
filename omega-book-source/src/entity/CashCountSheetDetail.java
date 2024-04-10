@@ -4,25 +4,33 @@
  */
 package entity;
 
+import java.io.Serializable;
 import java.util.Objects;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.OneToOne;
+import jakarta.persistence.*;
 
 /**
  *
  * @author Hoàng Khang
  */
 @Entity
+@Table(name = "Details")
 public class CashCountSheetDetail {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	@Id
     private boolean index;
+	
 	@Id
+	@ManyToOne
 	@JoinColumn(name = "employeeID")
     private Employee employee;
-	@OneToOne
+	
+	@Id
+	@ManyToOne
 	@JoinColumn(name = "cashCountSheetID")
     private CashCountSheet cashCountSheet;
 

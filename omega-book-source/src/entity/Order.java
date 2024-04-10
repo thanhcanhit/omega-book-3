@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package entity;
 
 import java.util.ArrayList;
@@ -15,6 +11,7 @@ import jakarta.persistence.*;
  * @author KienTran
  */
 @Entity
+@Table(name = "Bill")
 public final class Order {
 
     private static final String ORDERID_ERROR = "Mã hoá đơn không hợp lệ !";
@@ -44,6 +41,9 @@ public final class Order {
     @OneToMany(mappedBy = "order",fetch = FetchType.LAZY)
     private List<OrderDetail> orderDetail;
     private double moneyGiven;
+    @ManyToOne
+    @JoinColumn(name="acountingVoucherID")
+    private AcountingVoucher acountingVoucher;
 
     public Order() {
     }
