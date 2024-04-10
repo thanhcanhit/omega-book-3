@@ -30,7 +30,7 @@ public class CashCountSheetDetail_DAO implements interfaces.DAOBase<CashCountShe
 			String sql = "SELECT * FROM CashCountSheetDetail WHERE cashCountSheetID = ?";
 			PreparedStatement preparedStatement = ConnectDB.conn.prepareStatement(sql);
 			preparedStatement.setString(1, cashCountSheetID);
-
+			
 			ResultSet resultSet = preparedStatement.executeQuery();
 
 			if (resultSet.next()) {
