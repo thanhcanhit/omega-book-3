@@ -8,12 +8,21 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.NamedQueries;
+import jakarta.persistence.NamedQuery;
+import jakarta.persistence.Transient;
 
 /**
  *
  * @author Hoàng Khang
  */
 @Entity
+@NamedQueries({
+//	Lấy ra tất cả các CashCount của một CashCountSheet
+	@NamedQuery(name = "CashCount.findAllByCashCountSheetID", query = "SELECT c FROM CashCount c WHERE c.cashCountSheet.id = :cashCountSheetID"),
+//	Thêm CashCount xuống database
+//	@NamedQuery(name = "CashCount.insert", query = "INSERT INTO CashCount (value, quantity, cashCountSheetID) VALUES (:value, :quantity, :cashCountSheetID)"),
+})
 public class CashCount {
 	@Id
 	private double value;
@@ -22,6 +31,8 @@ public class CashCount {
 	@JoinColumn(name = "cashCountSheetID")
 	private CashCountSheet cashCountSheet;
     private int quantity;
+//    Không thêm vào database
+    @Transient
     private double total;
     public CashCount() {
     }

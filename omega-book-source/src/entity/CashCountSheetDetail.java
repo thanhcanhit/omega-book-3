@@ -4,19 +4,21 @@
  */
 package entity;
 
-import java.io.Serializable;
 import java.util.Objects;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.NamedQuery;
 
 /**
  *
  * @author Hoàng Khang
  */
 @Entity
+//Lấy toàn bộ CashCountSheetDetail của một CashCountSheet
+@NamedQuery(name = "CashCountSheetDetail.findAllByCashCountSheetID", query = "SELECT c FROM CashCountSheetDetail c WHERE c.cashCountSheet.id = :cashCountSheetID")
 public class CashCountSheetDetail {
 	@Id
 	@ManyToOne

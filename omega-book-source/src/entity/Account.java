@@ -17,61 +17,61 @@ import jakarta.persistence.OneToOne;
  */
 @Entity
 @NamedQueries({
-	@NamedQuery(name="Account.validate", query="SELECT a FROM Account a WHERE a.employee.employeeID = :employeeID AND a.password = :password"),
-	@NamedQuery(name="Account.create", query="INSERT INTO Account (employeeID, password) VALUES (:employeeID, :password)")
-})
+		@NamedQuery(name = "Account.validate", query = "SELECT a FROM Account a WHERE a.employee.employeeID = :employeeID AND a.password = :password"),
+		@NamedQuery(name = "Account.changePassword", query = "UPDATE Account a SET a.password = :password WHERE a.employee.employeeID = :employeeID"),
+//		@NamedQuery(name="Account.create", query="INSERT INTO Account (employee.employeeID, password) VALUES (:employee, :password)"),
+		
+		})
 public class Account {
-    
-    private static final String PASSWORD_ERROR = "Mật khẩu phải ít nhất 8 kí tự (Bao gồm chữ hoa, chữ thường và số)!";
-    private static final String EMPLOYEE_ERROR = "Employee không được rỗng !";
 
-  
-    private String password;
-    @Id
-    @OneToOne
-    @JoinColumn(name="employeeID")
-    private Employee employee;
+	private static final String PASSWORD_ERROR = "Mật khẩu phải ít nhất 8 kí tự (Bao gồm chữ hoa, chữ thường và số)!";
+	private static final String EMPLOYEE_ERROR = "Employee không được rỗng !";
 
-    public Account() {
-    }
+	private String password;
+	@Id
+	@OneToOne
+	@JoinColumn(name = "employeeID")
+	private Employee employee;
 
-    public Account(Employee employee) throws Exception {
-        setEmployee(employee);
-    }
+	public Account() {
+	}
 
-    public Account(String passWord, Employee employee) throws Exception {
-        setPassword(passWord);
-        setEmployee(employee);
-    }
+	public Account(Employee employee) throws Exception {
+		setEmployee(employee);
+	}
 
-    public Employee getEmployee() {
-        return employee;
-    }
+	public Account(String passWord, Employee employee) throws Exception {
+		setPassword(passWord);
+		setEmployee(employee);
+	}
 
-    public String getPassword() {
-        return password;
-    }
-    
-    public void setEmployee(Employee employee) throws Exception{
+	public Employee getEmployee() {
+		return employee;
+	}
+
+	public String getPassword() {
+		return password;
+	}
+
+	public void setEmployee(Employee employee) throws Exception {
 //        if(employee!=null)
-            this.employee = employee;
+		this.employee = employee;
 //        else
 //            throw new Exception(EMPLOYEE_ERROR);
-    }
+	}
 
-    public void setPassword(String passWord) throws Exception {
+	public void setPassword(String passWord) throws Exception {
 //        String regex = "^[A-Z][a-zA-Z0-9.,@&*^]{7,}.*\\d.*";
 //        if(Pattern.matches(regex, passWord))
-            this.password = passWord;
+		this.password = passWord;
 //        else
 //            throw new Exception(PASSWORD_ERROR);
-    }
+	}
 
-    @Override
-    public String toString() {
-        return "Account{" + "PASSWORD_ERROR=" + PASSWORD_ERROR + ", EMPLOYEE_ERROR=" + EMPLOYEE_ERROR + ", passWord=" + password + ", employee=" + employee + '}';
-    }
-    
-    
-    
+	@Override
+	public String toString() {
+		return "Account{" + "PASSWORD_ERROR=" + PASSWORD_ERROR + ", EMPLOYEE_ERROR=" + EMPLOYEE_ERROR + ", passWord="
+				+ password + ", employee=" + employee + '}';
+	}
+
 }

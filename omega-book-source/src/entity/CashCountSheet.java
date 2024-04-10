@@ -23,8 +23,6 @@ import jakarta.persistence.TemporalType;
 @Entity
 //Query
 @NamedQuery(name = "CashCountSheet.findAll", query = "SELECT c FROM CashCountSheet c")
-//Lấy tất cả các CashCount trong CashCountSheet
-@NamedQuery(name = "CashCountSheet.findAllCashCount", query = "SELECT c.cashCountList FROM CashCountSheet c")
 public class CashCountSheet{
 	@Id
     private String cashCountSheetID;
