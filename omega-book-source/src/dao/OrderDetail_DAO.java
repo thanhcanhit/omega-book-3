@@ -4,97 +4,91 @@
  */
 package dao;
 
+import java.sql.PreparedStatement;
+import java.util.ArrayList;
+import java.util.List;
+
 import database.ConnectDB;
 import entity.OrderDetail;
-import entity.Product;
-import entity.Order;
 import interfaces.DAOBase;
-import java.util.ArrayList;
-import java.sql.*;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.Query;
+import utilities.AccessDatabase;
 
 /**
  *
  * @author KienTran
  */
 public class OrderDetail_DAO implements DAOBase<OrderDetail> {
+	EntityManager em;
 
-    @Override
-    public OrderDetail getOne(String id) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
+	public OrderDetail_DAO() {
+		em = AccessDatabase.getEntityManager();
+	}
 
-    @Override
-    public ArrayList<OrderDetail> getAll() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
+	@Override
+	public OrderDetail getOne(String id) {
+		throw new UnsupportedOperationException("Not supported yet."); // Generated from
+																		// nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+	}
 
-    public ArrayList<OrderDetail> getAll(String id) {
-        ArrayList<OrderDetail> result = new ArrayList<OrderDetail>();
-        try {
-            PreparedStatement st = ConnectDB.conn.prepareStatement("select * from [OrderDetail] where orderID = ?");
-            st.setString(1, id);
-            ResultSet rs = st.executeQuery();
-            while (rs.next()) {
-                String productID = rs.getString("productID");
-                Product product = new Product_DAO().getOne(productID);
-                String orderID = rs.getString("orderID");
-                Order order = new Order(orderID);
-                Double price = rs.getDouble("price");
-                int quantity = rs.getInt("quantity");
-                Double lineTotal = rs.getDouble("lineTotal");
-                Double VAT = rs.getDouble("VAT");
-                Double seasonalDiscount = rs.getDouble("seasonalDiscount");
-                OrderDetail orderDetail = new OrderDetail(order, product, quantity, price, lineTotal, VAT, seasonalDiscount);
+	@Override
+	public ArrayList<OrderDetail> getAll() {
+		throw new UnsupportedOperationException("Not supported yet."); // Generated from
+																		// nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+	}
 
-                result.add(orderDetail);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return result;
-    }
+	public ArrayList<OrderDetail> getAll(String id) {
+		ArrayList<OrderDetail> result = new ArrayList<>();
 
-    @Override
-    public String generateID() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
+		try {
+			String hql = "from OrderDetail where order.id = :id";
+			Query query = em.createQuery(hql);
+			query.setParameter("id", id);
 
-    @Override
-    public Boolean create(OrderDetail object) {
-        int n = 0;
-        try {
-            PreparedStatement st = ConnectDB.conn.prepareStatement("insert into OrderDetail (orderID, productID, price, quantity, lineTotal, VAT, seasonalDiscount) values (?, ?, ?, ?, ?,?,?)");
-            st.setString(1, object.getOrder().getOrderID());
-            st.setString(2, object.getProduct().getProductID());
-            st.setDouble(3, object.getPrice());
-            st.setInt(4, object.getQuantity());
-            st.setDouble(5, object.getLineTotal());
-            st.setDouble(6, object.getVAT());
-            st.setDouble(7, object.getSeasonalDiscount());
+			List<OrderDetail> orderDetails = query.getResultList();
 
-            n = st.executeUpdate();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return n > 0;
-    }
+			for (OrderDetail orderDetail : orderDetails) {
+				if (orderDetail != null) {
+					result.add(orderDetail);
+				}
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 
-    @Override
-    public Boolean update(String id, OrderDetail newObject) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
+		return result;
+	}
 
-    @Override
-    public Boolean delete(String id) {
-        int n = 0;
-        try {
-            PreparedStatement st = ConnectDB.conn.prepareStatement("delete from OrderDetail where orderID = ?");
-            st.setString(1, id);
-            n = st.executeUpdate();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return n > 0;
-    }
+	@Override
+	public String generateID() {
+		throw new UnsupportedOperationException("Not supported yet."); // Generated from
+																		// nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+	}
+
+	@Override
+	public Boolean create(OrderDetail object) {
+		int n = 0;
+		em.getTransaction().begin();
+		em.persist(object);
+		em.getTransaction().commit();
+		return n > 0;
+	}
+
+	@Override
+	public Boolean update(String id, OrderDetail newObject) {
+		throw new UnsupportedOperationException("Not supported yet."); // Generated from
+																		// nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+	}
+
+	@Override
+	public Boolean delete(String id) {
+		int n = 0;
+		em.getTransaction().begin();
+		OrderDetail orderDetail = em.find(OrderDetail.class, id);
+		em.remove(orderDetail);
+		em.getTransaction().commit();
+		return n > 0;
+	}
 
 }
