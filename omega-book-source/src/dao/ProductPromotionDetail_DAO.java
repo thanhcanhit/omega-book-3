@@ -20,26 +20,11 @@ public class ProductPromotionDetail_DAO implements DAOBase<ProductPromotionDetai
 		em = AccessDatabase.getEntityManager();
 	}
 
-    public ProductPromotionDetail getOne(String promotionID, String productID) throws Exception {
-        ProductPromotionDetail productPromotionDetail = null;
-        Promotion promotion = new Promotion(promotionID);
-        Product product = new Product(productID);
-//        try {
-//            PreparedStatement st = ConnectDB.conn.prepareStatement("SELECT * FROM ProductPromotionDetail "
-//                    + "WHERE promotionID = ? and productID = ?");
-//            st.setString(1, promotionID);
-//            st.setString(2, productID);
-//            ResultSet rs = st.executeQuery();
-//            while (rs.next()) {                
-//                Promotion promotion = new Promotion_DAO().getOne(promotionID);
-//                Product product = new Product_DAO().getOne(productID);
-//                productPromotionDetail = new ProductPromotionDetail(promotion, product);
-//            }
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-        productPromotionDetail = new ProductPromotionDetail(promotion, product);
-        return productPromotionDetail;
+    public ProductPromotionDetail getOne(String promotionID, String productID) {
+        return em.createNamedQuery("ProductPromotionDetail.findByPromotionAndProduct", ProductPromotionDetail.class)
+        		.setParameter("pd.promotion.promotionID", promotionID)
+        		.setParameter("pd.promotion.productID", productID)
+        		.getSingleResult();
     }
 
     public ArrayList<ProductPromotionDetail> getAllForProduct(String productID) {

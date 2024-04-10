@@ -17,6 +17,7 @@ import bus.impl.PromotionManagament_BUSImpl;
 import entity.Product;
 import entity.ProductPromotionDetail;
 import entity.Promotion;
+import entity.PromotionForProduct;
 import enums.DiscountType;
 import enums.PromotionType;
 import raven.toast.Notifications;
@@ -29,7 +30,7 @@ import utilities.SVGIcon;
 public class ProductPromotionManagament_GUI extends javax.swing.JPanel {
 
 	private PromotionManagament_BUSImpl bus;
-	private Promotion currentPromotion;
+	private PromotionForProduct currentPromotion;
 	private DefaultComboBoxModel cmbModel_type;
 	private DefaultComboBoxModel cmbModel_status;
 	private DefaultTableModel tblModel_productPromotion;
@@ -58,7 +59,7 @@ public class ProductPromotionManagament_GUI extends javax.swing.JPanel {
 				return;
 
 			String promotionID = tblModel_inforProductPromotion.getValueAt(rowIndex, 0).toString();
-			this.currentPromotion = bus.getPromotion(promotionID);
+			this.currentPromotion = bus.getPromotionForProduct(promotionID);
 			renderCurrentPromotion();
 		});
 
@@ -98,11 +99,11 @@ public class ProductPromotionManagament_GUI extends javax.swing.JPanel {
         }
     };
 
-	private void renderPromotionTables(ArrayList<Promotion> allPromotionForCustomer) {
+	private void renderPromotionTables(ArrayList<PromotionForProduct> allPromotionForCustomer) {
 		tblModel_inforProductPromotion.setRowCount(0);
 		String status, type, discount;
 
-		for (Promotion promotion : allPromotionForCustomer) {
+		for (PromotionForProduct promotion : allPromotionForCustomer) {
 			if (promotion.getEndedDate().after(java.sql.Date.valueOf(LocalDate.now())))
 				status = "Còn hạn";
 			else
@@ -129,7 +130,7 @@ public class ProductPromotionManagament_GUI extends javax.swing.JPanel {
 		tblModel_productPromotion.setRowCount(0);
 	}
 
-	private Promotion getNewValue() throws Exception {
+	private PromotionForProduct getNewValue() throws Exception {
 		double discount = Double.parseDouble(txt_discountPromo.getText());
 		int type;
 		if (rdb_price.isSelected() == true)
@@ -139,8 +140,7 @@ public class ProductPromotionManagament_GUI extends javax.swing.JPanel {
 		Date startedDate = chooseStartDate.getDate();
 		Date endedDate = chooseEndDate.getDate();
 		String promotionID = bus.generateID(PromotionType.PRODUCT, DiscountType.fromInt(type), endedDate);
-		Promotion promotion = new Promotion(promotionID, startedDate, endedDate, PromotionType.PRODUCT,
-				DiscountType.fromInt(type), discount);
+		PromotionForProduct promotion = new PromotionForProduct(promotionID, startedDate, endedDate, DiscountType.fromInt(type), discount, cart);
 		return promotion;
 	}
 

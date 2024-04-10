@@ -17,38 +17,37 @@ import jakarta.persistence.*;
 @Entity
 @NamedQueries({ 
 	@NamedQuery(name = "Promotion.findAll", query = "SELECT p FROM Promotion p"),
-	@NamedQuery(name = "Promotion.findByPromotionID", query = "SELECT p FROM Promotion p WHERE p.promotionID = :promotionID"),
 	@NamedQuery(name = "Promotion.findByStartedDate", query = "SELECT p FROM Promotion p WHERE p.startedDate = :startedDate"),
 	@NamedQuery(name = "Promotion.findByEndedDate", query = "SELECT p FROM Promotion p WHERE p.endedDate = :endedDate"),
-	@NamedQuery(name = "Promotion.findByTypePromotion", query = "SELECT p FROM Promotion p WHERE p.typePromotion = :typePromotion"),
-	@NamedQuery(name = "Promotion.findByTypeDiscount", query = "SELECT p FROM Promotion p WHERE p.typeDiscount = :typeDiscount"),
-	@NamedQuery(name = "Promotion.findByCondition", query = "SELECT p FROM Promotion p WHERE p.typePromotion = 1 AND p.condition = :condition") 
+	@NamedQuery(name = "Promotion.findByTypeDiscount", query = "SELECT p FROM Promotion p WHERE p.typeDiscount = :typeDiscount"), 
 })
-public final class Promotion {
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@DiscriminatorColumn(name = "promotionType", discriminatorType = DiscriminatorType.STRING)
+public class Promotion {
 	public static final String PROMOTIONID_ERROR = "Mã chương trình khuyến mãi không hợp lệ!";
 	public static final String STARTEDDATE_ERROR = "Ngày tạo chương trình khuyến mãi không được rỗng!";
 	public static final String ENDEDDATE_ERROR = "Ngày kết thúc phải sau ngày tạo chương trình khuyến mãi!";
 	public static final String DISCOUNT_ERROR = "Giảm giá phải là số dương!";
 
 	@Id
-	private String promotionID;
+	protected String promotionID;
 	@Temporal(TemporalType.DATE)
-	private Date startedDate;
+	protected Date startedDate;
 	@Temporal(TemporalType.DATE)
-	private Date endedDate;
+	protected Date endedDate;
+//	@Enumerated(EnumType.ORDINAL)
+//	private PromotionType typePromotion;
 	@Enumerated(EnumType.ORDINAL)
-	private PromotionType typePromotion;
-	@Enumerated(EnumType.ORDINAL)
-	private DiscountType typeDiscount;
-	private double discount;
-	@Enumerated(EnumType.ORDINAL)
-	private CustomerRank condition;
+	protected DiscountType typeDiscount;
+	protected double discount;
+//	@Enumerated(EnumType.ORDINAL)
+//	private CustomerRank condition;
 	
-	@OneToMany(mappedBy = "promotion", fetch = FetchType.LAZY)
-	private List<ProductPromotionDetail> details;
+//	@OneToMany(mappedBy = "promotion", fetch = FetchType.LAZY)
+//	private List<ProductPromotionDetail> details;
 	
-	@OneToMany(mappedBy = "promotion", fetch = FetchType.LAZY)
-	private List<Order> order;
+//	@OneToMany(mappedBy = "promotion", fetch = FetchType.LAZY)
+//	private List<Order> order;
 
 	public Promotion() {
 	}
@@ -58,53 +57,52 @@ public final class Promotion {
 		setPromotionID(promotionID);
 	}
 
-	public Promotion(String promotionID, Date startedDate, Date endedDate, PromotionType typePromotion,
+	public Promotion(String promotionID, Date startedDate, Date endedDate,
 			DiscountType typeDiscount, double discount) throws Exception {
 		setPromotionID(promotionID);
 		setStartedDate(startedDate);
 		setEndedDate(endedDate);
-		setTypePromotion(typePromotion);
 		setTypeDiscount(typeDiscount);
 		setDiscount(discount);
 	}
-
-	// constructor khuyến mãi theo sản phẩm
-	public Promotion(String promotionID, Date startedDate, Date endedDate, PromotionType typePromotion,
-			DiscountType typeDiscount, double discount, List<ProductPromotionDetail> listDetail) throws Exception {
-		setPromotionID(promotionID);
-		setStartedDate(startedDate);
-		setEndedDate(endedDate);
-		setTypePromotion(typePromotion);
-		setTypeDiscount(typeDiscount);
-		setDiscount(discount);
-		setDetails(listDetail);
-	}
-
-	// constructor khuyến mãi theo hoá đơn
-	public Promotion(String promotionID, Date startedDate, Date endedDate, PromotionType typePromotion,
-			DiscountType typeDiscount, double discount, CustomerRank condition) throws Exception {
-		setPromotionID(promotionID);
-		setStartedDate(startedDate);
-		setEndedDate(endedDate);
-		setTypePromotion(typePromotion);
-		setTypeDiscount(typeDiscount);
-		setDiscount(discount);
-		setCondition(condition);
-	}
-
-	// constructor đầy đủ
-	public Promotion(String promotionID, Date startedDate, Date endedDate, PromotionType typePromotion,
-			DiscountType typeDiscount, double discount, CustomerRank condition, List<ProductPromotionDetail> listDetail)
-			throws Exception {
-		setPromotionID(promotionID);
-		setStartedDate(startedDate);
-		setEndedDate(endedDate);
-		setTypePromotion(typePromotion);
-		setTypeDiscount(typeDiscount);
-		setDiscount(discount);
-		setCondition(condition);
-		setDetails(listDetail);
-	}
+//
+//	// constructor khuyến mãi theo sản phẩm
+//	public Promotion(String promotionID, Date startedDate, Date endedDate, PromotionType typePromotion,
+//			DiscountType typeDiscount, double discount, List<ProductPromotionDetail> listDetail) throws Exception {
+//		setPromotionID(promotionID);
+//		setStartedDate(startedDate);
+//		setEndedDate(endedDate);
+//		setTypePromotion(typePromotion);
+//		setTypeDiscount(typeDiscount);
+//		setDiscount(discount);
+//		setDetails(listDetail);
+//	}
+//
+//	// constructor khuyến mãi theo hoá đơn
+//	public Promotion(String promotionID, Date startedDate, Date endedDate, PromotionType typePromotion,
+//			DiscountType typeDiscount, double discount, CustomerRank condition) throws Exception {
+//		setPromotionID(promotionID);
+//		setStartedDate(startedDate);
+//		setEndedDate(endedDate);
+//		setTypePromotion(typePromotion);
+//		setTypeDiscount(typeDiscount);
+//		setDiscount(discount);
+//		setCondition(condition);
+//	}
+//
+//	// constructor đầy đủ
+//	public Promotion(String promotionID, Date startedDate, Date endedDate, PromotionType typePromotion,
+//			DiscountType typeDiscount, double discount, CustomerRank condition, List<ProductPromotionDetail> listDetail)
+//			throws Exception {
+//		setPromotionID(promotionID);
+//		setStartedDate(startedDate);
+//		setEndedDate(endedDate);
+//		setTypePromotion(typePromotion);
+//		setTypeDiscount(typeDiscount);
+//		setDiscount(discount);
+//		setCondition(condition);
+//		setDetails(listDetail);
+//	}
 
 	@Override
 	public boolean equals(Object obj) {
@@ -119,10 +117,6 @@ public final class Promotion {
 		}
 		final Promotion other = (Promotion) obj;
 		return Objects.equals(this.promotionID, other.promotionID);
-	}
-
-	public CustomerRank getCondition() {
-		return condition;
 	}
 
 	public double getDiscount() {
@@ -145,19 +139,11 @@ public final class Promotion {
 		return typeDiscount;
 	}
 
-	public PromotionType getTypePromotion() {
-		return typePromotion;
-	}
-
 	@Override
 	public int hashCode() {
 		int hash = 7;
 		hash = 37 * hash + Objects.hashCode(this.promotionID);
 		return hash;
-	}
-
-	public void setCondition(CustomerRank condition) {
-		this.condition = condition;
 	}
 
 	public void setDiscount(double discount) {
@@ -187,26 +173,12 @@ public final class Promotion {
 		this.typeDiscount = typeDiscount;
 	}
 
-	public void setTypePromotion(PromotionType typePromotion) {
-		this.typePromotion = typePromotion;
-	}
-
 	@Override
 	public String toString() {
-		return "Promotion{" + "PROMOTIONID_ERROR=" + PROMOTIONID_ERROR + ", STARTEDDATE_ERROR=" + STARTEDDATE_ERROR
-				+ ", ENDEDDATE_ERROR=" + ENDEDDATE_ERROR + ", DISCOUNT_ERROR=" + DISCOUNT_ERROR + ", promotionID="
-				+ promotionID + ", startedDate=" + startedDate + ", endedDate=" + endedDate + ", typePromotion="
-				+ typePromotion + ", typeDiscount=" + typeDiscount + ", discount=" + discount + ", condition="
-				+ condition;
+		return "Promotion [promotionID=" + promotionID + ", startedDate=" + startedDate + ", endedDate=" + endedDate
+				+ ", typeDiscount=" + typeDiscount + ", discount=" + discount + "]";
 	}
 
-	public List<ProductPromotionDetail> getDetails() {
-		return details;
-	}
-
-	public void setDetails(List<ProductPromotionDetail> details) {
-		this.details = details;
-	}
 
 
 }

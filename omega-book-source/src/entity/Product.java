@@ -12,6 +12,8 @@ import java.util.regex.Pattern;
 import enums.BookType;
 import enums.Type;
 import jakarta.persistence.Column;
+import jakarta.persistence.DiscriminatorColumn;
+import jakarta.persistence.DiscriminatorType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -33,6 +35,7 @@ import jakarta.persistence.OneToMany;
 
 @Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@DiscriminatorColumn(name = "productType", discriminatorType = DiscriminatorType.STRING)
 public class Product {
 
 	// Hằng số mô tả lỗi
@@ -48,6 +51,7 @@ public class Product {
 
 	protected Double costPrice;
 
+	@Column(columnDefinition = "nvarchar(max)")
 	protected byte[] image;
 	protected Double VAT;
 	protected Integer inventory;

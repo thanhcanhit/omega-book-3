@@ -31,9 +31,33 @@ public class Promotion_DAO implements DAOBase<Promotion> {
 		return em.createNamedQuery("Promotion.findByPromotionID", Promotion.class).setParameter("promotionID", id)
 				.getSingleResult();
     }
+    
+    public PromotionForOrder getOneForOrder(String id) {
+    	 return em.createNamedQuery("PromotionForOrder.findByPromotionID", PromotionForOrder.class).setParameter("po.promotionID", id)
+                .getSingleResult();
+    }
 
-    public ArrayList<Promotion> getAllForOrder() {
-    	return (ArrayList<Promotion>) em.createNamedQuery("Promotion.findByTypePromotion", Promotion.class).setParameter("typePromotion", 1)
+	public PromotionForProduct getForProduct(String promotionID) {
+		return em.createNamedQuery("PromotionForProduct.findById", PromotionForProduct.class).setParameter("pp.promotionID", promotionID).getSingleResult();
+	}
+    
+	public ArrayList<Promotion> findById(String searchQuery) {
+		String query = "SELECT p FROM Promotion where promotionID LIKE :id";
+		return (ArrayList<Promotion>) em.createQuery(query, Promotion.class).setParameter(1, searchQuery).getResultList();
+	}
+	
+	public ArrayList<PromotionForOrder> getForOrder(String id) {
+   	 return (ArrayList<PromotionForOrder>) em.createNamedQuery("PromotionForOrder.findByPromotionID", PromotionForOrder.class).setParameter("promotionID", "%" + id + "%")
+               .getResultList();
+	}
+	
+    @Override
+    public ArrayList<Promotion> getAll() {
+    	return (ArrayList<Promotion>) em.createNamedQuery("Promotion.findAll", Promotion.class).getResultList();
+    }
+    
+    public ArrayList<PromotionForOrder> getAllForOrder() {
+    	return (ArrayList<PromotionForOrder>) em.createNamedQuery("PromotionForOrder.findAll", PromotionForOrder.class)
     			                .getResultList();
     }
 
@@ -41,8 +65,8 @@ public class Promotion_DAO implements DAOBase<Promotion> {
     	return (ArrayList<Promotion>) em.createNamedQuery("Promotion.findByCondition", Promotion.class).setParameter("condition", rank).getResultList();
     }
 
-    public ArrayList<Promotion> getAllForProduct() {
-    	return (ArrayList<Promotion>) em.createNamedQuery("Promotion.findByTypePromotion", Promotion.class).setParameter("typePromotion", 0)
+    public ArrayList<PromotionForProduct> getAllForProduct() {
+    	return (ArrayList<PromotionForProduct>) em.createNamedQuery("PromotionForProduct.findAll", PromotionForProduct.class)
                 .getResultList();
     }
 
@@ -69,10 +93,7 @@ public class Promotion_DAO implements DAOBase<Promotion> {
 //        return result;
 //    }
 
-    @Override
-    public ArrayList<Promotion> getAll() {
-    	return (ArrayList<Promotion>) em.createNamedQuery("Promotion.findAll", Promotion.class).getResultList();
-    }
+
 
     @Override
     public String generateID() {
@@ -137,14 +158,7 @@ public class Promotion_DAO implements DAOBase<Promotion> {
     }
 
     @SuppressWarnings("unchecked")
-	public ArrayList<Promotion> findById(String searchQuery) {
-//        ArrayList<Promotion> result = new ArrayList<>();
-        String query = """
-                       SELECT * FROM Promotion
-                       where promotionID LIKE ?
-                       """;
-        return (ArrayList<Promotion>) em.createNativeQuery(query, Promotion.class).setParameter(1, searchQuery).getResultList();
-    }
+
 
 //    private Promotion getPromotionData(ResultSet rs) throws SQLException, Exception {
 //        Promotion result = null;
@@ -319,6 +333,7 @@ public class Promotion_DAO implements DAOBase<Promotion> {
 		}
         return prefix;
 	}
+
 
 //    public ArrayList<Promotion> filterForProduct(int type, int status) {
 //        ArrayList<Promotion> result = new ArrayList<>();

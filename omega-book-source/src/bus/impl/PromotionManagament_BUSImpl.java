@@ -10,9 +10,10 @@ import dao.Promotion_DAO;
 import entity.Product;
 import entity.ProductPromotionDetail;
 import entity.Promotion;
+import entity.PromotionForOrder;
+import entity.PromotionForProduct;
 import enums.DiscountType;
 import enums.PromotionType;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -32,12 +33,12 @@ public class PromotionManagament_BUSImpl implements PromotionManagement_BUS{
         ArrayList<Promotion> promotionList = promotion_DAO.getAll();
         return promotionList;
     }
-    public ArrayList<Promotion> getAllPromotionForOrder(){
-        ArrayList<Promotion> promotionList = new Promotion_DAO().getAllForOrder();
+    public ArrayList<PromotionForOrder> getAllPromotionForOrder(){
+        ArrayList<PromotionForOrder> promotionList = promotion_DAO.getAllForOrder();
         return promotionList;
     }
-    public ArrayList<Promotion> getAllPromotionForProduct() {
-        ArrayList<Promotion> promotionList = promotion_DAO.getAllForProduct();
+    public ArrayList<PromotionForProduct> getAllPromotionForProduct() {
+        ArrayList<PromotionForProduct> promotionList = promotion_DAO.getAllForProduct();
         return promotionList;
     }
     
@@ -58,8 +59,8 @@ public class PromotionManagament_BUSImpl implements PromotionManagement_BUS{
 
     }
 
-    public ArrayList<Promotion> searchById(String searchQuery) {
-        return promotion_DAO.findById(searchQuery);
+    public ArrayList<PromotionForOrder> searchByIdOrder(String searchQuery) {
+        return promotion_DAO.getForOrder(searchQuery);
     }
 
 //    public ArrayList<Promotion> filter(int type, int status) {
@@ -85,9 +86,9 @@ public class PromotionManagament_BUSImpl implements PromotionManagement_BUS{
         return new Product_DAO().getOne(productID);
     }
 
-    public void createProductPromotionDetail(Promotion newPromotion, ArrayList<ProductPromotionDetail> cart) {
+    public void createProductPromotionDetail(PromotionForProduct newPromotion, ArrayList<ProductPromotionDetail> cart) {
         for (ProductPromotionDetail productPromotionDetail : cart) {
-            productPromotionDetail.setPromotion(newPromotion);
+            productPromotionDetail.setPromotionForProduct(newPromotion);
             new ProductPromotionDetail_DAO().create(productPromotionDetail);
         }
     }
@@ -137,22 +138,41 @@ public class PromotionManagament_BUSImpl implements PromotionManagement_BUS{
 		return promotion_DAO.update(promotionID);
 	}
 
+	public ArrayList<PromotionForOrder> searchForOrderById(String searchQuery) {
+		// TODO Auto-generated method stub
+		return promotion_DAO.getForOrder(searchQuery);
+	}
+
 	@Override
-	public ArrayList<Promotion> searchForOrderById(String searchQuery) {
+	public ArrayList<PromotionForProduct> filterForProduct(int type, int status) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public ArrayList<Promotion> filterForProduct(int type, int status) {
+	public ArrayList<PromotionForOrder> filterForOrder(int type, int status) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
+	public PromotionForOrder getPromotionForOrder(String promotionID) {
+		return promotion_DAO.getOneForOrder(promotionID);
+	}
+
 	@Override
-	public ArrayList<Promotion> filterForOrder(int type, int status) {
+	public ArrayList<Promotion> searchById(String searchQuery) {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	public PromotionForProduct getPromotionForProduct(String promotionID) {
+		return promotion_DAO.getForProduct(promotionID);
+	}
+
+	@Override
+	public void createProductPromotionDetail(Promotion newPromotion, ArrayList<ProductPromotionDetail> cart) {
+		// TODO Auto-generated method stub
+		
 	}
 
 

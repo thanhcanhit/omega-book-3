@@ -16,6 +16,7 @@ import entity.OrderDetail;
 import entity.Product;
 import entity.ProductPromotionDetail;
 import entity.Promotion;
+import entity.PromotionForProduct;
 import enums.DiscountType;
 import java.time.LocalDate;
 import java.time.ZoneId;
@@ -172,10 +173,10 @@ public class Sales_BUSImpl implements Sales_BUS{
 
 //        Get full data
         for (ProductPromotionDetail item : result) {
-            Promotion promotionFullData = promotionDAO.getOne(item.getPromotion().getPromotionID());
+            PromotionForProduct promotionFullData = promotionDAO.getForProduct(item.getPromotion().getPromotionID());
             Product productFullData = productDAO.getOne(item.getProduct().getProductID());
             item.setProduct(productFullData);
-            item.setPromotion(promotionFullData);
+            item.setPromotionForProduct(promotionFullData);
         }
 
         return result;

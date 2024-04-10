@@ -17,6 +17,7 @@ import javax.swing.table.DefaultTableModel;
 import com.formdev.flatlaf.FlatClientProperties;
 import bus.impl.PromotionManagament_BUSImpl;
 import entity.Promotion;
+import entity.PromotionForOrder;
 import enums.CustomerRank;
 import enums.DiscountType;
 import enums.PromotionType;
@@ -33,7 +34,7 @@ public class OrderPromotionManagement_GUI extends javax.swing.JPanel implements 
      * Creates new form OrderPromotionManagement_GUI
      */
     private PromotionManagament_BUSImpl bus;
-    private Promotion currentPromotion = null;
+    private PromotionForOrder currentPromotion = null;
     //Model
     private DefaultTableModel tblModel_promotion;
     private DefaultComboBoxModel cmbModel_type;
@@ -58,7 +59,7 @@ public class OrderPromotionManagement_GUI extends javax.swing.JPanel implements 
                 return;
             
             String promotionID = tblModel_promotion.getValueAt(rowIndex, 0).toString();
-            this.currentPromotion = bus.getPromotion(promotionID);
+            this.currentPromotion = bus.getPromotionForOrder(promotionID);
             renderCurrentPromotion();
         });
         //combobox
@@ -100,10 +101,10 @@ public class OrderPromotionManagement_GUI extends javax.swing.JPanel implements 
         chooseEndDate.setDate(java.sql.Date.valueOf(LocalDate.now()));
     }
     
-    private void renderPromotionTables(ArrayList<Promotion> promotionList) {
+    private void renderPromotionTables(ArrayList<PromotionForOrder> promotionList) {
         tblModel_promotion.setRowCount(0);
         String status, type, rank, discount;
-        for (Promotion promotion : promotionList) {
+        for (PromotionForOrder promotion : promotionList) {
             if(promotion.getEndedDate().after(java.sql.Date.valueOf(LocalDate.now())))
                 status = "Còn hạn";
             else
@@ -151,7 +152,7 @@ public class OrderPromotionManagement_GUI extends javax.swing.JPanel implements 
         return true;
     }
     
-    private Promotion getNewValue() throws Exception {
+    private PromotionForOrder getNewValue() throws Exception {
         double discount = Double.parseDouble(txt_discountPromo.getText());
         int type;
         if(rdb_price.isSelected() == true)
@@ -161,8 +162,9 @@ public class OrderPromotionManagement_GUI extends javax.swing.JPanel implements 
         Date startedDate = chooseStartDate.getDate();
         Date endedDate = chooseEndDate.getDate();
         String promotionID = bus.generateID(PromotionType.ORDER, DiscountType.fromInt(type), endedDate);
-        int rankCus = cmb_rankCus.getSelectedIndex();             
-        Promotion promotion = new Promotion(promotionID, startedDate, endedDate, PromotionType.ORDER, DiscountType.fromInt(type), discount, CustomerRank.fromInt(rankCus));
+        int rankCus = cmb_rankCus.getSelectedIndex();
+        PromotionForOrder promotion = new PromotionForOrder(promotionID, startedDate, endedDate, DiscountType.fromInt(type), discount, CustomerRank.fromInt(rankCus));
+//        Promotion promotion = new Promotion(promotionID, startedDate, endedDate, PromotionType.ORDER, DiscountType.fromInt(type), discount, CustomerRank.fromInt(rankCus));
         return promotion;
     }
     
@@ -175,7 +177,7 @@ public class OrderPromotionManagement_GUI extends javax.swing.JPanel implements 
     private void removeOrderPromotionOther(Promotion pm) {
         if(bus.removeOrderPromotionOther(pm)) {
             Notifications.getInstance().show(Notifications.Type.SUCCESS, "Đã gỡ khuyến mãi " + pm.getPromotionID());
-            renderPromotionTables(bus.getAllPromotionForProduct());
+            renderPromotionTables(bus.getAllPromotionForOrder());
         }
         else
             Notifications.getInstance().show(Notifications.Type.ERROR, "Gỡ không thành công");
@@ -653,7 +655,7 @@ public class OrderPromotionManagement_GUI extends javax.swing.JPanel implements 
                 Notifications.getInstance().show(Notifications.Type.INFO, "Vui lòng điền mã khuyến mãi");
                 return;
             }
-            renderPromotionTables(bus.searchById(searchQuery));
+            renderPromotionTables(bus.searchForOrderById(searchQuery));
         }
     }//GEN-LAST:event_txt_searchPromoKeyPressed
 

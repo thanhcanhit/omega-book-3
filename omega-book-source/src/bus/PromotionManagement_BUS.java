@@ -10,14 +10,16 @@ import dao.Promotion_DAO;
 import entity.Product;
 import entity.ProductPromotionDetail;
 import entity.Promotion;
+import entity.PromotionForOrder;
+import entity.PromotionForProduct;
 import enums.DiscountType;
 import enums.PromotionType;
 
 public interface PromotionManagement_BUS {
     
     public ArrayList<Promotion> getAllPromotion();
-    public ArrayList<Promotion> getAllPromotionForOrder();
-    public ArrayList<Promotion> getAllPromotionForProduct() ;
+    public ArrayList<PromotionForOrder> getAllPromotionForOrder();
+    public ArrayList<PromotionForProduct> getAllPromotionForProduct() ;
     
     public Promotion getOne(String promotionID);
     
@@ -34,7 +36,7 @@ public interface PromotionManagement_BUS {
     public boolean removePromotion(String promotionID) ;
 
     public Product searchProductById(String searchQuery) ;
-    public ArrayList<Promotion> searchForOrderById(String searchQuery);
+    public ArrayList<PromotionForOrder> searchForOrderById(String searchQuery);
 
     public Product getProduct(String productID) ;
 
@@ -48,9 +50,9 @@ public interface PromotionManagement_BUS {
 
     public boolean addNewOrderPromotion(Promotion newPromotion) ;
 
-    public ArrayList<Promotion> filterForProduct(int type, int status);
+    public ArrayList<PromotionForProduct> filterForProduct(int type, int status);
 
-    public ArrayList<Promotion> filterForOrder(int type, int status);
+    public ArrayList<PromotionForOrder> filterForOrder(int type, int status);
 
     public Product getOneProduct(String productID) ;
 }

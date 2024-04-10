@@ -10,16 +10,16 @@ import jakarta.persistence.*;
  */
 @Entity
 @NamedQueries({ 
-	@NamedQuery(name = "ProductPromotionDetail.findAll", query = "SELECT p FROM ProductPromotionDetail p"),
-	@NamedQuery(name = "ProductPromotionDetail.findByPromotion", query = "SELECT p FROM ProductPromotionDetail p WHERE p.promotion.promotionID = :promotionID"),
-	@NamedQuery(name = "ProductPromotionDetail.findByProduct", query = "SELECT p FROM ProductPromotionDetail p WHERE p.product.productID = :productID"),
-	@NamedQuery(name = "ProductPromotionDetail.findByPromotionAndProduct", query = "SELECT p FROM ProductPromotionDetail p WHERE p.promotion.promotionID = :promotionID AND p.product.productID = :productID")
+	@NamedQuery(name = "ProductPromotionDetail.findAll", query = "SELECT pd FROM ProductPromotionDetail pd"),
+	@NamedQuery(name = "ProductPromotionDetail.findByPromotion", query = "SELECT pd FROM ProductPromotionDetail pd WHERE pd.promotion.promotionID = :promotionID"),
+	@NamedQuery(name = "ProductPromotionDetail.findByProduct", query = "SELECT pd FROM ProductPromotionDetail pd WHERE pd.product.productID = :productID"),
+	@NamedQuery(name = "ProductPromotionDetail.findByPromotionAndProduct", query = "SELECT pd FROM ProductPromotionDetail pd WHERE pd.promotion.promotionID = :promotionID AND pd.product.productID = :productID")
 })
 public class ProductPromotionDetail {
 	@Id
 	@ManyToOne
 	@JoinColumn(name = "promotionID")
-    private Promotion promotion;
+    private PromotionForProduct promotion;
 	
 	@Id
 	@ManyToOne
@@ -33,7 +33,7 @@ public class ProductPromotionDetail {
         this.product = product;
     }
 
-    public ProductPromotionDetail(Promotion promotion, Product product) {
+    public ProductPromotionDetail(PromotionForProduct promotion, Product product) {
         this.promotion = promotion;
         this.product = product;
     }
@@ -60,7 +60,7 @@ public class ProductPromotionDetail {
         return product;
     }
 
-    public Promotion getPromotion() {
+    public PromotionForProduct getPromotion() {
         return promotion;
     }
 
@@ -76,7 +76,7 @@ public class ProductPromotionDetail {
         this.product = product;
     }
 
-    public void setPromotion(Promotion promotion) {
+    public void setPromotionForProduct(PromotionForProduct promotion) {
         this.promotion = promotion;
     }
 
