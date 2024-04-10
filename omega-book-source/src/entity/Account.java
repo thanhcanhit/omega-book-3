@@ -7,6 +7,8 @@ package entity;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.NamedQueries;
+import jakarta.persistence.NamedQuery;
 import jakarta.persistence.OneToOne;
 
 /**
@@ -14,13 +16,17 @@ import jakarta.persistence.OneToOne;
  * @author KienTran
  */
 @Entity
+@NamedQueries({
+	@NamedQuery(name="Account.validate", query="SELECT a FROM Account a WHERE a.employee.employeeID = :employeeID AND a.password = :password"),
+	@NamedQuery(name="Account.create", query="INSERT INTO Account (employeeID, password) VALUES (:employeeID, :password)")
+})
 public class Account {
     
     private static final String PASSWORD_ERROR = "Mật khẩu phải ít nhất 8 kí tự (Bao gồm chữ hoa, chữ thường và số)!";
     private static final String EMPLOYEE_ERROR = "Employee không được rỗng !";
 
   
-    private String passWord;
+    private String password;
     @Id
     @OneToOne
     @JoinColumn(name="employeeID")
@@ -34,7 +40,7 @@ public class Account {
     }
 
     public Account(String passWord, Employee employee) throws Exception {
-        setPassWord(passWord);
+        setPassword(passWord);
         setEmployee(employee);
     }
 
@@ -42,8 +48,8 @@ public class Account {
         return employee;
     }
 
-    public String getPassWord() {
-        return passWord;
+    public String getPassword() {
+        return password;
     }
     
     public void setEmployee(Employee employee) throws Exception{
@@ -53,17 +59,17 @@ public class Account {
 //            throw new Exception(EMPLOYEE_ERROR);
     }
 
-    public void setPassWord(String passWord) throws Exception {
+    public void setPassword(String passWord) throws Exception {
 //        String regex = "^[A-Z][a-zA-Z0-9.,@&*^]{7,}.*\\d.*";
 //        if(Pattern.matches(regex, passWord))
-            this.passWord = passWord;
+            this.password = passWord;
 //        else
 //            throw new Exception(PASSWORD_ERROR);
     }
 
     @Override
     public String toString() {
-        return "Account{" + "PASSWORD_ERROR=" + PASSWORD_ERROR + ", EMPLOYEE_ERROR=" + EMPLOYEE_ERROR + ", passWord=" + passWord + ", employee=" + employee + '}';
+        return "Account{" + "PASSWORD_ERROR=" + PASSWORD_ERROR + ", EMPLOYEE_ERROR=" + EMPLOYEE_ERROR + ", passWord=" + password + ", employee=" + employee + '}';
     }
     
     

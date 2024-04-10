@@ -16,100 +16,105 @@ import java.sql.*;
  * @author Hoàng Khang
  */
 public class CashCountSheetDetail_DAO implements interfaces.DAOBase<CashCountSheetDetail> {
-    
-    private Employee_DAO emp_DAO = new Employee_DAO();
 
-    public CashCountSheetDetail_DAO() {
-    }
+	private Employee_DAO emp_DAO = new Employee_DAO();
 
-    @Override
-    public CashCountSheetDetail getOne(String cashCountSheetID) {
-        CashCountSheetDetail cashCountSheetDetail = null;
+	public CashCountSheetDetail_DAO() {
+	}
 
-        try {
-            String sql = "SELECT * FROM CashCountSheetDetail WHERE cashCountSheetID = ?";
-            PreparedStatement preparedStatement = ConnectDB.conn.prepareStatement(sql);
-            preparedStatement.setString(1, cashCountSheetID);
+	@Override
+	public CashCountSheetDetail getOne(String cashCountSheetID) {
+		CashCountSheetDetail cashCountSheetDetail = null;
 
-            ResultSet resultSet = preparedStatement.executeQuery();
+		try {
+			String sql = "SELECT * FROM CashCountSheetDetail WHERE cashCountSheetID = ?";
+			PreparedStatement preparedStatement = ConnectDB.conn.prepareStatement(sql);
+			preparedStatement.setString(1, cashCountSheetID);
 
-            if (resultSet.next()) {
-                boolean index = resultSet.getBoolean("index");
-                String employeeID = resultSet.getString("employeeID");
+			ResultSet resultSet = preparedStatement.executeQuery();
 
-                cashCountSheetDetail = new CashCountSheetDetail(index, new Employee(employeeID), new CashCountSheet(cashCountSheetID));
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+			if (resultSet.next()) {
+				boolean index = resultSet.getBoolean("index");
+				String employeeID = resultSet.getString("employeeID");
 
-        return cashCountSheetDetail;
-    }
+				cashCountSheetDetail = new CashCountSheetDetail(index, new Employee(employeeID),
+						new CashCountSheet(cashCountSheetID));
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 
-    @Override
-    public ArrayList<CashCountSheetDetail> getAll() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
+		return cashCountSheetDetail;
+	}
 
-    public ArrayList<CashCountSheetDetail> getAllCashCountSheetDetailInCashCountSheet(String cashCountSheetID) {
-        ArrayList<CashCountSheetDetail> cashCountSheetDetails = new ArrayList<>();
+	@Override
+	public ArrayList<CashCountSheetDetail> getAll() {
+		throw new UnsupportedOperationException("Not supported yet."); // Generated from
+																		// nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+	}
 
-        try {
-            String sql = "SELECT * FROM CashCountSheetDetail WHERE cashCountSheetID = ?";
-            PreparedStatement preparedStatement = ConnectDB.conn.prepareStatement(sql);
-            preparedStatement.setString(1, cashCountSheetID);
+	public ArrayList<CashCountSheetDetail> getAllCashCountSheetDetailInCashCountSheet(String cashCountSheetID) {
+		ArrayList<CashCountSheetDetail> cashCountSheetDetails = new ArrayList<>();
 
-            ResultSet resultSet = preparedStatement.executeQuery();
+		try {
+			String sql = "SELECT * FROM CashCountSheetDetail WHERE cashCountSheetID = ?";
+			PreparedStatement preparedStatement = ConnectDB.conn.prepareStatement(sql);
+			preparedStatement.setString(1, cashCountSheetID);
 
-            while (resultSet.next()) {
-                boolean index = resultSet.getBoolean("auditorIndex");
-                String employeeID = resultSet.getString("employeeID");
+			ResultSet resultSet = preparedStatement.executeQuery();
 
-                Employee employee = emp_DAO.getOne(employeeID);
-                CashCountSheet cashCountSheet = new CashCountSheet(cashCountSheetID);
+			while (resultSet.next()) {
+				boolean index = resultSet.getBoolean("auditorIndex");
+				String employeeID = resultSet.getString("employeeID");
 
-                CashCountSheetDetail cashCountSheetDetail = new CashCountSheetDetail(index, employee, cashCountSheet);
-                cashCountSheetDetails.add(cashCountSheetDetail);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+				Employee employee = emp_DAO.getOne(employeeID);
+				CashCountSheet cashCountSheet = new CashCountSheet(cashCountSheetID);
 
-        return cashCountSheetDetails;
-    }
+				CashCountSheetDetail cashCountSheetDetail = new CashCountSheetDetail(index, employee, cashCountSheet);
+				cashCountSheetDetails.add(cashCountSheetDetail);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 
-    @Override
-    public String generateID() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
+		return cashCountSheetDetails;
+	}
 
-    @Override
-   public Boolean create(CashCountSheetDetail cashCountSheetDetail) {
-    try {
-        String sql = "INSERT INTO CashCountSheetDetail (auditorIndex, cashCountSheetID, employeeID) VALUES (?, ?, ?)";
-        PreparedStatement preparedStatement = ConnectDB.conn.prepareStatement(sql);
+	@Override
+	public String generateID() {
+		throw new UnsupportedOperationException("Not supported yet."); // Generated from
+																		// nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+	}
 
-        preparedStatement.setBoolean(1, cashCountSheetDetail.getIndex());
-        preparedStatement.setString(2, cashCountSheetDetail.getCashCountSheet().getCashCountSheetID());
-        preparedStatement.setString(3, cashCountSheetDetail.getEmployee().getEmployeeID());
-        int rowsAffected = preparedStatement.executeUpdate();
-        if (rowsAffected > 0) {
-            return true; // Thành công
-        }
-    } catch (Exception e) {
-        e.printStackTrace();
-    }
-    return false; // Thất bại
-}
+	@Override
+	public Boolean create(CashCountSheetDetail cashCountSheetDetail) {
+		try {
+			String sql = "INSERT INTO CashCountSheetDetail (auditorIndex, cashCountSheetID, employeeID) VALUES (?, ?, ?)";
+			PreparedStatement preparedStatement = ConnectDB.conn.prepareStatement(sql);
 
-    @Override
-    public Boolean update(String id, CashCountSheetDetail newObject) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
+			preparedStatement.setBoolean(1, cashCountSheetDetail.isChecker());
+			preparedStatement.setString(2, cashCountSheetDetail.getCashCountSheet().getCashCountSheetID());
+			preparedStatement.setString(3, cashCountSheetDetail.getEmployee().getEmployeeID());
+			int rowsAffected = preparedStatement.executeUpdate();
+			if (rowsAffected > 0) {
+				return true; // Thành công
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return false; // Thất bại
+	}
 
-    @Override
-    public Boolean delete(String id) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
+	@Override
+	public Boolean update(String id, CashCountSheetDetail newObject) {
+		throw new UnsupportedOperationException("Not supported yet."); // Generated from
+																		// nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+	}
+
+	@Override
+	public Boolean delete(String id) {
+		throw new UnsupportedOperationException("Not supported yet."); // Generated from
+																		// nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+	}
 
 }

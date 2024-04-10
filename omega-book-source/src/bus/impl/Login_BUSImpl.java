@@ -31,7 +31,7 @@ public class Login_BUSImpl implements Login_BUS{
         }
         if (acc == null) {
             throw new Exception("Tài khoản không tồn tại!");
-        } else if (!PasswordHash.comparePasswords(password, acc.getPassWord())) {
+        } else if (!PasswordHash.comparePasswords(password, acc.getPassword())) {
             throw new Exception("Mật khẩu không chính xác!");
         } else {
             return employeeDAO.getOne(acc.getEmployee().getEmployeeID());
@@ -42,7 +42,7 @@ public class Login_BUSImpl implements Login_BUS{
 
 //        System.out.println(PasswordHash.hashPassword(pass));
         pass = PasswordHash.hashPassword(pass);
-        String passOld = accountDAO.getOne(id).getPassWord();
+        String passOld = accountDAO.getOne(id).getPassword();
 //        System.out.println("Pass csdl: "+passOld);
         if (!pass.equals(passOld)) {
             throw new Exception("Mật khẩu không chính xác");
@@ -55,7 +55,7 @@ public class Login_BUSImpl implements Login_BUS{
         String passNewHash = PasswordHash.hashPassword(passNew);
         if (acc == null) {
             throw new Exception("Tài khoản không tồn tại!");
-        } else if (acc.getPassWord().equals(passNewHash)) {
+        } else if (acc.getPassword().equals(passNewHash)) {
             throw new Exception("Mật khẩu không chính xác!");
         }
         return accountDAO.updatePass(acc.getEmployee().getEmployeeID(), passNewHash);
