@@ -9,6 +9,12 @@ import jakarta.persistence.*;
  * @author Như Tâm
  */
 @Entity
+@NamedQueries({ 
+	@NamedQuery(name = "ProductPromotionDetail.findAll", query = "SELECT p FROM ProductPromotionDetail p"),
+	@NamedQuery(name = "ProductPromotionDetail.findByPromotion", query = "SELECT p FROM ProductPromotionDetail p WHERE p.promotion.promotionID = :promotionID"),
+	@NamedQuery(name = "ProductPromotionDetail.findByProduct", query = "SELECT p FROM ProductPromotionDetail p WHERE p.product.productID = :productID"),
+	@NamedQuery(name = "ProductPromotionDetail.findByPromotionAndProduct", query = "SELECT p FROM ProductPromotionDetail p WHERE p.promotion.promotionID = :promotionID AND p.product.productID = :productID")
+})
 public class ProductPromotionDetail {
 	@Id
 	@ManyToOne
