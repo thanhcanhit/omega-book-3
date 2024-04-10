@@ -4,22 +4,25 @@
  */
 package dao;
 
-import database.ConnectDB;
-import entity.Account;
-import entity.Customer;
-import entity.Employee;
-import entity.Shift;
-import interfaces.DAOBase;
-import java.security.CodeSigner;
-import java.sql.*;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.Statement;
+import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
-import java.time.LocalTime;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import dao.Shift_DAO;
 import java.time.LocalDate;
 import java.time.ZoneId;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
+import database.ConnectDB;
+import entity.Account;
+import entity.Shift;
+import interfaces.DAOBase;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.NoResultException;
+import jakarta.persistence.Query;
+import utilities.AccessDatabase;
 
 /**
  *
@@ -27,85 +30,87 @@ import java.time.ZoneId;
  */
 public class Shift_DAO implements DAOBase<Shift> {
 
-    private Employee_DAO employee_DAO = new Employee_DAO();
+//    private Employee_DAO employee_DAO = new Employee_DAO();
+	EntityManager entityManager;
+	
+	public Shift_DAO() {
+		entityManager = AccessDatabase.getEntityManager();
+	}
 
     @Override
     public Shift getOne(String id) {
-        Shift shift = null;
-        try {
-            String sql = "SELECT * FROM Shift WHERE shiftID = ?";
-            PreparedStatement preparedStatement = ConnectDB.conn.prepareStatement(sql);
-            preparedStatement.setString(1, id);
-
-            ResultSet rs = preparedStatement.executeQuery();
-
-            if (rs.next()) {
-                String employeeID = rs.getString("employeeID");
-                String shiftID = rs.getString("shiftID");
-                Timestamp startTimestamp = rs.getTimestamp("startedAt");
-                Timestamp endTimestamp = rs.getTimestamp("endedAt");
-
-                Date started = new java.sql.Date(startTimestamp.getTime());
-                Date ended = new java.sql.Date(endTimestamp.getTime());
-
-                shift = new Shift(shiftID, started, ended, new Account(employee_DAO.getOne(employeeID)));
-
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return shift;
+//        Shift shift = null;
+//        try {
+//            String sql = "SELECT * FROM Shift WHERE shiftID = ?";
+//            PreparedStatement preparedStatement = ConnectDB.conn.prepareStatement(sql);
+//            preparedStatement.setString(1, id);
+//
+//            ResultSet rs = preparedStatement.executeQuery();
+//
+//            if (rs.next()) {
+//                String employeeID = rs.getString("employeeID");
+//                String shiftID = rs.getString("shiftID");
+//                Timestamp startTimestamp = rs.getTimestamp("startedAt");
+//                Timestamp endTimestamp = rs.getTimestamp("endedAt");
+//
+//                Date started = new java.sql.Date(startTimestamp.getTime());
+//                Date ended = new java.sql.Date(endTimestamp.getTime());
+//
+//                shift = new Shift(shiftID, started, ended, new Account(employee_DAO.getOne(employeeID)));
+//
+//            }
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//        return shift;
+    	return entityManager.find(Shift.class, id);
     }
 
-   public ArrayList<Shift> getShiftsByDate(Date date) {
-        ArrayList<Shift> shifts = new ArrayList<>();
+    
+ /**
+  * Get all shifts by date
+  * @param date
+  * @return
+  */
+    public ArrayList<Shift> getShiftsByDate(Date date) {
+        List<Shift> shifts = new ArrayList<>();
+
+        // Chuyển đổi ngày thành LocalDate để sử dụng trong truy vấn HQL
+        LocalDate localDate = date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+        Date startOfDay = Date.from(localDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
+        Date endOfDay = Date.from(localDate.plusDays(1).atStartOfDay(ZoneId.systemDefault()).minusSeconds(1).toInstant());
 
         try {
-            // Chuyển đổi ngày thành LocalDate để sử dụng trong truy vấn SQL
-            LocalDate localDate = date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-            Timestamp startOfDay = Timestamp.valueOf(localDate.atStartOfDay());
-            Timestamp endOfDay = Timestamp.valueOf(localDate.plusDays(1).atStartOfDay().minusSeconds(1));
+            String hql = "FROM Shift s WHERE s.startedAt >= :startOfDay AND s.startedAt <= :endOfDay";
+            Query query = entityManager.createQuery(hql);
+            query.setParameter("startOfDay", startOfDay);
+            query.setParameter("endOfDay", endOfDay);
 
-            String sql = "SELECT * FROM Shift WHERE startedAt >= ? AND startedAt <= ?";
-            PreparedStatement preparedStatement = ConnectDB.conn.prepareStatement(sql);
-            preparedStatement.setTimestamp(1, startOfDay);
-            preparedStatement.setTimestamp(2, endOfDay);
-
-            ResultSet rs = preparedStatement.executeQuery();
-
-            while (rs.next()) {
-                String shiftID = rs.getString("shiftID");
-                String employeeID = rs.getString("employeeID");
-                Timestamp startTimestamp = rs.getTimestamp("startedAt");
-                Timestamp endTimestamp = rs.getTimestamp("endedAt");
-
-                Date started = new java.sql.Date(startTimestamp.getTime());
-                Date ended = new java.sql.Date(endTimestamp.getTime());
-
-                Shift shift = new Shift(shiftID, started, ended, new Account(employee_DAO.getOne(employeeID)));
-                shifts.add(shift);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
+            shifts = query.getResultList();
+        } catch (NoResultException nre) {
+            shifts = new ArrayList<>();
+        } finally {
+        	entityManager.close();
         }
 
-        return shifts;
+        return (ArrayList<Shift>) shifts;
     }
 
     @Override
     public ArrayList<Shift> getAll() {
-        ArrayList<Shift> result = new ArrayList<>();
-        try {
-            Statement st = ConnectDB.conn.createStatement();
-            ResultSet rs = st.executeQuery("Select * from Shift");
-            while (rs.next()) {
-                String shiftID = rs.getString("shiftID");
-                result.add(getOne(shiftID));
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return result;
+//        ArrayList<Shift> result = new ArrayList<>();
+//        try {
+//            Statement st = ConnectDB.conn.createStatement();
+//            ResultSet rs = st.executeQuery("Select * from Shift");
+//            while (rs.next()) {
+//                String shiftID = rs.getString("shiftID");
+//                result.add(getOne(shiftID));
+//            }
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//        return result;
+    	return (ArrayList<Shift>) entityManager.createNamedQuery("Shift.findAll", Shift.class).getResultList();
     }
 
     @Override
@@ -114,9 +119,7 @@ public class Shift_DAO implements DAOBase<Shift> {
         String maxID = "";
         String newID = "";
         Date date = new Date();
-        // Tạo một đối tượng SimpleDateFormat với định dạng chỉ chứa giờ
         SimpleDateFormat sdf = new SimpleDateFormat("HH");
-        // Sử dụng đối tượng SimpleDateFormat để chuyển đổi Date thành chuỗi giờ
         String hour = sdf.format(date);
         if (Integer.parseInt(hour) < 14) {
             code += "01";
@@ -126,17 +129,20 @@ public class Shift_DAO implements DAOBase<Shift> {
         SimpleDateFormat datef = new SimpleDateFormat("ddMMyyyy");
         code += datef.format(date);
         newID = code;
+
         try {
-            code += "%";
-            String sql = "  SELECT TOP 1  * FROM [Shift] WHERE shiftID LIKE '" + code + "' ORDER BY shiftID DESC;";
-            PreparedStatement st = ConnectDB.conn.prepareStatement(sql);
-            ResultSet rs = st.executeQuery();
-            if (rs.next()) {
-                maxID = rs.getString("shiftID");
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
+            String hql = "FROM Shift s WHERE s.shiftID LIKE :code ORDER BY s.shiftID DESC";
+            Query query = entityManager.createQuery(hql);
+            query.setParameter("code", code + "%");
+            query.setMaxResults(1);
+            Shift result = (Shift) query.getSingleResult();
+            maxID = result != null ? result.getShiftID() : "";
+        } catch (NoResultException nre) {
+            maxID = "";
+        } finally {
+        	entityManager.close();
         }
+
         if (maxID.equals("")) {
             newID += "0000";
         } else {
@@ -146,30 +152,42 @@ public class Shift_DAO implements DAOBase<Shift> {
             newID += String.format("%04d", num);
         }
         return newID;
-
     }
 
     @Override
+    /**
+     * Create a new shift
+     */
     public Boolean create(Shift shift) {
-        int n = 0;
-        try {
-            PreparedStatement st = ConnectDB.conn.prepareStatement("insert into Shift(shiftID, startedAt, endedAt, employeeID) "
-                    + " values(?,?,?,?)");
-            st.setString(1, shift.getShiftID());
-
-            Timestamp end = new Timestamp(shift.getStartedAt().getTime());
-            st.setTimestamp(2, end);
-
-            Timestamp start = new Timestamp(shift.getEndedAt().getTime());
-            st.setTimestamp(3, start);
-
-            st.setString(4, shift.getAccount().getEmployee().getEmployeeID());
-
-            n = st.executeUpdate();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return n > 0;
+//        int n = 0;
+//        try {
+//            PreparedStatement st = ConnectDB.conn.prepareStatement("insert into Shift(shiftID, startedAt, endedAt, employeeID) "
+//                    + " values(?,?,?,?)");
+//            st.setString(1, shift.getShiftID());
+//
+//            Timestamp end = new Timestamp(shift.getStartedAt().getTime());
+//            st.setTimestamp(2, end);
+//
+//            Timestamp start = new Timestamp(shift.getEndedAt().getTime());
+//            st.setTimestamp(3, start);
+//
+//            st.setString(4, shift.getAccount().getEmployee().getEmployeeID());
+//
+//            n = st.executeUpdate();
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//        return n > 0;
+		try {
+			entityManager.getTransaction().begin();
+			entityManager.persist(shift);
+			entityManager.getTransaction().commit();
+			return true;
+		} catch (Exception e) {
+			entityManager.getTransaction().rollback();
+			e.printStackTrace();
+			return false;
+		}
     }
 
     @Override

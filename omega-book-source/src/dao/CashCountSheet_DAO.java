@@ -4,12 +4,21 @@
  */
 package dao;
 
+import java.sql.Date;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Timestamp;
+import java.util.ArrayList;
+
 import database.ConnectDB;
 import entity.CashCount;
 import entity.CashCountSheet;
 import entity.CashCountSheetDetail;
-import java.util.ArrayList;
-import java.sql.*;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.NoResultException;
+import jakarta.persistence.TypedQuery;
+import utilities.AccessDatabase;
 
 
 /**
@@ -17,8 +26,14 @@ import java.sql.*;
  * @author Hoàng Khang
  */
 public class CashCountSheet_DAO implements interfaces.DAOBase<CashCountSheet> {
+	
+	EntityManager em;
 
-    private CashCount_DAO cashCount_DAO = new CashCount_DAO();
+    public CashCountSheet_DAO() {
+    	em = AccessDatabase.getEntityManager();
+	}
+
+	private CashCount_DAO cashCount_DAO = new CashCount_DAO();
     private CashCountSheetDetail_DAO cashCountSheetDetail_DAO = new CashCountSheetDetail_DAO();
 
     @Override
@@ -49,81 +64,70 @@ public class CashCountSheet_DAO implements interfaces.DAOBase<CashCountSheet> {
     }
 
     @Override
+    /**
+     * Lấy ra tất cả các CashCountSheet
+     */
     public ArrayList<CashCountSheet> getAll() {
-        ArrayList<CashCountSheet> cashCountSheets = new ArrayList<>();
-
-        try {
-            String sql = "SELECT * FROM CashCountSheet";
-            PreparedStatement preparedStatement = ConnectDB.conn.prepareStatement(sql);
-
-            ResultSet resultSet = preparedStatement.executeQuery();
-
-            while (resultSet.next()) {
-                String cashCountSheetID = resultSet.getString("cashCountSheetID");
-                Timestamp startTimestamp = resultSet.getTimestamp("startedDate");
-                Timestamp endTimestamp = resultSet.getTimestamp("endedDate");
-                
-                Date startDate = new Date(startTimestamp.getTime());
-                Date endDate = new Date(endTimestamp.getTime());
-                CashCountSheet cashCountSheet = new CashCountSheet(cashCountSheetID, new CashCount_DAO().getAll(cashCountSheetID), new CashCountSheetDetail_DAO().getAllCashCountSheetDetailInCashCountSheet(cashCountSheetID), startDate, endDate);
-
-                cashCountSheets.add(cashCountSheet);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        return cashCountSheets;
+//        ArrayList<CashCountSheet> cashCountSheets = new ArrayList<>();
+//
+//        try {
+//            String sql = "SELECT * FROM CashCountSheet";
+//            PreparedStatement preparedStatement = ConnectDB.conn.prepareStatement(sql);
+//
+//            ResultSet resultSet = preparedStatement.executeQuery();
+//
+//            while (resultSet.next()) {
+//                String cashCountSheetID = resultSet.getString("cashCountSheetID");
+//                Timestamp startTimestamp = resultSet.getTimestamp("startedDate");
+//                Timestamp endTimestamp = resultSet.getTimestamp("endedDate");
+//                
+//                Date startDate = new Date(startTimestamp.getTime());
+//                Date endDate = new Date(endTimestamp.getTime());
+//                CashCountSheet cashCountSheet = new CashCountSheet(cashCountSheetID, new CashCount_DAO().getAll(cashCountSheetID), new CashCountSheetDetail_DAO().getAllCashCountSheetDetailInCashCountSheet(cashCountSheetID), startDate, endDate);
+//
+//                cashCountSheets.add(cashCountSheet);
+//            }
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//
+//        return cashCountSheets;
+    	return (ArrayList<CashCountSheet>) em.createNamedQuery("CashCountSheet.findAll").getResultList();
     }
 
     @Override
     public String generateID() {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
-
+    
     public String getMaxSequence(String code) {
         try {
             code += "%";
-            String sql = "SELECT TOP 1  * FROM CashCountSheet WHERE cashCountSheetID LIKE '" + code + "' ORDER BY cashCountSheetID DESC";
-            PreparedStatement st = ConnectDB.conn.prepareStatement(sql);
-            ResultSet rs = st.executeQuery();
-            if (rs.next()) {
-                String cashCountSheetID = rs.getString("cashCountSheetID");
-                return cashCountSheetID;
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
+            TypedQuery<String> query = em.createQuery(
+                "SELECT c.cashCountSheetID FROM CashCountSheet c WHERE c.cashCountSheetID LIKE :code ORDER BY c.cashCountSheetID DESC", 
+                String.class);
+            query.setParameter("code", code);
+            query.setMaxResults(1);
+            return query.getSingleResult();
+        } catch (NoResultException e) {
+            return null;
         }
-        return null;
     }
-
     @Override
-    public Boolean create(CashCountSheet cashCountSheet
-    ) {
+    public Boolean create(CashCountSheet cashCountSheet) {
         try {
-            // Thêm bản ghi vào bảng CashCountSheet
-            String cashCountSheetSql = "INSERT INTO CashCountSheet (cashCountSheetID, startedDate, endedDate) VALUES (?, ?, ?)";
-            PreparedStatement cashCountSheetStatement = ConnectDB.conn.prepareStatement(cashCountSheetSql);
-            cashCountSheetStatement.setString(1, cashCountSheet.getCashCountSheetID());
-            Timestamp end = new Timestamp(cashCountSheet.getEndedDate().getTime());
-            cashCountSheetStatement.setTimestamp(2, end);
-            Timestamp start = new Timestamp(cashCountSheet.getCreatedDate().getTime());
-            cashCountSheetStatement.setTimestamp(3, start);
-            int cashCountSheetRowsAffected = cashCountSheetStatement.executeUpdate();
-            for (CashCount cashCount : cashCountSheet.getCashCountList()) {
-                cashCount_DAO.create(cashCount, cashCountSheet.getCashCountSheetID());
-            }
-            // Thêm bản ghi vào bảng CashCountSheetDetail
-            for (CashCountSheetDetail cashCountSheetDetail : cashCountSheet.getCashCountSheetDetailList()) {
-                cashCountSheetDetail_DAO.create(cashCountSheetDetail);
-            }
-            // Nếu tất cả các bảng đều thêm bản ghi thành công
-            if (cashCountSheetRowsAffected > 0) {
-                return true;            }
+            em.getTransaction().begin();
+            em.persist(cashCountSheet);
+            em.getTransaction().commit();
+            return true;
         } catch (Exception e) {
             e.printStackTrace();
+            return false;
+        } finally {
+            if (em != null) {
+                em.close();
+            }
         }
-        return false;
     }
 
     @Override
