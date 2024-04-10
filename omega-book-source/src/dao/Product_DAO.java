@@ -425,23 +425,23 @@ public class Product_DAO implements DAOBase<Product> {
 	}
 
 	public ArrayList<Product> getTop10Product(String date) {
-
 		ArrayList<Product> result = new ArrayList<>();
 
 		try {
-			PreparedStatement st = ConnectDB.conn.prepareStatement("""
-					select top 10 productID
-					 from OrderDetail as od join [Order] as o on od.orderID = o.orderID
-					 where MONTH(orderAt) = Month(CAST(? as date)) and YEAR(orderAt) = Year(CAST(? as date))
-					 group by productID
-					 """);
-			st.setString(1, date);
-			st.setString(2, date);
-			ResultSet rs = st.executeQuery();
+			String hql = "select od.productID from OrderDetail as od join od.order as o "
+					+ "where month(o.orderAt) = month(:date) and year(o.orderAt) = year(:date) "
+					+ "group by od.productID order by count(od.productID) desc";
+			Query query = em.createQuery(hql);
+			query.setParameter("date", date);
+			query.setMaxResults(10);
 
-			while (rs.next()) {
-				String productID = rs.getString(1);
-				result.add(getOne(productID));
+			List<String> productIDs = query.getResultList();
+
+			for (String productID : productIDs) {
+				Product product = em.find(Product.class, productID);
+				if (product != null) {
+					result.add(product);
+				}
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -451,21 +451,21 @@ public class Product_DAO implements DAOBase<Product> {
 	}
 
 	public ArrayList<Product> getTopProductInDay(String date) {
-
 		ArrayList<Product> result = new ArrayList<>();
 
 		try {
-			PreparedStatement st = ConnectDB.conn.prepareStatement("""
-					select productID
-					 from OrderDetail as od join [Order] as o on od.orderID = o.orderID
-					 where CONVERT(varchar, orderAt, 23) = ?
-					 group by productID""");
-			st.setString(1, date);
-			ResultSet rs = st.executeQuery();
+			String hql = "select od.productID from OrderDetail as od join od.order as o "
+					+ "where cast(o.orderAt as date) = :date " + "group by od.productID";
+			Query query = em.createQuery(hql);
+			query.setParameter("date", date);
 
-			while (rs.next()) {
-				String productID = rs.getString(1);
-				result.add(getOne(productID));
+			List<String> productIDs = query.getResultList();
+
+			for (String productID : productIDs) {
+				Product product = em.find(Product.class, productID);
+				if (product != null) {
+					result.add(product);
+				}
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -478,19 +478,17 @@ public class Product_DAO implements DAOBase<Product> {
 		int result = 0;
 
 		try {
-			PreparedStatement st = ConnectDB.conn.prepareStatement("""
-					select SUM(quantity) as sl
-					from OrderDetail as od join [Order] as o on od.orderID = o.orderID
-					where CONVERT(varchar, orderAt, 23) = ? and productID = ?
-					group by productID
-					order by SUM(quantity) desc""");
-			st.setString(1, date);
-			st.setString(2, productID);
-			ResultSet rs = st.executeQuery();
+			String hql = "select sum(od.quantity) as sl " + "from OrderDetail as od join od.order as o "
+					+ "where cast(o.orderAt as date) = :date and od.productID = :productID " + "group by od.productID "
+					+ "order by sum(od.quantity) desc";
+			Query query = em.createQuery(hql);
+			query.setParameter("date", date);
+			query.setParameter("productID", productID);
 
-			while (rs.next()) {
-				result = rs.getInt("sl");
+			List<Long> quantities = query.getResultList();
 
+			if (!quantities.isEmpty()) {
+				result = quantities.get(0).intValue();
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -500,53 +498,51 @@ public class Product_DAO implements DAOBase<Product> {
 	}
 
 	public double getTotalProduct(String productID, String date) {
+		double result = 0;
+
 		try {
-			PreparedStatement st = ConnectDB.conn.prepareStatement(
-					"""
-							select sum(od.lineTotal)
-							from OrderDetail as od join [Order] as o on od.orderID = o.orderID
-							where productID = ? and MONTH(orderAt) = Month(CAST(? as date)) and YEAR(orderAt) = Year(CAST(? as date))
-							group by productID
-							""");
-			st.setString(1, productID);
-			st.setString(2, date);
-			st.setString(3, date);
-			ResultSet rs = st.executeQuery();
-			while (rs.next()) {
-				return rs.getDouble(1);
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+			String hql = "select sum(od.lineTotal) " + "from OrderDetail as od join od.order as o "
+					+ "where od.productID = :productID and month(o.orderAt) = month(:date) and year(o.orderAt) = year(:date) "
+					+ "group by od.productID";
+			Query query = em.createQuery(hql);
+			query.setParameter("productID", productID);
+			query.setParameter("date", date);
 
-		return 0;
-	}
+			List<Double> sums = query.getResultList();
 
-	public int getQuantityProductType(int type, int month, int year) {
-		int result = 0;
-		try {
-			PreparedStatement st = ConnectDB.conn.prepareStatement(
-					"""
-							select SUM(quantity) as sl
-							from OrderDetail as od join [Order] as o on od.orderID = o.orderID join Product p on p.productID=od.productID
-							where month(orderAt) = ? and year(orderAt) = ? and productType = ?
-							group by productType
-							 """);
-			st.setInt(1, month);
-			st.setInt(2, year);
-			st.setInt(3, type);
-			ResultSet rs = st.executeQuery();
-
-			while (rs.next()) {
-				result = rs.getInt("sl");
-
+			if (!sums.isEmpty()) {
+				result = sums.get(0);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
 		return result;
+	}
 
+	public int getQuantityProductType(int type, int month, int year) {
+		int result = 0;
+
+		try {
+			String hql = "select sum(od.quantity) as sl "
+					+ "from OrderDetail as od join od.order as o join od.product as p "
+					+ "where month(o.orderAt) = :month and year(o.orderAt) = :year and p.productType = :type "
+					+ "group by p.productType";
+			Query query = em.createQuery(hql);
+			query.setParameter("month", month);
+			query.setParameter("year", year);
+			query.setParameter("type", type);
+
+			List<Long> quantities = query.getResultList();
+
+			if (!quantities.isEmpty()) {
+				result = quantities.get(0).intValue();
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return result;
 	}
 
 }
