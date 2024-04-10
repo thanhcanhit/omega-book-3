@@ -12,7 +12,19 @@ import jakarta.persistence.*;
  */
 @Entity
 @NamedQueries({ @NamedQuery(name = "Order.getAll", query = "SELECT o FROM Order o ORDER BY o.orderAt DESC"),
-
+				@NamedQuery(name="Order.update", query="UPDATE Order o SET o.payment = :payment, " +
+             "o.status = :status, " +
+             "o.orderAt = :orderAt, " +
+             "o.employee.employeeID = :employeeID, " +
+             "o.customer.customerID = :customerID, " +
+             "o.promotion.promotionID = :promotionID, " +
+             "o.totalDue = :totalDue, " +
+             "o.subTotal = :subTotal, " +
+             "o.moneyGiven = :moneyGiven " +
+             "WHERE o.orderID = :orderID"),
+				@NamedQuery(name="Order.generateID", query="SELECT o.orderID FROM Order o WHERE o.orderID LIKE :prefix ORDER BY o.orderID DESC"),
+				@NamedQuery(name="Order.getLength", query="SELECT COUNT(o) FROM Order o"),
+				@NamedQuery(name="Order.getQuantityOrderSaved", query="SELECT COUNT(o) FROM Order o WHERE o.status = false")
 })
 @Table(name = "Bill")
 public final class Order {

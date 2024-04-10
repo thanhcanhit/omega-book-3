@@ -47,30 +47,35 @@ public class Order_DAO implements DAOBase<Order> {
 
     @Override
     public String generateID() {
-        String result = "HD";
+    	String result = "HD";
         LocalDate time = LocalDate.now();
-        DateTimeFormatter dateFormater = DateTimeFormatter.ofPattern("ddMMyyyy");
-
-        result += dateFormater.format(time);
-        String query = "select top 1 * from [Order] "
-                       + "where orderID like ? "
-                       + "order by orderID desc";
+        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("ddMMyyyy");
+        result += dateFormatter.format(time);
 
         try {
-            PreparedStatement st = ConnectDB.conn.prepareStatement(query);
-            st.setString(1, result + "%");
-            ResultSet rs = st.executeQuery();
+            entityManager.getTransaction().begin();
 
-            if (rs.next()) {
-                String lastID = rs.getString("orderID");
+            String lastID = (String) entityManager.createNamedQuery("Order.generateID", Order.class).setParameter("prefix", result + "%")
+                    .setMaxResults(1).getSingleResult().toString();
+            if (lastID != null) {
                 String sNumber = lastID.substring(lastID.length() - 2);
                 int num = Integer.parseInt(sNumber) + 1;
                 result += String.format("%04d", num);
             } else {
                 result += String.format("%04d", 0);
             }
+
+            entityManager.getTransaction().commit();
+
         } catch (Exception e) {
+            if (entityManager != null && entityManager.getTransaction().isActive()) {
+                entityManager.getTransaction().rollback();
+            }
             e.printStackTrace();
+        } finally {
+            if (entityManager != null) {
+                entityManager.close();
+            }
         }
 
         return result;
@@ -78,130 +83,45 @@ public class Order_DAO implements DAOBase<Order> {
 
     @Override
     public Boolean create(Order object) {
-        try {
-            String sql = "INSERT INTO [Order] (orderID, payment, status, orderAt, employeeID, customerID, promotionID, totalDue, subTotal, moneyGiven) "
-                    + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-            PreparedStatement preparedStatement = ConnectDB.conn.prepareStatement(sql);
 
-            preparedStatement.setString(1, object.getOrderID());
-            preparedStatement.setBoolean(2, object.isPayment());
-            preparedStatement.setBoolean(3, object.isStatus());
-            preparedStatement.setTimestamp(4, new Timestamp(object.getOrderAt().getTime()));
-            preparedStatement.setString(5, object.getEmployee().getEmployeeID());
-            preparedStatement.setString(6, object.getCustomer().getCustomerID());
-            preparedStatement.setString(7, object.getPromotion() == null ? null : object.getPromotion().getPromotionID());
-            preparedStatement.setDouble(8, object.getTotalDue());
-            preparedStatement.setDouble(9, object.getSubTotal());
-            preparedStatement.setDouble(10, object.getMoneyGiven());
-
-            int rowsAffected = preparedStatement.executeUpdate();
-            return rowsAffected > 0;
-        } catch (Exception e) {
-            e.printStackTrace();
-            return false;
-        }
+    	entityManager.getTransaction().begin();
+    	entityManager.persist(object);
+    	entityManager.getTransaction().commit();
+    	return entityManager.find(Order.class, object.getOrderID()) != null;
     }
 
     @Override
     public Boolean update(String id, Order newObject) {
-        try {
-            String sql = "UPDATE [Order] SET payment=?, status=?, orderAt=?, employeeID=?, customerID=?, promotionID=?, totalDue=?, subTotal=?, moneyGiven=?  "
-                    + "WHERE orderID=?";
-            PreparedStatement preparedStatement = ConnectDB.conn.prepareStatement(sql);
-            preparedStatement.setBoolean(1, newObject.isPayment());
-            preparedStatement.setBoolean(2, newObject.isStatus());
-            preparedStatement.setDate(3, new java.sql.Date(newObject.getOrderAt().getTime()));
-            preparedStatement.setString(4, newObject.getEmployee().getEmployeeID());
-            preparedStatement.setString(5, newObject.getCustomer().getCustomerID());
-            preparedStatement.setString(6, newObject.getPromotion() != null ? newObject.getPromotion().getPromotionID() : null);
-            preparedStatement.setDouble(7, newObject.getTotalDue());
-            preparedStatement.setDouble(8, newObject.getSubTotal());
-            preparedStatement.setDouble(9, newObject.getMoneyGiven());
-            preparedStatement.setString(10, id);
-
-            int rowsAffected = preparedStatement.executeUpdate();
-            return rowsAffected > 0;
-        } catch (Exception e) {
-            e.printStackTrace();
-            return false;
-        }
+    	int n = 0;
+    	n = entityManager.createNamedQuery("Order.update", Order.class)
+    	.setParameter("payment", newObject.isPayment())
+    	.setParameter("status", newObject.isStatus())
+    	.setParameter("orderAt", newObject.getOrderAt())
+    	.setParameter("employeeID", newObject.getEmployee().getEmployeeID())
+    	.setParameter("customerID", newObject.getCustomer().getCustomerID())
+    	.setParameter("promotionID", newObject.getPromotion().getPromotionID())
+    	.setParameter("totalDue", newObject.getTotalDue())
+    	.setParameter("subTotal", newObject.getSubTotal())
+    	.setParameter("moneyGiven", newObject.getMoneyGiven())
+    	.setParameter("orderID", id).executeUpdate();
+    	return n > 0;
     }
 
     @Override
     public Boolean delete(String id) {
-        int n = 0;
-        try {
-            PreparedStatement st = ConnectDB.conn.prepareStatement("delete from [Order] where orderID = ?");
-            st.setString(1, id);
-            new OrderDetail_DAO().delete(id);
-            n = st.executeUpdate();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return n > 0;
+    	entityManager.remove(entityManager.find(Order.class, id));
+    	return entityManager.find(Order.class, id) == null;
     }
 
     public int getLength() {
-        int length = 0;
-
-        try {
-            Statement st = ConnectDB.conn.createStatement();
-            ResultSet rs = st.executeQuery("select length = count(*) from [Order]");
-
-            if (rs.next()) {
-                length = rs.getInt("length");
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        return length;
+        return (int) entityManager.createNamedQuery("Order.getLength").getSingleResult();
     }
 
     public ArrayList<Order> getPage(int page) {
-        ArrayList<Order> result = new ArrayList<>();
-        String query = "select * from [Order] "
-                       + "order by orderAt desc "
-                       + "offset ? rows "
-                       + "FETCH NEXT 50 ROWS ONLY";
-        int offsetQuantity = (page - 1) * 50;
-        try {
-
-            PreparedStatement st = ConnectDB.conn.prepareStatement(query);
-            st.setInt(1, offsetQuantity);
-            ResultSet rs = st.executeQuery();
-
-            while (rs.next()) {
-                String orderID = rs.getString("orderID");
-                boolean status = rs.getBoolean("status");
-                Date orderAt = rs.getDate("orderAt");
-                boolean payment = rs.getBoolean("payment");
-                String employeeID = rs.getString("employeeID");
-                String customerID = rs.getString("customerID");
-                String promotionID = rs.getString("promotionID");
-                Double totalDue = rs.getDouble("totalDue");
-                Double subTotal = rs.getDouble("subTotal");
-
-                if (status == false) {
-                    continue;
-                }
-                Double moneyGiven = rs.getDouble("moneyGiven");
-
-                Order order = new Order();
-                if (promotionID != null) {
-                    order = new Order(orderID, orderAt, payment, status, new Promotion_DAO().getOne(promotionID), new Employee_DAO().getOne(employeeID), new Customer_DAO().getOne(customerID), new OrderDetail_DAO().getAll(orderID), subTotal, totalDue, moneyGiven);
-                } else {
-                    order = new Order(orderID, orderAt, payment, status, new Employee_DAO().getOne(employeeID), new Customer_DAO().getOne(customerID), new OrderDetail_DAO().getAll(orderID), subTotal, totalDue, moneyGiven);
-                }
-
-                result.add(order);
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
-        return result;
+    	List<Order> list = new ArrayList<>();
+       list= entityManager.createNamedQuery("Order.getAll",Order.class).setFirstResult(page).setMaxResults(50).getResultList();
+       ArrayList<Order> result = new ArrayList<>(list);
+       return result;
     }
 
     /**
@@ -435,16 +355,6 @@ public class Order_DAO implements DAOBase<Order> {
     }
 
     public int getQuantityOrderSaved() {
-        try {
-            Statement statement = ConnectDB.conn.createStatement();
-            ResultSet resultSet = statement.executeQuery("select count(*) as quantity from [Order] where status=0");
-
-            while (resultSet.next()) {
-                return resultSet.getInt("quantity");
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return 0;
+        return (int) entityManager.createNamedQuery("Order.getQuantityOrderSaved").getSingleResult();
     }
 }
