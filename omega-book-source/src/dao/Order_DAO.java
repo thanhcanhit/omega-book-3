@@ -12,12 +12,14 @@ import entity.OrderDetail;
 import entity.Promotion;
 import interfaces.DAOBase;
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.Query;
 import utilities.AccessDatabase;
 
 import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.sql.*;
 import java.time.LocalDate;
@@ -130,39 +132,26 @@ public class Order_DAO implements DAOBase<Order> {
      * phiếu kết toán
      * @author Hoàng Khang
      */
-    public ArrayList<Order> getAllOrderInAcountingVoucher(String acountingVoucherID) {
+    public ArrayList<Order> getAllOrderInAcountingVoucher(String accountingVoucherID) {
         ArrayList<Order> result = new ArrayList<>();
+
         try {
-            String sql = "SELECT * FROM [Order] WHERE acountingVoucherID = ?";
-            PreparedStatement preparedStatement = ConnectDB.conn.prepareStatement(sql);
-            preparedStatement.setString(1, acountingVoucherID);
+            String hql = "SELECT o FROM Order o " +
+                         "WHERE o.acountingVoucherID = :accountingVoucherID";
+         
 
-            ResultSet resultSet = preparedStatement.executeQuery();
+            List<Order> orders = entityManager.createQuery(hql,Order.class)
+                    .setParameter("accountingVoucherID", accountingVoucherID).getResultList();
+            result.addAll(orders);
 
-            while (resultSet.next()) {
-                String orderID = resultSet.getString("orderID");
-                boolean status = resultSet.getBoolean("status");
-                Date orderAt = resultSet.getDate("orderAt");
-                boolean payment = resultSet.getBoolean("payment");
-                String employeeID = resultSet.getString("employeeID");
-                String customerID = resultSet.getString("customerID");
-                String promotionID = resultSet.getString("promotionID");
-                Double totalDue = resultSet.getDouble("totalDue");
-                Double subTotal = resultSet.getDouble("subTotal");
-                Double moneyGiven = resultSet.getDouble("moneyGiven");
-
-                Order order = null;
-                if (promotionID != null) {
-                    order = new Order(orderID, orderAt, payment, status, new Promotion_DAO().getOne(promotionID), new Employee_DAO().getOne(employeeID), new Customer_DAO().getOne(customerID), new OrderDetail_DAO().getAll(orderID), subTotal, totalDue, moneyGiven);
-                } else {
-                    order = new Order(orderID, orderAt, payment, status, new Employee_DAO().getOne(employeeID), new Customer_DAO().getOne(customerID), new OrderDetail_DAO().getAll(orderID), subTotal, totalDue, moneyGiven);
-                }
-
-                result.add(order);
-            }
         } catch (Exception e) {
             e.printStackTrace();
+        } finally {
+            if (entityManager != null) {
+                entityManager.close();
+            }
         }
+
         return result;
     }
 
@@ -175,16 +164,33 @@ public class Order_DAO implements DAOBase<Order> {
      * @author Hoàng Khang
      */
     public boolean updateOrderAcountingVoucher(String orderID, String acountingVoucherID) {
+    	
+
         try {
-            String sql = "UPDATE [Order] SET acountingVoucherID = ? WHERE orderID = ?";
-            PreparedStatement preparedStatement = ConnectDB.conn.prepareStatement(sql);
-            preparedStatement.setString(1, acountingVoucherID);
-            preparedStatement.setString(2, orderID);
-            int rowsAffected = preparedStatement.executeUpdate();
-            return rowsAffected > 0;
+           entityManager.getTransaction().begin();
+
+            // Sử dụng câu truy vấn HQL để cập nhật trường acountingVoucherID của Order
+            String hql = "UPDATE Order o SET o.acountingVoucherID = :acountingVoucherID " +
+                         "WHERE o.orderID = :orderID";
+            int updatedEntities = entityManager.createQuery(hql)
+                    .setParameter("acountingVoucherID", acountingVoucherID)
+                    .setParameter("orderID", orderID)
+                    .executeUpdate();
+
+            entityManager.getTransaction().commit();
+            return updatedEntities > 0;
+
         } catch (Exception e) {
+            if (entityManager.getTransaction() != null && entityManager.getTransaction().isActive()) {
+            	entityManager.getTransaction().rollback();
+            }
             e.printStackTrace();
             return false;
+
+        } finally {
+            if (entityManager != null) {
+                entityManager.close();
+            }
         }
     }
 
@@ -195,25 +201,24 @@ public class Order_DAO implements DAOBase<Order> {
      * @author Như Tâm
      */
     public ArrayList<Order> findById(String orderID) {
-        ArrayList<Order> result = new ArrayList<>();
-        String query = "SELECT * FROM [dbo].[Order] "
-                        + "where orderID LIKE ? ";
-        try {
+    		List<Order> list = new ArrayList<>();
 
-            PreparedStatement st = ConnectDB.conn.prepareStatement(query);
-            st.setString(1, orderID + "%");
-            ResultSet rs = st.executeQuery();
-            while (rs.next()) {
-                if (rs != null) {
-                    result.add(getOrderData(rs));
-                }
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
-        return result;
+    	    try {
+
+    	        String hql = "SELECT o FROM Order o WHERE o.orderID LIKE :orderIDPattern";
+
+    	        list = entityManager.createQuery(hql,Order.class)
+    	    	        .setParameter("orderIDPattern", orderID + "%").getResultList();
+    	    } catch (Exception e) {
+    	        e.printStackTrace();
+    	    } finally {
+    	        if (entityManager != null) {
+    	            entityManager.close();
+    	        }
+    	    }
+
+    	    ArrayList<Order> result = new ArrayList<>(list);
+    	    return result;
     }
 
     private Order getOrderData(ResultSet rs) throws Exception {
@@ -238,85 +243,95 @@ public class Order_DAO implements DAOBase<Order> {
     }
 
     public double[] getToTalInMonth(int month, int year) {
-        double[] result = new double[31];
-
-        for (int i = 0; i < result.length; i++) {
-            result[i] = 0;
-        }
+        double[] result = new double[31]; // Mảng kết quả, tối đa 31 ngày trong một tháng
 
         try {
-            PreparedStatement st = ConnectDB.conn.prepareStatement("select Day(orderAt) as day, sum(totalDue) as total from [Order] where YEAR(orderAt) = ? and Month(orderAt) = ? and status = 1 group by Day(orderAt)");
-            st.setInt(1, year);
-            st.setInt(2, month);
-            ResultSet rs = st.executeQuery();
+            Arrays.fill(result, 0);
 
-            while (rs.next()) {
-                int day = rs.getInt("day");
-                double total = rs.getDouble("total");
-
-                result[day - 1] = total;
-
+             String hql = "SELECT DAY(o.orderAt) AS dayOfMonth, SUM(o.totalDue) " +
+                         "FROM Order o " +
+                         "WHERE FUNCTION('YEAR', o.orderAt) = :year " +
+                         "AND FUNCTION('MONTH', o.orderAt) = :month " +
+                         "AND o.status = 1 " +
+                         "GROUP BY DAY(o.orderAt)";
+           
+            List<Object[]> resultList = entityManager.createQuery(hql,Object[].class)
+                    .setParameter("year", year)
+                    .setParameter("month", month).getResultList();
+            for (Object[] row : resultList) {
+                int dayOfMonth = (int) row[0];
+                double totalDue = (double) row[1];
+                result[dayOfMonth - 1] = totalDue;
             }
+
         } catch (Exception e) {
             e.printStackTrace();
+        } finally {
+            if (entityManager != null) {
+                entityManager.close();
+            }
         }
 
         return result;
     }
 
     public int getNumberOfOrderInMonth(int month, int year) {
+    	
         int result = 0;
 
         try {
-            PreparedStatement st = ConnectDB.conn.prepareStatement("select count(orderID) as sl from [Order] where YEAR(orderAt) = ? and Month(orderAt) = ? and status=1 ");
-            st.setInt(1, year);
-            st.setInt(2, month);
-            ResultSet rs = st.executeQuery();
 
-            while (rs.next()) {
-                int sl = rs.getInt("sl");
-                result = sl;
+            String hql = "SELECT COUNT(o.orderID) FROM Order o " +
+                         "WHERE FUNCTION('YEAR', o.orderAt) = :year " +
+                         "AND FUNCTION('MONTH', o.orderAt) = :month " +
+                         "AND o.status = 1";
 
+            List<Integer> resultList = entityManager.createQuery(hql,Integer.class)
+            		.setParameter("year", year)
+            		.setParameter("month", month).getResultList();
+            if (resultList != null && !resultList.isEmpty()) {
+                result = resultList.get(0).intValue(); 
             }
+
         } catch (Exception e) {
             e.printStackTrace();
+        } finally {
+            if (entityManager != null) {
+                entityManager.close();
+            }
         }
 
         return result;
     }
 
     public double getTotalInMonth(int month, int year) {
-        double result = 0;
+    	double result = 0;
 
         try {
-            PreparedStatement st = ConnectDB.conn.prepareStatement("select sum(totalDue) as total from [Order] where YEAR(orderAt) = ? and Month(orderAt) = ? and status=1");
-            st.setInt(1, year);
-            st.setInt(2, month);
-            ResultSet rs = st.executeQuery();
-
-            while (rs.next()) {
-                int total = rs.getInt("total");
-                result = total;
-
+            List<Double> resultList = entityManager.createNamedQuery("Order.getTotalInMonth",Double.class)
+            		.setParameter("year", year)
+                    .setParameter("month", month).getResultList();
+            if (resultList != null && !resultList.isEmpty() && resultList.get(0) != null) {
+                result = resultList.get(0);
             }
+
         } catch (Exception e) {
             e.printStackTrace();
+        } finally {
+            if (entityManager != null) {
+                entityManager.close();
+            }
         }
-
         return result;
     }
 
     public void clearExpiredOrderSaved() {
-        ArrayList<Order> result = new ArrayList<>();
         try {
-            Statement statement = ConnectDB.conn.createStatement();
-            ResultSet resultSet = statement.executeQuery("select * from [Order] where status = 0 and  DATEDIFF(dd, orderAt, GETDATE()) > 1");
-
-            while (resultSet.next()) {
-                String orderID = resultSet.getString("orderID");
-                new OrderDetail_DAO().delete(orderID);
-                this.delete(orderID);
-            }
+        	OrderDetail_DAO od_DAO = new OrderDetail_DAO();
+           List<Order> resultSet=entityManager.createNamedQuery("Order.clearExpiredOrderSaved",Order.class).getResultList();
+           resultSet.forEach(x->{
+        	   od_DAO.delete(x.getOrderID());
+           });
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -326,7 +341,6 @@ public class Order_DAO implements DAOBase<Order> {
         ArrayList<Order> result = new ArrayList<>();
 //        Xóa các hóa đơn lưu tạm quá 24 giờ  không còn dùng tới
         clearExpiredOrderSaved();
-        
         String query = "SELECT * FROM [dbo].[Order] "
                        + "where status = 0";
         try {

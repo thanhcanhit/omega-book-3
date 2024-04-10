@@ -24,7 +24,13 @@ import jakarta.persistence.*;
              "WHERE o.orderID = :orderID"),
 				@NamedQuery(name="Order.generateID", query="SELECT o.orderID FROM Order o WHERE o.orderID LIKE :prefix ORDER BY o.orderID DESC"),
 				@NamedQuery(name="Order.getLength", query="SELECT COUNT(o) FROM Order o"),
-				@NamedQuery(name="Order.getQuantityOrderSaved", query="SELECT COUNT(o) FROM Order o WHERE o.status = false")
+				@NamedQuery(name="Order.getQuantityOrderSaved", query="SELECT COUNT(o) FROM Order o WHERE o.status = false"),
+				@NamedQuery(name="Order.clearExpiredOrderSaved", query="SELECT o FROM Order o WHERE o.status = false AND " +
+	                     "FUNCTION('DATEDIFF', DAY, o.orderAt, FUNCTION('CURRENT_DATE')) > 1"),
+				@NamedQuery(name="Order.getTotalInMonth",query="SELECT SUM(o.totalDue) FROM Order o " +
+                         "WHERE FUNCTION('YEAR', o.orderAt) = :year " +
+                         "AND FUNCTION('MONTH', o.orderAt) = :month " +
+                         "AND o.status = true")
 })
 @Table(name = "Bill")
 public final class Order {
