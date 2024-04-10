@@ -4,21 +4,28 @@
  */
 package entity;
 
-import java.io.Serializable;
-import java.util.*;
-import jakarta.persistence.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.Objects;
+
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.NamedQuery;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.Temporal;
+import jakarta.persistence.TemporalType;
 
 /**
  *
  * @author Hoàng Khang
  */
 @Entity
-public class CashCountSheet implements Serializable{
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 2549476946541562785L;
-
+//Query
+@NamedQuery(name = "CashCountSheet.findAll", query = "SELECT c FROM CashCountSheet c")
+//Lấy tất cả các CashCount trong CashCountSheet
+@NamedQuery(name = "CashCountSheet.findAllCashCount", query = "SELECT c.cashCountList FROM CashCountSheet c")
+public class CashCountSheet{
 	@Id
     private String cashCountSheetID;
 	
