@@ -9,6 +9,7 @@ import entity.Account;
 import entity.Employee;
 import interfaces.DAOBase;
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.EntityTransaction;
 import utilities.AccessDatabase;
 
 import java.util.ArrayList;
@@ -56,38 +57,27 @@ public class Account_DAO implements DAOBase<Account> {
 	@Override
 	public Boolean create(Account object) {
 		int n = 0;
-		n = em.createNamedQuery("Account.create").executeUpdate();
+
+		em.getTransaction().begin();
+		n = em.createNamedQuery("Account.create").setParameter("employeeID", object.getEmployee().getEmployeeID())
+				.setParameter("password", object.getPassword()).executeUpdate();
+
+		em.getTransaction().commit();
 		return n > 0;
 	}
 
 	@Override
 	public Boolean update(String id, Account newObject) {
 		int n = 0;
-		try {
-			PreparedStatement st = ConnectDB.conn
-					.prepareStatement("update Account set " + "password = ? where employeeID = ?");
-			st.setString(1, id);
-			st.setString(2, newObject.getPassword());
-
-			n = st.executeUpdate();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+		n = em.createNamedQuery("Account.changePassword").setParameter("password", newObject.getPassword())
+				.setParameter("employeeID", id).executeUpdate();
 		return n > 0;
 	}
 
 	public Boolean updatePass(String id, String newPass) {
 		int n = 0;
-		try {
-			PreparedStatement st = ConnectDB.conn
-					.prepareStatement("update Account set " + "password = ? where employeeID = ?");
-			st.setString(1, newPass);
-			st.setString(2, id);
-
-			n = st.executeUpdate();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+		n = em.createNamedQuery("Account.changePassword").setParameter("password", newPass)
+				.setParameter("employeeID", id).executeUpdate();
 		return n > 0;
 	}
 
