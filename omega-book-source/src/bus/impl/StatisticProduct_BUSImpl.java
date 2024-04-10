@@ -8,11 +8,13 @@ import dao.Product_DAO;
 import entity.Product;
 import java.util.ArrayList;
 
+import bus.StatisticProduct_BUS;
+
 /**
  *
  * @author KienTran
  */
-public class StatisticProduct_BUSImpl {
+public class StatisticProduct_BUSImpl implements StatisticProduct_BUS{
     Product_DAO productDAO = new Product_DAO();
     
     public double getTotalProduct(String productID, String date){

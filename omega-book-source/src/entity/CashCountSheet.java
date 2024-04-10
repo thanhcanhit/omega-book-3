@@ -21,15 +21,19 @@ public class CashCountSheet implements Serializable{
 
 	@Id
     private String cashCountSheetID;
+	
+	@OneToMany(mappedBy = "cashCountSheet")
     private ArrayList<CashCount> cashCountList;
+	
 	@Temporal(TemporalType.TIMESTAMP)
     private Date createdDate;
 	@Temporal(TemporalType.TIMESTAMP)
     private Date endedDate;
     private double total;
     private double difference;
-    @OneToMany(mappedBy = "cashCountSheet", fetch = FetchType.LAZY)
-    private List<CashCountSheetDetail> cashCountSheetDetail;
+
+    @OneToMany(mappedBy = "cashCountSheet")
+    private ArrayList<CashCountSheetDetail> cashCountSheetDetailList;
 
     public CashCountSheet() {
     }

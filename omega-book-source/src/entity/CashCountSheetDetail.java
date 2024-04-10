@@ -7,7 +7,10 @@ package entity;
 import java.io.Serializable;
 import java.util.Objects;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 
 /**
  *
@@ -22,23 +25,22 @@ public class CashCountSheetDetail {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-    private boolean index;
-	
-	@Id
 	@ManyToOne
 	@JoinColumn(name = "employeeID")
-    private Employee employee;
+	private Employee employee;
 	
 	@Id
 	@ManyToOne
 	@JoinColumn(name = "cashCountSheetID")
-    private CashCountSheet cashCountSheet;
+	private CashCountSheet cashCountSheet;
+	
+    private boolean isChecker;
 
     public CashCountSheetDetail() {
     }
 
-    public CashCountSheetDetail(boolean index, Employee employee, CashCountSheet cashCountSheet) {
-        this.index = index;
+    public CashCountSheetDetail(boolean isChecker, Employee employee, CashCountSheet cashCountSheet) {
+        this.isChecker = isChecker;
         this.employee = employee;
         this.cashCountSheet = cashCountSheet;
     }
@@ -69,9 +71,6 @@ public class CashCountSheetDetail {
         return employee;
     }
 
-    public boolean getIndex() {
-        return index;
-    }
 
     @Override
     public int hashCode() {
@@ -89,11 +88,17 @@ public class CashCountSheetDetail {
         this.employee = employee;
     }
 
-    public void setIndex(boolean index) {
-        this.index = index;
-    }
+    
 
-    @Override
+    public boolean isChecker() {
+		return isChecker;
+	}
+
+	public void setChecker(boolean isChecker) {
+		this.isChecker = isChecker;
+	}
+
+	@Override
     public String toString() {
         return "CashCountSheetDetail{" + "employee=" + employee + ", cashCountSheet=" + cashCountSheet + '}';
     }

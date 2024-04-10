@@ -4,9 +4,10 @@
  */
 package entity;
 
-import java.util.List;
-
-import jakarta.persistence.*;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 
 /**
  *
@@ -15,9 +16,12 @@ import jakarta.persistence.*;
 @Entity
 public class CashCount {
 	@Id
-    private int quantity;
+	private double value;
 	@Id
-    private double value;
+	@ManyToOne
+	@JoinColumn(name = "cashCountSheetID")
+	private CashCountSheet cashCountSheet;
+    private int quantity;
     private double total;
 
     @ManyToOne

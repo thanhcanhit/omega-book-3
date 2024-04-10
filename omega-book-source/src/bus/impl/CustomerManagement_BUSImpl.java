@@ -4,18 +4,20 @@
  */
 package bus.impl;
 
-import entity.Customer;
-import dao.Customer_DAO;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.concurrent.TimeUnit;
 
+import bus.CustomerManagement_BUS;
+import dao.Customer_DAO;
+import entity.Customer;
+
 /**
  *
  * @author Hoàng Khang
  */
-public class CustomerManagement_BUSImpl {
+public class CustomerManagement_BUSImpl implements CustomerManagement_BUS{
 
     private Customer_DAO customer_DAO = new Customer_DAO();
 

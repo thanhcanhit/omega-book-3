@@ -9,13 +9,15 @@ import entity.CashCountSheet;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+
+import bus.ViewCashCountSheetList_BUS;
 import utilities.CashCountSheetPrinter;
 
 /**
  *
  * @author Hoàng Khang
  */
-public class ViewCashCountSheetList_BUSImpl {
+public class ViewCashCountSheetList_BUSImpl implements ViewCashCountSheetList_BUS {
 
     private CashCountSheet_DAO cashDAO = new CashCountSheet_DAO();
 

@@ -8,11 +8,13 @@ import dao.Supplier_DAO;
 import entity.Supplier;
 import java.util.ArrayList;
 
+import bus.SupplierManagement_BUS;
+
 /**
  *
  * @author KienTran
  */
-public class SupplierManagement_BUSImpl {
+public class SupplierManagement_BUSImpl implements SupplierManagement_BUS{
         private Supplier_DAO supplierDAO = new Supplier_DAO();
         
         public ArrayList<Supplier> getAll(){

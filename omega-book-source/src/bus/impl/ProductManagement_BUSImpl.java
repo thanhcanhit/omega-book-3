@@ -17,11 +17,13 @@ import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import bus.ProductManagement_BUS;
+
 /**
  *
  * @author thanhcanhit
  */
-public class ProductManagement_BUSImpl {
+public class ProductManagement_BUSImpl implements ProductManagement_BUS{
 
     private final Product_DAO productDAO = new Product_DAO();
     private final Brand_DAO brandDAO = new Brand_DAO();

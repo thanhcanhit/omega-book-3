@@ -24,11 +24,13 @@ import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import bus.Sales_BUS;
+
 /**
  *
  * @author thanhcanhit
  */
-public class Sales_BUSImpl {
+public class Sales_BUSImpl implements Sales_BUS{
 
     private final Order_DAO orderDAO = new Order_DAO();
     private final OrderDetail_DAO orderDetailDAO = new OrderDetail_DAO();
