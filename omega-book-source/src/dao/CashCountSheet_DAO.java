@@ -28,8 +28,6 @@ import utilities.AccessDatabase;
 public class CashCountSheet_DAO implements interfaces.DAOBase<CashCountSheet> {
 	
 	EntityManager em;
-	
-	
 
     public CashCountSheet_DAO() {
     	em = AccessDatabase.getEntityManager();

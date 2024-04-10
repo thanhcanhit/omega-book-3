@@ -19,7 +19,6 @@ import jakarta.persistence.OneToOne;
 @NamedQueries({
 		@NamedQuery(name = "Account.validate", query = "SELECT a FROM Account a WHERE a.employee.employeeID = :employeeID AND a.password = :password"),
 		@NamedQuery(name = "Account.changePassword", query = "UPDATE Account a SET a.password = :password WHERE a.employee.employeeID = :employeeID"),
-//		@NamedQuery(name="Account.create", query="INSERT INTO Account (employee.employeeID, password) VALUES (:employee, :password)"),
 		
 		})
 public class Account {

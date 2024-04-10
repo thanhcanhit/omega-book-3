@@ -9,172 +9,181 @@ import java.time.LocalDate;
 import java.util.*;
 
 import jakarta.persistence.*;
+
 /**
  *
  * @author Hoàng Khang
  */
+
+@NamedQueries({ @NamedQuery(name = "Employee.getAll", query = "SELECT e FROM Employee e"),
+		@NamedQuery(name = "Employee.update", query = "UPDATE Employee SET \r\n"
+				+ "citizenIdentification = :citizenIdentification, \r\n" + "role = :role, \r\n"
+				+ "status = :status, \r\n" + "name = :name, \r\n" + "phoneNumber = :phoneNumber, \r\n"
+				+ "gender = :gender, \r\n" + "dateOfBirth = :dateOfBirth, \r\n" + "address = :address \r\n"
+				+ "WHERE employeeID = :employeeID\r\n") })
 @Entity
 public class Employee implements Serializable {
 	@Id
-    private String employeeID;
-    private String citizenIdentification;
-    private String role;
-    private boolean status;
-    private String name;
-    private String phoneNumber;
-    private boolean gender;
-    private Date dateOfBirth;
-    private String address;
-    
-    @ManyToOne
-    @JoinColumn(name="storeID")
-    private Store store;
-    
-    @OneToMany(mappedBy = "employee", fetch = FetchType.LAZY)
-    private List<Order> order;
+	private String employeeID;
+	private String citizenIdentification;
+	private String role;
+	private boolean status;
+	private String name;
+	private String phoneNumber;
+	private boolean gender;
+	private Date dateOfBirth;
+	private String address;
 
-    public Employee() {
-    }
+	@ManyToOne
+	@JoinColumn(name = "storeID")
+	private Store store;
 
-    public Employee(String employeeID) {
-        setEmployeeID(employeeID);
-    }
+	@OneToMany(mappedBy = "employee", fetch = FetchType.LAZY)
+	private List<Order> order;
 
-    public Employee(String employeeID, String citizenIdentification, String role, boolean status, String name, String phoneNumber, boolean gender, Date dateOfBirth, String address, Store store) {
-        setEmployeeID(employeeID);
-        setCitizenIdentification(citizenIdentification);
-        setRole(role);
-        setStatus(status);
-        setStore(store);
-        setPhoneNumber(phoneNumber);
-        setName(name);
-        setDateOfBirth(dateOfBirth);
-        setAddress(address);
-        setGender(gender);
-    }
+	public Employee() {
+	}
 
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (obj == null) {
-            return false;
-        }
-        if (getClass() != obj.getClass()) {
-            return false;
-        }
-        final Employee other = (Employee) obj;
-        return Objects.equals(this.employeeID, other.employeeID);
-    }
+	public Employee(String employeeID) {
+		setEmployeeID(employeeID);
+	}
 
-    public String getAddress() {
-        return address;
-    }
+	public Employee(String employeeID, String citizenIdentification, String role, boolean status, String name,
+			String phoneNumber, boolean gender, Date dateOfBirth, String address, Store store) {
+		setEmployeeID(employeeID);
+		setCitizenIdentification(citizenIdentification);
+		setRole(role);
+		setStatus(status);
+		setStore(store);
+		setPhoneNumber(phoneNumber);
+		setName(name);
+		setDateOfBirth(dateOfBirth);
+		setAddress(address);
+		setGender(gender);
+	}
 
-    public String getCitizenIdentification() {
-        return citizenIdentification;
-    }
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) {
+			return true;
+		}
+		if (obj == null) {
+			return false;
+		}
+		if (getClass() != obj.getClass()) {
+			return false;
+		}
+		final Employee other = (Employee) obj;
+		return Objects.equals(this.employeeID, other.employeeID);
+	}
 
-    public Date getDateOfBirth() {
-        return dateOfBirth;
-    }
+	public String getAddress() {
+		return address;
+	}
 
-    public String getEmployeeID() {
-        return employeeID;
-    }
+	public String getCitizenIdentification() {
+		return citizenIdentification;
+	}
 
-    public String getName() {
-        return name;
-    }
+	public Date getDateOfBirth() {
+		return dateOfBirth;
+	}
 
-    public String getPhoneNumber() {
-        return phoneNumber;
-    }
+	public String getEmployeeID() {
+		return employeeID;
+	}
 
-    public String getRole() {
-        return role;
-    }
+	public String getName() {
+		return name;
+	}
 
-    public Store getStore() {
-        return store;
-    }
+	public String getPhoneNumber() {
+		return phoneNumber;
+	}
 
-    @Override
-    public int hashCode() {
-        int hash = 7;
-        hash = 97 * hash + Objects.hashCode(this.employeeID);
-        return hash;
-    }
+	public String getRole() {
+		return role;
+	}
 
-    public boolean isGender() {
-        return gender;
-    }
+	public Store getStore() {
+		return store;
+	}
 
-    public boolean isStatus() {
-        return status;
-    }
+	@Override
+	public int hashCode() {
+		int hash = 7;
+		hash = 97 * hash + Objects.hashCode(this.employeeID);
+		return hash;
+	}
 
-    public void setAddress(String address) {
-        this.address = address;
-    }
+	public boolean isGender() {
+		return gender;
+	}
 
-    public void setCitizenIdentification(String citizenIdentification) throws IllegalArgumentException {
-        citizenIdentification = citizenIdentification.trim();
-        if (!citizenIdentification.matches("\\d{12}")) {
-            throw new IllegalArgumentException("Mã định danh phải gồm đúng 12 chữ số!");
-        }
-        this.citizenIdentification = citizenIdentification;
-    }
+	public boolean isStatus() {
+		return status;
+	}
 
-    public void setDateOfBirth(Date dateOfBirth) throws IllegalArgumentException {
-        if(java.sql.Date.valueOf(LocalDate.now()).getYear() - dateOfBirth.getYear() < 18)
-            throw new IllegalArgumentException("Nhân viên phải đủ 18 tuổi trở lên");
-        this.dateOfBirth = dateOfBirth;
-    }
+	public void setAddress(String address) {
+		this.address = address;
+	}
 
-    public void setEmployeeID(String employeeID) {
-        this.employeeID = employeeID;
-    }
+	public void setCitizenIdentification(String citizenIdentification) throws IllegalArgumentException {
+		citizenIdentification = citizenIdentification.trim();
+		if (!citizenIdentification.matches("\\d{12}")) {
+			throw new IllegalArgumentException("Mã định danh phải gồm đúng 12 chữ số!");
+		}
+		this.citizenIdentification = citizenIdentification;
+	}
 
-    public void setGender(boolean gender) {
-        this.gender = gender;
-    }
+	public void setDateOfBirth(Date dateOfBirth) throws IllegalArgumentException {
+		if (java.sql.Date.valueOf(LocalDate.now()).getYear() - dateOfBirth.getYear() < 18)
+			throw new IllegalArgumentException("Nhân viên phải đủ 18 tuổi trở lên");
+		this.dateOfBirth = dateOfBirth;
+	}
 
-    public void setName(String name) throws IllegalArgumentException {
-        name = name.trim();
-        if (name.isEmpty()) {
-            throw new IllegalArgumentException("Họ tên không được rỗng!");
-        }
-        if (!name.matches("^[\\p{L} ]+$")) {
-            throw new IllegalArgumentException("Họ tên chỉ được chứa kí tự chữ và khoảng trắng!");
-        }
-        this.name = name;
-    }
+	public void setEmployeeID(String employeeID) {
+		this.employeeID = employeeID;
+	}
 
-    public void setPhoneNumber(String phoneNumber) throws IllegalArgumentException {
-        phoneNumber = phoneNumber.trim();
-        if (!phoneNumber.matches("^(02|03|05|07|08|09)\\d{8}$")) {
-            throw new IllegalArgumentException("Số điện thoại không hợp lệ!");
-        }
-        this.phoneNumber = phoneNumber;
-    }
+	public void setGender(boolean gender) {
+		this.gender = gender;
+	}
 
-    public void setRole(String role) {
-        this.role = role;
-    }
+	public void setName(String name) throws IllegalArgumentException {
+		name = name.trim();
+		if (name.isEmpty()) {
+			throw new IllegalArgumentException("Họ tên không được rỗng!");
+		}
+		if (!name.matches("^[\\p{L} ]+$")) {
+			throw new IllegalArgumentException("Họ tên chỉ được chứa kí tự chữ và khoảng trắng!");
+		}
+		this.name = name;
+	}
 
-    public void setStatus(boolean status) {
-        this.status = status;
-    }
+	public void setPhoneNumber(String phoneNumber) throws IllegalArgumentException {
+		phoneNumber = phoneNumber.trim();
+		if (!phoneNumber.matches("^(02|03|05|07|08|09)\\d{8}$")) {
+			throw new IllegalArgumentException("Số điện thoại không hợp lệ!");
+		}
+		this.phoneNumber = phoneNumber;
+	}
 
-    public void setStore(Store store) {
-        this.store = store;
-    }
+	public void setRole(String role) {
+		this.role = role;
+	}
 
-    @Override
-    public String toString() {
-        return employeeID +" "+ name;
-    }
+	public void setStatus(boolean status) {
+		this.status = status;
+	}
+
+	public void setStore(Store store) {
+		this.store = store;
+	}
+
+	@Override
+	public String toString() {
+		return employeeID + " " + name;
+	}
 
 }
