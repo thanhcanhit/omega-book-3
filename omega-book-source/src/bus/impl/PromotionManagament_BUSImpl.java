@@ -134,8 +134,7 @@ public class PromotionManagament_BUSImpl implements PromotionManagement_BUS{
 
 	@Override
 	public boolean removePromotion(String promotionID) {
-		// TODO Auto-generated method stub
-		return false;
+		return promotion_DAO.update(promotionID);
 	}
 
 	@Override

@@ -120,6 +120,9 @@ public class Promotion_DAO implements DAOBase<Promotion> {
 
     @Override
     public Boolean update(String id, Promotion newObject) {
+    	throw new UnsupportedOperationException("Not supported yet.");
+    }
+    public Boolean update(String id) {
         int n = 0;
         try {
 			em.getTransaction().begin();
@@ -132,22 +135,6 @@ public class Promotion_DAO implements DAOBase<Promotion> {
         }
         return n > 0;
     }
-
-//    public String getMaxSequence(String prefix) {
-//        try {
-//            prefix += "%";
-//            String sql = "  SELECT TOP 1  * FROM Promotion WHERE promotionID LIKE '" + prefix + "' ORDER BY promotionID DESC;";
-//            PreparedStatement st = ConnectDB.conn.prepareStatement(sql);
-//            ResultSet rs = st.executeQuery();
-//            if (rs.next()) {
-//                String promotionID = rs.getString("promotionID");
-//                return promotionID;
-//            }
-//        } catch (SQLException e) {
-//            e.printStackTrace();
-//        }
-//        return null;
-//    }
 
     @SuppressWarnings("unchecked")
 	public ArrayList<Promotion> findById(String searchQuery) {

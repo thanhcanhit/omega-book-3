@@ -92,23 +92,7 @@ public class Brand_DAO implements DAOBase<Brand> {
 
     @Override
     public Boolean delete(String id) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        throw new UnsupportedOperationException("Not supported yet."); 
     }
-
-//    public String getMaxSequence(String code) {
-//        try {
-//        code += "%";
-//        String sql = "  SELECT TOP 1  * FROM Brand WHERE brandID LIKE '"+code+"' ORDER BY brandID DESC;";
-//        PreparedStatement st = ConnectDB.conn.prepareStatement(sql);
-//        ResultSet rs = st.executeQuery();
-//        if (rs.next()) {
-//            String brandID = rs.getString("brandID");
-//            return brandID;
-//        }
-//    } catch (SQLException e) {
-//        e.printStackTrace();
-//    }
-//    return null;
-//    }
     
 }
