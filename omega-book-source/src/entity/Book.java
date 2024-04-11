@@ -5,6 +5,7 @@
 package entity;
 
 import enums.Type;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -27,14 +28,20 @@ public final class Book extends Product {
 	public static final String TRANSLATOR_EMPTY = "Book author không được rỗng (có thể null)";
 	public static final String PUBLISH_YEAR_INVALID = "Book publishYear phải < 1900 và <= năm hiện tại";
 	public static final String PAGE_QUANTITY_LOWER_ZERO = "Book pageQuantity phải lớn hơn 0";
+	
+	@Column(columnDefinition = "nvarchar(max)")
 	private String author;
+	@Column(columnDefinition = "nvarchar(max)")
 	private String publisher;
 	private Integer publishYear;
+	@Column(columnDefinition = "nvarchar(max)")
 	private String description;
 
 	private Integer pageQuantity;
 	private Boolean isHardCover;
+	@Column(columnDefinition = "nvarchar(max)")
 	private String language;
+	@Column(columnDefinition = "nvarchar(max)")
 	private String translator;
 	@Enumerated(EnumType.ORDINAL)
 	private BookType bookOrigin;

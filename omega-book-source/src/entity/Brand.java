@@ -26,7 +26,9 @@ public final class Brand {
 
 	@Id
 	private String brandID;
+	@Column(columnDefinition = "nvarchar(max)")
 	private String name;
+	@Column(columnDefinition = "nvarchar(max)")
 	private String country;
 
 	public Brand() {

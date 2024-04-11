@@ -26,12 +26,15 @@ public class Employee implements Serializable {
 	@Id
 	private String employeeID;
 	private String citizenIdentification;
+	@Column(columnDefinition = "nvarchar(max)")
 	private String role;
 	private boolean status;
+	@Column(columnDefinition = "nvarchar(max)")
 	private String name;
 	private String phoneNumber;
 	private boolean gender;
 	private Date dateOfBirth;
+	@Column(columnDefinition = "nvarchar(max)")
 	private String address;
 
 	@ManyToOne

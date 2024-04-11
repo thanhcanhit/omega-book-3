@@ -24,7 +24,9 @@ public class Supplier implements Serializable {
     
     @Id
     private String supplierID;
+	@Column(columnDefinition = "nvarchar(max)")
     private String name; 
+	@Column(columnDefinition = "nvarchar(max)")
     private String address;
 
     public Supplier() {

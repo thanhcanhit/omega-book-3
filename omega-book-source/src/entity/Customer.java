@@ -31,6 +31,7 @@ public class Customer implements Serializable {
 
     @Id
     private String customerID;
+	@Column(columnDefinition = "nvarchar(max)")
     private String name;
     private int score;
     private boolean gender;
@@ -38,6 +39,7 @@ public class Customer implements Serializable {
     private Date dateOfBirth;
     private String phoneNumber;
     private String rank;
+	@Column(columnDefinition = "nvarchar(max)")
     private String address;
     @OneToMany(mappedBy = "customer", fetch = FetchType.LAZY)
     private List<Order> order;

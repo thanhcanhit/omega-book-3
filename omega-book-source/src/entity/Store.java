@@ -4,6 +4,7 @@ package entity;
 import java.util.List;
 import java.util.Objects;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.Id;
@@ -23,7 +24,9 @@ public class Store {
 
 	@Id
 	private String storeID;
+	@Column(columnDefinition = "nvarchar(max)")
 	private String name;
+	@Column(columnDefinition = "nvarchar(max)")
 	private String address;
 	@OneToMany(mappedBy = "store", fetch = FetchType.LAZY)
 	private List<Employee> employee;

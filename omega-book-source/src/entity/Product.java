@@ -47,11 +47,12 @@ public class Product {
 	public static final String VAT_LOWER_ZERO = "Product VAT không thể bé hơn 0";
 	@Id
 	protected String productID;
+	@Column(columnDefinition = "nvarchar(max)")
 	protected String name;
 
 	protected Double costPrice;
 
-	@Column(columnDefinition = "nvarchar(max)")
+	@Column(columnDefinition = "varchar(max)")
 	protected byte[] image;
 	protected Double VAT;
 	protected Integer inventory;
