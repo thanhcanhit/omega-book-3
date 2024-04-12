@@ -4,14 +4,12 @@
  */
 package dao;
 
-import database.ConnectDB;
 import entity.CashCount;
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.Query;
 import utilities.AccessDatabase;
-
 import java.util.ArrayList;
 import java.util.List;
-import java.sql.*;
 
 /**
  *
@@ -28,18 +26,15 @@ public class CashCount_DAO implements interfaces.DAOBase<CashCount> {
 		CashCount cashCount = null;
 
 		try {
-			String sql = "SELECT * FROM CashCount WHERE cashCountSheetID = ? AND value = ?";
-			PreparedStatement preparedStatement = ConnectDB.conn.prepareStatement(sql);
-			preparedStatement.setString(1, cashCountSheetID);
-			preparedStatement.setDouble(2, value);
+			String hql = "SELECT c FROM CashCount c WHERE c.cashCountSheetID = :cashCountSheetID AND c.value = :value";
+			Query query = entityManager.createQuery(hql);
+			query.setParameter("cashCountSheetID", cashCountSheetID);
+			query.setParameter("value", value);
 
-			ResultSet resultSet = preparedStatement.executeQuery();
+			List<CashCount> resultList = query.getResultList();
 
-			if (resultSet.next()) {
-				int quantity = resultSet.getInt("quantity");
-				double total = resultSet.getDouble("total");
-
-				cashCount = new CashCount(quantity, value);
+			if (!resultList.isEmpty()) {
+				cashCount = resultList.get(0);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();

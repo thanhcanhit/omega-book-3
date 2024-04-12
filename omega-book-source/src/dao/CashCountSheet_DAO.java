@@ -4,17 +4,8 @@
  */
 package dao;
 
-import java.sql.Date;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Timestamp;
 import java.util.ArrayList;
-
-import database.ConnectDB;
-import entity.CashCount;
 import entity.CashCountSheet;
-import entity.CashCountSheetDetail;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.NoResultException;
 import jakarta.persistence.TypedQuery;
@@ -33,30 +24,17 @@ public class CashCountSheet_DAO implements interfaces.DAOBase<CashCountSheet> {
     	em = AccessDatabase.getEntityManager();
 	}
 
-	private CashCount_DAO cashCount_DAO = new CashCount_DAO();
-    private CashCountSheetDetail_DAO cashCountSheetDetail_DAO = new CashCountSheetDetail_DAO();
-
     @Override
     public CashCountSheet getOne(String id) {
         CashCountSheet cashCountSheet = null;
 
         try {
-            String sql = "SELECT * FROM CashCountSheet WHERE cashCountSheetID = ?";
-            PreparedStatement preparedStatement = ConnectDB.conn.prepareStatement(sql);
-            preparedStatement.setString(1, id);
-
-            ResultSet resultSet = preparedStatement.executeQuery();
-
-            if (resultSet.next()) {
-                Timestamp startTimestamp = resultSet.getTimestamp("startedDate");
-                Timestamp endTimestamp = resultSet.getTimestamp("endedDate");
-                
-                Date startDate = new Date(startTimestamp.getTime());
-                Date endDate = new Date(endTimestamp.getTime());
-
-                cashCountSheet = new CashCountSheet(id, cashCount_DAO.getAll(id), cashCountSheetDetail_DAO.getAllCashCountSheetDetailInCashCountSheet(id), startDate, endDate);
-            }
-        } catch (Exception e) {
+            TypedQuery<CashCountSheet> query = em.createQuery(
+                "SELECT c FROM CashCountSheet c WHERE c.cashCountSheetID = :id", 
+                CashCountSheet.class);
+            query.setParameter("id", id);
+            cashCountSheet = query.getSingleResult();
+        } catch (NoResultException e) {
             e.printStackTrace();
         }
 

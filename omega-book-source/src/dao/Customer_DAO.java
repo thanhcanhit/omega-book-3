@@ -4,10 +4,16 @@
  */
 package dao;
 
-import java.sql.*;
+
 import entity.Customer;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.Query;
+import jakarta.persistence.TypedQuery;
+import utilities.AccessDatabase;
+
 import java.util.ArrayList;
-import database.ConnectDB;
+import java.util.List;
+
 
 /**
  *
@@ -15,110 +21,68 @@ import database.ConnectDB;
  */
 public class Customer_DAO implements interfaces.DAOBase<Customer> {
 
+    EntityManager entityManager;
+
+
     public Customer_DAO() {
-    }
+        entityManager = AccessDatabase.getEntityManager();
+        }
 
-    @Override
-    public Customer getOne(String customerID) {
+        @Override
+        public Customer getOne(String customerID) {
         Customer customer = null;
         try {
-            String sql = "SELECT * FROM Customer WHERE customerID = ?";
-            PreparedStatement preparedStatement = ConnectDB.conn.prepareStatement(sql);
-            preparedStatement.setString(1, customerID);
+            String hql = "FROM Customer WHERE customerID = :customerID";
+            Query query = entityManager.createQuery(hql);
+            query.setParameter("customerID", customerID);
 
-            ResultSet resultSet = preparedStatement.executeQuery();
-
-            if (resultSet.next()) {
-                String name = resultSet.getString("name");
-                int score = resultSet.getInt("score");
-                boolean gender = resultSet.getBoolean("gender");
-                Date dateOfBirth = resultSet.getDate("dateOfBirth");
-                String phoneNumber = resultSet.getString("phoneNumber");
-                String address = resultSet.getString("address");
-
-                customer = new Customer(customerID, name, gender, dateOfBirth, score, phoneNumber, address);
-            }
+            customer = (Customer) query.getSingleResult();
         } catch (Exception e) {
             e.printStackTrace();
         }
         return customer;
-    }
+        }
 
-    public Customer getByPhone(String phone) {
+        public Customer getByPhone(String phone) {
         Customer customer = null;
         try {
-            String sql = "SELECT * FROM Customer WHERE phoneNumber = ?";
-            PreparedStatement preparedStatement = ConnectDB.conn.prepareStatement(sql);
-            preparedStatement.setString(1, phone);
+            String hql = "FROM Customer WHERE phoneNumber = :phone";
+            Query query = entityManager.createQuery(hql);
+            query.setParameter("phone", phone);
 
-            ResultSet resultSet = preparedStatement.executeQuery();
-
-            if (resultSet.next()) {
-                String customerID = resultSet.getString("customerID");
-                String name = resultSet.getString("name");
-                int score = resultSet.getInt("score");
-                boolean gender = resultSet.getBoolean("gender");
-                Date dateOfBirth = resultSet.getDate("dateOfBirth");
-                String phoneNumber = resultSet.getString("phoneNumber");
-                String address = resultSet.getString("address");
-
-                customer = new Customer(customerID, name, gender, dateOfBirth, score, phoneNumber, address);
-            }
+            customer = (Customer) query.getSingleResult();
         } catch (Exception e) {
             e.printStackTrace();
         }
         return customer;
-    }
+        }
 
-    public Customer getOneByNumberPhone(String phoneNumber) {
+        public Customer getOneByNumberPhone(String phoneNumber) {
         Customer customer = null;
         try {
-            String sql = "SELECT * FROM Customer WHERE phoneNumber = ?";
-            PreparedStatement preparedStatement = ConnectDB.conn.prepareStatement(sql);
-            preparedStatement.setString(1, phoneNumber);
+            String hql = "FROM Customer WHERE phoneNumber = :phoneNumber";
+            Query query = entityManager.createQuery(hql);
+            query.setParameter("phoneNumber", phoneNumber);
 
-            ResultSet resultSet = preparedStatement.executeQuery();
-
-            if (resultSet.next()) {
-                String customerID = resultSet.getString("customerID");
-                String name = resultSet.getString("name");
-                int score = resultSet.getInt("score");
-                boolean gender = resultSet.getBoolean("gender");
-                Date dateOfBirth = resultSet.getDate("dateOfBirth");
-                String address = resultSet.getString("address");
-
-                customer = new Customer(customerID, name, gender, dateOfBirth, score, phoneNumber, address);
-            }
+            customer = (Customer) query.getSingleResult();
         } catch (Exception e) {
             e.printStackTrace();
         }
         return customer;
-    }
-
-    @Override
-    public ArrayList<Customer> getAll() {
-        ArrayList<Customer> result = new ArrayList<>();
-        try {
-            Statement statement = ConnectDB.conn.createStatement();
-            ResultSet resultSet = statement.executeQuery("SELECT * FROM Customer");
-
-            while (resultSet.next()) {
-                String customerID = resultSet.getString("customerID");
-                String name = resultSet.getString("name");
-                int score = resultSet.getInt("score");
-                boolean gender = resultSet.getBoolean("gender");
-                Date dateOfBirth = resultSet.getDate("dateOfBirth");
-                String phoneNumber = resultSet.getString("phoneNumber");
-                String address = resultSet.getString("address");
-
-                Customer customer = new Customer(customerID, name, gender, dateOfBirth, score, phoneNumber, address);
-                result.add(customer);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
         }
-        return result;
-    }
+
+        @Override
+        public ArrayList<Customer> getAll() {
+            ArrayList<Customer> result = new ArrayList<>();
+            try {
+                String hql = "FROM Customer";
+                TypedQuery<Customer> query = entityManager.createQuery(hql, Customer.class);
+                result = new ArrayList<>(query.getResultList());
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            return result;
+        }
 
     @Override
     public String generateID() {
@@ -128,14 +92,13 @@ public class Customer_DAO implements interfaces.DAOBase<Customer> {
     public String getMaxSequence(String code) {
         try {
             code += "%";
-            String sql = "  SELECT TOP 1  * FROM Customer WHERE customerID LIKE '" + code + "' ORDER BY customerID DESC;";
-            PreparedStatement st = ConnectDB.conn.prepareStatement(sql);
-            ResultSet rs = st.executeQuery();
-            if (rs.next()) {
-                String customerID = rs.getString("customerID");
-                return customerID;
-            }
-        } catch (SQLException e) {
+            String hql = "SELECT customerID FROM Customer WHERE customerID LIKE :code ORDER BY customerID DESC";
+            Query query = entityManager.createQuery(hql);
+            query.setParameter("code", code);
+            query.setMaxResults(1);
+            String customerID = (String) query.getSingleResult();
+            return customerID;
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return null;
@@ -144,75 +107,79 @@ public class Customer_DAO implements interfaces.DAOBase<Customer> {
     @Override
     public Boolean create(Customer object) {
         try {
-            String phoneCheck = "select * from Customer where phoneNumber = ?";
-            PreparedStatement phoneStatement = ConnectDB.conn.prepareStatement(phoneCheck);
-            phoneStatement.setString(1, object.getPhoneNumber());
-            if (phoneStatement.executeQuery().next()) {
+            String phoneCheck = "FROM Customer WHERE phoneNumber = :phoneNumber";
+            TypedQuery<Customer> phoneQuery = entityManager.createQuery(phoneCheck, Customer.class);
+            phoneQuery.setParameter("phoneNumber", object.getPhoneNumber());
+            List<Customer> customers = phoneQuery.getResultList();
+            if (!customers.isEmpty()) {
                 return false;
             }
-            
-            String sql = "INSERT INTO Customer (customerID, name, dateOfBirth, gender, phoneNumber, score, address) "
-                    + "VALUES (?, ?, ?, ?, ?, ?, ?)";
-            PreparedStatement preparedStatement = ConnectDB.conn.prepareStatement(sql);
-
-            preparedStatement.setString(1, object.getCustomerID());
-            preparedStatement.setString(2, object.getName());
-            preparedStatement.setDate(3, new java.sql.Date(object.getDateOfBirth().getTime()));
-            preparedStatement.setBoolean(4, object.isGender());
-            preparedStatement.setString(5, object.getPhoneNumber());
-            preparedStatement.setInt(6, object.getScore());
-            preparedStatement.setString(7, object.getAddress());
-
-            int rowsAffected = preparedStatement.executeUpdate();
-
-            return rowsAffected > 0;
+    
+            entityManager.getTransaction().begin();
+            entityManager.persist(object);
+            entityManager.getTransaction().commit();
+    
+            return true;
         } catch (Exception e) {
             e.printStackTrace();
+            if (entityManager.getTransaction().isActive()) {
+                entityManager.getTransaction().rollback();
+            }
             return false;
         }
     }
 
     @Override
-    public Boolean update(String id, Customer newObject) {
-        try {
-            String sql = "UPDATE Customer SET name=?, dateOfBirth=?, gender=?, phoneNumber=?, score=?,  address=? "
-                    + "WHERE customerID=?";
-            PreparedStatement preparedStatement = ConnectDB.conn.prepareStatement(sql);
+public Boolean update(String id, Customer newObject) {
+    try {
+        String hql = "UPDATE Customer SET name = :name, dateOfBirth = :dob, gender = :gender, phoneNumber = :phone, score = :score, address = :address "
+                + "WHERE customerID = :id";
+        Query query = entityManager.createQuery(hql);
 
-            preparedStatement.setString(1, newObject.getName());
-            preparedStatement.setDate(2, new java.sql.Date(newObject.getDateOfBirth().getTime()));
-            preparedStatement.setBoolean(3, newObject.isGender());
-            preparedStatement.setString(4, newObject.getPhoneNumber());
-            preparedStatement.setInt(5, newObject.getScore());
-            preparedStatement.setString(6, newObject.getAddress());
-            preparedStatement.setString(7, id);
+        query.setParameter("name", newObject.getName());
+        query.setParameter("dob", newObject.getDateOfBirth());
+        query.setParameter("gender", newObject.isGender());
+        query.setParameter("phone", newObject.getPhoneNumber());
+        query.setParameter("score", newObject.getScore());
+        query.setParameter("address", newObject.getAddress());
+        query.setParameter("id", id);
 
-            int rowsAffected = preparedStatement.executeUpdate();
-            return rowsAffected > 0;
-        } catch (Exception e) {
-            e.printStackTrace();
-            return false;
+        entityManager.getTransaction().begin();
+        int rowsAffected = query.executeUpdate();
+        entityManager.getTransaction().commit();
+
+        return rowsAffected > 0;
+    } catch (Exception e) {
+        e.printStackTrace();
+        if (entityManager.getTransaction().isActive()) {
+            entityManager.getTransaction().rollback();
         }
-
+        return false;
     }
+}
 
 //    Tăng điểm thành viên
-    public boolean increatePoint(String customerID, int pointAddAmount) {
-        try {
-            String sql = "update Customer set score = score + ? where customerID = ?";
-            PreparedStatement preparedStatement = ConnectDB.conn.prepareStatement(sql);
+public boolean increatePoint(String customerID, int pointAddAmount) {
+    try {
+        String hql = "UPDATE Customer SET score = score + :pointAddAmount WHERE customerID = :customerID";
+        Query query = entityManager.createQuery(hql);
 
-            preparedStatement.setInt(1, pointAddAmount);
-            preparedStatement.setString(2, customerID);
+        query.setParameter("pointAddAmount", pointAddAmount);
+        query.setParameter("customerID", customerID);
 
-            int rowsAffected = preparedStatement.executeUpdate();
+        entityManager.getTransaction().begin();
+        int rowsAffected = query.executeUpdate();
+        entityManager.getTransaction().commit();
 
-            return rowsAffected > 0;
-        } catch (Exception e) {
-            e.printStackTrace();
-            return false;
+        return rowsAffected > 0;
+    } catch (Exception e) {
+        e.printStackTrace();
+        if (entityManager.getTransaction().isActive()) {
+            entityManager.getTransaction().rollback();
         }
+        return false;
     }
+}
 
     @Override
     public Boolean delete(String id) {
@@ -221,13 +188,13 @@ public class Customer_DAO implements interfaces.DAOBase<Customer> {
 
     public int countMaleCustomers() {
         int count = 0;
-        try (Statement statement = ConnectDB.conn.createStatement(); ResultSet resultSet = statement.executeQuery("SELECT COUNT(*) AS maleCount FROM Customer WHERE gender = 1")) {
-
-            if (resultSet.next()) {
-                count = resultSet.getInt("maleCount");
-            }
-        } catch (SQLException e) {
-            e.printStackTrace(); // Xử lý Exception, ví dụ: ghi log hoặc ném lên lớp gọi để xử lý chính xác hơn
+        try {
+            String hql = "SELECT COUNT(c) FROM Customer c WHERE c.gender = true";
+            Query query = entityManager.createQuery(hql);
+            Long result = (Long) query.getSingleResult();
+            count = result != null ? result.intValue() : 0;
+        } catch (Exception e) {
+            e.printStackTrace();
         }
         return count;
     }

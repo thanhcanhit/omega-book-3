@@ -4,16 +4,9 @@
  */
 package dao;
 
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.util.ArrayList;
-
-import database.ConnectDB;
-import entity.CashCountSheet;
 import entity.CashCountSheetDetail;
-import entity.Employee;
 import jakarta.persistence.EntityManager;
-import jakarta.persistence.NamedQuery;
 import utilities.AccessDatabase;
 
 /**
@@ -22,7 +15,7 @@ import utilities.AccessDatabase;
  */
 public class CashCountSheetDetail_DAO implements interfaces.DAOBase<CashCountSheetDetail> {
 
-	private Employee_DAO emp_DAO = new Employee_DAO();
+	// private Employee_DAO emp_DAO = new Employee_DAO();
 	EntityManager entityManager;
 
 	public CashCountSheetDetail_DAO() {
@@ -34,19 +27,10 @@ public class CashCountSheetDetail_DAO implements interfaces.DAOBase<CashCountShe
 		CashCountSheetDetail cashCountSheetDetail = null;
 
 		try {
-			String sql = "SELECT * FROM CashCountSheetDetail WHERE cashCountSheetID = ?";
-			PreparedStatement preparedStatement = ConnectDB.conn.prepareStatement(sql);
-			preparedStatement.setString(1, cashCountSheetID);
-			
-			ResultSet resultSet = preparedStatement.executeQuery();
-
-			if (resultSet.next()) {
-				boolean index = resultSet.getBoolean("index");
-				String employeeID = resultSet.getString("employeeID");
-
-				cashCountSheetDetail = new CashCountSheetDetail(index, new Employee(employeeID),
-						new CashCountSheet(cashCountSheetID));
-			}
+			cashCountSheetDetail = entityManager
+					.createQuery("SELECT c FROM CashCountSheetDetail c WHERE c.cashCountSheet.id = :cashCountSheetID", CashCountSheetDetail.class)
+					.setParameter("cashCountSheetID", cashCountSheetID)
+					.getSingleResult();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
