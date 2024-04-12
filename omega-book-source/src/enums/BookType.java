@@ -9,6 +9,7 @@ package enums;
  * @author thanhcanhit
  */
 public enum BookType {
+	UNUSED(0),
     LOCAL(1),
     FOREIGN(2);
 

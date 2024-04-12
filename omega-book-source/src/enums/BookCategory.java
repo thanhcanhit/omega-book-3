@@ -9,6 +9,7 @@ package enums;
  * @author thanhcanhit
  */
 public enum BookCategory {
+	UNUSED(0),
     LITERATURE(1),
     ECONOMICS(2),
     PSYCHOLOGY(3),
