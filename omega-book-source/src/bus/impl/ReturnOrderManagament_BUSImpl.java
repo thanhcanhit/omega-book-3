@@ -26,7 +26,7 @@ public class ReturnOrderManagament_BUSImpl implements ReturnOrderManagement_BUS{
     private Bill_DAO order_dao = new Bill_DAO();
 
     public Bill getOrder(String orderID) {
-        return new Bill_DAO().getOne(orderID);
+        return order_dao.getOne(orderID);
     }
 
     public ReturnOrder getReturnOrder(String returnOrderID) {

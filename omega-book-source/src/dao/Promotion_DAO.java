@@ -24,8 +24,7 @@ public class Promotion_DAO implements DAOBase<Promotion> {
 
 	@Override
 	public Promotion getOne(String id) {
-		return em.createNamedQuery("Promotion.findByPromotionID", Promotion.class).setParameter("promotionID", id)
-				.getSingleResult();
+		return em.find(Promotion.class, id);
 	}
 
 	public PromotionForOrder getOneForOrder(String id) {
@@ -34,7 +33,7 @@ public class Promotion_DAO implements DAOBase<Promotion> {
 	}
 
 	public PromotionForProduct getForProduct(String promotionID) {
-		return em.createNamedQuery("PromotionForProduct.findById", PromotionForProduct.class).setParameter("promotionID", promotionID).getSingleResult();
+		return em.find(PromotionForProduct.class, promotionID);
 	}
 
 	public ArrayList<Promotion> findById(String searchQuery) {
@@ -116,25 +115,6 @@ public class Promotion_DAO implements DAOBase<Promotion> {
 		return n > 0;
 	}
 
-	//    public Boolean createForProduct(Promotion promo) {
-	//        int n = 0;
-	//        try {
-	//            PreparedStatement st = ConnectDB.conn.prepareStatement("insert into Promotion"
-	//                    + "([promotionID], [typeDiscount], [promotionType], [discount], [startedDate], [endedDate])"
-	//                    + "VALUES(?, ?, ?, ?, ?, ?)");
-	//            st.setString(1, promo.getPromotionID());
-	//            st.setInt(2, promo.getTypeDiscount().getValue());
-	//            st.setInt(3, promo.getTypePromotion().getValue());
-	//            st.setDouble(4, promo.getDiscount());
-	//            st.setDate(5, new java.sql.Date(promo.getStartedDate().getTime()));
-	//            st.setDate(6, new java.sql.Date(promo.getEndedDate().getTime()));
-	//            n = st.executeUpdate();
-	//        } catch (Exception e) {
-	//            e.printStackTrace();
-	//        }
-	//        return n > 0;
-	//    }
-
 	@Override
 	public Boolean update(String id, Promotion newObject) {
 		throw new UnsupportedOperationException("Not supported yet.");
@@ -152,8 +132,6 @@ public class Promotion_DAO implements DAOBase<Promotion> {
 		}
 		return n > 0;
 	}
-
-	//    @SuppressWarnings("unchecked")
 
 
 	//    private Promotion getPromotionData(ResultSet rs) throws SQLException, Exception {
@@ -238,7 +216,7 @@ public class Promotion_DAO implements DAOBase<Promotion> {
 
 	public ArrayList<Promotion> getPromotionOrderAvailable(int rank) {
 		//    	"select * from Promotion where promotionType = 1 and endedDate > GETDATE() and condition <= ?"
-		String query = "SELECT p FROM Promotion p WHERE p.typePromotion = 1 AND p.endedDate > :date AND p.condition <= :rank";
+		String query = "SELECT p FROM Promotion p WHERE p.typePromotion = 'PromotionForOrder' AND p.endedDate > :date AND p.condition <= :rank";
 		Date now = java.sql.Timestamp.valueOf(LocalDateTime.now());
 		return (ArrayList<Promotion>) em.createQuery(query, Promotion.class).setParameter("date", now).setParameter("rank", rank).getResultList();
 	}
@@ -250,37 +228,10 @@ public class Promotion_DAO implements DAOBase<Promotion> {
 			Promotion promo = em.find(Promotion.class, pm.getPromotionID());
 			promo.setStartedDate(java.sql.Timestamp.valueOf(LocalDateTime.now()));
 			em.getTransaction().commit();
+			update(pm.getPromotionID());
 			n = 1;
 		} catch (Exception e) {
 			e.printStackTrace();
-		}
-		return n > 0;
-	}
-
-	//    private boolean updateDateEnd(Promotion pm) {
-	//        int n = 0;
-	//        try {
-	//            PreparedStatement st = ConnectDB.conn.prepareCall("UPDATE Promotion "
-	//                    + "SET endedDate = GETDATE()"
-	//                    + "WHERE promotionID = ?");
-	//            st.setString(1, pm.getPromotionID());
-	//            n = st.executeUpdate();
-	//        } catch (Exception e) {
-	//            e.printStackTrace();
-	//        }
-	//        return n > 0;
-	//    }
-
-	public boolean createForOrder(PromotionForOrder promo) {
-		int n = 0;
-		try {
-			em.getTransaction().begin();
-			em.persist(promo);
-			em.getTransaction().commit();
-			n = 1;
-		} catch (Exception e) {
-			e.printStackTrace();
-			em.getTransaction().rollback();
 		}
 		return n > 0;
 	}
@@ -319,6 +270,34 @@ public class Promotion_DAO implements DAOBase<Promotion> {
 
 		return prefix;
 	}
+
+	public boolean createForOrder(PromotionForOrder promo) {
+		int n = 0;
+		try {
+			em.getTransaction().begin();
+			em.persist(promo);
+			em.getTransaction().commit();
+			n = 1;
+		} catch (Exception e) {
+			e.printStackTrace();
+			em.getTransaction().rollback();
+		}
+		return n > 0;
+	}
+	
+	public boolean createForProduct(PromotionForProduct newPromotion) {
+		int n = 0;
+        try {
+            em.getTransaction().begin();
+            em.persist(newPromotion);
+            em.getTransaction().commit();
+            n = 1;
+        } catch (Exception e) {
+            e.printStackTrace();
+            em.getTransaction().rollback();
+        }
+        return n > 0;
+    }
 
 
 	//    public ArrayList<Promotion> filterForProduct(int type, int status) {

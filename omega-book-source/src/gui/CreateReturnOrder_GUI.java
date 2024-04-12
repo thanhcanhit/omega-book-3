@@ -32,9 +32,6 @@ import utilities.SVGIcon;
  */
 public class CreateReturnOrder_GUI extends javax.swing.JPanel {
 
-    /**
-	 * 
-	 */
 	private static final long serialVersionUID = 7483255411620707846L;
 	private ReturnOrderManagament_BUSImpl bus;
     private Bill order;
@@ -45,10 +42,7 @@ public class CreateReturnOrder_GUI extends javax.swing.JPanel {
     private int maxQuantity;
     private double totalRefund;
     String tempInput = "";
-
-    /**
-     * Creates new form CreateReturnOrder_GUI
-     */
+    
     public CreateReturnOrder_GUI() {
         initComponents();
         init();
@@ -66,13 +60,11 @@ public class CreateReturnOrder_GUI extends javax.swing.JPanel {
         tbl_product.getModel().addTableModelListener((e) -> {
             int row = e.getFirstRow();
             int col = e.getColumn();
-            //Không xử lí nếu row hoặc col = -1 và col không phải là ô nhập số lượng
             if (row == -1 || col == -1 && col != 2) {
                 return;
             }
             int newValue = Integer.parseInt(tblModel_product.getValueAt(row, col).toString());
             ReturnOrderDetail current = cart.get(row);
-            //Nếu số lượng mới bằng 0 thì xóa khỏi giỏ hàng
             if (newValue == 0 && JOptionPane.showConfirmDialog(this, "Xóa sản phẩm " + current.getProduct().getProductID() + " ra khỏi giỏ hàng", "Xóa sản phẩm khỏi giỏ", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
                 try {
                     cart.remove(current);
@@ -81,14 +73,12 @@ public class CreateReturnOrder_GUI extends javax.swing.JPanel {
                 } catch (Exception ex) {
                     Notifications.getInstance().show(Notifications.Type.WARNING, ex.getMessage());
                 }
-            }
+            } 
             try {
                 if (maxQuantity >= newValue) {
-                    //Cập nhật giá trị mới
                     current.setQuantity(newValue);
                     renderProductTable();
                 } else {
-                    //Trả về giá trị cũ
                     tbl_product.setValueAt(current.getQuantity(), row, col);
                     Notifications.getInstance().show(Notifications.Type.ERROR, "Số lượng sản phẩm không hợp lệ!");
                 }
@@ -152,11 +142,10 @@ public class CreateReturnOrder_GUI extends javax.swing.JPanel {
                 cart.remove(returnOrderDetail);
             }
         }
-        
     }
 
     private ReturnOrder getNewValues() throws Exception {
-        Date returnDate = chooseDateReturn.getDate();
+        Date returnDate = java.sql.Date.valueOf(LocalDate.now());
         String returnOrderID = bus.generateID(returnDate);
         boolean type;
         double refund;
@@ -173,14 +162,12 @@ public class CreateReturnOrder_GUI extends javax.swing.JPanel {
 
     private void handleAddItem(String productID, int quantityOrder, double price) {
         maxQuantity = quantityOrder;
-        //Kiểm tra xem trong giỏ hàng đã có sản phẩm đó hay chưa
         for (ReturnOrderDetail returnOrderDetail : cart) {
             if (returnOrderDetail.getProduct().getProductID().equals(productID)) {
                 Notifications.getInstance().show(Notifications.Type.WARNING, "Sản phẩm đã được thêm");
                 return;
             }
         }
-        //Nếu chưa có thì thêm mới vào cart
         addItemToCart(productID, quantityOrder, price);
     }
 
@@ -223,24 +210,27 @@ public class CreateReturnOrder_GUI extends javax.swing.JPanel {
         return count <= 7;
     }
 
-    private boolean checkDate() {
-        Date now = java.sql.Date.valueOf(LocalDate.now());
-        Date orderDate = chooseDateReturn.getDate();
-        if (orderDate.before(now)) {
-            return true;
-        }
-        Calendar c1 = Calendar.getInstance();
-        Calendar c2 = Calendar.getInstance();
-        c1.setTime(now);
-        c2.setTime(orderDate);
-        long count = (c2.getTime().getTime() - c1.getTime().getTime()) / (24 * 3600 * 1000);
-        return count > 0;
-    }
+//    private boolean checkDate() {
+//        Date now = java.sql.Date.valueOf(LocalDate.now());
+//        Date orderDate = chooseDateReturn.getDate();
+//        if (orderDate.before(now)) {
+//            return true;
+//        }
+//        Calendar c1 = Calendar.getInstance();
+//        Calendar c2 = Calendar.getInstance();
+//        c1.setTime(now);
+//        c2.setTime(orderDate);
+//        long count = (c2.getTime().getTime() - c1.getTime().getTime()) / (24 * 3600 * 1000);
+//        return count > 0;
+//    }
 
     private void createNewReturnOrder(ReturnOrder newReturnOrder) {
         if (bus.createNew(newReturnOrder)) {
             Notifications.getInstance().show(Notifications.Type.SUCCESS, "Thêm thành công");
+            Print(newReturnOrder);
             bus.createReturnOrderDetail(newReturnOrder, cart);
+            renderReturnOrderInfor();
+            
         } else {
             Notifications.getInstance().show(Notifications.Type.ERROR, "Thêm không thành công");
         }
@@ -668,10 +658,10 @@ public class CreateReturnOrder_GUI extends javax.swing.JPanel {
             return;
 
         }
-        if (checkDate()) {
-            Notifications.getInstance().show(Notifications.Type.WARNING, "Ngày đổi trả không được khác ngày hiện tại");
-            return;
-        }
+//        if (checkDate()) {
+//            Notifications.getInstance().show(Notifications.Type.WARNING, "Ngày đổi trả không được khác ngày hiện tại");
+//            return;
+//        }
         if (tblModel_product.getRowCount() == 0) {
             Notifications.getInstance().show(Notifications.Type.WARNING, "Chưa chọn sản phẩm để đổi trả");
             return;
@@ -687,8 +677,7 @@ public class CreateReturnOrder_GUI extends javax.swing.JPanel {
         try {
             ReturnOrder newReturnOrder = getNewValues();
             createNewReturnOrder(newReturnOrder);
-            Print(newReturnOrder);
-            renderReturnOrderInfor();
+            
         } catch (Exception ex) {
             Notifications.getInstance().show(Notifications.Type.WARNING, ex.getMessage());
         }

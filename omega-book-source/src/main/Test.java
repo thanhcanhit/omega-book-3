@@ -3,7 +3,7 @@ package main;
 import java.time.*;
 import java.sql.Date;
 
-import dao.Promotion_DAO;
+import dao.*;
 import enums.DiscountType;
 import enums.PromotionType;
 import jakarta.persistence.EntityManager;
@@ -25,9 +25,11 @@ public class Test {
 //			e.printStackTrace();
 //			tr.rollback();
 //		}
-		Promotion_DAO dao = new Promotion_DAO();
-		System.out.println(dao.getAll());
-		System.out.println(dao.generateID(PromotionType.ORDER, DiscountType.PRICE, Date.valueOf(LocalDate.now())));
+//		Promotion_DAO dao = new Promotion_DAO();
+//		System.out.println(dao.getAll());
+//		System.out.println(dao.generateID(PromotionType.ORDER, DiscountType.PRICE, Date.valueOf(LocalDate.now())));
+		ReturnOrder_DAO dao = new ReturnOrder_DAO();
+		System.out.println(dao.generateID(Date.valueOf(LocalDate.now())));
 		
 	}
 

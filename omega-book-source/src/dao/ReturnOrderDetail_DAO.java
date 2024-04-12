@@ -18,7 +18,6 @@ public class ReturnOrderDetail_DAO implements DAOBase<ReturnOrderDetail>{
 		em = AccessDatabase.getEntityManager();
 	}
 
-
 	public ReturnOrderDetail getOne(String returnOrderID, String productID) {
 		return em.createNamedQuery("ReturnOrderDetail.findByReturnOrderIDAndProductID", ReturnOrderDetail.class)
 				.setParameter("returnOrderID", returnOrderID).setParameter("productID", productID).getSingleResult();
@@ -31,12 +30,13 @@ public class ReturnOrderDetail_DAO implements DAOBase<ReturnOrderDetail>{
 
 	@Override
 	public String generateID() {
-		throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+		throw new UnsupportedOperationException("Not supported yet."); 
 	}
 
 	@Override
 	public Boolean create(ReturnOrderDetail returnOrderDetail) {
 		int n = 0;
+		if(em.getTransaction().isActive() == true) em.getTransaction().rollback();
 		try {
 			em.getTransaction().begin();
 			em.persist(returnOrderDetail);
@@ -44,6 +44,7 @@ public class ReturnOrderDetail_DAO implements DAOBase<ReturnOrderDetail>{
 			n = 1;
 		} catch (Exception e) {
 			e.printStackTrace();
+			em.getTransaction().rollback();
 		}
 		return n > 0;
 	}
@@ -72,17 +73,17 @@ public class ReturnOrderDetail_DAO implements DAOBase<ReturnOrderDetail>{
 
 	@Override
 	public Boolean update(String id, ReturnOrderDetail newObject) {
-		throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+		throw new UnsupportedOperationException("Not supported yet."); 
 	}
 
 	@Override
 	public Boolean delete(String id) {
-		throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+		throw new UnsupportedOperationException("Not supported yet."); 
 	}
 
 	@Override
 	public ReturnOrderDetail getOne(String id) {
-		throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+		throw new UnsupportedOperationException("Not supported yet."); 	
 	}
 
 
