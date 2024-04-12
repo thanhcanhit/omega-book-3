@@ -88,14 +88,16 @@ public class Employee_DAO implements DAOBase<Employee> {
 	@Override
 	public Boolean update(String id, Employee newObject) {
 		try {
+			em.getTransaction().begin();
 			int n = em.createNamedQuery("Employee.update").setParameter("employeeID", id)
 					.setParameter("citizenIdentification", newObject.getCitizenIdentification())
 					.setParameter("role", newObject.getRole()).setParameter("status", newObject.isStatus())
 					.setParameter("name", newObject.getName()).setParameter("phoneNumber", newObject.getPhoneNumber())
 					.setParameter("gender", newObject.isGender())
 					.setParameter("dateOfBirth", newObject.getDateOfBirth())
-					.setParameter("address", newObject.getAddress())
-					.setParameter("storeID", newObject.getStore().getStoreID()).executeUpdate();
+					.setParameter("address", newObject.getAddress()).executeUpdate();
+			em.getTransaction().commit();
+//					.setParameter("storeID", newObject.getStore().getStoreID()).executeUpdate();
 			return n > 0;
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -113,7 +115,8 @@ public class Employee_DAO implements DAOBase<Employee> {
 		ArrayList<Employee> result = new ArrayList<>();
 		String hql = "FROM Employee WHERE employeeID LIKE :searchQuery";
 		try {
-			em.createQuery(hql, Employee.class).getResultStream().forEach(employee -> result.add(employee));
+			em.createQuery(hql, Employee.class).setParameter("searchQuery", searchQuery)
+			.getResultStream().forEach(employee -> result.add(employee));
 			return result;
 		} catch (Exception e) {
 			e.printStackTrace();

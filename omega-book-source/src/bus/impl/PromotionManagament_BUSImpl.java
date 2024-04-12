@@ -105,7 +105,7 @@ public class PromotionManagament_BUSImpl implements PromotionManagement_BUS{
         return promotion_DAO.updateDateStart(pm);
     }
 
-    public boolean addNewOrderPromotion(Promotion newPromotion) {
+    public boolean addNewOrderPromotion(PromotionForOrder newPromotion) {
         return promotion_DAO.createForOrder(newPromotion);
     }
 
