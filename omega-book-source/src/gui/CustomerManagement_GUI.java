@@ -673,6 +673,7 @@ public class CustomerManagement_GUI extends javax.swing.JPanel {
         }
     }// GEN-LAST:event_btn_updateActionPerformed
 
+    
     private void btn_createActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_btn_createActionPerformed
         try {
             // TODO add your handling code here:

@@ -18,6 +18,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
+import jakarta.persistence.Transient;
 
 /**
  *
@@ -45,6 +46,7 @@ public class Customer {
 	@Temporal(TemporalType.DATE)
 	private Date dateOfBirth;
 	private String phoneNumber;
+	@Transient
 	private String rank;
 	@Column(columnDefinition = "nvarchar(max)")
 	private String address;
@@ -106,6 +108,9 @@ public class Customer {
 	}
 
 	public String getRank() {
+		if (rank == null) {
+			setRank();
+		}
 		return rank;
 	}
 
@@ -200,8 +205,6 @@ public class Customer {
 
 	@Override
 	public String toString() {
-
-		return customerID;
+		return "Customer [customerID=" + customerID + ", name=" + name + ", score=" + score + ", rank=" + rank + "]";
 	}
-
 }
