@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package dao;
 
 import java.text.SimpleDateFormat;
@@ -10,6 +6,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import entity.Product;
 import entity.Promotion;
 import entity.PromotionForOrder;
 import entity.PromotionForProduct;
@@ -17,6 +14,7 @@ import enums.DiscountType;
 import enums.PromotionType;
 import interfaces.DAOBase;
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.Query;
 import jakarta.persistence.TypedQuery;
 import utilities.AccessDatabase;
 
@@ -37,12 +35,12 @@ public class Promotion_DAO implements DAOBase<Promotion> {
     }
     
     public PromotionForOrder getOneForOrder(String id) {
-    	 return em.createNamedQuery("PromotionForOrder.findByPromotionID", PromotionForOrder.class).setParameter("po.promotionID", id)
+    	 return em.createNamedQuery("PromotionForOrder.findByPromotionID", PromotionForOrder.class).setParameter("promotionID", id)
                 .getSingleResult();
     }
 
 	public PromotionForProduct getForProduct(String promotionID) {
-		return em.createNamedQuery("PromotionForProduct.findById", PromotionForProduct.class).setParameter("pp.promotionID", promotionID).getSingleResult();
+		return em.createNamedQuery("PromotionForProduct.findById", PromotionForProduct.class).setParameter("promotionID", promotionID).getSingleResult();
 	}
     
 	public ArrayList<Promotion> findById(String searchQuery) {
@@ -118,8 +116,8 @@ public class Promotion_DAO implements DAOBase<Promotion> {
 			em.getTransaction().commit();
 			n = 1;
 		} catch (Exception e) {
+			 e.printStackTrace();
 			em.getTransaction().rollback();
-	        e.printStackTrace();
         }
         return n > 0;
     }
@@ -314,18 +312,16 @@ public class Promotion_DAO implements DAOBase<Promotion> {
         String formatEnded = simpleDateFormat.format(ended);
         
         prefix += formatEnded;
-        String query = """
-				select top 1 * from Promotion
-				where promotionID like ?
-				order by promotionID desc
-				""";
-		try {
-			TypedQuery<Promotion> query1 = em.createQuery(query, Promotion.class);
-			query1.setParameter(1, prefix + "%");
-			List<Promotion> rs = query1.getResultList();
-			if (rs.size() > 0) {
+        String hql = "from Promotion where promotionID like :id order by promotionID desc";
 
-				String lastID = rs.get(0).getPromotionID();
+		try {
+			Query query = em.createQuery(hql);
+			query.setParameter("id", prefix + "%");
+			query.setMaxResults(1);
+			Promotion promotion = (Promotion) query.getSingleResult();
+
+			if (promotion != null) {
+				String lastID = promotion.getPromotionID();
 				String sNumber = lastID.substring(lastID.length() - 2);
 				int num = Integer.parseInt(sNumber) + 1;
 				prefix += String.format("%04d", num);

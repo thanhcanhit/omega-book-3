@@ -52,7 +52,8 @@ public class OrderPromotionManagement_GUI extends javax.swing.JPanel implements 
         init();
     }
     
-    private void init() {
+    @SuppressWarnings("unchecked")
+	private void init() {
         bus = new PromotionManagament_BUSImpl();
         //model
         tblModel_promotion = new DefaultTableModel(new String[]{"Mã khuyến mãi", "Loại", "Giảm giá", "Hạng khách hàng", "Trạng thái"}, 0);

@@ -14,9 +14,12 @@ import jakarta.persistence.*;
 @Entity
 @NamedQueries({ 
 	@NamedQuery(name = "Promotion.findAll", query = "SELECT p FROM Promotion p"),
+	@NamedQuery(name = "Promotion.findByPromotionID", query = "SELECT p FROM Promotion p WHERE p.promotionID = :promotionID"),
 	@NamedQuery(name = "Promotion.findByStartedDate", query = "SELECT p FROM Promotion p WHERE p.startedDate = :startedDate"),
 	@NamedQuery(name = "Promotion.findByEndedDate", query = "SELECT p FROM Promotion p WHERE p.endedDate = :endedDate"),
 	@NamedQuery(name = "Promotion.findByTypeDiscount", query = "SELECT p FROM Promotion p WHERE p.typeDiscount = :typeDiscount"), 
+	@NamedQuery(name = "Promotion.findTopOne", query = "select p from Promotion p where p.promotionID like :id order by p.promotionID desc limit 1")
+
 })
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name = "promotionType", discriminatorType = DiscriminatorType.STRING)
