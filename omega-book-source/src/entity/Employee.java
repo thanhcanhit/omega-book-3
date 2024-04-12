@@ -4,11 +4,20 @@
  */
 package entity;
 
-import java.io.Serializable;
 import java.time.LocalDate;
-import java.util.*;
+import java.util.Date;
+import java.util.List;
+import java.util.Objects;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.NamedQueries;
+import jakarta.persistence.NamedQuery;
+import jakarta.persistence.OneToMany;
 
 /**
  *
@@ -22,7 +31,7 @@ import jakarta.persistence.*;
 				+ "gender = :gender, \r\n" + "dateOfBirth = :dateOfBirth, \r\n" + "address = :address \r\n"
 				+ "WHERE employeeID = :employeeID\r\n") })
 @Entity
-public class Employee implements Serializable {
+public class Employee {
 	@Id
 	private String employeeID;
 	private String citizenIdentification;
@@ -139,6 +148,7 @@ public class Employee implements Serializable {
 		this.citizenIdentification = citizenIdentification;
 	}
 
+	@SuppressWarnings("deprecation")
 	public void setDateOfBirth(Date dateOfBirth) throws IllegalArgumentException {
 		if (java.sql.Date.valueOf(LocalDate.now()).getYear() - dateOfBirth.getYear() < 18)
 			throw new IllegalArgumentException("Nhân viên phải đủ 18 tuổi trở lên");

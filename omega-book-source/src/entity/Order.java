@@ -4,7 +4,19 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
-import jakarta.persistence.*;
+
+import enums.DiscountType;
+import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.NamedQueries;
+import jakarta.persistence.NamedQuery;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
+import jakarta.persistence.Temporal;
+import jakarta.persistence.TemporalType;
 
 /**
  *
@@ -12,26 +24,19 @@ import jakarta.persistence.*;
  */
 @Entity
 @NamedQueries({ @NamedQuery(name = "Order.getAll", query = "SELECT o FROM Order o ORDER BY o.orderAt DESC"),
-				@NamedQuery(name="Order.update", query="UPDATE Order o SET o.payment = :payment, " +
-             "o.status = :status, " +
-             "o.orderAt = :orderAt, " +
-             "o.employee.employeeID = :employeeID, " +
-             "o.customer.customerID = :customerID, " +
-             "o.promotion.promotionID = :promotionID, " +
-             "o.totalDue = :totalDue, " +
-             "o.subTotal = :subTotal, " +
-             "o.moneyGiven = :moneyGiven " +
-             "WHERE o.orderID = :orderID"),
-				@NamedQuery(name="Order.generateID", query="SELECT o.orderID FROM Order o WHERE o.orderID LIKE :prefix ORDER BY o.orderID DESC"),
-				@NamedQuery(name="Order.getLength", query="SELECT COUNT(o) FROM Order o"),
-				@NamedQuery(name="Order.getQuantityOrderSaved", query="SELECT COUNT(o) FROM Order o WHERE o.status = false"),
-				@NamedQuery(name="Order.clearExpiredOrderSaved", query="SELECT o FROM Order o WHERE o.status = false AND " +
-	                     "FUNCTION('DATEDIFF', DAY, o.orderAt, FUNCTION('CURRENT_DATE')) > 1"),
-				@NamedQuery(name="Order.getTotalInMonth",query="SELECT SUM(o.totalDue) FROM Order o " +
-                         "WHERE FUNCTION('YEAR', o.orderAt) = :year " +
-                         "AND FUNCTION('MONTH', o.orderAt) = :month " +
-                         "AND o.status = true")
-})
+		@NamedQuery(name = "Order.update", query = "UPDATE Order o SET o.payment = :payment, " + "o.status = :status, "
+				+ "o.orderAt = :orderAt, " + "o.employee.employeeID = :employeeID, "
+				+ "o.customer.customerID = :customerID, " + "o.promotion.promotionID = :promotionID, "
+				+ "o.totalDue = :totalDue, " + "o.subTotal = :subTotal, " + "o.moneyGiven = :moneyGiven "
+				+ "WHERE o.orderID = :orderID"),
+		@NamedQuery(name = "Order.generateID", query = "SELECT o.orderID FROM Order o WHERE o.orderID LIKE :prefix ORDER BY o.orderID DESC"),
+		@NamedQuery(name = "Order.getLength", query = "SELECT COUNT(o) FROM Order o"),
+		@NamedQuery(name = "Order.getQuantityOrderSaved", query = "SELECT COUNT(o) FROM Order o WHERE o.status = false"),
+		@NamedQuery(name = "Order.clearExpiredOrderSaved", query = "SELECT o FROM Order o WHERE o.status = false AND "
+				+ "FUNCTION('DATEDIFF', DAY, o.orderAt, FUNCTION('CURRENT_DATE')) > 1"),
+		@NamedQuery(name = "Order.getTotalInMonth", query = "SELECT SUM(o.totalDue) FROM Order o "
+				+ "WHERE FUNCTION('YEAR', o.orderAt) = :year " + "AND FUNCTION('MONTH', o.orderAt) = :month "
+				+ "AND o.status = true") })
 @Table(name = "Bill")
 public final class Order {
 
@@ -277,9 +282,9 @@ public final class Order {
 			this.totalDue = this.subTotal;
 			return;
 		}
-		this.totalDue = subTotal - ((promotion.getTypeDiscount() == promotion.getTypeDiscount().PERCENT)
-				? (promotion.getDiscount() / 100 * (subTotal))
-				: promotion.getDiscount());
+		this.totalDue = subTotal
+				- ((promotion.getTypeDiscount() == DiscountType.PERCENT) ? (promotion.getDiscount() / 100 * (subTotal))
+						: promotion.getDiscount());
 	}
 
 	@Override

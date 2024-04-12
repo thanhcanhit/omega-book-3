@@ -1,14 +1,22 @@
 package entity;
 
 import java.util.Date;
-import java.util.List;
 import java.util.Objects;
 import java.util.regex.Pattern;
 
-import enums.CustomerRank;
 import enums.DiscountType;
-import enums.PromotionType;
-import jakarta.persistence.*;
+import jakarta.persistence.DiscriminatorColumn;
+import jakarta.persistence.DiscriminatorType;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.Id;
+import jakarta.persistence.Inheritance;
+import jakarta.persistence.InheritanceType;
+import jakarta.persistence.NamedQueries;
+import jakarta.persistence.NamedQuery;
+import jakarta.persistence.Temporal;
+import jakarta.persistence.TemporalType;
 
 /**
  *

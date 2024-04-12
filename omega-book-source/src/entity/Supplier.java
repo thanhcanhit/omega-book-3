@@ -1,10 +1,13 @@
 
 package entity;
 
-import java.io.Serializable;
 import java.util.Objects;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.NamedQueries;
+import jakarta.persistence.NamedQuery;
 
 /**
  *
@@ -15,7 +18,7 @@ import jakarta.persistence.*;
 		@NamedQuery(name = "Supplier.findBySupplierID", query = "SELECT s FROM Supplier s WHERE s.supplierID = :supplierID"),
 		@NamedQuery(name = "Supplier.findAll", query = "SELECT s FROM Supplier s") 
 })
-public class Supplier implements Serializable {
+public class Supplier{
     
     /* Hằng báo lỗi*/
     public static final String ID_EMPTY = "Mã nhà cung cấp không được phép rỗng";

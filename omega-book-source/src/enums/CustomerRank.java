@@ -9,7 +9,7 @@ package enums;
  * @author Như Tâm
  */
 public enum CustomerRank {
-	UNUSED(0),
+	NOTHING(0),
     SILVER(1),
     GOLD(2),
     DIAMOND(3);
