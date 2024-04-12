@@ -111,10 +111,10 @@ public class Product_DAO implements DAOBase<Product> {
 		String hql = "from Product where productID like :productID order by productID desc";
 
 		try {
-			Query query = em.createQuery(hql);
+			TypedQuery<Product> query = em.createQuery(hql, Product.class);
 			query.setParameter("productID", result + "%");
 			query.setMaxResults(1);
-			Product product = (Product) query.getSingleResult();
+			Product product = query.getSingleResult();
 
 			if (product != null) {
 				String lastID = product.getProductID();
@@ -127,6 +127,7 @@ public class Product_DAO implements DAOBase<Product> {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		System.out.println(result);
 
 		return result;
 	}
@@ -143,61 +144,24 @@ public class Product_DAO implements DAOBase<Product> {
 
 	@Override
 	public Boolean update(String id, Product newObject) {
-		int n = 0;
+		boolean isUpdated = false;
 
 		try {
 			em.getTransaction().begin();
 
-			if (newObject.getType() == Type.BOOK) {
-				String hql = "update Product set productID = :productID, productType = :productType, bookType = :bookType, bookCategory = :bookCategory, name = :name, author = :author, price = :price, costPrice = :costPrice, img = :img, publishYear = :publishYear, publisher = :publisher, pageQuantity = :pageQuantity, isHardCover = :isHardCover, description = :description, language = :language, translater = :translater, VAT = :VAT, inventory = :inventory where productID = :id";
-				Query query = em.createQuery(hql);
-				query.setParameter("productID", newObject.getProductID());
-				query.setParameter("productType", newObject.getType().getValue());
-				query.setParameter("bookType", ((Book) newObject).getBookOrigin().getValue());
-				query.setParameter("bookCategory", ((Book) newObject).getBookCategory().getValue());
-				query.setParameter("name", newObject.getName());
-				query.setParameter("author", ((Book) newObject).getAuthor());
-				query.setParameter("price", newObject.getPrice());
-				query.setParameter("costPrice", newObject.getCostPrice());
-				query.setParameter("img", newObject.getImage());
-				query.setParameter("publishYear", ((Book) newObject).getPublishYear());
-				query.setParameter("publisher", ((Book) newObject).getPublisher());
-				query.setParameter("pageQuantity", ((Book) newObject).getPageQuantity());
-				query.setParameter("isHardCover", ((Book) newObject).getIsHardCover());
-				query.setParameter("description", ((Book) newObject).getDescription());
-				query.setParameter("language", ((Book) newObject).getLanguage());
-				query.setParameter("translater", ((Book) newObject).getTranslator());
-				query.setParameter("VAT", newObject.getVAT());
-				query.setParameter("inventory", newObject.getInventory());
-
-				n = query.executeUpdate();
-			} else if (newObject.getType() == Type.STATIONERY) {
-				String hql = "update Product set productID = :productID, productType = :productType, stationeryType = :stationeryType, name = :name, price = :price, costPrice = :costPrice, img = :img, weight = :weight, color = :color, material = :material, origin = :origin, brandID = :brandID, VAT = :VAT, inventory = :inventory where productID = :id";
-				Query query = em.createQuery(hql);
-				query.setParameter("productID", newObject.getProductID());
-				query.setParameter("productType", newObject.getType().getValue());
-				query.setParameter("stationeryType", ((Stationery) newObject).getStationeryType().getValue());
-				query.setParameter("name", newObject.getName());
-				query.setParameter("price", newObject.getPrice());
-				query.setParameter("costPrice", newObject.getCostPrice());
-				query.setParameter("img", newObject.getImage());
-				query.setParameter("weight", ((Stationery) newObject).getWeight());
-				query.setParameter("color", ((Stationery) newObject).getColor());
-				query.setParameter("material", ((Stationery) newObject).getMaterial());
-				query.setParameter("origin", ((Stationery) newObject).getOrigin());
-				query.setParameter("brandID", ((Stationery) newObject).getBrand().getBrandID());
-				query.setParameter("VAT", newObject.getVAT());
-				query.setParameter("inventory", newObject.getInventory());
-
-				n = query.executeUpdate();
-			}
+			// Merge the state of the given object into the current persistence context.
+			em.merge(newObject);
 
 			em.getTransaction().commit();
+			isUpdated = true;
 		} catch (Exception e) {
 			e.printStackTrace();
+			if (em.getTransaction().isActive()) {
+				em.getTransaction().rollback();
+			}
 		}
 
-		return n > 0;
+		return isUpdated;
 	}
 
 	@Override
@@ -246,7 +210,7 @@ public class Product_DAO implements DAOBase<Product> {
 			hql += " AND p.inventory = 0";
 		}
 		if (type != null) {
-			hql += " AND p.productType = :type";
+			hql += " AND p.type = :type";
 			if (bookType != null) {
 				hql += " AND p.bookCategory = :bookType";
 			}
@@ -259,16 +223,17 @@ public class Product_DAO implements DAOBase<Product> {
 			TypedQuery<Product> query = em.createQuery(hql, Product.class);
 			query.setParameter("name", name + "%");
 			if (type != null) {
-				query.setParameter("type", type.getValue());
+				query.setParameter("type", type);
 				if (bookType != null) {
-					query.setParameter("bookType", bookType.getValue());
+					query.setParameter("bookType", bookType);
 				}
 				if (stationeryType != null) {
-					query.setParameter("stationeryType", stationeryType.getValue());
+					query.setParameter("stationeryType", stationeryType);
 				}
 			}
 
-			query.getResultList().forEach(result::add);;
+			query.getResultList().forEach(result::add);
+			;
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -295,7 +260,7 @@ public class Product_DAO implements DAOBase<Product> {
 //        byte[] image = rs.getBytes("img");
 		Double VAT = rs.getDouble("VAT");
 		Double price = rs.getDouble("price");
-		int productType = rs.getInt("productType");
+		int productType = rs.getInt("type");
 		int inventory = rs.getInt("inventory");
 
 //      Định danh loại sản phẩm để lấy đủ thông tin cần cho đúng loại đối tượng
@@ -328,58 +293,58 @@ public class Product_DAO implements DAOBase<Product> {
 
 		return result;
 	}
-
-	/**
-	 *
-	 * @param object Đối tượng mang thông tin để truyền vào truy vấn
-	 * @param st     Câu truy vấn cần truyền tham số
-	 * @return int index hiện tại
-	 * @throws SQLException
-	 * @throws Exception
-	 */
-	@SuppressWarnings("unused")
-	private int setParams(Product object, PreparedStatement st) throws SQLException, Exception {
-		if (object.getType() == Type.BOOK) {
-			Book book = (Book) object;
-			st.setString(1, book.getProductID());
-			st.setInt(2, book.getType().getValue());
-			st.setInt(3, book.getBookOrigin().getValue());
-			st.setInt(4, book.getBookCategory().getValue());
-			st.setString(5, book.getName());
-			st.setString(6, book.getAuthor());
-			st.setDouble(7, book.getPrice());
-			st.setDouble(8, book.getCostPrice());
-			st.setBytes(9, book.getImage());
-			st.setInt(10, book.getPublishYear());
-			st.setString(11, book.getPublisher());
-			st.setInt(12, book.getPageQuantity());
-			st.setBoolean(13, book.getIsHardCover());
-			st.setString(14, book.getDescription());
-			st.setString(15, book.getLanguage());
-			st.setString(16, book.getTranslator());
-			st.setDouble(17, book.getVAT());
-			st.setInt(18, book.getInventory());
-			return 18;
-		} else if (object.getType() == Type.STATIONERY) {
-			Stationery stationery = (Stationery) object;
-			st.setString(1, stationery.getProductID());
-			st.setInt(2, stationery.getType().getValue());
-			st.setInt(3, stationery.getStationeryType().getValue());
-			st.setString(4, stationery.getName());
-			st.setDouble(5, stationery.getPrice());
-			st.setDouble(6, stationery.getCostPrice());
-			st.setBytes(7, stationery.getImage());
-			st.setDouble(8, stationery.getWeight());
-			st.setString(9, stationery.getColor());
-			st.setString(10, stationery.getMaterial());
-			st.setString(11, stationery.getOrigin());
-			st.setString(12, stationery.getBrand().getBrandID());
-			st.setDouble(13, stationery.getVAT());
-			st.setInt(14, stationery.getInventory());
-			return 14;
-		}
-		return 0;
-	}
+//
+//	/**
+//	 *
+//	 * @param object Đối tượng mang thông tin để truyền vào truy vấn
+//	 * @param st     Câu truy vấn cần truyền tham số
+//	 * @return int index hiện tại
+//	 * @throws SQLException
+//	 * @throws Exception
+//	 */
+//	@SuppressWarnings("unused")
+//	private int setParams(Product object, PreparedStatement st) throws SQLException, Exception {
+//		if (object.getType() == Type.BOOK) {
+//			Book book = (Book) object;
+//			st.setString(1, book.getProductID());
+//			st.setInt(2, book.getType());
+//			st.setInt(3, book.getBookOrigin());
+//			st.setInt(4, book.getBookCategory());
+//			st.setString(5, book.getName());
+//			st.setString(6, book.getAuthor());
+//			st.setDouble(7, book.getPrice());
+//			st.setDouble(8, book.getCostPrice());
+//			st.setBytes(9, book.getImage());
+//			st.setInt(10, book.getPublishYear());
+//			st.setString(11, book.getPublisher());
+//			st.setInt(12, book.getPageQuantity());
+//			st.setBoolean(13, book.getIsHardCover());
+//			st.setString(14, book.getDescription());
+//			st.setString(15, book.getLanguage());
+//			st.setString(16, book.getTranslator());
+//			st.setDouble(17, book.getVAT());
+//			st.setInt(18, book.getInventory());
+//			return 18;
+//		} else if (object.getType() == Type.STATIONERY) {
+//			Stationery stationery = (Stationery) object;
+//			st.setString(1, stationery.getProductID());
+//			st.setInt(2, stationery.getType());
+//			st.setInt(3, stationery.getStationeryType());
+//			st.setString(4, stationery.getName());
+//			st.setDouble(5, stationery.getPrice());
+//			st.setDouble(6, stationery.getCostPrice());
+//			st.setBytes(7, stationery.getImage());
+//			st.setDouble(8, stationery.getWeight());
+//			st.setString(9, stationery.getColor());
+//			st.setString(10, stationery.getMaterial());
+//			st.setString(11, stationery.getOrigin());
+//			st.setString(12, stationery.getBrand().getBrandID());
+//			st.setDouble(13, stationery.getVAT());
+//			st.setInt(14, stationery.getInventory());
+//			return 14;
+//		}
+//		return 0;
+//	}
 
 	public ArrayList<Product> getTop10Product(String date) {
 		ArrayList<Product> result = new ArrayList<>();
@@ -483,7 +448,7 @@ public class Product_DAO implements DAOBase<Product> {
 		try {
 			String hql = "select sum(od.quantity) as sl "
 					+ "from OrderDetail as od join od.order as o join od.product as p "
-					+ "where month(o.orderAt) = :month and year(o.orderAt) = :year and p.productType = :type "
+					+ "where month(o.orderAt) = :month and year(o.orderAt) = :year and p.type = :type "
 					+ "group by p.productType";
 			TypedQuery<Long> query = em.createQuery(hql, Long.class);
 			query.setParameter("month", month);
