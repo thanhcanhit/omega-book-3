@@ -8,6 +8,8 @@ import java.util.Objects;
 
 import enums.StationeryType;
 import enums.Type;
+import jakarta.persistence.Column;
+import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -19,6 +21,7 @@ import jakarta.persistence.ManyToOne;
  * @author thanhcanhit
  */
 @Entity
+@DiscriminatorValue("Stationary")
 public final class Stationery extends Product {
 	// Hằng báo lỗi
 	public static final String COLOR_EMPTY = "Stationery color không được rỗng";
@@ -28,7 +31,9 @@ public final class Stationery extends Product {
 	private String color;
 	private Double weight;
 
+	@Column(columnDefinition = "nvarchar(max)")
 	private String material;
+	@Column(columnDefinition = "nvarchar(max)")
 	private String origin;
 	@Enumerated(EnumType.ORDINAL)
 	private StationeryType stationeryType;
