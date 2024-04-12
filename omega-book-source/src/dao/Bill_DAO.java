@@ -5,20 +5,21 @@
  */
 package dao;
 
-import java.sql.Date;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+//import java.sql.Date;
+//import java.sql.PreparedStatement;
+//import java.sql.ResultSet;
+//import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import entity.Customer;
-import entity.Employee;
+//import entity.Customer;
+//import entity.Employee;
 import entity.Bill;
-import entity.OrderDetail;
+import entity.Product;
+//import entity.OrderDetail;
 import entity.Promotion;
 import interfaces.DAOBase;
 import jakarta.persistence.EntityManager;
@@ -50,37 +51,59 @@ public class Bill_DAO implements DAOBase<Bill> {
     @Override
     public String generateID() {
     	String result = "HD";
-        LocalDate time = LocalDate.now();
-        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("ddMMyyyy");
-        result += dateFormatter.format(time);
+		String hql = "from Bill where orderID like :orderID order by orderID desc";
 
-        try {
-            entityManager.getTransaction().begin();
+		try {
+			Query query = entityManager.createQuery(hql);
+			query.setParameter("orderID", result + "%");
+			query.setMaxResults(1);
+			Bill order = (Bill) query.getSingleResult();
 
-            String lastID = (String) entityManager.createNamedQuery("Bill.generateID", Bill.class).setParameter("prefix", result + "%")
-                    .setMaxResults(1).getSingleResult().toString();
-            if (lastID != null) {
-                String sNumber = lastID.substring(lastID.length() - 2);
-                int num = Integer.parseInt(sNumber) + 1;
-                result += String.format("%04d", num);
-            } else {
-                result += String.format("%04d", 0);
-            }
+			if (order != null) {
+				String lastID = order.getOrderID();
+				String sNumber = lastID.substring(lastID.length() - 2);
+				int num = Integer.parseInt(sNumber) + 1;
+				result += String.format("%04d", num);
+			} else {
+				result += String.format("%04d", 0);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 
-            entityManager.getTransaction().commit();
-
-        } catch (Exception e) {
-            if (entityManager != null && entityManager.getTransaction().isActive()) {
-                entityManager.getTransaction().rollback();
-            }
-            e.printStackTrace();
-        } finally {
-            if (entityManager != null) {
-                entityManager.close();
-            }
-        }
-
-        return result;
+		return result;
+//    	String result = "HD";
+//        LocalDate time = LocalDate.now();
+//        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("ddMMyyyy");
+//        result += dateFormatter.format(time);
+//
+//        try {
+//            entityManager.getTransaction().begin();
+//
+//            String lastID = (String) entityManager.createNamedQuery("Bill.generateID", Bill.class).setParameter("prefix", result + "%")
+//                    .setMaxResults(1).getSingleResult().toString();
+//            if (lastID != null) {
+//                String sNumber = lastID.substring(lastID.length() - 2);
+//                int num = Integer.parseInt(sNumber) + 1;
+//                result += String.format("%04d", num);
+//            } else {
+//                result += String.format("%04d", 0);
+//            }
+//
+//            entityManager.getTransaction().commit();
+//
+//        } catch (Exception e) {
+//            if (entityManager != null && entityManager.getTransaction().isActive()) {
+//                entityManager.getTransaction().rollback();
+//            }
+//            e.printStackTrace();
+//        } finally {
+//            if (entityManager != null) {
+//                entityManager.close();
+//            }
+//        }
+//
+//        return result;
     }
 
     @Override
@@ -120,7 +143,7 @@ public class Bill_DAO implements DAOBase<Bill> {
 		try {
 			String hql = "SELECT COUNT(*) FROM Bill";
 			Query query = entityManager.createQuery(hql);
-			length = (int) query.getSingleResult();
+			length = Integer.parseInt(query.getSingleResult().toString());
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -229,26 +252,26 @@ public class Bill_DAO implements DAOBase<Bill> {
     	    return result;
     }
 
-    private Bill getOrderData(ResultSet rs) throws Exception {
-        Bill result = null;
-
-        //Lấy thông tin tổng quát của lớp order
-        String orderID = rs.getString("orderID");
-        String employeeID = rs.getString("employeeID");
-        String customerID = rs.getString("customerID");
-        Date orderAt = rs.getDate("orderAt");
-        boolean status = rs.getBoolean("status");
-        boolean payment = rs.getBoolean("payment");
-        double subTotal = rs.getDouble("subTotal");
-        double totalDue = rs.getDouble("totalDue");
-
-        Double moneyGiven = rs.getDouble("moneyGiven");
-        ArrayList<OrderDetail> orderDetailList = new OrderDetail_DAO().getAll(orderID);
-        Employee employee = new Employee(employeeID);
-        Customer customer = new Customer(customerID);
-        result = new Bill(orderID, orderAt, status, subTotal, totalDue, payment, employee, customer, orderDetailList, moneyGiven);
-        return result;
-    }
+//    private Bill getOrderData(ResultSet rs) throws Exception {
+//        Bill result = null;
+//
+//        //Lấy thông tin tổng quát của lớp order
+//        String orderID = rs.getString("orderID");
+//        String employeeID = rs.getString("employeeID");
+//        String customerID = rs.getString("customerID");
+//        Date orderAt = rs.getDate("orderAt");
+//        boolean status = rs.getBoolean("status");
+//        boolean payment = rs.getBoolean("payment");
+//        double subTotal = rs.getDouble("subTotal");
+//        double totalDue = rs.getDouble("totalDue");
+//
+//        Double moneyGiven = rs.getDouble("moneyGiven");
+//        ArrayList<OrderDetail> orderDetailList = new OrderDetail_DAO().getAll(orderID);
+//        Employee employee = new Employee(employeeID);
+//        Customer customer = new Customer(customerID);
+//        result = new Bill(orderID, orderAt, status, subTotal, totalDue, payment, employee, customer, orderDetailList, moneyGiven);
+//        return result;
+//    }
 
     public double[] getToTalInMonth(int month, int year) {
         double[] result = new double[31]; // Mảng kết quả, tối đa 31 ngày trong một tháng
@@ -260,7 +283,7 @@ public class Bill_DAO implements DAOBase<Bill> {
                          "FROM Bill o " +
                          "WHERE FUNCTION('YEAR', o.orderAt) = :year " +
                          "AND FUNCTION('MONTH', o.orderAt) = :month " +
-                         "AND o.status = 1 " +
+                         "AND o.status = true " +
                          "GROUP BY DAY(o.orderAt)";
            
             List<Object[]> resultList = entityManager.createQuery(hql,Object[].class)
@@ -292,7 +315,7 @@ public class Bill_DAO implements DAOBase<Bill> {
             String hql = "SELECT COUNT(o.orderID) FROM Bill o " +
                          "WHERE FUNCTION('YEAR', o.orderAt) = :year " +
                          "AND FUNCTION('MONTH', o.orderAt) = :month " +
-                         "AND o.status = 1";
+                         "AND o.status = true";
 
             List<Integer> resultList = entityManager.createQuery(hql,Integer.class)
             		.setParameter("year", year)

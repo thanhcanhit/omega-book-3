@@ -85,9 +85,7 @@ public class Shift_DAO implements DAOBase<Shift> {
 			shifts = query.getResultList();
 		} catch (NoResultException nre) {
 			shifts = new ArrayList<>();
-		} finally {
-			entityManager.close();
-		}
+		} 
 
 		return (ArrayList<Shift>) shifts;
 	}
@@ -135,8 +133,6 @@ public class Shift_DAO implements DAOBase<Shift> {
 			maxID = result != null ? result.getShiftID() : "";
 		} catch (NoResultException nre) {
 			maxID = "";
-		} finally {
-			entityManager.close();
 		}
 
 		if (maxID.equals("")) {
