@@ -9,7 +9,7 @@ package enums;
  * @author thanhcanhit
  */
 public enum Type {
-	UNUSED(0), BOOK(1), STATIONERY(2);
+	BOOK(1), STATIONERY(2);
 
 	private final int value;
 

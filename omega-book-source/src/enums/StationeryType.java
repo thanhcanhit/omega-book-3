@@ -9,7 +9,7 @@ package enums;
  * @author thanhcanhit
  */
 public enum StationeryType {
-	UNUSED(0), PEN(1), SCHOOL_SUPPLIES(2), OFFICE_SUPPLIES(3), DRAWING_TOOLS(4), PAPER_PRODUCTS(5), OTHER_PRODUCTS(6);
+	PEN(1), SCHOOL_SUPPLIES(2), OFFICE_SUPPLIES(3), DRAWING_TOOLS(4), PAPER_PRODUCTS(5), OTHER_PRODUCTS(6);
 
 	private final int value;
 

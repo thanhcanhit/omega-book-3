@@ -10,6 +10,7 @@ import java.util.regex.Pattern;
 
 import enums.BookType;
 import enums.Type;
+import jakarta.persistence.Basic;
 import jakarta.persistence.Column;
 import jakarta.persistence.DiscriminatorColumn;
 import jakarta.persistence.DiscriminatorType;
@@ -46,6 +47,7 @@ public class Product {
 
 	protected Double costPrice;
 
+	@Basic(fetch = FetchType.LAZY)
 	@Column(columnDefinition = "varbinary(max)")
 	protected byte[] image;
 	protected Double VAT;

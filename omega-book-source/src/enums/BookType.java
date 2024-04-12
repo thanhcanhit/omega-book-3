@@ -9,30 +9,28 @@ package enums;
  * @author thanhcanhit
  */
 public enum BookType {
-	UNUSED(0),
-    LOCAL(1),
-    FOREIGN(2);
+	LOCAL(1), FOREIGN(2);
 
-    private final int value;
+	private final int value;
 
-    private BookType(int value) {
-        this.value = value;
-    }
+	private BookType(int value) {
+		this.value = value;
+	}
 
-    public int getValue() {
-        return value;
-    }
+	public int getValue() {
+		return value;
+	}
 
-    public boolean compare(int value) {
-        return this.value == value;
-    }
+	public boolean compare(int value) {
+		return this.value == value;
+	}
 
-    public static BookType fromInt(int value) {
-        for (BookType type : values()) {
-            if (type.compare(value)) {
-                return type;
-            }
-        }
-        return null;
-    }
+	public static BookType fromInt(int value) {
+		for (BookType type : values()) {
+			if (type.compare(value)) {
+				return type;
+			}
+		}
+		return null;
+	}
 }

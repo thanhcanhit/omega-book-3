@@ -58,7 +58,7 @@ public class Product_DAO implements DAOBase<Product> {
 		try {
 			String hql = "SELECT COUNT(*) FROM Product";
 			Query query = em.createQuery(hql);
-			length = (int) query.getSingleResult();
+			length = Integer.parseInt(query.getSingleResult().toString());
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
