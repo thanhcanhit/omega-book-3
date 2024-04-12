@@ -4,9 +4,6 @@
  */
 package utilities;
 
-import java.io.FileOutputStream;
-import java.util.ArrayList;
-
 /**
  *
  * @author Hoàng Khang

@@ -34,7 +34,12 @@ import utilities.SVGIcon;
  */
 public class MenuItem extends JPanel {
 
-    public boolean isMenuShow() {
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 5450531784992175086L;
+
+	public boolean isMenuShow() {
         return menuShow;
     }
 
@@ -58,7 +63,8 @@ public class MenuItem extends JPanel {
         return menuIndex;
     }
 
-    private final List<MenuEvent> events;
+    @SuppressWarnings("unused")
+	private final List<MenuEvent> events;
     private final Menu menu;
     private final String menus[];
     private final int menuIndex;

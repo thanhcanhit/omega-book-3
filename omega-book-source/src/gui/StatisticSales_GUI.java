@@ -20,7 +20,11 @@ import utilities.FormatNumber;
 public final class StatisticSales_GUI extends javax.swing.JPanel {
 
 
-    private final StatisticSales_BUSImpl bus = new StatisticSales_BUSImpl();
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = -2798409532507339236L;
+	private final StatisticSales_BUSImpl bus = new StatisticSales_BUSImpl();
     private final PolarAreaChart polarAreaChart = new PolarAreaChart();
 
     /**

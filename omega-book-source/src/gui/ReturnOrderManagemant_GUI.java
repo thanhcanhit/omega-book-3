@@ -23,7 +23,11 @@ import utilities.SVGIcon;
  */
 public class ReturnOrderManagemant_GUI extends javax.swing.JPanel {
     
-    private ReturnOrderManagament_BUSImpl bus;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 8110520352555123913L;
+	private ReturnOrderManagament_BUSImpl bus;
     private DefaultTableModel tblModel_returnOrder;
     private DefaultTableModel tblModel_product;
     private ReturnOrder currentReturnOrder;

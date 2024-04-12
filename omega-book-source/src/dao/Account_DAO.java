@@ -4,18 +4,12 @@
  */
 package dao;
 
-import database.ConnectDB;
+import java.util.ArrayList;
+
 import entity.Account;
-import entity.Employee;
 import interfaces.DAOBase;
 import jakarta.persistence.EntityManager;
-import jakarta.persistence.EntityTransaction;
 import utilities.AccessDatabase;
-
-import java.util.ArrayList;
-import java.sql.*;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  *

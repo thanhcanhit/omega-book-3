@@ -31,7 +31,11 @@ import utilities.FormatNumber;
  */
 public final class StatisticProduct_GUI extends javax.swing.JPanel {
 
-    private DefaultTableModel tblModel_product;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = -6903274326754762049L;
+	private DefaultTableModel tblModel_product;
     private StatisticProduct_BUSImpl bus;
 
     private XChartPanel<CategoryChart> chartPanel;

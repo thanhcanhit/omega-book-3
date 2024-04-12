@@ -29,6 +29,10 @@ import utilities.SVGIcon;
  */
 public class ProductPromotionManagament_GUI extends javax.swing.JPanel {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -6981657731106288349L;
 	private PromotionManagament_BUSImpl bus;
 	private PromotionForProduct currentPromotion;
 	private DefaultComboBoxModel cmbModel_type;

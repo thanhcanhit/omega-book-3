@@ -31,6 +31,10 @@ import utilities.SVGIcon;
 public class OrderPromotionManagement_GUI extends javax.swing.JPanel implements ActionListener{
     
     /**
+	 * 
+	 */
+	private static final long serialVersionUID = 7930149672258587029L;
+	/**
      * Creates new form OrderPromotionManagement_GUI
      */
     private PromotionManagament_BUSImpl bus;

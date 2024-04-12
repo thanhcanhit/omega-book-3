@@ -4,17 +4,21 @@
  */
 package dao;
 
-import interfaces.DAOBase;
-import jakarta.persistence.*;
-import utilities.AccessDatabase;
-import entity.*;
-import enums.DiscountType;
-import enums.CustomerRank;
-import enums.PromotionType;
-
 import java.text.SimpleDateFormat;
-import java.time.*;
-import java.util.*;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
+import entity.Promotion;
+import entity.PromotionForOrder;
+import entity.PromotionForProduct;
+import enums.DiscountType;
+import enums.PromotionType;
+import interfaces.DAOBase;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.TypedQuery;
+import utilities.AccessDatabase;
 
 /**
  *
@@ -157,7 +161,7 @@ public class Promotion_DAO implements DAOBase<Promotion> {
         return n > 0;
     }
 
-    @SuppressWarnings("unchecked")
+//    @SuppressWarnings("unchecked")
 
 
 //    private Promotion getPromotionData(ResultSet rs) throws SQLException, Exception {

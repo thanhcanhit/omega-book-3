@@ -4,11 +4,14 @@
  */
 package dao;
 
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.Statement;
+import java.util.ArrayList;
+
 import database.ConnectDB;
 import entity.Store;
 import interfaces.DAOBase;
-import java.sql.*;
-import java.util.ArrayList;
 
 /**
  *

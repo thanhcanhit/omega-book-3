@@ -1,17 +1,12 @@
 package gui.menu;
 
-import com.formdev.flatlaf.FlatClientProperties;
-import com.formdev.flatlaf.FlatLaf;
-import com.formdev.flatlaf.icons.FlatAbstractIcon;
-import com.formdev.flatlaf.util.ColorFunctions;
-import com.formdev.flatlaf.util.LoggingFacade;
-import com.formdev.flatlaf.util.UIScale;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Graphics2D;
 import java.awt.event.ActionEvent;
 import java.util.Collections;
+
 import javax.swing.ButtonGroup;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
@@ -21,13 +16,24 @@ import javax.swing.LookAndFeel;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 
+import com.formdev.flatlaf.FlatClientProperties;
+import com.formdev.flatlaf.FlatLaf;
+import com.formdev.flatlaf.icons.FlatAbstractIcon;
+import com.formdev.flatlaf.util.ColorFunctions;
+import com.formdev.flatlaf.util.LoggingFacade;
+import com.formdev.flatlaf.util.UIScale;
+
 /**
  *
  * @author thanhcanhit
  */
 public class ToolBarAccentColor extends JPanel {
 
-    private final Menu menu;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 3892906797310246794L;
+	private final Menu menu;
     private final JPopupMenu popup = new JPopupMenu();
 
     public boolean isMenuFull() {
@@ -99,7 +105,8 @@ public class ToolBarAccentColor extends JPanel {
         }
     }
 
-    private void colorAccentChanged(String colorKey) {
+    @SuppressWarnings("deprecation")
+	private void colorAccentChanged(String colorKey) {
         if (popup.isVisible()) {
             popup.setVisible(false);
         }

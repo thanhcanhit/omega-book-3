@@ -39,7 +39,11 @@ import utilities.FormatNumber;
  */
 public class StatementAcounting_GUI extends javax.swing.JPanel {
 
-    private DefaultTableModel tbl_modalCashCounts = new DefaultTableModel();
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 3924750748601664222L;
+	private DefaultTableModel tbl_modalCashCounts = new DefaultTableModel();
     private double sum = 0;
     private Employee employee1 = Application.employee;
     private Employee employee2;

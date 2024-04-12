@@ -4,18 +4,10 @@
  */
 package dao;
 
-import java.sql.Date;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ArrayList;
-import java.util.List;
 
-import database.ConnectDB;
 import entity.Account;
 import entity.Employee;
-import entity.Store;
 import interfaces.DAOBase;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.NoResultException;

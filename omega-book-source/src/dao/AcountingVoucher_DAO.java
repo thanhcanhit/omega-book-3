@@ -19,7 +19,6 @@ import utilities.AccessDatabase;
 public class AcountingVoucher_DAO implements interfaces.DAOBase<AcountingVoucher> {
 	EntityManager entityManager;
 
-    private CashCountSheet_DAO cashCountSheet_DAO = new CashCountSheet_DAO();
 
     public AcountingVoucher_DAO() {
     	entityManager = AccessDatabase.getEntityManager();

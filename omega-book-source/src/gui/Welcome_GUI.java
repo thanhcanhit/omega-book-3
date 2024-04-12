@@ -16,7 +16,11 @@ import com.formdev.flatlaf.FlatClientProperties;
  */
 public class Welcome_GUI extends javax.swing.JFrame {
 
-    private int value = 0;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 5356920590237891256L;
+	private int value = 0;
     private static int dots = 0;
 
     /**

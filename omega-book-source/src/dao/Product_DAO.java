@@ -10,7 +10,6 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import database.ConnectDB;
 import entity.Book;
 import entity.Brand;
 import entity.Product;
@@ -22,6 +21,7 @@ import enums.Type;
 import interfaces.DAOBase;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.Query;
+import jakarta.persistence.TypedQuery;
 import utilities.AccessDatabase;
 
 /**
@@ -90,7 +90,7 @@ public class Product_DAO implements DAOBase<Product> {
 		String hql = "FROM Product ORDER BY productID";
 		int offsetQuantity = (page - 1) * 50;
 		try {
-			Query query = em.createQuery(hql, Product.class);
+			TypedQuery<Product> query = em.createQuery(hql, Product.class);
 			query.setFirstResult(offsetQuantity);
 			query.setMaxResults(50);
 			query.getResultStream().forEach(o -> result.add((Product) o));
@@ -211,7 +211,7 @@ public class Product_DAO implements DAOBase<Product> {
 		String hql = "from Product where productID like :productID";
 
 		try {
-			Query query = em.createQuery(hql, Product.class);
+			TypedQuery<Product> query = em.createQuery(hql, Product.class);
 			query.setParameter("productID", searchQuery + "%");
 			List<Product> products = query.getResultList();
 
@@ -240,84 +240,39 @@ public class Product_DAO implements DAOBase<Product> {
 	public ArrayList<Product> filter(String name, boolean isEmpty, Type type, BookCategory bookType,
 			StationeryType stationeryType) {
 		ArrayList<Product> result = new ArrayList<>();
-//        Index tự động tăng phụ thuộc vào số lượng biến số có
-		int index = 1;
-		String query = """
-				SELECT [productID]
-				     ,[productType]
-				     ,[bookType]
-				     ,[bookCategory]
-				     ,[stationeryType]
-				     ,[name]
-				     ,[author]
-				     ,[price]
-				     ,[costPrice]
-				     ,[publishYear]
-				     ,[publisher]
-				     ,[pageQuantity]
-				     ,[isHardCover]
-				     ,[description]
-				     ,[language]
-				     ,[translater]
-				     ,[weight]
-				     ,[color]
-				     ,[material]
-				     ,[origin]
-				     ,[brandID]
-				     ,[VAT]
-				     ,[inventory]
-				 FROM [dbo].[Product]  where name like ?""";
+
+		String hql = "FROM Product p WHERE p.name LIKE :name";
 		if (isEmpty) {
-			query += " and inventory = ?";
+			hql += " AND p.inventory = 0";
 		}
-
-//        Nếu loại sản phẩm là tất cả thì không xét đến 2 phần tử con
 		if (type != null) {
-			query += " and productType = ?";
-
-//            Xét loại chi tiết
+			hql += " AND p.productType = :type";
 			if (bookType != null) {
-				query += " and bookCategory = ?";
+				hql += " AND p.bookCategory = :bookType";
 			}
-
 			if (stationeryType != null) {
-				query += " and stationeryType = ?";
+				hql += " AND p.stationeryType = :stationeryType";
 			}
 		}
 
 		try {
-
-			PreparedStatement st = ConnectDB.conn.prepareStatement(query);
-			st.setString(index++, name + "%");
-
-			if (isEmpty) {
-				st.setInt(index++, 0);
-			}
-
+			TypedQuery<Product> query = em.createQuery(hql, Product.class);
+			query.setParameter("name", name + "%");
 			if (type != null) {
-				st.setInt(index++, type.getValue());
-
-//                Xét loại chi tiết
+				query.setParameter("type", type.getValue());
 				if (bookType != null) {
-					st.setInt(index++, bookType.getValue());
+					query.setParameter("bookType", bookType.getValue());
 				}
-
 				if (stationeryType != null) {
-					st.setInt(index++, stationeryType.getValue());
+					query.setParameter("stationeryType", stationeryType.getValue());
 				}
 			}
 
-			ResultSet rs = st.executeQuery();
-			while (rs.next()) {
-				if (rs != null) {
-					result.add(getProductData(rs));
-				}
-			}
-		} catch (SQLException e) {
+			query.getResultList().forEach(result::add);;
+		} catch (Exception e) {
 			e.printStackTrace();
-		} catch (Exception ex) {
-			ex.printStackTrace();
 		}
+
 		return result;
 	}
 
@@ -328,6 +283,7 @@ public class Product_DAO implements DAOBase<Product> {
 	 * @throws SQLException
 	 * @throws Exception
 	 */
+	@SuppressWarnings("unused")
 	private Product getProductData(ResultSet rs) throws SQLException, Exception {
 		Product result = null;
 
@@ -381,6 +337,7 @@ public class Product_DAO implements DAOBase<Product> {
 	 * @throws SQLException
 	 * @throws Exception
 	 */
+	@SuppressWarnings("unused")
 	private int setParams(Product object, PreparedStatement st) throws SQLException, Exception {
 		if (object.getType() == Type.BOOK) {
 			Book book = (Book) object;
@@ -431,7 +388,7 @@ public class Product_DAO implements DAOBase<Product> {
 			String hql = "select od.productID from OrderDetail as od join od.order as o "
 					+ "where month(o.orderAt) = month(:date) and year(o.orderAt) = year(:date) "
 					+ "group by od.productID order by count(od.productID) desc";
-			Query query = em.createQuery(hql);
+			TypedQuery<String> query = em.createQuery(hql, String.class);
 			query.setParameter("date", date);
 			query.setMaxResults(10);
 
@@ -456,7 +413,7 @@ public class Product_DAO implements DAOBase<Product> {
 		try {
 			String hql = "select od.productID from OrderDetail as od join od.order as o "
 					+ "where cast(o.orderAt as date) = :date " + "group by od.productID";
-			Query query = em.createQuery(hql);
+			TypedQuery<String> query = em.createQuery(hql, String.class);
 			query.setParameter("date", date);
 
 			List<String> productIDs = query.getResultList();
@@ -481,7 +438,7 @@ public class Product_DAO implements DAOBase<Product> {
 			String hql = "select sum(od.quantity) as sl " + "from OrderDetail as od join od.order as o "
 					+ "where cast(o.orderAt as date) = :date and od.productID = :productID " + "group by od.productID "
 					+ "order by sum(od.quantity) desc";
-			Query query = em.createQuery(hql);
+			TypedQuery<Long> query = em.createQuery(hql, Long.class);
 			query.setParameter("date", date);
 			query.setParameter("productID", productID);
 
@@ -504,7 +461,7 @@ public class Product_DAO implements DAOBase<Product> {
 			String hql = "select sum(od.lineTotal) " + "from OrderDetail as od join od.order as o "
 					+ "where od.productID = :productID and month(o.orderAt) = month(:date) and year(o.orderAt) = year(:date) "
 					+ "group by od.productID";
-			Query query = em.createQuery(hql);
+			TypedQuery<Double> query = em.createQuery(hql, Double.class);
 			query.setParameter("productID", productID);
 			query.setParameter("date", date);
 
@@ -528,7 +485,7 @@ public class Product_DAO implements DAOBase<Product> {
 					+ "from OrderDetail as od join od.order as o join od.product as p "
 					+ "where month(o.orderAt) = :month and year(o.orderAt) = :year and p.productType = :type "
 					+ "group by p.productType";
-			Query query = em.createQuery(hql);
+			TypedQuery<Long> query = em.createQuery(hql, Long.class);
 			query.setParameter("month", month);
 			query.setParameter("year", year);
 			query.setParameter("type", type);

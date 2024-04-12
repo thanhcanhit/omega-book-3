@@ -20,6 +20,10 @@ import raven.toast.Notifications;
  */
 public class Login_GUI extends javax.swing.JPanel {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -262088147392596571L;
 	private final Login_BUSImpl log_BUS = new Login_BUSImpl();
 
 	/**

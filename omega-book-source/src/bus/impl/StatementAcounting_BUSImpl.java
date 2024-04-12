@@ -4,6 +4,12 @@
  */
 package bus.impl;
 
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+
+import bus.StatementAccounting_BUS;
 import dao.AcountingVoucher_DAO;
 import dao.CashCountSheet_DAO;
 import dao.Employee_DAO;
@@ -14,12 +20,6 @@ import entity.CashCountSheet;
 import entity.Employee;
 import entity.Order;
 import gui.StatementAcounting_GUI;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-
-import bus.StatementAccounting_BUS;
 import main.Application;
 import raven.toast.Notifications;
 import utilities.AcountingVoucherPrinter;
@@ -34,7 +34,8 @@ public class StatementAcounting_BUSImpl implements StatementAccounting_BUS{
     private CashCountSheet_DAO cashCountSheet_DAO = new CashCountSheet_DAO();
     private Employee_DAO employee_DAO = new Employee_DAO();
     private Order_DAO order_DAO = new Order_DAO();
-    private StatementCashCount_BUSImpl statementCashCount_BUS = new StatementCashCount_BUSImpl();
+    @SuppressWarnings("unused")
+	private StatementCashCount_BUSImpl statementCashCount_BUS = new StatementCashCount_BUSImpl();
 
     public AcountingVoucher getAcountingByID(String id) {
         return acountingVoucher_DAO.getOne(id);

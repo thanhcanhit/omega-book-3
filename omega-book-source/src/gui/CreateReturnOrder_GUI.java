@@ -32,7 +32,11 @@ import utilities.SVGIcon;
  */
 public class CreateReturnOrder_GUI extends javax.swing.JPanel {
 
-    private ReturnOrderManagament_BUSImpl bus;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 7483255411620707846L;
+	private ReturnOrderManagament_BUSImpl bus;
     private Order order;
     private final Employee employee = Application.employee;
     private DefaultTableModel tblModel_orderDetail;

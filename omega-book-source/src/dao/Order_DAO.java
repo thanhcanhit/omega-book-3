@@ -4,7 +4,16 @@
  */
 package dao;
 
-import database.ConnectDB;
+import java.sql.Date;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 import entity.Customer;
 import entity.Employee;
 import entity.Order;
@@ -12,18 +21,7 @@ import entity.OrderDetail;
 import entity.Promotion;
 import interfaces.DAOBase;
 import jakarta.persistence.EntityManager;
-import jakarta.persistence.Query;
 import utilities.AccessDatabase;
-
-import java.sql.Date;
-import java.sql.ResultSet;
-import java.sql.Statement;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.sql.*;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 
 /**
  *

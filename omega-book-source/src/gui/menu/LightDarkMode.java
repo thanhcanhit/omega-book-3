@@ -26,7 +26,12 @@ import com.formdev.flatlaf.themes.FlatMacLightLaf;
  */
 public class LightDarkMode extends JPanel {
 
-    public void setMenuFull(boolean menuFull) {
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = -1778433945096041698L;
+
+	public void setMenuFull(boolean menuFull) {
         this.menuFull = menuFull;
         if (menuFull) {
             buttonLight.setVisible(true);

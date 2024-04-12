@@ -21,7 +21,11 @@ import utilities.SVGIcon;
  */
 public class ManagemantShifts_GUI extends javax.swing.JPanel {
 
-    private DefaultTableModel tblModel_shift;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 5220441247285418251L;
+	private DefaultTableModel tblModel_shift;
     private ShiftsManagemant_BUSImpl shift_bus = new ShiftsManagemant_BUSImpl();
 
     /**

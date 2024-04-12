@@ -4,13 +4,10 @@
  */
 package dao;
 
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
-import database.ConnectDB;
 import entity.PurchaseOrder;
 import entity.PurchaseOrderDetail;
 import interfaces.DAOBase;

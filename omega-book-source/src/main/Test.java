@@ -1,9 +1,9 @@
 package main;
 
-import bus.impl.EmployeeManagament_BUSImpl;
-import dao.Employee_DAO;
-import dao.Supplier_DAO;
-import jakarta.persistence.*;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.EntityManagerFactory;
+import jakarta.persistence.EntityTransaction;
+import jakarta.persistence.Persistence;
 
 public class Test {
 	public static void main(String[] args) {

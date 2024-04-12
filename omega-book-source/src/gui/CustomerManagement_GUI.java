@@ -43,7 +43,11 @@ import utilities.SVGIcon;
  */
 public class CustomerManagement_GUI extends javax.swing.JPanel {
 
-    private DefaultTableModel tblModel_customer;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = -5201041434744452853L;
+	private DefaultTableModel tblModel_customer;
     private CustomerManagement_BUSImpl customer_BUS = new CustomerManagement_BUSImpl();
 
     /**

@@ -27,7 +27,12 @@ import main.Application;
  */
 public class Menu extends JPanel {
 
-    public static final int STORE_EMPLOYEE = 0;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = -7541352029039386022L;
+
+	public static final int STORE_EMPLOYEE = 0;
 
     public static JLabel lbl_currentEmployee;
     private static final String menuItems[][] = {

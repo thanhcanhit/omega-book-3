@@ -25,7 +25,11 @@ import utilities.SVGIcon;
  */
 public class ViewAcountingVoucherList_GUI extends javax.swing.JPanel {
 
-    private DefaultTableModel tblModel_acountingVoucherList;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = -2213080924236212670L;
+	private DefaultTableModel tblModel_acountingVoucherList;
     private ViewAcountingVoucherList_BUSImpl viewAcountingVoucherList_BUS = new ViewAcountingVoucherList_BUSImpl();
 
     /**

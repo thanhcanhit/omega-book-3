@@ -76,6 +76,11 @@ import utilities.SVGIcon;
 public class ProductManagement_GUI extends javax.swing.JPanel {
 
     /**
+	 * 
+	 */
+	private static final long serialVersionUID = -7735722976684885532L;
+
+	/**
      * Creates new form Sales_GUI
      */
     private ProductManagement_BUSImpl bus;

@@ -4,6 +4,11 @@
  */
 package bus.impl;
 
+import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import bus.ProductManagement_BUS;
 import dao.Brand_DAO;
 import dao.Product_DAO;
 import entity.Book;
@@ -13,11 +18,6 @@ import entity.Stationery;
 import enums.BookCategory;
 import enums.StationeryType;
 import enums.Type;
-import java.util.ArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
-import bus.ProductManagement_BUS;
 
 /**
  *

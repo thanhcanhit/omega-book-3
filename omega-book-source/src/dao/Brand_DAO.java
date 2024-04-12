@@ -4,14 +4,14 @@
  */
 package dao;
 
-import entity.Brand;
-import entity.Supplier;
-import interfaces.DAOBase;
-import jakarta.persistence.*;
-import utilities.AccessDatabase;
-
 import java.util.ArrayList;
 import java.util.List;
+
+import entity.Brand;
+import interfaces.DAOBase;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.TypedQuery;
+import utilities.AccessDatabase;
 
 /**
  *

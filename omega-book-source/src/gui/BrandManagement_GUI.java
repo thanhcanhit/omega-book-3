@@ -30,6 +30,11 @@ import utilities.SVGIcon;
 public class BrandManagement_GUI extends javax.swing.JPanel {
 
     /**
+	 * 
+	 */
+	private static final long serialVersionUID = 4021084556288869754L;
+
+	/**
      * Creates new form Sales_GUI
      */
     private BrandManagement_BUSImpl bus;

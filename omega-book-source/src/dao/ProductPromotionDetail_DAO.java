@@ -1,14 +1,11 @@
 package dao;
 
-import entity.Product;
-import entity.ProductPromotionDetail;
-import entity.Promotion;
-import interfaces.DAOBase;
-import jakarta.persistence.*;
-import utilities.AccessDatabase;
+import java.util.ArrayList;
 
-import java.util.*;
-import java.time.LocalDate;
+import entity.ProductPromotionDetail;
+import interfaces.DAOBase;
+import jakarta.persistence.EntityManager;
+import utilities.AccessDatabase;
 
 /**
  *

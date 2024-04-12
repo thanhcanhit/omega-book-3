@@ -32,6 +32,10 @@ import main.Application;
  */
 public class MainView extends JLayeredPane {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1957023053261238771L;
 	private Sales_GUI salesForm = new Sales_GUI();
 
 	public MainView() {

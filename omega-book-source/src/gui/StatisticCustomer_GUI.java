@@ -16,7 +16,11 @@ import gui.customchart.piechart.PolarAreaChart;
  */
 public class StatisticCustomer_GUI extends javax.swing.JPanel {
 
-    StatisticCustomer_BUSImpl statisticCustomer_BUS = new StatisticCustomer_BUSImpl();
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = -4953031711137971143L;
+	StatisticCustomer_BUSImpl statisticCustomer_BUS = new StatisticCustomer_BUSImpl();
     int data[] = statisticCustomer_BUS.filterCustomers();
     int numCus = statisticCustomer_BUS.getNumberCus();
 

@@ -1,14 +1,15 @@
 package dao;
 
-import entity.ReturnOrderDetail;
-import interfaces.DAOBase;
-import java.util.ArrayList;
-import database.ConnectDB;
-import entity.Product;
-import entity.ReturnOrder;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.util.ArrayList;
+
+import database.ConnectDB;
+import entity.Product;
+import entity.ReturnOrder;
+import entity.ReturnOrderDetail;
+import interfaces.DAOBase;
 
 /**
  *

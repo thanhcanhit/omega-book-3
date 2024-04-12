@@ -57,6 +57,11 @@ import utilities.OrderPrinter;
 public class Sales_GUI extends javax.swing.JPanel {
 
     /**
+	 * 
+	 */
+	private static final long serialVersionUID = 874882378590179969L;
+
+	/**
      * Creates new form Sales_GUI
      */
     private Sales_BUSImpl bus;

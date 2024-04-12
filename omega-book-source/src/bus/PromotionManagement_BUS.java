@@ -1,12 +1,8 @@
 package bus;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
-import dao.ProductPromotionDetail_DAO;
-import dao.Product_DAO;
-import dao.Promotion_DAO;
 import entity.Product;
 import entity.ProductPromotionDetail;
 import entity.Promotion;

@@ -26,7 +26,11 @@ import javax.swing.SwingUtilities;
  */
 public class PopupSubmenu extends JPanel {
 
-    private final Menu menu;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = -6470836820366807375L;
+	private final Menu menu;
     private final int menuIndex;
     private final int subMenuLeftGap = 20;
     private final int subMenuItemHeight = 30;

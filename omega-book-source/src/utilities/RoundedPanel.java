@@ -4,9 +4,12 @@
  */
 package utilities;
 
-import javax.swing.*;
-import java.awt.*;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.RenderingHints;
 import java.awt.geom.RoundRectangle2D;
+
+import javax.swing.JPanel;
 
 /**
  *
@@ -14,7 +17,11 @@ import java.awt.geom.RoundRectangle2D;
  */
 
 public class RoundedPanel extends JPanel {
-    private int cornerRadius = 20;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 6894351824251467783L;
+	private int cornerRadius = 20;
 
     public RoundedPanel() {
         super();

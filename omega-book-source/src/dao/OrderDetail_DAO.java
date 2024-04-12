@@ -4,15 +4,13 @@
  */
 package dao;
 
-import java.sql.PreparedStatement;
 import java.util.ArrayList;
 import java.util.List;
 
-import database.ConnectDB;
 import entity.OrderDetail;
 import interfaces.DAOBase;
 import jakarta.persistence.EntityManager;
-import jakarta.persistence.Query;
+import jakarta.persistence.TypedQuery;
 import utilities.AccessDatabase;
 
 /**
@@ -43,7 +41,7 @@ public class OrderDetail_DAO implements DAOBase<OrderDetail> {
 
 		try {
 			String hql = "from OrderDetail where order.id = :id";
-			Query query = em.createQuery(hql);
+			TypedQuery<OrderDetail> query = em.createQuery(hql, OrderDetail.class);
 			query.setParameter("id", id);
 
 			List<OrderDetail> orderDetails = query.getResultList();

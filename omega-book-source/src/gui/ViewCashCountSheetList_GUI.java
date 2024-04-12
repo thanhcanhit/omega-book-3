@@ -24,7 +24,11 @@ import utilities.SVGIcon;
  */
 public class ViewCashCountSheetList_GUI extends javax.swing.JPanel {
 
-    private DefaultTableModel tblModel_cashCountSheetList;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1226974583021042942L;
+	private DefaultTableModel tblModel_cashCountSheetList;
     private ViewCashCountSheetList_BUSImpl cashCountSheet_BUS = new ViewCashCountSheetList_BUSImpl();
 
     /**

@@ -33,7 +33,11 @@ import utilities.SVGIcon;
  */
 public class StatementCashCount_GUI extends javax.swing.JPanel {
 
-    private DefaultTableModel tbl_modalCashCounts = new DefaultTableModel();
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = -7760543782907378628L;
+	private DefaultTableModel tbl_modalCashCounts = new DefaultTableModel();
     private double sum = 0;
     private StatementCashCount_BUSImpl statementCashCount_BUS = new StatementCashCount_BUSImpl();
     private Employee employee1 = Application.employee;

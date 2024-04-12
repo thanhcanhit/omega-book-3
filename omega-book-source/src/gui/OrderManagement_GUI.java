@@ -127,7 +127,12 @@ import utilities.SVGIcon;
  */
 public final class OrderManagement_GUI extends javax.swing.JPanel {
 
-    private OrderManagement_BUSImpl bus;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = -6460996943274194358L;
+
+	private OrderManagement_BUSImpl bus;
 
     private DefaultTableModel tblModel_order;
     private DefaultTableModel tblModel_orderDetail;

@@ -4,16 +4,12 @@
  */
 package dao;
 
+import java.util.ArrayList;
+
 import entity.PurchaseOrderDetail;
 import interfaces.DAOBase;
 import jakarta.persistence.EntityManager;
 import utilities.AccessDatabase;
-
-import java.util.ArrayList;
-import database.ConnectDB;
-import entity.Product;
-import entity.PurchaseOrder;
-import java.sql.*;
 
 /**
  *

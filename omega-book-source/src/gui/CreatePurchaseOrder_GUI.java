@@ -36,6 +36,11 @@ import utilities.SVGIcon;
 public class CreatePurchaseOrder_GUI extends javax.swing.JPanel {
 
     /**
+	 * 
+	 */
+	private static final long serialVersionUID = 4621731160166300626L;
+
+	/**
      * Creates new form Sales_GUI
      */
     private CreatePurchaseOrder_BUSImpl bus;

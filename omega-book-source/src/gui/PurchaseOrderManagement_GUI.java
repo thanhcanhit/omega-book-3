@@ -31,7 +31,12 @@ import utilities.SVGIcon;
  */
 public final class PurchaseOrderManagement_GUI extends javax.swing.JPanel {
 
-    private PurchaseOrderManagement_BUSImpl bus;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 2984434270696315814L;
+
+	private PurchaseOrderManagement_BUSImpl bus;
 
     private DefaultTableModel tblModel_purchaseOrder;
     private DefaultTableModel tblModel_purchaseOrderDetail;

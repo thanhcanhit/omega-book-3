@@ -52,7 +52,11 @@ import utilities.SVGIcon;
  */
 public class EmployeeManagement_GUI extends javax.swing.JPanel {
 
-    private EmployeeManagament_BUSImpl bus;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = -3599276858477991728L;
+	private EmployeeManagament_BUSImpl bus;
     private DefaultTableModel tblModel_employee;
     private Employee currentEmployee;
     private DefaultComboBoxModel cmbModel_role;

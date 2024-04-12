@@ -1,21 +1,22 @@
 package dao;
 
-import entity.ReturnOrder;
-import interfaces.DAOBase;
-import jakarta.persistence.*;
-import utilities.AccessDatabase;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
 import database.ConnectDB;
 import entity.Employee;
 import entity.Order;
+import entity.ReturnOrder;
 import entity.ReturnOrderDetail;
-import entity.Supplier;
 import enums.ReturnOrderStatus;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
-import java.text.SimpleDateFormat;
-import java.util.*;
+import interfaces.DAOBase;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.TypedQuery;
+import utilities.AccessDatabase;
 
 /**
  *

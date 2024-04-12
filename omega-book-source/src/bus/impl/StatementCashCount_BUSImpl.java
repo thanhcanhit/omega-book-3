@@ -4,19 +4,19 @@
  */
 package bus.impl;
 
-import dao.CashCountSheetDetail_DAO;
-import dao.CashCountSheet_DAO;
-import dao.CashCount_DAO;
-import entity.Employee;
-import entity.CashCount;
-import entity.CashCountSheet;
-import entity.CashCountSheetDetail;
-import dao.Employee_DAO;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
 import bus.StatementCashCount_BUS;
+import dao.CashCountSheetDetail_DAO;
+import dao.CashCountSheet_DAO;
+import dao.CashCount_DAO;
+import dao.Employee_DAO;
+import entity.CashCount;
+import entity.CashCountSheet;
+import entity.CashCountSheetDetail;
+import entity.Employee;
 import utilities.CashCountSheetPrinter;
 
 /**
@@ -26,9 +26,11 @@ import utilities.CashCountSheetPrinter;
 public class StatementCashCount_BUSImpl implements StatementCashCount_BUS {
 
     private Employee_DAO employee_DAO = new Employee_DAO();
-    private CashCount_DAO cashCount_DAO = new CashCount_DAO();
+    @SuppressWarnings("unused")
+	private CashCount_DAO cashCount_DAO = new CashCount_DAO();
     private CashCountSheet_DAO cashCountSheet_DAO = new CashCountSheet_DAO();
-    private CashCountSheetDetail_DAO cashCountSheetDetail_DAO;
+    @SuppressWarnings("unused")
+	private CashCountSheetDetail_DAO cashCountSheetDetail_DAO;
 
     public Employee getEmployeeByID(String id) {
         return employee_DAO.getOne(id);
