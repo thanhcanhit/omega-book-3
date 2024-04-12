@@ -29,8 +29,6 @@ import jakarta.persistence.TemporalType;
 				+ "o.customer.customerID = :customerID, " + "o.promotion.promotionID = :promotionID, "
 				+ "o.totalDue = :totalDue, " + "o.subTotal = :subTotal, " + "o.moneyGiven = :moneyGiven "
 				+ "WHERE o.orderID = :orderID"),
-		@NamedQuery(name = "Bill.generateID", query = "SELECT o.orderID FROM Bill o WHERE o.orderID LIKE :prefix ORDER BY o.orderID DESC"),
-		
 		@NamedQuery(name = "Bill.getQuantityOrderSaved", query = "SELECT COUNT(o) FROM Bill o WHERE o.status = false"),
 		@NamedQuery(name = "Bill.clearExpiredOrderSaved", query = "SELECT o FROM Bill o WHERE o.status = false AND "
 				+ "FUNCTION('DATEDIFF', DAY, o.orderAt, FUNCTION('CURRENT_DATE')) > 1"),
