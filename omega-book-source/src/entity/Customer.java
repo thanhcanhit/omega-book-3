@@ -49,7 +49,7 @@ public class Customer {
 	@Column(columnDefinition = "nvarchar(max)")
 	private String address;
 	@OneToMany(mappedBy = "customer", fetch = FetchType.LAZY)
-	private List<Order> order;
+	private List<Bill> order;
 
 	public Customer() {
 	}

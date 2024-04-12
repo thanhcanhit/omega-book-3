@@ -16,7 +16,7 @@ import com.formdev.flatlaf.FlatClientProperties;
 
 import bus.impl.BrandManagement_BUSImpl;
 import entity.Brand;
-import entity.Order;
+import entity.Bill;
 import entity.PurchaseOrder;
 import entity.PurchaseOrderDetail;
 import main.Application;
@@ -61,7 +61,7 @@ public class BrandManagement_GUI extends javax.swing.JPanel {
             int rowIndex = tbl_brand.getSelectedRow();
             if (rowIndex != -1) {
                 String id = tblModel_cart.getValueAt(rowIndex, 0).toString();
-                Order order;
+                Bill order;
                 try {
                     txt_brandID.setText(id);
                     txt_brandName.setText(tblModel_cart.getValueAt(rowIndex, 1).toString());

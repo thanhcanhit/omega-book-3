@@ -41,7 +41,7 @@ public class AcountingVoucher{
     private CashCountSheet cashCountSheet;
     
     @OneToMany(mappedBy = "acountingVoucher",fetch = FetchType.LAZY)
-    private ArrayList<Order> orderList;
+    private ArrayList<Bill> orderList;
 
     public AcountingVoucher() {
     }
@@ -54,7 +54,7 @@ public class AcountingVoucher{
         this.accountingVoucherID = accountingVoucherID;
     }
 
-    public AcountingVoucher(String accountingVoucherID, Date createdDate, Date endedDate, CashCountSheet cashCountSheet, ArrayList<Order> orderList) {
+    public AcountingVoucher(String accountingVoucherID, Date createdDate, Date endedDate, CashCountSheet cashCountSheet, ArrayList<Bill> orderList) {
         setAcountingVoucherID(accountingVoucherID);
         setCreatedDate(createdDate);
         setEndedDate(endedDate);
@@ -109,7 +109,7 @@ public class AcountingVoucher{
         return endedDate;
     }
 
-    public ArrayList<Order> getOrderList() {
+    public ArrayList<Bill> getOrderList() {
         return orderList;
     }
 
@@ -152,13 +152,13 @@ public class AcountingVoucher{
         this.endedDate = endedDate;
     }
 
-    public void setOrderList(ArrayList<Order> orderList) {
+    public void setOrderList(ArrayList<Bill> orderList) {
         this.orderList = orderList;
     }
 
     public void setPayViaATM() {
         double sum = 0;
-        for (Order order : orderList) {
+        for (Bill order : orderList) {
             if (order.isPayment()) {
                 sum += order.getTotalDue();
             }
@@ -167,7 +167,7 @@ public class AcountingVoucher{
     }
     private void setSale() {
         double sum = 0;
-        for (Order order : orderList) {
+        for (Bill order : orderList) {
             sum += order.getTotalDue();
         }
         this.sale = sum;

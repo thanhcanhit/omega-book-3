@@ -42,7 +42,7 @@ public class ReturnOrder implements Serializable {
     private Employee employee;
     @OneToOne
     @JoinColumn(name="orderID")
-    private Order order;
+    private Bill order;
     private boolean type;
     private double refund;
     @OneToMany(mappedBy = "returnOrder",fetch = FetchType.LAZY)
@@ -52,7 +52,7 @@ public class ReturnOrder implements Serializable {
     public ReturnOrder() {
     }
 
-    public ReturnOrder(Date orderDate, ReturnOrderStatus status, String returnOrderID, Employee employee, Order order, boolean type, double refund, ArrayList<ReturnOrderDetail> listDetail, String reason) throws Exception {
+    public ReturnOrder(Date orderDate, ReturnOrderStatus status, String returnOrderID, Employee employee, Bill order, boolean type, double refund, ArrayList<ReturnOrderDetail> listDetail, String reason) throws Exception {
         setOrderDate(orderDate);
         setStatus(status);
         setReturnOrderID(returnOrderID);
@@ -91,7 +91,7 @@ public class ReturnOrder implements Serializable {
         return listDetail;
     }
 
-    public Order getOrder() {
+    public Bill getOrder() {
         return order;
     }
 
@@ -137,7 +137,7 @@ public class ReturnOrder implements Serializable {
         this.listDetail = listDetail;
     }
 
-    public void setOrder(Order order) throws Exception{
+    public void setOrder(Bill order) throws Exception{
         if(order!=null)
             this.order = order;
         else

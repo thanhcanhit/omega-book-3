@@ -111,10 +111,10 @@ import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.util.CellRangeAddress;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
-import bus.impl.OrderManagement_BUSImpl;
+import bus.impl.BillManagement_BUSImpl;
 import bus.impl.ProductManagement_BUSImpl;
 import entity.Customer;
-import entity.Order;
+import entity.Bill;
 import entity.OrderDetail;
 import raven.toast.Notifications;
 import utilities.FormatNumber;
@@ -132,7 +132,7 @@ public final class OrderManagement_GUI extends javax.swing.JPanel {
 	 */
 	private static final long serialVersionUID = -6460996943274194358L;
 
-	private OrderManagement_BUSImpl bus;
+	private BillManagement_BUSImpl bus;
 
     private DefaultTableModel tblModel_order;
     private DefaultTableModel tblModel_orderDetail;
@@ -151,7 +151,7 @@ public final class OrderManagement_GUI extends javax.swing.JPanel {
     }
 
     public void init() {
-        bus = new OrderManagement_BUSImpl();
+        bus = new BillManagement_BUSImpl();
 
         tblModel_order = new DefaultTableModel(new String[]{"Mã hoá đơn", "Nhân viên", "Khách hàng", "Ngày mua", "Thành tiền"}, 0);
         tbl_order.setModel(tblModel_order);
@@ -159,7 +159,7 @@ public final class OrderManagement_GUI extends javax.swing.JPanel {
             int rowIndex = tbl_order.getSelectedRow();
             if (rowIndex != -1) {
                 String id = tblModel_order.getValueAt(rowIndex, 0).toString();
-                Order order;
+                Bill order;
                 try {
                     order = bus.getOrder(id);
                     renderOrderDetailTable(bus.getOrderDetailList(id));
@@ -202,7 +202,7 @@ public final class OrderManagement_GUI extends javax.swing.JPanel {
             return;
         }
         String orderID = tblModel_order.getValueAt(rowIndex, 0).toString();
-        Order order;
+        Bill order;
         try {
             order = bus.getOrder(orderID);
             new OrderPrinter(order).generatePDF();
@@ -220,9 +220,9 @@ public final class OrderManagement_GUI extends javax.swing.JPanel {
         btn_next.setEnabled(currentPage != lastPage);
     }
 
-    private void renderOrdersTable(ArrayList<Order> orderList) {
+    private void renderOrdersTable(ArrayList<Bill> orderList) {
         tblModel_order.setRowCount(0);
-        for (Order order : orderList) {
+        for (Bill order : orderList) {
             Object[] newRow = new Object[]{order.getOrderID(), order.getEmployee().getName(), order.getCustomer().getCustomerID(), order.getOrderAt(), FormatNumber.toVND(order.getSubTotal())};
             tblModel_order.addRow(newRow);
         }
@@ -238,7 +238,7 @@ public final class OrderManagement_GUI extends javax.swing.JPanel {
         }
     }
 
-    public void renderInfomationOrder(Order order) {
+    public void renderInfomationOrder(Bill order) {
         Customer customer = bus.getCustomer(order.getCustomer().getCustomerID());
         txt_customerName.setText(customer.getName());
         txt_phone.setText(customer.getPhoneNumber());
@@ -280,7 +280,7 @@ public final class OrderManagement_GUI extends javax.swing.JPanel {
         return true;
     }
 
-    public static void createExcel(ArrayList<Order> list, String filePath) {
+    public static void createExcel(ArrayList<Bill> list, String filePath) {
         Workbook workbook = new XSSFWorkbook();
         Sheet sheet = workbook.createSheet("Order Data");
 
@@ -317,7 +317,7 @@ public final class OrderManagement_GUI extends javax.swing.JPanel {
 
         // Đổ dữ liệu từ ArrayList vào Excel
         int rowNum = 3;
-        for (Order order : list) {
+        for (Bill order : list) {
             Row row = sheet.createRow(rowNum++);
 
             row.createCell(0).setCellValue(order.getOrderID());
@@ -758,7 +758,7 @@ public final class OrderManagement_GUI extends javax.swing.JPanel {
             Date end = jDateChooser2.getDate();
             end.setHours(23);
             end.setMinutes(59);
-            ArrayList<Order> list = bus.orderListWithFilter(oderID, customerID, phone, priceFrom, priceTo, begin, end);
+            ArrayList<Bill> list = bus.orderListWithFilter(oderID, customerID, phone, priceFrom, priceTo, begin, end);
 
             renderOrdersTable(list);
         }
@@ -817,7 +817,7 @@ public final class OrderManagement_GUI extends javax.swing.JPanel {
             Date end = jDateChooser2.getDate();
             end.setHours(23);
             end.setMinutes(59);
-            ArrayList<Order> list = bus.orderListWithFilter(orderID, customerID, phone, priceFrom, priceTo, begin, end);
+            ArrayList<Bill> list = bus.orderListWithFilter(orderID, customerID, phone, priceFrom, priceTo, begin, end);
             if (list.isEmpty()) {
                 Notifications.getInstance().show(Notifications.Type.INFO, "Không có hoá đơn !");
             } else {

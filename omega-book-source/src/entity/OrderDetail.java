@@ -23,7 +23,7 @@ public final class OrderDetail {
     @Id
     @ManyToOne
     @JoinColumn(name="orderID")
-    private Order order;
+    private Bill order;
     @Id
     @ManyToOne
     @JoinColumn(name="productID")
@@ -37,7 +37,7 @@ public final class OrderDetail {
     public OrderDetail() {
     }
 
-    public OrderDetail(Order order, Product product, int quantity, double price, double VAT, double seasonalDiscount) throws Exception {
+    public OrderDetail(Bill order, Product product, int quantity, double price, double VAT, double seasonalDiscount) throws Exception {
         setOrder(order);
         setProduct(product);
         setQuantity(quantity);
@@ -47,7 +47,7 @@ public final class OrderDetail {
         setVAT(VAT);
     }
 
-    public OrderDetail(Order order, Product product, int quantity, double price, double lineTotal, double VAT, double seasonalDiscount) {
+    public OrderDetail(Bill order, Product product, int quantity, double price, double lineTotal, double VAT, double seasonalDiscount) {
         this.order = order;
         this.product = product;
         this.quantity = quantity;
@@ -61,7 +61,7 @@ public final class OrderDetail {
         return lineTotal;
     }
 
-    public Order getOrder() {
+    public Bill getOrder() {
         return order;
     }
 
@@ -89,7 +89,7 @@ public final class OrderDetail {
         this.lineTotal = this.price * this.quantity - this.seasonalDiscount;
     }
 
-    public void setOrder(Order order) throws Exception {
+    public void setOrder(Bill order) throws Exception {
         if (order != null) {
             this.order = order;
         } else {

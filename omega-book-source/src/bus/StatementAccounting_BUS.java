@@ -7,7 +7,7 @@ import entity.AcountingVoucher;
 import entity.CashCount;
 import entity.CashCountSheet;
 import entity.Employee;
-import entity.Order;
+import entity.Bill;
 
 public interface StatementAccounting_BUS {
 	 public AcountingVoucher getAcountingByID(String id) ;
@@ -19,11 +19,11 @@ public interface StatementAccounting_BUS {
 
 	    public Employee getEmployeeByID(String id);
 
-	    public ArrayList<Order> getAllOrderInAcounting(Date start, Date end);
+	    public ArrayList<Bill> getAllOrderInAcounting(Date start, Date end);
 
-	    public double getSale(ArrayList<Order> list) ;
+	    public double getSale(ArrayList<Bill> list) ;
 
-	    public double getPayViaATM(ArrayList<Order> list);
+	    public double getPayViaATM(ArrayList<Bill> list);
 
 	    public double getTotal(ArrayList<CashCount> list) ;
 

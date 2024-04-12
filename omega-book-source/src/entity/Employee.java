@@ -51,7 +51,7 @@ public class Employee {
 	private Store store;
 
 	@OneToMany(mappedBy = "employee", fetch = FetchType.LAZY)
-	private List<Order> order;
+	private List<Bill> order;
 
 	public Employee() {
 	}

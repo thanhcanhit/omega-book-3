@@ -16,7 +16,7 @@ import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
 import com.itextpdf.text.pdf.draw.LineSeparator;
-import entity.Order;
+import entity.Bill;
 import entity.OrderDetail;
 import java.awt.Desktop;
 import java.awt.Graphics2D;
@@ -50,7 +50,7 @@ import javax.print.attribute.standard.Sides;
  */
 public class OrderPrinter {
 
-    private final Order order;
+    private final Bill order;
     public static final String FONT = "resources/fonts/arial-unicode-ms.ttf";
     private static final String FILE_PATH = "resources/temp/lastOrder.pdf";
 
@@ -64,7 +64,7 @@ public class OrderPrinter {
         LEFT, CENTER, RIGHT;
     }
 
-    public OrderPrinter(Order order) {
+    public OrderPrinter(Bill order) {
         this.order = order;
     }
 

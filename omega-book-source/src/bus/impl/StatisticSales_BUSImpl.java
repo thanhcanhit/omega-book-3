@@ -5,7 +5,7 @@
 package bus.impl;
 
 import bus.StatisticSales_BUS;
-import dao.Order_DAO;
+import dao.Bill_DAO;
 import dao.Product_DAO;
 import dao.PurchaseOrder_DAO;
 import dao.ReturnOrder_DAO;
@@ -15,7 +15,7 @@ import dao.ReturnOrder_DAO;
  * @author KienTran
  */
 public class StatisticSales_BUSImpl implements StatisticSales_BUS{
-    private final Order_DAO orderDAO = new Order_DAO();
+    private final Bill_DAO orderDAO = new Bill_DAO();
     private final PurchaseOrder_DAO purchaseOrderDAO = new PurchaseOrder_DAO();
     private final ReturnOrder_DAO returnOrderDAO = new ReturnOrder_DAO();
     private final Product_DAO productDAO = new Product_DAO();
