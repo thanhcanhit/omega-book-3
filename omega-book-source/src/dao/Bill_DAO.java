@@ -21,6 +21,7 @@ import entity.OrderDetail;
 import entity.Promotion;
 import interfaces.DAOBase;
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.Query;
 import utilities.AccessDatabase;
 
 /**
@@ -114,7 +115,15 @@ public class Bill_DAO implements DAOBase<Bill> {
     }
 
     public int getLength() {
-        return (int) entityManager.createNamedQuery("Bill.getLength").getSingleResult();
+    	int length = 0;
+		try {
+			String hql = "SELECT COUNT(*) FROM Bill";
+			Query query = entityManager.createQuery(hql);
+			length = (int) query.getSingleResult();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return length;
     }
 
     public ArrayList<Bill> getPage(int page) {
