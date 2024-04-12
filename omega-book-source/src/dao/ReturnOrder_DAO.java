@@ -1,21 +1,12 @@
 package dao;
 
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-
-import database.ConnectDB;
-import entity.Employee;
+import java.util.*;
 import entity.Order;
 import entity.ReturnOrder;
 import entity.ReturnOrderDetail;
-import enums.ReturnOrderStatus;
 import interfaces.DAOBase;
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.TypedQuery;
+import jakarta.persistence.*;
 import utilities.AccessDatabase;
 
 /**
@@ -27,22 +18,6 @@ public class ReturnOrder_DAO implements DAOBase<ReturnOrder>{
 	public ReturnOrder_DAO() {
 		em = AccessDatabase.getEntityManager();
 	}
-
-	//    public static String getMaxSequence(String prefix) {
-	//        try {
-	//        prefix += "%";
-	//        String sql = "  SELECT TOP 1  * FROM ReturnOrder WHERE returnOrderID LIKE '"+prefix+"' ORDER BY returnOrderID DESC;";
-	//        PreparedStatement st = ConnectDB.conn.prepareStatement(sql);
-	//        ResultSet rs = st.executeQuery();
-	//        if (rs.next()) {
-	//            String returnOrderID = rs.getString("returnOrderID");
-	//            return returnOrderID;
-	//        }
-	//    } catch (SQLException e) {
-	//        e.printStackTrace();
-	//    }
-	//    return null;
-	//    }
 
 	@Override
 	public ReturnOrder getOne(String id) {
@@ -63,8 +38,8 @@ public class ReturnOrder_DAO implements DAOBase<ReturnOrder>{
 	public String generateID(Date returnDate) {
 		String result = "HDT";
 		String query = """
-				select top 1 * from ReturnOrder
-				where returnOrderID like ?
+				select top 1  from ReturnOrder
+				where returnOrderID like :id
 				order by supplierID desc
 				""";
 		SimpleDateFormat simpleDateFormat = new SimpleDateFormat();
@@ -137,7 +112,6 @@ public class ReturnOrder_DAO implements DAOBase<ReturnOrder>{
 				SELECT ro FROM ReturnOrder ro
 				where ro.returnOrderID LIKE :id
 				""";
-
 		return (ArrayList<ReturnOrder>) em.createQuery(query, ReturnOrder.class).setParameter("id", "%" + returnOrderID + "%").getResultList();
 	}
 
@@ -200,55 +174,18 @@ public class ReturnOrder_DAO implements DAOBase<ReturnOrder>{
 	//        return result;
 	//    }
 	public int getNumberOfReturnOrderInMonth(int month, int year){
-		//    	("select count(returnOrderID) as sl from [ReturnOrder] where YEAR(orderDate) = ? and Month(orderDate) = ? ");
+		//("select count(returnOrderID) as sl from [ReturnOrder] where YEAR(orderDate) = ? and Month(orderDate) = ? ");
 		String query = "select count(returnOrderID) as sl from [ReturnOrder] ro where YEAR(ro.orderDate) = :year and Month(eo.orderDate) = :month ";
 		return (int) em.createNativeQuery(query).setParameter("year", year).setParameter("month", month).getSingleResult();
 	}
 	public double getTotalReturnOrderInMonth(int month, int year) {
-		double result = 0;
-
-		try {
-			PreparedStatement st = ConnectDB.conn.prepareStatement("select sum(refund) as total from [ReturnOrder] join [Order] on [Order].orderID=ReturnOrder.orderID where YEAR(orderAt) = ? and Month(orderAt) = ? and [ReturnOrder].status=1");
-			st.setInt(1, year);
-			st.setInt(2, month);
-			ResultSet rs = st.executeQuery();
-
-			while (rs.next()) {
-				int total = rs.getInt("total");
-				result = total;
-
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-
-		return result;
+		String query = "select sum(refund) as total from ReturnOrder ro where YEAR(ro.order.orderDate) = :year and Month(ro.order.orderDate) = :month and ro.status = 1";
+		return (double) em.createQuery(query).setParameter("year", year).setParameter("month", month).getSingleResult();
 	}
 
 	public ReturnOrder getOneForOrderID(String orderID) {
-		ReturnOrder returnOrder = null;
-		try {
-			PreparedStatement st = ConnectDB.conn.prepareStatement("SELECT * FROM ReturnOrder WHERE orderID = ?");
-			st.setString(1, orderID);
-			ResultSet rs = st.executeQuery();
-
-			while (rs.next()) {                
-				String returnOrderID = rs.getString("returnOrderID");
-				boolean type = rs.getBoolean("type");
-				int status = rs.getInt("status");
-				Date orderDate = rs.getDate("orderDate");
-				String employeeID = rs.getString("employeeID");
-				double refund = rs.getDouble("refund");
-				String reason = rs.getString("reason");
-				Order order = new Order_DAO().getOne(orderID);
-				Employee employee = new Employee(employeeID);
-				ArrayList<ReturnOrderDetail> listDetail = getAllReturnOrderDetail(returnOrderID);
-				returnOrder = new ReturnOrder(orderDate, ReturnOrderStatus.fromInt(status), returnOrderID, employee, order, type, refund, listDetail, reason);
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return returnOrder;
+		String query = "SELECT ro FROM ReturnOrder ro WHERE ro.order.orderID = :id";
+		return em.createQuery(query, ReturnOrder.class).setParameter("id", orderID).getSingleResult();
 	}
 
 }

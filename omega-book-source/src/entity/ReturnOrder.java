@@ -2,6 +2,8 @@ package entity;
 
 import enums.ReturnOrderStatus;
 import jakarta.persistence.*;
+
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -17,8 +19,12 @@ import java.util.regex.Pattern;
 		@NamedQuery(name = "ReturnOrder.findByReturnOrderID", query = "SELECT r FROM ReturnOrder r WHERE r.returnOrderID = :returnOrderID"),
 		@NamedQuery(name = "ReturnOrder.findAll", query = "SELECT r FROM ReturnOrder r") 
 })
-public class ReturnOrder {
-    private static final String ORDER_ERROR="Order không được rỗng";
+public class ReturnOrder implements Serializable {
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	private static final String ORDER_ERROR="Order không được rỗng";
     private static final String EMPLOYEE_ERROR="Employee không được rỗng";
     private static final String REASON_EMPTY = "Lý do không được rỗng";
     private static final String TYPE_EMPTY = "Loại đơn đổi trả không được rỗng";

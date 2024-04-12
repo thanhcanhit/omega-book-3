@@ -3,6 +3,7 @@ package entity;
 import enums.PurchaseOrderStatus;
 import jakarta.persistence.*;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.*;
 
@@ -11,9 +12,13 @@ import java.util.*;
  * @author Nhu Tam
  */
 @Entity
-public final class PurchaseOrder {
+public final class PurchaseOrder implements Serializable {
 
-    /* Hằng báo lỗi*/
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	/* Hằng báo lỗi*/
     public static final String ID_EMPTY = "Mã đơn nhập không được phép rỗng";
     public static final String ORDERDATE_ERORR = "Ngày tạo đơn nhập không hợp lệ";
     public static final String RECEIVEDATE_ERORR = "Ngày nhập không hợp lệ";

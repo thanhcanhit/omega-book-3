@@ -1,62 +1,29 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package dao;
 
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.Statement;
-import java.util.ArrayList;
-
-import database.ConnectDB;
+import java.util.*;
 import entity.Store;
 import interfaces.DAOBase;
+import jakarta.persistence.*;
+import utilities.AccessDatabase;
 
 /**
  *
  * @author Như Tâm
  */
 public class Store_DAO implements DAOBase<Store>{
+	EntityManager em;
+	public Store_DAO() {
+		em = AccessDatabase.getEntityManager();
+	}
 
-    @Override
+	@Override
     public Store getOne(String id) {
-        Store store = null;
-        try {
-            PreparedStatement st = ConnectDB.conn.prepareStatement("SELECT * FROM Store WHERE storeID = ?");
-            st.setString(1, id);
-            ResultSet rs = st.executeQuery();
-            
-            while (rs.next()) {
-                String storeID = rs.getString("storeID");
-                String name = rs.getString("name");
-                String address = rs.getString("address");
-                store = new Store(storeID, name, address);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return store;
-    }
+		return em.createNamedQuery("Store.findByStoreID", Store.class).setParameter("storeID", id).getSingleResult();
+	}
 
     @Override
     public ArrayList<Store> getAll() {
-        ArrayList<Store> result = new ArrayList<>();
-        try {
-            Statement st = ConnectDB.conn.createStatement();
-            ResultSet rs = st.executeQuery("SELECT * FROM Store");
-            
-            while (rs.next()) {                
-                String storeID = rs.getString("storeID");
-                String name = rs.getString("name");
-                String address = rs.getString("address");
-                Store store = new Store(storeID, name, address);
-                result.add(store);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return result;
+        return (ArrayList<Store>) em.createNamedQuery("Store.findAll", Store.class).getResultList();
     }
 
     @Override
@@ -68,12 +35,10 @@ public class Store_DAO implements DAOBase<Store>{
     public Boolean create(Store store) {
         int n = 0;
         try {
-            PreparedStatement st = ConnectDB.conn.prepareStatement("INSERT INTO Store "
-                    + "VALUES (?,?,?)");
-            st.setString(1, store.getStoreID());
-            st.setString(2, store.getName());
-            st.setString(3, store.getAddress());
-            n = st.executeUpdate();
+			em.getTransaction().begin();
+			em.persist(store);
+			em.getTransaction().commit();
+			n = 1;
         } catch (Exception e) {
             e.printStackTrace();
         }

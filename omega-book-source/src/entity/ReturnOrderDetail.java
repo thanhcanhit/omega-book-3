@@ -1,5 +1,6 @@
 package entity;
 
+import java.io.Serializable;
 import java.util.Objects;
 
 import jakarta.persistence.*;
@@ -9,113 +10,123 @@ import jakarta.persistence.*;
  * @author Như Tâm
  */
 @Entity
-public class ReturnOrderDetail {
-    
-    /* Hằng báo lỗi*/
-    public static final String ORDERID_EMPTY = "Hoá đơn không được phép rỗng";
-    public static final String PRODUCT_EMPTY = "Sản phẩm không được phép rỗng";
-    public static final String QUANTITY_VALID = "Số lượng phải là số dương";
+@NamedQueries({ 
+	@NamedQuery(name = "ReturnOrderDetail.findAll", query = "SELECT rod FROM ReturnOrderDetail rod"),
+	@NamedQuery(name = "ReturnOrderDetail.findByReturnOrderID", query = "SELECT rod FROM ReturnOrderDetail rod WHERE rod.returnOrder.returnOrderID = :returnOrderID"),
+	@NamedQuery(name = "ReturnOrderDetail.findByProductID", query = "SELECT rod FROM ReturnOrderDetail rod WHERE rod.product.productID = :productID"),
+	@NamedQuery(name = "ReturnOrderDetail.findByReturnOrderIDAndProductID", query = "SELECT rod FROM ReturnOrderDetail rod WHERE rod.returnOrder.returnOrderID = :returnOrderID AND rod.product.productID = :productID"),
+})
+public class ReturnOrderDetail implements Serializable {
 
-    @Id
-    @ManyToOne
-    @JoinColumn(name = "returnOrderID")
-    private ReturnOrder returnOrder;
-    @Id
-    @ManyToOne
-    @JoinColumn(name = "productID")
-    private Product product;
-    private int quantity;
-    private double price;
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	/* Hằng báo lỗi*/
+	public static final String ORDERID_EMPTY = "Hoá đơn không được phép rỗng";
+	public static final String PRODUCT_EMPTY = "Sản phẩm không được phép rỗng";
+	public static final String QUANTITY_VALID = "Số lượng phải là số dương";
 
-    public ReturnOrderDetail() {
-    }
+	@Id
+	@ManyToOne
+	@JoinColumn(name = "returnOrderID")
+	private ReturnOrder returnOrder;
+	@Id
+	@ManyToOne
+	@JoinColumn(name = "productID")
+	private Product product;
+	private int quantity;
+	private double price;
 
-    public ReturnOrderDetail(Product product, int quantity, double price) throws Exception {
-        setProduct(product);
-        setQuantity(quantity);
-        setPrice(price);
-    }
+	public ReturnOrderDetail() {
+	}
 
-    public ReturnOrderDetail(ReturnOrder returnOrder, Product product) throws Exception {
-        setReturnOrder(returnOrder);
-        setProduct(product);        
-    }
-    
+	public ReturnOrderDetail(Product product, int quantity, double price) throws Exception {
+		setProduct(product);
+		setQuantity(quantity);
+		setPrice(price);
+	}
 
-    public ReturnOrderDetail(ReturnOrder returnOrder, Product product, int quantity, double price) throws Exception {
-        setReturnOrder(returnOrder);
-        setProduct(product);
-        setQuantity(quantity);
-        setPrice(price);
-    }
+	public ReturnOrderDetail(ReturnOrder returnOrder, Product product) throws Exception {
+		setReturnOrder(returnOrder);
+		setProduct(product);        
+	}
 
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (obj == null) {
-            return false;
-        }
-        if (getClass() != obj.getClass()) {
-            return false;
-        }
-        final ReturnOrderDetail other = (ReturnOrderDetail) obj;
-        if (!Objects.equals(this.returnOrder, other.returnOrder)) {
-            return false;
-        }
-        return Objects.equals(this.product, other.product);
-    }
 
-    public double getPrice() {
-        return price;
-    }
+	public ReturnOrderDetail(ReturnOrder returnOrder, Product product, int quantity, double price) throws Exception {
+		setReturnOrder(returnOrder);
+		setProduct(product);
+		setQuantity(quantity);
+		setPrice(price);
+	}
 
-    public Product getProduct() {
-        return product;
-    }
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) {
+			return true;
+		}
+		if (obj == null) {
+			return false;
+		}
+		if (getClass() != obj.getClass()) {
+			return false;
+		}
+		final ReturnOrderDetail other = (ReturnOrderDetail) obj;
+		if (!Objects.equals(this.returnOrder, other.returnOrder)) {
+			return false;
+		}
+		return Objects.equals(this.product, other.product);
+	}
 
-    public int getQuantity() {
-        return quantity;
-    }
+	public double getPrice() {
+		return price;
+	}
 
-    public ReturnOrder getReturnOrder() {
-        return returnOrder;
-    }
+	public Product getProduct() {
+		return product;
+	}
 
-    @Override
-    public int hashCode() {
-        int hash = 7;
-        hash = 67 * hash + Objects.hashCode(this.returnOrder);
-        hash = 67 * hash + Objects.hashCode(this.product);
-        return hash;
-    }
+	public int getQuantity() {
+		return quantity;
+	}
 
-    public void setPrice(double price) {
-        this.price = price * quantity;
-    }
+	public ReturnOrder getReturnOrder() {
+		return returnOrder;
+	}
 
-    public void setProduct(Product product) throws Exception {
-        if(product == null)
-            throw new Exception(PRODUCT_EMPTY);
-        this.product = product;
-    }
-    
+	@Override
+	public int hashCode() {
+		int hash = 7;
+		hash = 67 * hash + Objects.hashCode(this.returnOrder);
+		hash = 67 * hash + Objects.hashCode(this.product);
+		return hash;
+	}
 
-    public void setQuantity(int quantity) throws Exception {
-        if(quantity < 0)
-            throw new Exception(QUANTITY_VALID);
-        this.quantity = quantity;
-    }
+	public void setPrice(double price) {
+		this.price = price * quantity;
+	}
 
-    public void setReturnOrder(ReturnOrder returnOrder) throws Exception {
-        if(returnOrder == null)
-            throw new Exception(ORDERID_EMPTY);
-        this.returnOrder = returnOrder;
-    }
+	public void setProduct(Product product) throws Exception {
+		if(product == null)
+			throw new Exception(PRODUCT_EMPTY);
+		this.product = product;
+	}
 
-    @Override
-    public String toString() {
-        return "ReturnOrderDetail{" + "returnOrder=" + returnOrder + ", product=" + product + ", quantity=" + quantity + ", price=" + price + '}';
-    }    
+
+	public void setQuantity(int quantity) throws Exception {
+		if(quantity < 0)
+			throw new Exception(QUANTITY_VALID);
+		this.quantity = quantity;
+	}
+
+	public void setReturnOrder(ReturnOrder returnOrder) throws Exception {
+		if(returnOrder == null)
+			throw new Exception(ORDERID_EMPTY);
+		this.returnOrder = returnOrder;
+	}
+
+	@Override
+	public String toString() {
+		return "ReturnOrderDetail{" + "returnOrder=" + returnOrder + ", product=" + product + ", quantity=" + quantity + ", price=" + price + '}';
+	}    
 }

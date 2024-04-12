@@ -1,5 +1,6 @@
 package entity;
 
+import java.io.Serializable;
 import java.util.Objects;
 
 import jakarta.persistence.*;
@@ -9,9 +10,13 @@ import jakarta.persistence.*;
  * @author Như Tâm
  */
 @Entity
-public class PurchaseOrderDetail {
+public class PurchaseOrderDetail implements Serializable {
 
-    /* Hằng báo lỗi*/
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	/* Hằng báo lỗi*/
     public static final String QUANTITY_ERROR = "Số lượng không được bé hơn 0";
     public static final String ORDERID_EMPTY = "Đơn hàng không được rỗng";
     public static final String COSTPRICE_ERROR = "Giá nhập không được bé hơn 0";

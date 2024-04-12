@@ -1,4 +1,3 @@
-
 package entity;
 
 import java.util.Objects;
@@ -20,7 +19,11 @@ import jakarta.persistence.NamedQuery;
 })
 public class Supplier{
     
-    /* Hằng báo lỗi*/
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	/* Hằng báo lỗi*/
     public static final String ID_EMPTY = "Mã nhà cung cấp không được phép rỗng";
     public static final String NAME_EMPTY = "Tên nhà cung cấp không được phép rỗng";
     public static final String ADDRESS_EMPTY = "Địa chỉ không được phép rỗng";

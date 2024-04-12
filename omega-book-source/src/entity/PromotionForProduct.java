@@ -11,6 +11,10 @@ import jakarta.persistence.*;
 	@NamedQuery(name = "PromotionForProduct.findAll", query = "SELECT pp FROM PromotionForProduct pp")
 })
 public class PromotionForProduct extends Promotion {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	@OneToMany(mappedBy = "promotion", fetch = FetchType.LAZY)
 	private List<ProductPromotionDetail> details;
 
@@ -19,24 +23,21 @@ public class PromotionForProduct extends Promotion {
 	public PromotionForProduct(String promotionID, Date startedDate, Date endedDate, DiscountType typeDiscount,
 			double discount, List<ProductPromotionDetail> details) throws Exception {
 		super(promotionID, startedDate, endedDate, typeDiscount, discount);
-		this.details = details;
+		setDetails(details);
 	}
 	
 
 	public PromotionForProduct() {
 		super();
-		// TODO Auto-generated constructor stub
 	}
 
 	public PromotionForProduct(String promotionID, Date startedDate, Date endedDate, DiscountType typeDiscount,
 			double discount) throws Exception {
 		super(promotionID, startedDate, endedDate, typeDiscount, discount);
-		// TODO Auto-generated constructor stub
 	}
 
 	public PromotionForProduct(String promotionID) throws Exception {
 		super(promotionID);
-		// TODO Auto-generated constructor stub
 	}
 	
 
