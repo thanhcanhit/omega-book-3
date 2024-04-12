@@ -19,7 +19,11 @@ import java.util.regex.Pattern;
 @Entity
 public class Customer implements Serializable {
 
-    /*Hằng báo lỗi*/
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	/*Hằng báo lỗi*/
     public static final String ID_EMPTY = "Mã khách hàng không được phép rỗng";
     public static final String NAME_EMPTY = "Họ tên không được phép rỗng";
     public static final String DATEBIRTH_ERROR = "Ngày sinh phải nhỏ hơn ngày hiện tại";

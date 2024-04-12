@@ -12,6 +12,10 @@ import jakarta.persistence.*;
 	@NamedQuery(name = "PromotionForOrder.findByPromotionID", query = "SELECT po FROM PromotionForOrder po WHERE po.promotionID = :promotionID"),
 })
 public class PromotionForOrder extends Promotion {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	@Enumerated(EnumType.ORDINAL)
 	private CustomerRank condition;
 
@@ -20,23 +24,20 @@ public class PromotionForOrder extends Promotion {
 	public PromotionForOrder(String promotionID, Date startedDate, Date endedDate, DiscountType typeDiscount,
 			double discount, CustomerRank condition) throws Exception {
 		super(promotionID, startedDate, endedDate, typeDiscount, discount);
-		this.condition = condition;
+		setCondition(condition);
 	}
 
 	public PromotionForOrder() {
 		super();
-		// TODO Auto-generated constructor stub
 	}
 
 	public PromotionForOrder(String promotionID, Date startedDate, Date endedDate, DiscountType typeDiscount,
 			double discount) throws Exception {
 		super(promotionID, startedDate, endedDate, typeDiscount, discount);
-		// TODO Auto-generated constructor stub
 	}
 
 	public PromotionForOrder(String promotionID) throws Exception {
 		super(promotionID);
-		// TODO Auto-generated constructor stub
 	}
 	
 

@@ -1,6 +1,7 @@
 
 package entity;
 
+import java.io.Serializable;
 import java.util.List;
 import java.util.Objects;
 
@@ -15,8 +16,12 @@ import jakarta.persistence.OneToMany;
  * @author Như Tâm
  */
 @Entity
-public class Store {
+public class Store implements Serializable {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	/* Hằng báo lỗi */
 	public static final String ID_EMPTY = "Mã cửa hàng không được phép rỗng";
 	public static final String NAME_EMPTY = "Tên cửa hàng không được phép rỗng";

@@ -1,4 +1,3 @@
-
 package entity;
 
 import java.io.Serializable;
@@ -17,7 +16,11 @@ import jakarta.persistence.*;
 })
 public class Supplier implements Serializable {
     
-    /* Hằng báo lỗi*/
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	/* Hằng báo lỗi*/
     public static final String ID_EMPTY = "Mã nhà cung cấp không được phép rỗng";
     public static final String NAME_EMPTY = "Tên nhà cung cấp không được phép rỗng";
     public static final String ADDRESS_EMPTY = "Địa chỉ không được phép rỗng";
