@@ -46,7 +46,7 @@ public class Product {
 
 	protected Double costPrice;
 
-	@Column(columnDefinition = "varchar(max)")
+	@Column(columnDefinition = "varbinary(max)")
 	protected byte[] image;
 	protected Double VAT;
 	protected Integer inventory;
