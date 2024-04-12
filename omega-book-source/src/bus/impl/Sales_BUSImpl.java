@@ -6,12 +6,12 @@ package bus.impl;
 
 import dao.Customer_DAO;
 import dao.OrderDetail_DAO;
-import dao.Order_DAO;
+import dao.Bill_DAO;
 import dao.ProductPromotionDetail_DAO;
 import dao.Product_DAO;
 import dao.Promotion_DAO;
 import entity.Customer;
-import entity.Order;
+import entity.Bill;
 import entity.OrderDetail;
 import entity.Product;
 import entity.ProductPromotionDetail;
@@ -33,7 +33,7 @@ import bus.Sales_BUS;
  */
 public class Sales_BUSImpl implements Sales_BUS{
 
-    private final Order_DAO orderDAO = new Order_DAO();
+    private final Bill_DAO orderDAO = new Bill_DAO();
     private final OrderDetail_DAO orderDetailDAO = new OrderDetail_DAO();
     private final Product_DAO productDAO = new Product_DAO();
     private final Customer_DAO customerDAO = new Customer_DAO();
@@ -48,8 +48,8 @@ public class Sales_BUSImpl implements Sales_BUS{
         return customerDAO.getByPhone(phone);
     }
 
-    public Order createNewOrder() throws Exception {
-        Order order = new Order(orderDAO.generateID());
+    public Bill createNewOrder() throws Exception {
+        Bill order = new Bill(orderDAO.generateID());
         order.setStatus(false);
 //        Chỉ hiển thị ngày lập, khi lưu sẽ lấy thời gian tại lúc bấm thanh toán
         LocalDate now = LocalDate.now();
@@ -57,7 +57,7 @@ public class Sales_BUSImpl implements Sales_BUS{
         return order;
     }
 
-    public boolean saveToDatabase(Order order) {
+    public boolean saveToDatabase(Bill order) {
         if (!orderDAO.create(order)) {
             return false;
         }
@@ -82,7 +82,7 @@ public class Sales_BUSImpl implements Sales_BUS{
         return true;
     }
 
-    public boolean updateInDatabase(Order order) {
+    public boolean updateInDatabase(Bill order) {
         if (!orderDAO.update(order.getOrderID(), order)) {
             return false;
         }
@@ -128,11 +128,11 @@ public class Sales_BUSImpl implements Sales_BUS{
     }
 
 //    Handle saved Order
-    public ArrayList<Order> getSavedOrders() {
-        ArrayList<Order> result = orderDAO.getNotCompleteOrder();
+    public ArrayList<Bill> getSavedOrders() {
+        ArrayList<Bill> result = orderDAO.getNotCompleteOrder();
 
 //        Lấy thông tin khách hàng của hóa đơn
-        for (Order item : result) {
+        for (Bill item : result) {
             try {
                 Customer fullInfoCustomer = customerDAO.getOne(item.getCustomer().getCustomerID());
                 item.setCustomer(fullInfoCustomer);
@@ -145,8 +145,8 @@ public class Sales_BUSImpl implements Sales_BUS{
         return result;
     }
 
-    public Order getOrder(String id) {
-        Order result = orderDAO.getOne(id);
+    public Bill getOrder(String id) {
+        Bill result = orderDAO.getOne(id);
         try {
 //            Lấy thông tin khách hàng
             Customer fullInfoCustomer = customerDAO.getOne(result.getCustomer().getCustomerID());

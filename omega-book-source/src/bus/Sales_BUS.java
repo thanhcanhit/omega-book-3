@@ -2,7 +2,7 @@ package bus;
 
 import java.util.ArrayList;
 import entity.Customer;
-import entity.Order;
+import entity.Bill;
 import entity.Product;
 import entity.ProductPromotionDetail;
 import entity.Promotion;
@@ -12,18 +12,18 @@ public interface Sales_BUS {
 
     public Customer getCustomerByPhone(String phone) ;
 
-    public Order createNewOrder() throws Exception;
+    public Bill createNewOrder() throws Exception;
 
-    public boolean saveToDatabase(Order order);
-    public boolean updateInDatabase(Order order) ;
+    public boolean saveToDatabase(Bill order);
+    public boolean updateInDatabase(Bill order) ;
 
     public boolean decreaseProductInventory(Product product, int quantity);
 
     public boolean increaseProductInventory(Product product, int quantity) ;
 
     public ArrayList<ProductPromotionDetail> getListProductPromotionAvailable(String productID) ;
-    public ArrayList<Order> getSavedOrders();
-    public Order getOrder(String id);
+    public ArrayList<Bill> getSavedOrders();
+    public Bill getOrder(String id);
 
     public boolean deleteOrder(String id) ;
     public ArrayList<ProductPromotionDetail> getPromotionOfProductAvailable(String productID) ;

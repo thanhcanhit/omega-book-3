@@ -41,7 +41,7 @@ import com.github.kwhat.jnativehook.keyboard.NativeKeyListener;
 
 import bus.impl.Sales_BUSImpl;
 import entity.Customer;
-import entity.Order;
+import entity.Bill;
 import entity.OrderDetail;
 import entity.Product;
 import entity.Promotion;
@@ -67,7 +67,7 @@ public class Sales_GUI extends javax.swing.JPanel {
     private Sales_BUSImpl bus;
 
     //
-    private Order order;
+    private Bill order;
     private Customer customer = null;
     private List<OrderDetail> cart;
     private DefaultTableModel tblModel_cart;
@@ -968,7 +968,7 @@ public class Sales_GUI extends javax.swing.JPanel {
             }
 
             String orderId = tbl_savedOrder.getValueAt(rowIndex, 0).toString();
-            Order order = bus.getOrder(orderId);
+            Bill order = bus.getOrder(orderId);
             DefaultTableModel tblModel_savedOrderDetail = new DefaultTableModel(new String[]{"Tên sản phẩm", "Số lượng"}, 50) {
                 @Override
                 public boolean isCellEditable(int row, int column) {
@@ -1832,14 +1832,14 @@ public class Sales_GUI extends javax.swing.JPanel {
             }
         };
 
-        for (Order item : bus.getSavedOrders()) {
+        for (Bill item : bus.getSavedOrders()) {
             tblModel_savedOrder.addRow(new Object[]{item.getOrderID(), item.getCustomer().getName(), item.getOrderAt()});
         }
         tbl_savedOrder.setModel(tblModel_savedOrder);
     }
 
     private void loadSavedOrder(String id) {
-        Order savedOrder = bus.getOrder(id);
+        Bill savedOrder = bus.getOrder(id);
 //        update state
         order = savedOrder;
         cart = order.getOrderDetail();

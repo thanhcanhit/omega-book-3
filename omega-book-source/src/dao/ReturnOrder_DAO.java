@@ -2,7 +2,7 @@ package dao;
 
 import java.text.SimpleDateFormat;
 import java.util.*;
-import entity.Order;
+import entity.Bill;
 import entity.ReturnOrder;
 import entity.ReturnOrderDetail;
 import interfaces.DAOBase;
@@ -99,7 +99,7 @@ public class ReturnOrder_DAO implements DAOBase<ReturnOrder>{
 		throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
 	}
 
-	public Order getOrder(String orderID) {
+	public Bill getOrder(String orderID) {
 		throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
 	}
 

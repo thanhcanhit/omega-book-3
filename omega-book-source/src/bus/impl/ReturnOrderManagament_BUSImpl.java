@@ -5,11 +5,11 @@ import java.util.Date;
 
 import bus.ReturnOrderManagement_BUS;
 import dao.OrderDetail_DAO;
-import dao.Order_DAO;
+import dao.Bill_DAO;
 import dao.Product_DAO;
 import dao.ReturnOrderDetail_DAO;
 import dao.ReturnOrder_DAO;
-import entity.Order;
+import entity.Bill;
 import entity.OrderDetail;
 import entity.Product;
 import entity.Promotion;
@@ -23,10 +23,10 @@ import entity.ReturnOrderDetail;
 public class ReturnOrderManagament_BUSImpl implements ReturnOrderManagement_BUS{
     private ReturnOrder_DAO dao = new ReturnOrder_DAO();
     private ReturnOrderDetail_DAO detail_dao = new ReturnOrderDetail_DAO();
-    private Order_DAO order_dao = new Order_DAO();
+    private Bill_DAO order_dao = new Bill_DAO();
 
-    public Order getOrder(String orderID) {
-        return new Order_DAO().getOne(orderID);
+    public Bill getOrder(String orderID) {
+        return new Bill_DAO().getOne(orderID);
     }
 
     public ReturnOrder getReturnOrder(String returnOrderID) {
@@ -55,8 +55,8 @@ public class ReturnOrderManagament_BUSImpl implements ReturnOrderManagement_BUS{
     public ArrayList<OrderDetail> getAllOrderDetail(String orderID) {
         return new OrderDetail_DAO().getAll(orderID);
     }
-    public ArrayList<Order> getAllOrder() {
-        return new Order_DAO().getAll();
+    public ArrayList<Bill> getAllOrder() {
+        return new Bill_DAO().getAll();
     }
 
     public String getNameProduct(String productID) {
@@ -71,8 +71,8 @@ public class ReturnOrderManagament_BUSImpl implements ReturnOrderManagement_BUS{
         return dao.create(newReturnOrder);
     }
 
-    public Order searchByOrderId(String orderID) {
-        return new Order_DAO().getOne(orderID);
+    public Bill searchByOrderId(String orderID) {
+        return new Bill_DAO().getOne(orderID);
     }
 
     public Product getProduct(String productID) {
@@ -105,7 +105,7 @@ public class ReturnOrderManagament_BUSImpl implements ReturnOrderManagement_BUS{
         
     }
 
-    public boolean isExist(Order order) {
+    public boolean isExist(Bill order) {
         return dao.getOneForOrderID(order.getOrderID()) != null;
     }
 

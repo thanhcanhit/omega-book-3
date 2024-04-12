@@ -13,12 +13,12 @@ import bus.StatementAccounting_BUS;
 import dao.AcountingVoucher_DAO;
 import dao.CashCountSheet_DAO;
 import dao.Employee_DAO;
-import dao.Order_DAO;
+import dao.Bill_DAO;
 import entity.AcountingVoucher;
 import entity.CashCount;
 import entity.CashCountSheet;
 import entity.Employee;
-import entity.Order;
+import entity.Bill;
 import gui.StatementAcounting_GUI;
 import main.Application;
 import raven.toast.Notifications;
@@ -33,7 +33,7 @@ public class StatementAcounting_BUSImpl implements StatementAccounting_BUS{
     private AcountingVoucher_DAO acountingVoucher_DAO = new AcountingVoucher_DAO();
     private CashCountSheet_DAO cashCountSheet_DAO = new CashCountSheet_DAO();
     private Employee_DAO employee_DAO = new Employee_DAO();
-    private Order_DAO order_DAO = new Order_DAO();
+    private Bill_DAO order_DAO = new Bill_DAO();
     @SuppressWarnings("unused")
 	private StatementCashCount_BUSImpl statementCashCount_BUS = new StatementCashCount_BUSImpl();
 
@@ -86,14 +86,14 @@ public class StatementAcounting_BUSImpl implements StatementAccounting_BUS{
 
     public void createAcountingVoucher(CashCountSheet cashCountSheet, Date end) {
         Date start = getLastAcounting().getEndedDate();
-        ArrayList<Order> list = getAllOrderInAcounting(start, end);
+        ArrayList<Bill> list = getAllOrderInAcounting(start, end);
         String id = generateID(end);
 
         AcountingVoucher acountingVoucher = new AcountingVoucher(id, start, end, cashCountSheet, list);
         cashCountSheet_DAO.create(cashCountSheet);
         acountingVoucher_DAO.create(acountingVoucher);
 
-        for (Order order : list) {
+        for (Bill order : list) {
             order_DAO.updateOrderAcountingVoucher(order.getOrderID(), acountingVoucher.getAcountingVoucherID());
         }
         Notifications.getInstance().show(Notifications.Type.SUCCESS, "Tạo phiếu kết toán thành công");
@@ -106,10 +106,10 @@ public class StatementAcounting_BUSImpl implements StatementAccounting_BUS{
         return employee_DAO.getOne(id);
     }
 
-    public ArrayList<Order> getAllOrderInAcounting(Date start, Date end) {
-        ArrayList<Order> allOrder = order_DAO.getAll();
-        ArrayList<Order> list = new ArrayList<>();
-        for (Order order : allOrder) {
+    public ArrayList<Bill> getAllOrderInAcounting(Date start, Date end) {
+        ArrayList<Bill> allOrder = order_DAO.getAll();
+        ArrayList<Bill> list = new ArrayList<>();
+        for (Bill order : allOrder) {
             Date orderDate = order.getOrderAt();
             if (orderDate.after(start) && orderDate.before(end)) {
                 list.add(order);
@@ -118,17 +118,17 @@ public class StatementAcounting_BUSImpl implements StatementAccounting_BUS{
         return list;
     }
 
-    public double getSale(ArrayList<Order> list) {
+    public double getSale(ArrayList<Bill> list) {
         double sum = 0;
-        for (Order order : list) {
+        for (Bill order : list) {
             sum += order.getTotalDue();
         }
         return sum;
     }
 
-    public double getPayViaATM(ArrayList<Order> list) {
+    public double getPayViaATM(ArrayList<Bill> list) {
         double sum = 0;
-        for (Order order : list) {
+        for (Bill order : list) {
             if (order.isPayment()) {
                 sum += order.getTotalDue();
             }

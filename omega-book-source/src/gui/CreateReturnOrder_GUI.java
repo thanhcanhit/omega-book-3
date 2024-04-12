@@ -13,7 +13,7 @@ import com.formdev.flatlaf.FlatClientProperties;
 
 import bus.impl.ReturnOrderManagament_BUSImpl;
 import entity.Employee;
-import entity.Order;
+import entity.Bill;
 import entity.OrderDetail;
 import entity.Product;
 import entity.Promotion;
@@ -37,7 +37,7 @@ public class CreateReturnOrder_GUI extends javax.swing.JPanel {
 	 */
 	private static final long serialVersionUID = 7483255411620707846L;
 	private ReturnOrderManagament_BUSImpl bus;
-    private Order order;
+    private Bill order;
     private final Employee employee = Application.employee;
     private DefaultTableModel tblModel_orderDetail;
     private DefaultTableModel tblModel_product;
@@ -213,7 +213,7 @@ public class CreateReturnOrder_GUI extends javax.swing.JPanel {
         tbl_product.editCellAt(row, 2);
     }
 
-    private boolean isAvaiable(Order order) {
+    private boolean isAvaiable(Bill order) {
         Date now = java.sql.Date.valueOf(LocalDate.now());
         Calendar c1 = Calendar.getInstance();
         Calendar c2 = Calendar.getInstance();

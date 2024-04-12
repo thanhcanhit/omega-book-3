@@ -19,8 +19,8 @@ import jakarta.persistence.OneToOne;
 @NamedQueries({
 		@NamedQuery(name = "Account.validate", query = "SELECT a FROM Account a WHERE a.employee.employeeID = :employeeID AND a.password = :password"),
 		@NamedQuery(name = "Account.changePassword", query = "UPDATE Account a SET a.password = :password WHERE a.employee.employeeID = :employeeID"),
-		
-		})
+
+})
 public class Account {
 
 	private static final String PASSWORD_ERROR = "Mật khẩu phải ít nhất 8 kí tự (Bao gồm chữ hoa, chữ thường và số)!";

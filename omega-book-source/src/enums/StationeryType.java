@@ -9,33 +9,28 @@ package enums;
  * @author thanhcanhit
  */
 public enum StationeryType {
-    PEN(1),
-    SCHOOL_SUPPLIES(2),
-    OFFICE_SUPPLIES(3),
-    DRAWING_TOOLS(4),
-    PAPER_PRODUCTS(5),
-    OTHER_PRODUCTS(6);
+	PEN(1), SCHOOL_SUPPLIES(2), OFFICE_SUPPLIES(3), DRAWING_TOOLS(4), PAPER_PRODUCTS(5), OTHER_PRODUCTS(6);
 
-    private final int value;
+	private final int value;
 
-    private StationeryType(int value) {
-        this.value = value;
-    }
+	private StationeryType(int value) {
+		this.value = value;
+	}
 
-    public int getValue() {
-        return value;
-    }
+	public int getValue() {
+		return value;
+	}
 
-    public boolean compare(int value) {
-        return this.value == value;
-    }
+	public boolean compare(int value) {
+		return this.value == value;
+	}
 
-    public static StationeryType fromInt(int value) {
-        for (StationeryType type : values()) {
-            if (type.compare(value)) {
-                return type;
-            }
-        }
-        return null;
-    }
+	public static StationeryType fromInt(int value) {
+		for (StationeryType type : values()) {
+			if (type.compare(value)) {
+				return type;
+			}
+		}
+		return null;
+	}
 }

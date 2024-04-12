@@ -6,11 +6,11 @@ package entity;
 
 import java.util.List;
 import java.util.Objects;
-import java.util.Set;
 import java.util.regex.Pattern;
 
 import enums.BookType;
 import enums.Type;
+import jakarta.persistence.Basic;
 import jakarta.persistence.Column;
 import jakarta.persistence.DiscriminatorColumn;
 import jakarta.persistence.DiscriminatorType;
@@ -21,11 +21,6 @@ import jakarta.persistence.FetchType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Inheritance;
 import jakarta.persistence.InheritanceType;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.JoinTable;
-import jakarta.persistence.ManyToMany;
-import jakarta.persistence.NamedQueries;
-import jakarta.persistence.NamedQuery;
 import jakarta.persistence.OneToMany;
 
 /**
@@ -52,7 +47,8 @@ public class Product {
 
 	protected Double costPrice;
 
-	@Column(columnDefinition = "varchar(max)")
+	@Basic(fetch = FetchType.LAZY)
+	@Column(columnDefinition = "varbinary(max)")
 	protected byte[] image;
 	protected Double VAT;
 	protected Integer inventory;

@@ -3,7 +3,7 @@ package bus;
 import java.util.ArrayList;
 import java.util.Date;
 
-import entity.Order;
+import entity.Bill;
 import entity.OrderDetail;
 import entity.Product;
 import entity.Promotion;
@@ -11,7 +11,7 @@ import entity.ReturnOrder;
 import entity.ReturnOrderDetail;
 
 public interface ReturnOrderManagement_BUS {
-	public Order getOrder(String orderID) ;
+	public Bill getOrder(String orderID) ;
 
     public ReturnOrder getReturnOrder(String returnOrderID);
     public ArrayList<ReturnOrder> getAllReturnOrder() ;
@@ -25,7 +25,7 @@ public interface ReturnOrderManagement_BUS {
     public ArrayList<ReturnOrder> filter(int type, int status);
 
     public ArrayList<OrderDetail> getAllOrderDetail(String orderID) ;
-    public ArrayList<Order> getAllOrder() ;
+    public ArrayList<Bill> getAllOrder() ;
 
     public String getNameProduct(String productID);
     
@@ -33,7 +33,7 @@ public interface ReturnOrderManagement_BUS {
 
     public boolean createNew(ReturnOrder newReturnOrder);
 
-    public Order searchByOrderId(String orderID) ;
+    public Bill searchByOrderId(String orderID) ;
 
     public Product getProduct(String productID);
 
@@ -42,7 +42,7 @@ public interface ReturnOrderManagement_BUS {
     public void updateReturnOrderDetail(ReturnOrder newReturnOrder, ArrayList<ReturnOrderDetail> listDetail);
     
 
-    public boolean isExist(Order order) ;
+    public boolean isExist(Bill order) ;
 
     public Promotion getDiscount(String orderID) ;
 }

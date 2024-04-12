@@ -15,7 +15,7 @@ import javax.swing.table.DefaultTableModel;
 import com.formdev.flatlaf.FlatClientProperties;
 
 import bus.impl.SupplierManagement_BUSImpl;
-import entity.Order;
+import entity.Bill;
 import entity.PurchaseOrder;
 import entity.PurchaseOrderDetail;
 import entity.Supplier;
@@ -61,7 +61,7 @@ public class SupplierManagement_GUI extends javax.swing.JPanel {
             int rowIndex = tbl_supplier.getSelectedRow();
             if (rowIndex != -1) {
                 String id = tblModel_cart.getValueAt(rowIndex, 0).toString();
-                Order order;
+                Bill order;
                 try {
                     txt_supplierID.setText(id);
                     txt_supplierName.setText(tblModel_cart.getValueAt(rowIndex, 1).toString());

@@ -27,7 +27,7 @@ import entity.CashCount;
 import entity.CashCountSheet;
 import entity.CashCountSheetDetail;
 import entity.Employee;
-import entity.Order;
+import entity.Bill;
 import main.Application;
 import raven.toast.Notifications;
 import utilities.AcountingVoucherPrinter;
@@ -49,7 +49,7 @@ public class StatementAcounting_GUI extends javax.swing.JPanel {
     private Employee employee2;
     private StatementAcounting_BUSImpl acountingVoucher_BUS = new StatementAcounting_BUSImpl();
     private Date endDate = new Date();
-    private ArrayList<Order> listOrder;
+    private ArrayList<Bill> listOrder;
     private AcountingVoucher acountingVoucher;
     private StatementCashCount_BUSImpl statementCashCount_BUS = new StatementCashCount_BUSImpl();
     double sale = 0;
