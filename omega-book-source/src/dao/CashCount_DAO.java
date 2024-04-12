@@ -4,12 +4,13 @@
  */
 package dao;
 
-import entity.CashCount;
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.Query;
-import utilities.AccessDatabase;
 import java.util.ArrayList;
 import java.util.List;
+
+import entity.CashCount;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.TypedQuery;
+import utilities.AccessDatabase;
 
 /**
  *
@@ -27,7 +28,7 @@ public class CashCount_DAO implements interfaces.DAOBase<CashCount> {
 
 		try {
 			String hql = "SELECT c FROM CashCount c WHERE c.cashCountSheetID = :cashCountSheetID AND c.value = :value";
-			Query query = entityManager.createQuery(hql);
+			TypedQuery<CashCount> query = entityManager.createQuery(hql, CashCount.class);
 			query.setParameter("cashCountSheetID", cashCountSheetID);
 			query.setParameter("value", value);
 

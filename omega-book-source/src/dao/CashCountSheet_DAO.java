@@ -5,6 +5,7 @@
 package dao;
 
 import java.util.ArrayList;
+
 import entity.CashCountSheet;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.NoResultException;
@@ -70,7 +71,7 @@ public class CashCountSheet_DAO implements interfaces.DAOBase<CashCountSheet> {
 //        }
 //
 //        return cashCountSheets;
-    	return (ArrayList<CashCountSheet>) em.createNamedQuery("CashCountSheet.findAll").getResultList();
+    	return (ArrayList<CashCountSheet>) em.createNamedQuery("CashCountSheet.findAll", CashCountSheet.class).getResultList();
     }
 
     @Override

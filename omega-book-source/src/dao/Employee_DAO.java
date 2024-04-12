@@ -12,6 +12,7 @@ import interfaces.DAOBase;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.NoResultException;
 import jakarta.persistence.Query;
+import jakarta.persistence.TypedQuery;
 import utilities.AccessDatabase;
 
 /**
@@ -129,7 +130,7 @@ public class Employee_DAO implements DAOBase<Employee> {
 		if (status != 0)
 			hql += " AND status = :status";
 		try {
-			Query query = em.createQuery(hql, Employee.class);
+			TypedQuery<Employee> query = em.createQuery(hql, Employee.class);
 			query.setParameter("name", "%");
 			if (role == 1)
 				query.setParameter("role", "Nhân Viên Bán Hàng");

@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<classpath>
-	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry kind="src" path="omega-book-source/src"/>
-	<classpathentry kind="lib" path="omega-book-source/resources/lib/custom-chart.jar"/>
-	<classpathentry kind="lib" path="omega-book-source/resources/lib/swing-toast-notifications-1.0.1.jar"/>
-	<classpathentry kind="output" path="bin"/>
-</classpath>
