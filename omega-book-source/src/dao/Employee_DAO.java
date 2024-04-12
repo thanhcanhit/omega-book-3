@@ -87,20 +87,17 @@ public class Employee_DAO implements DAOBase<Employee> {
 	 */
 	@Override
 	public Boolean update(String id, Employee newObject) {
+		boolean isUpdated = false;
 		try {
-			int n = em.createNamedQuery("Employee.update").setParameter("employeeID", id)
-					.setParameter("citizenIdentification", newObject.getCitizenIdentification())
-					.setParameter("role", newObject.getRole()).setParameter("status", newObject.isStatus())
-					.setParameter("name", newObject.getName()).setParameter("phoneNumber", newObject.getPhoneNumber())
-					.setParameter("gender", newObject.isGender())
-					.setParameter("dateOfBirth", newObject.getDateOfBirth())
-					.setParameter("address", newObject.getAddress())
-					.setParameter("storeID", newObject.getStore().getStoreID()).executeUpdate();
-			return n > 0;
+			em.getTransaction().begin();
+			em.persist(newObject);
+			em.getTransaction().commit();
+			isUpdated = true;
 		} catch (Exception e) {
 			e.printStackTrace();
+			em.getTransaction().rollback();
 		}
-		return false;
+		return isUpdated;
 	}
 
 	@Override
