@@ -65,31 +65,6 @@ public class Promotion_DAO implements DAOBase<Promotion> {
 				.getResultList();
 	}
 
-	//    public ArrayList<Promotion> getAllForProductFilterProduct(String productID) {
-	//        ArrayList<Promotion> result = new ArrayList<>();
-	//        try {
-	//            Statement st = ConnectDB.conn.createStatement();
-	//            ResultSet rs = st.executeQuery("SELECT * FROM Promotion WHERE promotionType = 0");
-	//
-	//            while (rs.next()) {
-	//                String promotionID = rs.getString("promotionID");
-	//                int typeDiscount = rs.getInt("typeDiscount");
-	//                int promotionType = rs.getInt("promotionType");
-	//                double discount = rs.getDouble("discount");
-	//                Date startedDate = rs.getDate("startedDate");
-	//                Date endedDate = rs.getDate("endedDate");
-	//                ArrayList<ProductPromotionDetail> listDetail = new ProductPromotionDetail_DAO().getAllForProduct(productID);
-	//                Promotion promo = new Promotion(promotionID, startedDate, endedDate, PromotionType.fromInt(promotionType), DiscountType.fromInt(typeDiscount), discount, listDetail);
-	//                result.add(promo);
-	//            }
-	//        } catch (Exception e) {
-	//            e.printStackTrace();
-	//        }
-	//        return result;
-	//    }
-
-
-
 	@Override
 	public String generateID() {
 		throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody

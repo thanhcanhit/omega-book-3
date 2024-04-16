@@ -48,6 +48,11 @@ public class ReturnOrderDetail_DAO implements DAOBase<ReturnOrderDetail>{
 		}
 		return n > 0;
 	}
+	public void update(List<ReturnOrderDetail> detail) {
+		detail.forEach( t -> {
+			updateProduct(t.getProduct().getProductID(), t.getQuantity());
+		});
+	}
 	public Boolean updateProduct(String id, int quantity) {
 		int n = 0;
 		Product product = new Product_DAO().getOne(id);
@@ -58,12 +63,7 @@ public class ReturnOrderDetail_DAO implements DAOBase<ReturnOrderDetail>{
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		
-		return n > 0;
-	}
-	public Boolean updateRefund(ReturnOrderDetail returnOrderDetail) {
-		int n = 0;
-	
+
 		return n > 0;
 	}
 	public ArrayList<ReturnOrderDetail> getAllForOrderReturnID(String id) {

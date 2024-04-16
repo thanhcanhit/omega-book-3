@@ -79,15 +79,21 @@ public class ReturnOrderManagament_BUSImpl implements ReturnOrderManagement_BUS{
         return new Product_DAO().getOne(productID);
     }
 
-    public void createReturnOrderDetail(ReturnOrder newReturnOrder, ArrayList<ReturnOrderDetail> cart) {
+    public boolean createReturnOrderDetail(ReturnOrder newReturnOrder, ArrayList<ReturnOrderDetail> cart) {
+    	boolean rs = false;
         for (ReturnOrderDetail returnOrderDetail : cart) {
             try {
                 returnOrderDetail.setReturnOrder(newReturnOrder);
-                detail_dao.create(returnOrderDetail);
+                if( detail_dao.create(returnOrderDetail))
+                	rs = true;
+				else
+					rs = false;
+               
             } catch (Exception ex) {
                 ex.printStackTrace();
             }
         }
+        return rs;
     }
 
     public void updateReturnOrderDetail(ReturnOrder newReturnOrder, ArrayList<ReturnOrderDetail> listDetail) {
@@ -115,7 +121,6 @@ public class ReturnOrderManagament_BUSImpl implements ReturnOrderManagement_BUS{
 
 	@Override
 	public ArrayList<ReturnOrder> filter(int type, int status) {
-		// TODO Auto-generated method stub
-		return null;
+		return dao.filter(type, status);
 	}
 }

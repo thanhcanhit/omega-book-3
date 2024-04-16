@@ -3,8 +3,10 @@ package dao;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import entity.Bill;
+import entity.Employee;
 import entity.ReturnOrder;
 import entity.ReturnOrderDetail;
+import enums.ReturnOrderStatus;
 import interfaces.DAOBase;
 import jakarta.persistence.*;
 import utilities.AccessDatabase;
@@ -15,6 +17,7 @@ import utilities.AccessDatabase;
  */
 public class ReturnOrder_DAO implements DAOBase<ReturnOrder>{
 	EntityManager em;
+	ReturnOrderDetail_DAO detail_dao = new ReturnOrderDetail_DAO();
 	public ReturnOrder_DAO() {
 		em = AccessDatabase.getEntityManager();
 	}
@@ -66,7 +69,7 @@ public class ReturnOrder_DAO implements DAOBase<ReturnOrder>{
 		try {
 			rs = em.createNamedQuery(query, ReturnOrder.class).setParameter("id", result + "%").getSingleResult();
 		} catch (Exception e) {
-			e.printStackTrace();
+			rs = null;
 		}
 		if (rs != null) {
 			String lastID = rs.getReturnOrderID();
@@ -105,6 +108,13 @@ public class ReturnOrder_DAO implements DAOBase<ReturnOrder>{
 			em.getTransaction().begin();
 			em.merge(returnOrder);
 			em.getTransaction().commit();
+//			if (returnOrder.getStatus().getValue() == 1 && returnOrder.isType() == false) {
+//				detail_dao.update(returnOrder.getListDetail());
+//			}
+//			else if(returnOrder.getStatus().getValue() == 1 && returnOrder.isType() == true) {
+//				returnOrder.setRefund();
+//			}
+			
 			n = 1;
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -154,42 +164,37 @@ public class ReturnOrder_DAO implements DAOBase<ReturnOrder>{
 	//        return result;
 	//    }
 
-	//    public ArrayList<ReturnOrder> filter(int type, int status) {
-	//        ArrayList<ReturnOrder> result = new ArrayList<>();
-	////        Index tự động tăng phụ thuộc vào số lượng biến số có
-	//        int index = 1;
-	//        String query = "select * from ReturnOrder WHERE returnOrderID like '%'";
-	////        Xét loại đơn đổi trả
-	//        if (type != 0)
-	//            query += " and type = ?";
-	////            Xét trạng thái 
-	//        if (status != 0)
-	//            query += " and status = ?";
-	//        try {
-	//            PreparedStatement st = ConnectDB.conn.prepareStatement(query);
-	//            if(type == 1)
-	//                st.setInt(index++, 0);
-	//            else if(type == 2)
-	//                st.setInt(index++, 1);
-	//            if(status == 1)
-	//                st.setInt(index++, 0);
-	//            else if(status == 2)
-	//                st.setInt(index++, 1);
-	//            else if(status == 3)
-	//                st.setInt(index++, 2);
-	//            ResultSet rs = st.executeQuery();
-	//            while (rs.next()) {
-	//                if (rs != null) {
-	//                    result.add(getReturnOrderData(rs));
-	//                }
-	//            }
-	//        } catch (SQLException e) {
-	//            e.printStackTrace();
-	//        } catch (Exception ex) {
-	//            ex.printStackTrace();
-	//        }
-	//        return result;
-	//    }
+	    public ArrayList<ReturnOrder> filter(int type, int status) {
+	        ArrayList<ReturnOrder> result = new ArrayList<>();
+	        String query = "select ro from ReturnOrder ro WHERE ro.returnOrderID like :id ";
+	        if (type != 0)
+	            query += " and ro.type = :type";
+	        if (status != 0)
+	            query += " and ro.status = :status";
+	        try {
+	        	TypedQuery<ReturnOrder> st = (TypedQuery<ReturnOrder>) em.createQuery(query, ReturnOrder.class);
+	        	st.setParameter("id", "%");
+	        	if(type != 0) {
+	        		if(type == 1)
+	        			st.setParameter("type", false);
+	        		else
+	        			st.setParameter("type", true);
+	        	}
+	        	if(status != 0) {
+	        		if(status == 1)
+	        			st.setParameter("status", ReturnOrderStatus.PENDING);
+	        		else if(status == 2)
+	        			st.setParameter("status", ReturnOrderStatus.SUCCESS);
+	        		else 
+	        			st.setParameter("status", ReturnOrderStatus.CANCEL);
+	        	}
+	        	st.getResultStream().forEach(returnOrder-> result.add((ReturnOrder) returnOrder));
+	        	//result = (ArrayList<ReturnOrder>) st.getResultList();
+	        } catch (Exception ex) {
+	            ex.printStackTrace();
+	        }
+	        return result;
+	    }
 
 
 }

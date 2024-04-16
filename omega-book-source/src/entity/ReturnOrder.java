@@ -155,8 +155,7 @@ public class ReturnOrder implements Serializable {
     }
 
     public void setRefund() {
-        if(this.type == false
-                )
+        if(this.type == false)
             this.refund = 0;
         else {
             for (ReturnOrderDetail returnOrderDetail : listDetail) {
