@@ -239,9 +239,7 @@ public class PurchaseOrder_DAO implements DAOBase<PurchaseOrder> {
 			}
 			e.printStackTrace();
 			return false;
-		} finally {
-			entityManager.close();
-		}
+		} 
 	}
 
 	@Override
@@ -280,9 +278,7 @@ public class PurchaseOrder_DAO implements DAOBase<PurchaseOrder> {
 		} catch (Exception e) {
 			e.printStackTrace();
 			return 0;
-		} finally {
-			entityManager.close();
-		}
+		} 
 	}
 
 }

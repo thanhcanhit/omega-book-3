@@ -34,11 +34,17 @@ public class ReturnOrder_DAO implements DAOBase<ReturnOrder>{
 	
 	public int getNumberOfReturnOrderInMonth(int month, int year){
 		String query = "select count(returnOrderID) as sl from [dbo].[ReturnOrder] ro where YEAR(ro.orderDate) = :year and Month(ro.orderDate) = :month ";
-		return (int) em.createNativeQuery(query,Long.class).setParameter("year", year).setParameter("month", month).getSingleResult();
+		int result = em.createNativeQuery(query).setParameter("year", year).setParameter("month", month).getFirstResult();
+		return result;
 	}
 	public double getTotalReturnOrderInMonth(int month, int year) {
-		String query = "select sum(refund) as total from ReturnOrder ro where YEAR(ro.order.orderAt) = :year and Month(ro.order.orderAt) = :month and ro.status = 1";
-		return (double) em.createQuery(query).setParameter("year", year).setParameter("month", month).getSingleResult();
+		double result;
+		String query = "select sum(ro.refund) as total from ReturnOrder ro where YEAR(ro.order.orderAt) = :year and Month(ro.order.orderAt) = :month and ro.status = 1";
+		if(em.createQuery(query,Double.class).setParameter("year", year).setParameter("month", month).getSingleResult()!=null)
+			result = em.createQuery(query,Double.class).setParameter("year", year).setParameter("month", month).getSingleResult().doubleValue();
+		else
+			result=0;
+		return result;
 	}
 
 	public ArrayList<ReturnOrder> findById(String returnOrderID) {
