@@ -21,16 +21,16 @@ import utilities.AccessDatabase;
  * @author KienTran + QUuanfKhang đẹp tright
  */
 public class PurchaseOrder_DAO implements DAOBase<PurchaseOrder> {
-	
+
 	EntityManager entityManager;
 
-    public PurchaseOrder_DAO() {
+	public PurchaseOrder_DAO() {
 //		super();
-    	entityManager = AccessDatabase.getEntityManager();
+		entityManager = AccessDatabase.getEntityManager();
 	}
 
 	@Override
-    public PurchaseOrder getOne(String id) {
+	public PurchaseOrder getOne(String id) {
 //        PurchaseOrder result = null;
 //
 //        try {
@@ -56,14 +56,14 @@ public class PurchaseOrder_DAO implements DAOBase<PurchaseOrder> {
 //            e.printStackTrace();
 //        }
 //        return result;
-    	return entityManager.find(PurchaseOrder.class, id);
-    }
+		return entityManager.find(PurchaseOrder.class, id);
+	}
 
-    @Override
-    /**
-     * Get all PurchaseOrder
-     */
-    public ArrayList<PurchaseOrder> getAll() {
+	@Override
+	/**
+	 * Get all PurchaseOrder
+	 */
+	public ArrayList<PurchaseOrder> getAll() {
 //        ArrayList<PurchaseOrder> result = new ArrayList<>();
 //
 //        try {
@@ -90,11 +90,12 @@ public class PurchaseOrder_DAO implements DAOBase<PurchaseOrder> {
 //            e.printStackTrace();
 //        }
 //        return result;
-    	return (ArrayList<PurchaseOrder>) entityManager.createQuery("SELECT p FROM PurchaseOrder p", PurchaseOrder.class).getResultList();
-    }
+		return (ArrayList<PurchaseOrder>) entityManager
+				.createQuery("SELECT p FROM PurchaseOrder p", PurchaseOrder.class).getResultList();
+	}
 
-    @Override
-    public String generateID() {
+	@Override
+	public String generateID() {
 //        String result = "DN";
 //        LocalDate time = LocalDate.now();
 //        DateTimeFormatter dateFormater = DateTimeFormatter.ofPattern("MMyyyy");
@@ -125,39 +126,37 @@ public class PurchaseOrder_DAO implements DAOBase<PurchaseOrder> {
 //        }
 //
 //        return result;
-    	
-    	String result = "DN";
-    	LocalDate time = LocalDate.now();
-    	DateTimeFormatter dateFormater = DateTimeFormatter.ofPattern("MMyyyy");
 
-    	result += dateFormater.format(time);
+		String result = "DN";
+		LocalDate time = LocalDate.now();
+		DateTimeFormatter dateFormater = DateTimeFormatter.ofPattern("MMyyyy");
 
-    	try {
-    	    String hql = "FROM PurchaseOrder po WHERE po.purchaseOrderID LIKE :code ORDER BY po.purchaseOrderID DESC";
-    	    Query query = entityManager.createQuery(hql);
-    	    query.setParameter("code", result + "%");
-    	    query.setMaxResults(1);
-    	    PurchaseOrder resultPO = (PurchaseOrder) query.getSingleResult();
+		result += dateFormater.format(time);
 
-    	    if (resultPO != null) {
-    	        String lastID = resultPO.getPurchaseOrderID();
-    	        String sNumber = lastID.substring(lastID.length() - 2);
-    	        int num = Integer.parseInt(sNumber) + 1;
-    	        result += String.format("%02d", num);
-    	    } else {
-    	        result += String.format("%02d", 0);
-    	    }
-    	} catch (NoResultException nre) {
-    	    result += String.format("%02d", 0);
-    	} finally {
-    	    entityManager.close();
-    	}
+		try {
+			String hql = "FROM PurchaseOrder po WHERE po.purchaseOrderID LIKE :code ORDER BY po.purchaseOrderID DESC";
+			Query query = entityManager.createQuery(hql);
+			query.setParameter("code", result + "%");
+			query.setMaxResults(1);
+			PurchaseOrder resultPO = (PurchaseOrder) query.getSingleResult();
 
-    	return result;
-    }
+			if (resultPO != null) {
+				String lastID = resultPO.getPurchaseOrderID();
+				String sNumber = lastID.substring(lastID.length() - 2);
+				int num = Integer.parseInt(sNumber) + 1;
+				result += String.format("%02d", num);
+			} else {
+				result += String.format("%02d", 0);
+			}
+		} catch (NoResultException nre) {
+			result += String.format("%02d", 0);
+		}
 
-    @Override
-    public Boolean create(PurchaseOrder object) {
+		return result;
+	}
+
+	@Override
+	public Boolean create(PurchaseOrder object) {
 //        int n = 0;
 //
 //        try {
@@ -187,15 +186,16 @@ public class PurchaseOrder_DAO implements DAOBase<PurchaseOrder> {
 			e.printStackTrace();
 			return false;
 		}
-    }
+	}
 
-    @Override
-    public Boolean update(String id, PurchaseOrder newObject) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-   
-    }
-    
-    public Boolean updateStatus(String id, int status){
+	@Override
+	public Boolean update(String id, PurchaseOrder newObject) {
+		throw new UnsupportedOperationException("Not supported yet."); // Generated from
+																		// nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+
+	}
+
+	public Boolean updateStatus(String id, int status) {
 //        int n = 0;
 //
 //        try {
@@ -216,39 +216,41 @@ public class PurchaseOrder_DAO implements DAOBase<PurchaseOrder> {
 //        }
 //
 //        return n > 0;
-    	entityManager.getTransaction().begin();
-        try {
-            String hql = "UPDATE PurchaseOrder po SET po.status = :status WHERE po.purchaseOrderID = :id";
-            Query query = entityManager.createQuery(hql);
-            query.setParameter("status", status);
-            query.setParameter("id", id);
+		entityManager.getTransaction().begin();
+		try {
+			String hql = "UPDATE PurchaseOrder po SET po.status = :status WHERE po.purchaseOrderID = :id";
+			Query query = entityManager.createQuery(hql);
+			query.setParameter("status", status);
+			query.setParameter("id", id);
 
-            if(status==1){
-                PurchaseOrder purchaseOrder = getOne(id);
-                for (PurchaseOrderDetail pod : purchaseOrder.getPurchaseOrderDetailList()) {
-                    new Product_DAO().updateInventory(pod.getProduct().getProductID(),pod.getQuantity());
-                }
-            }
+			if (status == 1) {
+				PurchaseOrder purchaseOrder = getOne(id);
+				for (PurchaseOrderDetail pod : purchaseOrder.getPurchaseOrderDetailList()) {
+					new Product_DAO().updateInventory(pod.getProduct().getProductID(), pod.getQuantity());
+				}
+			}
 
-            int n = query.executeUpdate();
-            entityManager.getTransaction().commit();
-            return n > 0;
-        } catch (Exception e) {
-            if (entityManager.getTransaction().isActive()) {
-                entityManager.getTransaction().rollback();
-            }
-            e.printStackTrace();
-            return false;
-        } finally {
-            entityManager.close();
-        }
-    }
+			int n = query.executeUpdate();
+			entityManager.getTransaction().commit();
+			return n > 0;
+		} catch (Exception e) {
+			if (entityManager.getTransaction().isActive()) {
+				entityManager.getTransaction().rollback();
+			}
+			e.printStackTrace();
+			return false;
+		} finally {
+			entityManager.close();
+		}
+	}
 
-    @Override
-    public Boolean delete(String id) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
-    public int getNumberOfPurchaseOrderInMonth(int month, int year){
+	@Override
+	public Boolean delete(String id) {
+		throw new UnsupportedOperationException("Not supported yet."); // Generated from
+																		// nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+	}
+
+	public int getNumberOfPurchaseOrderInMonth(int month, int year) {
 //        int result=0;
 //
 //
@@ -281,6 +283,6 @@ public class PurchaseOrder_DAO implements DAOBase<PurchaseOrder> {
 		} finally {
 			entityManager.close();
 		}
-    }
+	}
 
 }

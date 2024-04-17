@@ -1,4 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <faceted-project>
+<<<<<<< HEAD
   <installed facet="java" version="18"/>
+=======
+  <installed facet="java" version="21"/>
+  <installed facet="jpt.jpa" version="2.2"/>
+>>>>>>> origin
 </faceted-project>

@@ -43,7 +43,7 @@ public class ReturnOrder_DAO implements DAOBase<ReturnOrder>{
 
 	public ArrayList<ReturnOrder> findById(String returnOrderID) {
 		String query = "SELECT ro FROM ReturnOrder ro where ro.returnOrderID LIKE :id";
-		return (ArrayList<ReturnOrder>) em.createNamedQuery(query, ReturnOrder.class).setParameter("id", "%" + returnOrderID + "%").getResultList();
+		return (ArrayList<ReturnOrder>) em.createQuery(query, ReturnOrder.class).setParameter("id", "%" + returnOrderID + "%").getResultList();
 	}
 
 	public ReturnOrder getOneForOrderID(String orderID) {
