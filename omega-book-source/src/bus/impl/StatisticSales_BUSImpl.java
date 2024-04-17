@@ -9,6 +9,7 @@ import dao.Bill_DAO;
 import dao.Product_DAO;
 import dao.PurchaseOrder_DAO;
 import dao.ReturnOrder_DAO;
+import enums.Type;
 
 /**
  *
@@ -42,7 +43,7 @@ public class StatisticSales_BUSImpl implements StatisticSales_BUS{
         return orderDAO.getToTalInMonth(month, year);
         
     }
-    public int getQuantityProductType(int type, int month, int year){
+    public int getQuantityProductType(Type type, int month, int year){
         return productDAO.getQuantityProductType(type, month, year);
     }
     

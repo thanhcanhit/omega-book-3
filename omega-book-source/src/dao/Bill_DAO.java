@@ -9,8 +9,6 @@ package dao;
 //import java.sql.PreparedStatement;
 //import java.sql.ResultSet;
 //import java.sql.SQLException;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -18,7 +16,6 @@ import java.util.List;
 //import entity.Customer;
 //import entity.Employee;
 import entity.Bill;
-import entity.Product;
 //import entity.OrderDetail;
 import entity.Promotion;
 import interfaces.DAOBase;
@@ -177,11 +174,7 @@ public class Bill_DAO implements DAOBase<Bill> {
 
         } catch (Exception e) {
             e.printStackTrace();
-        } finally {
-            if (entityManager != null) {
-                entityManager.close();
-            }
-        }
+        } 
 
         return result;
     }
@@ -218,11 +211,7 @@ public class Bill_DAO implements DAOBase<Bill> {
             e.printStackTrace();
             return false;
 
-        } finally {
-            if (entityManager != null) {
-                entityManager.close();
-            }
-        }
+        } 
     }
 
     /**
@@ -242,11 +231,7 @@ public class Bill_DAO implements DAOBase<Bill> {
     	    	        .setParameter("orderIDPattern", orderID + "%").getResultList();
     	    } catch (Exception e) {
     	        e.printStackTrace();
-    	    } finally {
-    	        if (entityManager != null) {
-    	            entityManager.close();
-    	        }
-    	    }
+    	    } 
 
     	    ArrayList<Bill> result = new ArrayList<>(list);
     	    return result;
@@ -297,11 +282,12 @@ public class Bill_DAO implements DAOBase<Bill> {
 
         } catch (Exception e) {
             e.printStackTrace();
-        } finally {
-            if (entityManager != null) {
-                entityManager.close();
-            }
-        }
+        } 
+//        finally {
+//            if (entityManager != null) {
+//                entityManager.close();
+//            }
+//        }
 
         return result;
     }
@@ -317,20 +303,13 @@ public class Bill_DAO implements DAOBase<Bill> {
                          "AND FUNCTION('MONTH', o.orderAt) = :month " +
                          "AND o.status = true";
 
-            List<Integer> resultList = entityManager.createQuery(hql,Integer.class)
+           result =  entityManager.createQuery(hql,Long.class)
             		.setParameter("year", year)
-            		.setParameter("month", month).getResultList();
-            if (resultList != null && !resultList.isEmpty()) {
-                result = resultList.get(0).intValue(); 
-            }
-
+            		.setParameter("month", month).getSingleResult().intValue();
+            
         } catch (Exception e) {
             e.printStackTrace();
-        } finally {
-            if (entityManager != null) {
-                entityManager.close();
-            }
-        }
+        } 
 
         return result;
     }
@@ -348,11 +327,7 @@ public class Bill_DAO implements DAOBase<Bill> {
 
         } catch (Exception e) {
             e.printStackTrace();
-        } finally {
-            if (entityManager != null) {
-                entityManager.close();
-            }
-        }
+        } 
         return result;
     }
 

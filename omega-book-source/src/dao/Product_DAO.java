@@ -6,6 +6,8 @@ package dao;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -347,13 +349,17 @@ public class Product_DAO implements DAOBase<Product> {
 
 	public ArrayList<Product> getTop10Product(String date) {
 		ArrayList<Product> result = new ArrayList<>();
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd"); // Định dạng của chuỗi ngày tháng
+
+		// Chuyển đổi từ String sang LocalDate
+		LocalDate localDate = LocalDate.parse(date, formatter);
 
 		try {
-			String hql = "select od.productID from OrderDetail as od join od.order as o "
+			String hql = "select od.product.productID from OrderDetail as od join od.order as o "
 					+ "where month(o.orderAt) = month(:date) and year(o.orderAt) = year(:date) "
-					+ "group by od.productID order by count(od.productID) desc";
+					+ "group by od.product.productID order by count(od.product.productID) desc";
 			TypedQuery<String> query = em.createQuery(hql, String.class);
-			query.setParameter("date", date);
+			query.setParameter("date", localDate);
 			query.setMaxResults(10);
 
 			List<String> productIDs = query.getResultList();
@@ -373,12 +379,16 @@ public class Product_DAO implements DAOBase<Product> {
 
 	public ArrayList<Product> getTopProductInDay(String date) {
 		ArrayList<Product> result = new ArrayList<>();
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd"); // Định dạng của chuỗi ngày tháng
+
+		// Chuyển đổi từ String sang LocalDate
+		LocalDate localDate = LocalDate.parse(date, formatter);
 
 		try {
-			String hql = "select od.productID from OrderDetail as od join od.order as o "
-					+ "where cast(o.orderAt as date) = :date " + "group by od.productID";
+			String hql = "select od.product.productID from OrderDetail as od join od.order as o "
+					+ "where cast(o.orderAt as date) = :date " + "group by od.product.productID";
 			TypedQuery<String> query = em.createQuery(hql, String.class);
-			query.setParameter("date", date);
+			query.setParameter("date", localDate);
 
 			List<String> productIDs = query.getResultList();
 
@@ -397,13 +407,17 @@ public class Product_DAO implements DAOBase<Product> {
 
 	public int getQuantitySale(String productID, String date) {
 		int result = 0;
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd"); // Định dạng của chuỗi ngày tháng
+
+		// Chuyển đổi từ String sang LocalDate
+		LocalDate localDate = LocalDate.parse(date, formatter);
 
 		try {
 			String hql = "select sum(od.quantity) as sl " + "from OrderDetail as od join od.order as o "
-					+ "where cast(o.orderAt as date) = :date and od.productID = :productID " + "group by od.productID "
-					+ "order by sum(od.quantity) desc";
+					+ "where cast(o.orderAt as date) = :date and od.product.productID = :productID "
+					+ "group by od.product.productID " + "order by sum(od.quantity) desc";
 			TypedQuery<Long> query = em.createQuery(hql, Long.class);
-			query.setParameter("date", date);
+			query.setParameter("date", localDate);
 			query.setParameter("productID", productID);
 
 			List<Long> quantities = query.getResultList();
@@ -420,14 +434,18 @@ public class Product_DAO implements DAOBase<Product> {
 
 	public double getTotalProduct(String productID, String date) {
 		double result = 0;
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd"); // Định dạng của chuỗi ngày tháng
+
+		// Chuyển đổi từ String sang LocalDate
+		LocalDate localDate = LocalDate.parse(date, formatter);
 
 		try {
 			String hql = "select sum(od.lineTotal) " + "from OrderDetail as od join od.order as o "
-					+ "where od.productID = :productID and month(o.orderAt) = month(:date) and year(o.orderAt) = year(:date) "
-					+ "group by od.productID";
+					+ "where od.product.productID = :productID and month(o.orderAt) = month(:date) and year(o.orderAt) = year(:date) "
+					+ "group by od.product.productID";
 			TypedQuery<Double> query = em.createQuery(hql, Double.class);
 			query.setParameter("productID", productID);
-			query.setParameter("date", date);
+			query.setParameter("date", localDate);
 
 			List<Double> sums = query.getResultList();
 
@@ -441,14 +459,14 @@ public class Product_DAO implements DAOBase<Product> {
 		return result;
 	}
 
-	public int getQuantityProductType(int type, int month, int year) {
+	public int getQuantityProductType(Type type, int month, int year) {
 		int result = 0;
 
 		try {
 			String hql = "select sum(od.quantity) as sl "
 					+ "from OrderDetail as od join od.order as o join od.product as p "
 					+ "where month(o.orderAt) = :month and year(o.orderAt) = :year and p.type = :type "
-					+ "group by p.productType";
+					+ "group by p.type";
 			TypedQuery<Long> query = em.createQuery(hql, Long.class);
 			query.setParameter("month", month);
 			query.setParameter("year", year);
