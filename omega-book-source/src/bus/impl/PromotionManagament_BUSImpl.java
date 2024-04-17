@@ -144,14 +144,12 @@ public class PromotionManagament_BUSImpl implements PromotionManagement_BUS{
 
 	@Override
 	public ArrayList<PromotionForProduct> filterForProduct(int type, int status) {
-		// TODO Auto-generated method stub
-		return null;
+		return promotion_DAO.filterForProduct(type, status);
 	}
 
 	@Override
 	public ArrayList<PromotionForOrder> filterForOrder(int type, int status) {
-		// TODO Auto-generated method stub
-		return null;
+		return promotion_DAO.filterForOrder(type, status);
 	}
 
 	public PromotionForOrder getPromotionForOrder(String promotionID) {
