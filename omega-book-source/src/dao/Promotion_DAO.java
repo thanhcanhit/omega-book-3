@@ -6,6 +6,7 @@ import java.util.*;
 import entity.Promotion;
 import entity.PromotionForOrder;
 import entity.PromotionForProduct;
+import enums.CustomerRank;
 import enums.DiscountType;
 import enums.PromotionType;
 import interfaces.DAOBase;
@@ -18,6 +19,7 @@ import utilities.AccessDatabase;
  */
 public class Promotion_DAO implements DAOBase<Promotion> {
 	EntityManager em;
+
 	public Promotion_DAO() {
 		em = AccessDatabase.getEntityManager();
 	}
@@ -28,8 +30,8 @@ public class Promotion_DAO implements DAOBase<Promotion> {
 	}
 
 	public PromotionForOrder getOneForOrder(String id) {
-		return em.createNamedQuery("PromotionForOrder.findByPromotionID", PromotionForOrder.class).setParameter("promotionID", id)
-				.getSingleResult();
+		return em.createNamedQuery("PromotionForOrder.findByPromotionID", PromotionForOrder.class)
+				.setParameter("promotionID", id).getSingleResult();
 	}
 
 	public PromotionForProduct getForProduct(String promotionID) {
@@ -38,12 +40,14 @@ public class Promotion_DAO implements DAOBase<Promotion> {
 
 	public ArrayList<Promotion> findById(String searchQuery) {
 		String query = "SELECT p FROM Promotion where promotionID LIKE :id";
-		return (ArrayList<Promotion>) em.createQuery(query, Promotion.class).setParameter(1, searchQuery).getResultList();
+		return (ArrayList<Promotion>) em.createQuery(query, Promotion.class).setParameter(1, searchQuery)
+				.getResultList();
 	}
 
 	public ArrayList<PromotionForOrder> getForOrder(String id) {
-		return (ArrayList<PromotionForOrder>) em.createNamedQuery("PromotionForOrder.findByPromotionID", PromotionForOrder.class).setParameter("promotionID", "%" + id + "%")
-				.getResultList();
+		return (ArrayList<PromotionForOrder>) em
+				.createNamedQuery("PromotionForOrder.findByPromotionID", PromotionForOrder.class)
+				.setParameter("promotionID", "%" + id + "%").getResultList();
 	}
 
 	@Override
@@ -57,17 +61,18 @@ public class Promotion_DAO implements DAOBase<Promotion> {
 	}
 
 	public ArrayList<Promotion> getAllForOrderFilterRank(int rank) {
-		return (ArrayList<Promotion>) em.createNamedQuery("Promotion.findByCondition", Promotion.class).setParameter("condition", rank).getResultList();
+		return (ArrayList<Promotion>) em.createNamedQuery("Promotion.findByCondition", Promotion.class)
+				.setParameter("condition", rank).getResultList();
 	}
 
 	public ArrayList<PromotionForProduct> getAllForProduct() {
-		return (ArrayList<PromotionForProduct>) em.createNamedQuery("PromotionForProduct.findAll", PromotionForProduct.class)
-				.getResultList();
+		return (ArrayList<PromotionForProduct>) em
+				.createNamedQuery("PromotionForProduct.findAll", PromotionForProduct.class).getResultList();
 	}
 
 	@Override
 	public String generateID() {
-		throw new UnsupportedOperationException("Not supported yet."); 
+		throw new UnsupportedOperationException("Not supported yet.");
 	}
 
 	@Override
@@ -94,6 +99,7 @@ public class Promotion_DAO implements DAOBase<Promotion> {
 	public Boolean update(String id, Promotion newObject) {
 		throw new UnsupportedOperationException("Not supported yet.");
 	}
+
 	public Boolean update(String id) {
 		int n = 0;
 		try {
@@ -107,7 +113,6 @@ public class Promotion_DAO implements DAOBase<Promotion> {
 		}
 		return n > 0;
 	}
-
 
 	public ArrayList<PromotionForOrder> filterForOrder(int type, int status) {
 		ArrayList<PromotionForOrder> result = new ArrayList<>();
@@ -165,11 +170,13 @@ public class Promotion_DAO implements DAOBase<Promotion> {
 		return result;
 	}
 
-	public ArrayList<Promotion> getPromotionOrderAvailable(int rank) {
-		//    	"select * from Promotion where promotionType = 1 and endedDate > GETDATE() and condition <= ?"
-		String query = "SELECT p FROM Promotion p WHERE p.typePromotion = 'PromotionForOrder' AND p.endedDate > :date AND p.condition <= :rank";
+	public ArrayList<Promotion> getPromotionOrderAvailable(CustomerRank rank) {
+		// "select * from Promotion where promotionType = 1 and endedDate > GETDATE()
+		// and condition <= ?"
+		String query = "SELECT p FROM PromotionForOrder p where p.endedDate > :date AND p.condition <= :rank";
 		Date now = java.sql.Timestamp.valueOf(LocalDateTime.now());
-		return (ArrayList<Promotion>) em.createQuery(query, Promotion.class).setParameter("date", now).setParameter("rank", rank).getResultList();
+		return (ArrayList<Promotion>) em.createQuery(query, Promotion.class).setParameter("date", now)
+				.setParameter("rank", rank).getResultList();
 	}
 
 	public boolean updateDateStart(Promotion pm) {
@@ -189,11 +196,11 @@ public class Promotion_DAO implements DAOBase<Promotion> {
 
 	public String generateID(PromotionType promotionType, DiscountType typeDiscount, Date ended) {
 		String prefix = "KM";
-		if(promotionType.compare(1))
+		if (promotionType.compare(1))
 			prefix += 1;
 		else
 			prefix += 0;
-		if(typeDiscount.compare(1))
+		if (typeDiscount.compare(1))
 			prefix += 1;
 		else
 			prefix += 0;
@@ -217,7 +224,6 @@ public class Promotion_DAO implements DAOBase<Promotion> {
 		} else {
 			prefix += String.format("%04d", 0);
 		}
-
 
 		return prefix;
 	}
@@ -250,44 +256,42 @@ public class Promotion_DAO implements DAOBase<Promotion> {
 		return n > 0;
 	}
 
-
-
-
-	//    public ArrayList<Promotion> filterForOrder(int type, int status) {
-	//        ArrayList<Promotion> result = new ArrayList<>();
-	////        Index tự động tăng phụ thuộc vào số lượng biến số có
-	//        int index = 1;
-	//        String query = "select * from Promotion WHERE promotionType = 1 and promotionID like '%'";
-	////        Xét loại khuyến mãi
-	//        if (type != 0) {
-	//            query += " and typeDiscount = ?";
-	//        }
-	////            Xét trạng thái khuyến mãi
-	//        if (status == 1) {
-	//            query += " and endedDate > GETDATE()";
-	//        } else if (status == 2) {
-	//            query += " and endedDate < GETDATE()";
-	//        }
-	//        try {
-	//            PreparedStatement st = ConnectDB.conn.prepareStatement(query);
+	// public ArrayList<Promotion> filterForOrder(int type, int status) {
+	// ArrayList<Promotion> result = new ArrayList<>();
+	//// Index tự động tăng phụ thuộc vào số lượng biến số có
+	// int index = 1;
+	// String query = "select * from Promotion WHERE promotionType = 1 and
+	// promotionID like '%'";
+	//// Xét loại khuyến mãi
+	// if (type != 0) {
+	// query += " and typeDiscount = ?";
+	// }
+	//// Xét trạng thái khuyến mãi
+	// if (status == 1) {
+	// query += " and endedDate > GETDATE()";
+	// } else if (status == 2) {
+	// query += " and endedDate < GETDATE()";
+	// }
+	// try {
+	// PreparedStatement st = ConnectDB.conn.prepareStatement(query);
 	//
-	//            if (type == 1) {
-	//                st.setInt(index++, 1);
-	//            } else if (type == 2) {
-	//                st.setInt(index++, 0);
-	//            }
+	// if (type == 1) {
+	// st.setInt(index++, 1);
+	// } else if (type == 2) {
+	// st.setInt(index++, 0);
+	// }
 	//
-	//            ResultSet rs = st.executeQuery();
-	//            while (rs.next()) {
-	//                if (rs != null) {
-	//                    result.add(getPromotionData(rs));
-	//                }
-	//            }
-	//        } catch (SQLException e) {
-	//            e.printStackTrace();
-	//        } catch (Exception ex) {
-	//            ex.printStackTrace();
-	//        }
-	//        return result;
-	//    }
+	// ResultSet rs = st.executeQuery();
+	// while (rs.next()) {
+	// if (rs != null) {
+	// result.add(getPromotionData(rs));
+	// }
+	// }
+	// } catch (SQLException e) {
+	// e.printStackTrace();
+	// } catch (Exception ex) {
+	// ex.printStackTrace();
+	// }
+	// return result;
+	// }
 }
