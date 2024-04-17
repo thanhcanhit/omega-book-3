@@ -147,11 +147,11 @@ public class Sales_BUSImpl implements Sales_BUS {
 		Bill result = orderDAO.getOne(id);
 		System.out.println("LOG" + result);
 		try {
-//            Lấy thông tin khách hàng
+//Lấy thông tin khách hàng
 			Customer fullInfoCustomer = customerDAO.getOne(result.getCustomer().getCustomerID());
 			result.setCustomer(fullInfoCustomer);
 
-//                Lấy thông tin sản phẩm
+//Lấy thông tin sản phẩm
 			for (OrderDetail item : result.getOrderDetail()) {
 				item.setProduct(productDAO.getOne(item.getProduct().getProductID()));
 			}

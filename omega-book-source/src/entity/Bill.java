@@ -66,7 +66,7 @@ public final class Bill {
 	@JoinColumn(name = "customerID")
 	private Customer customer;
 	@OneToMany(mappedBy = "order", fetch = FetchType.LAZY)
-	@Cascade({ org.hibernate.annotations.CascadeType.REMOVE })
+	@Cascade({ org.hibernate.annotations.CascadeType.ALL })
 	private List<OrderDetail> orderDetail;
 	private double moneyGiven;
 	@ManyToOne
@@ -289,8 +289,11 @@ public final class Bill {
 
 	@Override
 	public String toString() {
-		return "Order{" + "orderID=" + orderID + ", orderAt=" + orderAt + ", status=" + status + ", subTotal="
-				+ subTotal + ", totalDue=" + totalDue + ", payment=" + payment + ", promotion=" + promotion
-				+ ", employee=" + employee + ", customer=" + customer + ", orderDetail=" + orderDetail + '}';
+		return "Bill [orderID=" + orderID + ", orderAt=" + orderAt + ", status=" + status + ", subTotal=" + subTotal
+				+ ", totalDue=" + totalDue + ", payment=" + payment + ", promotion=" + promotion + ", employee="
+				+ employee + ", customer=" + customer + ", moneyGiven=" + moneyGiven + ", acountingVoucher="
+				+ acountingVoucher + "]";
 	}
+	
+
 }

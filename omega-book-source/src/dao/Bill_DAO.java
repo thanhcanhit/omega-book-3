@@ -145,8 +145,18 @@ public class Bill_DAO implements DAOBase<Bill> {
 
     @Override
     public Boolean delete(String id) {
-    	entityManager.remove(entityManager.find(Bill.class, id));
-    	return entityManager.find(Bill.class, id) == null;
+    	int n = 0;
+    	try {
+    		Bill bill = entityManager.find(Bill.class, id);
+			entityManager.getTransaction().begin();
+			entityManager.remove(bill);
+			entityManager.getTransaction().commit();
+			n = 1;
+		} catch (Exception e) {
+			entityManager.getTransaction().rollback();
+			e.printStackTrace();
+    	}
+    	return n > 0;
     }
 
     public int getLength() {
@@ -346,9 +356,14 @@ public class Bill_DAO implements DAOBase<Bill> {
     }
 
     public void clearExpiredOrderSaved() {
+//    	String query = "SELECT * FROM Bill "
+//    			+ "WHERE o.status = 0 AND "
+//    			+ "DATEDIFF(DAY, o.orderAt, CONVERT(date, GETDATE())) < 1";
         try {
         	OrderDetail_DAO od_DAO = new OrderDetail_DAO();
            List<Bill> resultSet=entityManager.createNamedQuery("Bill.clearExpiredOrderSaved",Bill.class).getResultList();
+//        	@SuppressWarnings("unchecked")
+//			List<Bill> resultSet = entityManager.createNativeQuery(query).getResultList();
            resultSet.forEach(x->{
         	   od_DAO.delete(x.getOrderID());
            });
@@ -377,6 +392,8 @@ public class Bill_DAO implements DAOBase<Bill> {
     }
 
     public int getQuantityOrderSaved() {
-        return (int) entityManager.createNamedQuery("Bill.getQuantityOrderSaved").getSingleResult();
+    	int n = 0;
+    	n = Integer.valueOf(entityManager.createNamedQuery("Bill.getQuantityOrderSaved",Long.class).getSingleResult().toString());
+        return n;
     }
 }
