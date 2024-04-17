@@ -5,6 +5,8 @@
  */
 package dao;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 //import java.sql.Date;
 //import java.sql.PreparedStatement;
 //import java.sql.ResultSet;
@@ -45,18 +47,29 @@ public class Bill_DAO implements DAOBase<Bill> {
         return  result;
     }
 
+    
     @Override
     public String generateID() {
-    	String result = "HD";
+		String result = "HD";
+		LocalDate time = LocalDate.now();
+		DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("ddMMyyyy");
+		result += dateFormatter.format(time);
+
 		String hql = "from Bill where orderID like :orderID order by orderID desc";
 
 		try {
 			Query query = entityManager.createQuery(hql);
 			query.setParameter("orderID", result + "%");
 			query.setMaxResults(1);
-			Bill order = (Bill) query.getSingleResult();
+			Object object = null;
+			try {
+				object = query.getSingleResult();
+			} catch (Exception e) {
 
-			if (order != null) {
+			}
+
+			if (object != null) {
+				Bill order = (Bill) object;
 				String lastID = order.getOrderID();
 				String sNumber = lastID.substring(lastID.length() - 2);
 				int num = Integer.parseInt(sNumber) + 1;
@@ -64,6 +77,7 @@ public class Bill_DAO implements DAOBase<Bill> {
 			} else {
 				result += String.format("%04d", 0);
 			}
+			System.out.println(result);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
