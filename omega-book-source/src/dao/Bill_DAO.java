@@ -9,8 +9,6 @@ package dao;
 //import java.sql.PreparedStatement;
 //import java.sql.ResultSet;
 //import java.sql.SQLException;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -18,7 +16,6 @@ import java.util.List;
 //import entity.Customer;
 //import entity.Employee;
 import entity.Bill;
-import entity.Product;
 //import entity.OrderDetail;
 import entity.Promotion;
 import interfaces.DAOBase;
@@ -226,11 +223,7 @@ public class Bill_DAO implements DAOBase<Bill> {
 			e.printStackTrace();
 			return false;
 
-		} finally {
-			if (entityManager != null) {
-				entityManager.close();
-			}
-		}
+		} 
 	}
 
 	/**
@@ -246,15 +239,11 @@ public class Bill_DAO implements DAOBase<Bill> {
 
 			String hql = "SELECT o FROM Bill o WHERE o.orderID LIKE :orderIDPattern";
 
-			list = entityManager.createQuery(hql, Bill.class).setParameter("orderIDPattern", orderID + "%")
-					.getResultList();
-		} catch (Exception e) {
-			e.printStackTrace();
-		} finally {
-			if (entityManager != null) {
-				entityManager.close();
-			}
-		}
+    	        list = entityManager.createQuery(hql,Bill.class)
+    	    	        .setParameter("orderIDPattern", orderID + "%").getResultList();
+    	    } catch (Exception e) {
+    	        e.printStackTrace();
+    	    } 
 
 		ArrayList<Bill> result = new ArrayList<>(list);
 		return result;
@@ -291,13 +280,14 @@ public class Bill_DAO implements DAOBase<Bill> {
 					+ "WHERE FUNCTION('YEAR', o.orderAt) = :year " + "AND FUNCTION('MONTH', o.orderAt) = :month "
 					+ "AND o.status = true " + "GROUP BY DAY(o.orderAt)";
 
-			List<Object[]> resultList = entityManager.createQuery(hql, Object[].class).setParameter("year", year)
-					.setParameter("month", month).getResultList();
-			for (Object[] row : resultList) {
-				int dayOfMonth = (int) row[0];
-				double totalDue = (double) row[1];
-				result[dayOfMonth - 1] = totalDue;
-			}
+        } catch (Exception e) {
+            e.printStackTrace();
+        } 
+//        finally {
+//            if (entityManager != null) {
+//                entityManager.close();
+//            }
+//        }
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -314,10 +304,13 @@ public class Bill_DAO implements DAOBase<Bill> {
 
 		int result = 0;
 
-		try {
-
-			String hql = "SELECT COUNT(o.orderID) FROM Bill o " + "WHERE FUNCTION('YEAR', o.orderAt) = :year "
-					+ "AND FUNCTION('MONTH', o.orderAt) = :month " + "AND o.status = true";
+           result =  entityManager.createQuery(hql,Long.class)
+            		.setParameter("year", year)
+            		.setParameter("month", month).getSingleResult().intValue();
+            
+        } catch (Exception e) {
+            e.printStackTrace();
+        } 
 
 			List<Integer> resultList = entityManager.createQuery(hql, Integer.class).setParameter("year", year)
 					.setParameter("month", month).getResultList();
