@@ -42,7 +42,7 @@ public class ProductPromotionDetail_DAO implements DAOBase<ProductPromotionDetai
                        on pd.promotionID = p.promotionID
                        where endedDate > GETDATE() and productID = ?
                        """;
-        return (ArrayList<ProductPromotionDetail>) em.createNativeQuery(query, ProductPromotionDetail.class).setParameter(1, productID).getResultList();
+        return (ArrayList<ProductPromotionDetail>) em.createQuery(query, ProductPromotionDetail.class).setParameter(1, productID).getResultList();
     }
 
     @Override
