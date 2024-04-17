@@ -52,7 +52,8 @@ public class OrderPromotionManagement_GUI extends javax.swing.JPanel implements 
         init();
     }
     
-    private void init() {
+    @SuppressWarnings("unchecked")
+	private void init() {
         bus = new PromotionManagament_BUSImpl();
         //model
         tblModel_promotion = new DefaultTableModel(new String[]{"Mã khuyến mãi", "Loại", "Giảm giá", "Hạng khách hàng", "Trạng thái"}, 0);
@@ -168,7 +169,6 @@ public class OrderPromotionManagement_GUI extends javax.swing.JPanel implements 
         String promotionID = bus.generateID(PromotionType.ORDER, DiscountType.fromInt(type), endedDate);
         int rankCus = cmb_rankCus.getSelectedIndex();
         PromotionForOrder promotion = new PromotionForOrder(promotionID, startedDate, endedDate, DiscountType.fromInt(type), discount, CustomerRank.fromInt(rankCus));
-//        Promotion promotion = new Promotion(promotionID, startedDate, endedDate, PromotionType.ORDER, DiscountType.fromInt(type), discount, CustomerRank.fromInt(rankCus));
         return promotion;
     }
     
@@ -634,7 +634,7 @@ public class OrderPromotionManagement_GUI extends javax.swing.JPanel implements 
             return;
         }
         try {
-            Promotion newPromotion = getNewValue();
+            PromotionForOrder newPromotion = getNewValue();
             if(bus.addNewOrderPromotion(newPromotion)) {
                 Notifications.getInstance().show(Notifications.Type.SUCCESS, "Thêm thành công");
                 renderPromotionTables(bus.getAllPromotionForOrder());

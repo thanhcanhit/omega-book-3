@@ -162,7 +162,8 @@ public class ReturnOrderManagemant_GUI extends javax.swing.JPanel {
             Notifications.getInstance().show(Notifications.Type.ERROR, "Cập nhật không thành công");
     }
     private void Print() {
-        ReturnOrderPrinter printer = new ReturnOrderPrinter(getNewValue());
+    	ReturnOrder newReturnOrder = getNewValue();
+        ReturnOrderPrinter printer = new ReturnOrderPrinter(newReturnOrder);
         printer.generatePDF();
 //        ReturnOrderPrinter.PrintStatus status = printer.printFile();
 //        if (status == ReturnOrderPrinter.PrintStatus.NOT_FOUND_FILE) {

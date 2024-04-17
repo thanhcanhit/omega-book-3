@@ -105,7 +105,7 @@ public class PromotionManagament_BUSImpl implements PromotionManagement_BUS{
         return promotion_DAO.updateDateStart(pm);
     }
 
-    public boolean addNewOrderPromotion(Promotion newPromotion) {
+    public boolean addNewOrderPromotion(PromotionForOrder newPromotion) {
         return promotion_DAO.createForOrder(newPromotion);
     }
 
@@ -139,7 +139,6 @@ public class PromotionManagament_BUSImpl implements PromotionManagement_BUS{
 	}
 
 	public ArrayList<PromotionForOrder> searchForOrderById(String searchQuery) {
-		// TODO Auto-generated method stub
 		return promotion_DAO.getForOrder(searchQuery);
 	}
 
@@ -173,6 +172,10 @@ public class PromotionManagament_BUSImpl implements PromotionManagement_BUS{
 	public void createProductPromotionDetail(Promotion newPromotion, ArrayList<ProductPromotionDetail> cart) {
 		// TODO Auto-generated method stub
 		
+	}
+
+	public boolean addNewPromotionForProduct(PromotionForProduct newPromotion) {
+		return promotion_DAO.createForProduct(newPromotion);
 	}
 
 

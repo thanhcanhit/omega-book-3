@@ -103,11 +103,11 @@ public class ProductPromotionManagament_GUI extends javax.swing.JPanel {
         }
     };
 
-	private void renderPromotionTables(ArrayList<PromotionForProduct> allPromotionForCustomer) {
+	private void renderPromotionTables(ArrayList<PromotionForProduct> allPromotionForProduct) {
 		tblModel_inforProductPromotion.setRowCount(0);
 		String status, type, discount;
 
-		for (PromotionForProduct promotion : allPromotionForCustomer) {
+		for (PromotionForProduct promotion : allPromotionForProduct) {
 			if (promotion.getEndedDate().after(java.sql.Date.valueOf(LocalDate.now())))
 				status = "Còn hạn";
 			else
@@ -647,8 +647,8 @@ public class ProductPromotionManagament_GUI extends javax.swing.JPanel {
 			return;
 		}
 		try {
-			Promotion newPromotion = getNewValue();
-			if (bus.addNewPromotion(newPromotion)) {
+			PromotionForProduct newPromotion = getNewValue();
+			if (bus.addNewPromotionForProduct(newPromotion)) {
 				Notifications.getInstance().show(Notifications.Type.SUCCESS, "Thêm thành công");
 				bus.createProductPromotionDetail(newPromotion, cart);
 				renderPromotionTables(bus.getAllPromotionForProduct());

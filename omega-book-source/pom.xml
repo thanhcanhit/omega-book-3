@@ -82,6 +82,14 @@
 			<artifactId>poi-ooxml</artifactId>
 			<version>3.11</version>
 		</dependency>
+		<dependency>
+			<groupId>org.apache.poi</groupId>
+			<artifactId>poi</artifactId>
+			<version>3.17</version>
+		</dependency>
+<!-- Thanks for using https://jar-download.com -->
+
+
 		<!-- https://mvnrepository.com/artifact/com.itextpdf/itextpdf -->
 		<dependency>
 			<groupId>com.itextpdf</groupId>

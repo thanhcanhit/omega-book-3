@@ -44,7 +44,7 @@ public interface PromotionManagement_BUS {
 
     public boolean removeOrderPromotionOther(Promotion pm) ;
 
-    public boolean addNewOrderPromotion(Promotion newPromotion) ;
+    public boolean addNewOrderPromotion(PromotionForOrder newPromotion) ;
 
     public ArrayList<PromotionForProduct> filterForProduct(int type, int status);
 

@@ -18,7 +18,7 @@ public class Store_DAO implements DAOBase<Store>{
 
 	@Override
     public Store getOne(String id) {
-		return em.createNamedQuery("Store.findByStoreID", Store.class).setParameter("storeID", id).getSingleResult();
+		return em.find(Store.class, id);
 	}
 
     @Override

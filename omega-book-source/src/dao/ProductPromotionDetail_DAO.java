@@ -34,15 +34,13 @@ public class ProductPromotionDetail_DAO implements DAOBase<ProductPromotionDetai
         		.setParameter("promotion.promotionID", promotionID).getResultList();
     }
 
-    @SuppressWarnings("unchecked")
-	public ArrayList<ProductPromotionDetail> getAllForProductAndAvailable(String productID) {        
+    public ArrayList<ProductPromotionDetail> getAllForProductAndAvailable(String productID) {        
         String query = """
-                       select * 
-                       from ProductPromotionDetail as pd join Promotion as p 
-                       on pd.promotionID = p.promotionID
-                       where endedDate > GETDATE() and productID = ?
+                       select pd
+                       from ProductPromotionDetail pd 
+                       where pd.endedDate > GETDATE() and pd.productID = :id
                        """;
-        return (ArrayList<ProductPromotionDetail>) em.createQuery(query, ProductPromotionDetail.class).setParameter(1, productID).getResultList();
+        return (ArrayList<ProductPromotionDetail>) em.createNamedQuery(query, ProductPromotionDetail.class).setParameter("id", productID).getResultList();
     }
 
     @Override

@@ -37,7 +37,7 @@ public interface ReturnOrderManagement_BUS {
 
     public Product getProduct(String productID);
 
-    public void createReturnOrderDetail(ReturnOrder newReturnOrder, ArrayList<ReturnOrderDetail> cart) ;
+    public boolean createReturnOrderDetail(ReturnOrder newReturnOrder, ArrayList<ReturnOrderDetail> cart) ;
 
     public void updateReturnOrderDetail(ReturnOrder newReturnOrder, ArrayList<ReturnOrderDetail> listDetail);
     

@@ -110,7 +110,8 @@ public class Employee_DAO implements DAOBase<Employee> {
 		ArrayList<Employee> result = new ArrayList<>();
 		String hql = "FROM Employee WHERE employeeID LIKE :searchQuery";
 		try {
-			em.createQuery(hql, Employee.class).getResultStream().forEach(employee -> result.add(employee));
+			em.createQuery(hql, Employee.class).setParameter("searchQuery", searchQuery)
+			.getResultStream().forEach(employee -> result.add(employee));
 			return result;
 		} catch (Exception e) {
 			e.printStackTrace();
