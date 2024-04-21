@@ -4,6 +4,8 @@
  */
 package bus.impl;
 
+import java.rmi.RemoteException;
+import java.rmi.server.UnicastRemoteObject;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -23,24 +25,30 @@ import utilities.CashCountSheetPrinter;
  *
  * @author Hoàng Khang
  */
-public class StatementCashCount_BUSImpl implements StatementCashCount_BUS {
+public class StatementCashCount_BUSImpl extends UnicastRemoteObject implements StatementCashCount_BUS {
 
-    private Employee_DAO employee_DAO = new Employee_DAO();
+    public StatementCashCount_BUSImpl() throws RemoteException {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+
+	private static final long serialVersionUID = -7471920136342737504L;
+	private Employee_DAO employee_DAO = new Employee_DAO();
     @SuppressWarnings("unused")
 	private CashCount_DAO cashCount_DAO = new CashCount_DAO();
     private CashCountSheet_DAO cashCountSheet_DAO = new CashCountSheet_DAO();
     @SuppressWarnings("unused")
 	private CashCountSheetDetail_DAO cashCountSheetDetail_DAO;
 
-    public Employee getEmployeeByID(String id) {
+    public Employee getEmployeeByID(String id) throws RemoteException{
         return employee_DAO.getOne(id);
     }
 
-    public CashCountSheet getOne(String id) {
+    public CashCountSheet getOne(String id) throws RemoteException{
         return cashCountSheet_DAO.getOne(id);
     }
 
-    public void createCashCountSheet(ArrayList<CashCount> cashCountList, ArrayList<Employee> employees, Date start) {
+    public void createCashCountSheet(ArrayList<CashCount> cashCountList, ArrayList<Employee> employees, Date start) throws RemoteException{
         Date end = new Date();
         CashCountSheet cashCountSheet = new CashCountSheet(generateID(start));
         //Set danh sách CashCount
@@ -60,7 +68,7 @@ public class StatementCashCount_BUSImpl implements StatementCashCount_BUS {
 
     }
 
-    public String generateID(Date date) {
+    public String generateID(Date date) throws RemoteException{
         //Khởi tạo mã Khách hàng KH
         String prefix = "KTI";
         //8 Kí tự tiếp theo là ngày và giờ bắt đầu kiểm tiền
@@ -79,13 +87,13 @@ public class StatementCashCount_BUSImpl implements StatementCashCount_BUS {
         return prefix;
     }
 
-    public void GeneratePDF(CashCountSheet cash) {
+    public void GeneratePDF(CashCountSheet cash) throws RemoteException{
         CashCountSheetPrinter printer = new CashCountSheetPrinter(cash);
         printer.generatePDF();
 
     }
     
-      public double getTotal(ArrayList<CashCount> list) {
+      public double getTotal(ArrayList<CashCount> list) throws RemoteException{
         double sum = 0;
         for (CashCount cashCount : list) {
             sum += cashCount.getTotal();

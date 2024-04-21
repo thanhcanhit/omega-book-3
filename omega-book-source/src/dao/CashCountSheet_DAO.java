@@ -23,7 +23,7 @@ public class CashCountSheet_DAO {
 	EntityManager em;
 
     public CashCountSheet_DAO() {
-    	em = AccessDatabase.getEntityManager();
+    	em = AccessDatabase.getInstance();
 	}
 
     public CashCountSheet getOne(String id) {

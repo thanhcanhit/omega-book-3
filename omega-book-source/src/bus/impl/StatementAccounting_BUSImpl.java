@@ -4,6 +4,8 @@
  */
 package bus.impl;
 
+import java.rmi.RemoteException;
+import java.rmi.server.UnicastRemoteObject;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -28,20 +30,27 @@ import utilities.AcountingVoucherPrinter;
  *
  * @author Hoàng Khang
  */
-public class StatementAcounting_BUSImpl implements StatementAccounting_BUS{
+public class StatementAccounting_BUSImpl extends UnicastRemoteObject implements StatementAccounting_BUS{
 
-    private AcountingVoucher_DAO acountingVoucher_DAO = new AcountingVoucher_DAO();
+
+    public StatementAccounting_BUSImpl() throws RemoteException {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+
+	private static final long serialVersionUID = -8532042707476409897L;
+	private AcountingVoucher_DAO acountingVoucher_DAO = new AcountingVoucher_DAO();
     private CashCountSheet_DAO cashCountSheet_DAO = new CashCountSheet_DAO();
     private Employee_DAO employee_DAO = new Employee_DAO();
     private Bill_DAO order_DAO = new Bill_DAO();
     @SuppressWarnings("unused")
 	private StatementCashCount_BUSImpl statementCashCount_BUS = new StatementCashCount_BUSImpl();
 
-    public AcountingVoucher getAcountingByID(String id) {
+    public AcountingVoucher getAcountingByID(String id) throws RemoteException{
         return acountingVoucher_DAO.getOne(id);
     }
 
-    public AcountingVoucher getLastAcounting() {
+    public AcountingVoucher getLastAcounting() throws RemoteException{
         Date date = new Date();
         SimpleDateFormat dateFormat = new SimpleDateFormat("ddMMyyyy");
         String format = dateFormat.format(date);
@@ -71,7 +80,7 @@ public class StatementAcounting_BUSImpl implements StatementAccounting_BUS{
      * @param date
      * @return
      */
-    public String generateID(Date date) {
+    public String generateID(Date date) throws RemoteException{
         //Khởi tạo mã phiếu kết toán
         String prefix = "KTO";
         //8 Kí tự tiếp theo là ngày và giờ bắt đầu kết toán
@@ -91,7 +100,7 @@ public class StatementAcounting_BUSImpl implements StatementAccounting_BUS{
 
     }
 
-    public void createAcountingVoucher(CashCountSheet cashCountSheet, Date end) {
+    public void createAcountingVoucher(CashCountSheet cashCountSheet, Date end) throws RemoteException{
         Date start = getLastAcounting().getEndedDate();
         ArrayList<Bill> list = getAllOrderInAcounting(start, end);
         String id = generateID(end);
@@ -109,11 +118,11 @@ public class StatementAcounting_BUSImpl implements StatementAccounting_BUS{
 
     }
 
-    public Employee getEmployeeByID(String id) {
+    public Employee getEmployeeByID(String id) throws RemoteException{
         return employee_DAO.getOne(id);
     }
 
-    public ArrayList<Bill> getAllOrderInAcounting(Date start, Date end) {
+    public ArrayList<Bill> getAllOrderInAcounting(Date start, Date end) throws RemoteException{
         ArrayList<Bill> allOrder = order_DAO.getAll();
         ArrayList<Bill> list = new ArrayList<>();
         for (Bill order : allOrder) {
@@ -125,7 +134,7 @@ public class StatementAcounting_BUSImpl implements StatementAccounting_BUS{
         return list;
     }
 
-    public double getSale(ArrayList<Bill> list) {
+    public double getSale(ArrayList<Bill> list) throws RemoteException{
         double sum = 0;
         for (Bill order : list) {
             sum += order.getTotalDue();
@@ -133,7 +142,7 @@ public class StatementAcounting_BUSImpl implements StatementAccounting_BUS{
         return sum;
     }
 
-    public double getPayViaATM(ArrayList<Bill> list) {
+    public double getPayViaATM(ArrayList<Bill> list) throws RemoteException{
         double sum = 0;
         for (Bill order : list) {
             if (order.isPayment()) {
@@ -143,7 +152,7 @@ public class StatementAcounting_BUSImpl implements StatementAccounting_BUS{
         return sum;
     }
 
-    public double getTotal(ArrayList<CashCount> list) {
+    public double getTotal(ArrayList<CashCount> list) throws RemoteException{
         double sum = 0;
         for (CashCount cashCount : list) {
             sum += cashCount.getTotal();
@@ -151,7 +160,7 @@ public class StatementAcounting_BUSImpl implements StatementAccounting_BUS{
         return sum;
     }
 
-    public void generatePDF(AcountingVoucher acounting) {
+    public void generatePDF(AcountingVoucher acounting) throws RemoteException{
 //        tạo file pdf và hiển thị + in file pdf đó
         AcountingVoucherPrinter printer = new AcountingVoucherPrinter(acounting);
         printer.generatePDF();

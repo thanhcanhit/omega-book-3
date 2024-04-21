@@ -13,7 +13,7 @@ import utilities.AccessDatabase;
 public class Store_DAO implements DAOBase<Store>{
 	EntityManager em;
 	public Store_DAO() {
-		em = AccessDatabase.getEntityManager();
+		em = AccessDatabase.getInstance();
 	}
 
 	@Override

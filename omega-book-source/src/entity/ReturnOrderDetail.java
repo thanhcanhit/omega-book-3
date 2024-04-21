@@ -18,10 +18,11 @@ import jakarta.persistence.*;
 })
 public class ReturnOrderDetail implements Serializable {
 
+	private static final long serialVersionUID = -6574645759159348549L;
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 1L;
+	
 	/* Hằng báo lỗi*/
 	public static final String ORDERID_EMPTY = "Hoá đơn không được phép rỗng";
 	public static final String PRODUCT_EMPTY = "Sản phẩm không được phép rỗng";

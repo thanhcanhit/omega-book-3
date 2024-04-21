@@ -17,7 +17,7 @@ import utilities.AccessDatabase;
  * @author Hoàng Khang
  */
 public class AcountingVoucher_DAO implements interfaces.DAOBase<AcountingVoucher> {
-	private static EntityManager entityManager = AccessDatabase.getEntityManager();
+	private static EntityManager entityManager = AccessDatabase.getInstance();
 
 
     public AcountingVoucher_DAO() {

@@ -4,6 +4,8 @@
  */
 package bus.impl;
 
+import java.rmi.RemoteException;
+import java.rmi.server.UnicastRemoteObject;
 import java.util.Collections;
 import java.util.List;
 
@@ -16,23 +18,29 @@ import utilities.CashCountSheetPrinter;
  *
  * @author Hoàng Khang
  */
-public class ViewCashCountSheetList_BUSImpl implements ViewCashCountSheetList_BUS {
+public class ViewCashCountSheetList_BUSImpl extends UnicastRemoteObject implements ViewCashCountSheetList_BUS {
 
-    private CashCountSheet_DAO cashDAO = new CashCountSheet_DAO();
+    public ViewCashCountSheetList_BUSImpl() throws RemoteException {
+		super();
+		// TODO Auto-generated constructor stub
+	}
 
-    public List<CashCountSheet> getAll() {
+	private static final long serialVersionUID = 5010136432970475895L;
+	private CashCountSheet_DAO cashDAO = new CashCountSheet_DAO();
+
+    public List<CashCountSheet> getAll() throws RemoteException{
         List<CashCountSheet> list = cashDAO.getAll();
         Collections.sort(list, Collections.reverseOrder());
         return list;
     }
 
-    public void GeneratePDF(CashCountSheet cash) {
+    public void GeneratePDF(CashCountSheet cash) throws RemoteException{
         CashCountSheetPrinter printer = new CashCountSheetPrinter(cash);
         printer.generatePDF();
 
     }
 
-    public CashCountSheet getOne(String id) {
+    public CashCountSheet getOne(String id) throws RemoteException{
         return cashDAO.getOne(id);
     }
 

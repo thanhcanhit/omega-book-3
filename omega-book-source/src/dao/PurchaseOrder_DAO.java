@@ -26,7 +26,7 @@ public class PurchaseOrder_DAO implements DAOBase<PurchaseOrder> {
 
 	public PurchaseOrder_DAO() {
 //		super();
-		entityManager = AccessDatabase.getEntityManager();
+		entityManager = AccessDatabase.getInstance();
 	}
 
 	@Override

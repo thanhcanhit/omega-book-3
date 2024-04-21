@@ -15,7 +15,7 @@ public interface Sales_BUS extends Remote{
 
     public Customer getCustomerByPhone(String phone) throws RemoteException;
 
-    public Bill createNewOrder() throws Exception ;
+    public Bill createNewOrder() throws RemoteException,Exception ;
 
     public boolean saveToDatabase(Bill order) throws RemoteException;
     public boolean updateInDatabase(Bill order) throws RemoteException;

@@ -34,7 +34,7 @@ public class Bill_DAO implements DAOBase<Bill> {
 	EntityManager entityManager;
 
 	public Bill_DAO() {
-		entityManager = AccessDatabase.getEntityManager();
+		entityManager = AccessDatabase.getInstance();
 	}
 
 	@Override

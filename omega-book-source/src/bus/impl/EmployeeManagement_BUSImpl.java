@@ -21,6 +21,7 @@ import entity.Store;
  *
  * @author Như Tâm
  */
+<<<<<<< HEAD:omega-book-source/src/bus/impl/EmployeeManagament_BUSImpl.java
 public class EmployeeManagament_BUSImpl extends UnicastRemoteObject implements EmployeeManagement_BUS{
     public EmployeeManagament_BUSImpl() throws RemoteException {
 		super();
@@ -32,6 +33,10 @@ public class EmployeeManagament_BUSImpl extends UnicastRemoteObject implements E
 	 */
 	private static final long serialVersionUID = -4765156524097160811L;
 	private Employee_DAO dao = new Employee_DAO();
+=======
+public class EmployeeManagement_BUSImpl implements EmployeeManagement_BUS{
+    private Employee_DAO dao = new Employee_DAO();
+>>>>>>> ddc6b436ec355db02ea7d7fa653c6440e65974fb:omega-book-source/src/bus/impl/EmployeeManagement_BUSImpl.java
     private Account_DAO accountDAO = new Account_DAO();
     private Store_DAO store_dao = new Store_DAO();
     
