@@ -135,7 +135,8 @@ public class OrderPromotionManagement_GUI extends javax.swing.JPanel implements 
         }
     }
     
-    private boolean validPromotion() {
+    @SuppressWarnings("unused")
+	private boolean validPromotion() {
         if(txt_discountPromo.getText().equals("")) {
             Notifications.getInstance().show(Notifications.Type.INFO, "Vui lòng nhập giá trị khuyến mãi");
             txt_discountPromo.requestFocus();
@@ -575,7 +576,6 @@ public class OrderPromotionManagement_GUI extends javax.swing.JPanel implements 
             JOptionPane.YES_NO_OPTION,
             JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
                 try {
-                    // Xoá
                     removeOrderPromotionOther(pm);
                 } catch (Exception ex) {
                     ex.printStackTrace();
@@ -619,7 +619,12 @@ public class OrderPromotionManagement_GUI extends javax.swing.JPanel implements 
             Notifications.getInstance().show(Notifications.Type.INFO, "Vui lòng điền mã khuyến mãi");
             return;
         }
-        renderPromotionTables(bus.searchForOrderById(searchQuery));
+        ArrayList<PromotionForOrder> list = bus.searchForOrderById(searchQuery);
+        if(list.size() == 0) {
+        	 Notifications.getInstance().show(Notifications.Type.INFO, "Không tìm thấy khuyến mãi");
+        	 return;
+        }
+        renderPromotionTables(list);
     }//GEN-LAST:event_btn_searchPromoActionPerformed
     
     private void btn_searchFilterPromoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_searchFilterPromoActionPerformed
@@ -659,7 +664,12 @@ public class OrderPromotionManagement_GUI extends javax.swing.JPanel implements 
                 Notifications.getInstance().show(Notifications.Type.INFO, "Vui lòng điền mã khuyến mãi");
                 return;
             }
-            renderPromotionTables(bus.searchForOrderById(searchQuery));
+            ArrayList<PromotionForOrder> list = bus.searchForOrderById(searchQuery);
+            if(list.size() == 0) {
+            	 Notifications.getInstance().show(Notifications.Type.INFO, "Không tìm thấy khuyến mãi");
+            	 return;
+            }
+            renderPromotionTables(list);
         }
     }//GEN-LAST:event_txt_searchPromoKeyPressed
 

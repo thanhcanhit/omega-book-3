@@ -268,7 +268,7 @@ public class EmployeeManagement_GUI extends javax.swing.JPanel {
         }
     }
     private static void writeHeader(Sheet sheet, int rowIndex) {
-        sheet.addMergedRegion(new CellRangeAddress(0, 0, 0, 8));
+        //sheet.addMergedRegion(new CellRangeAddress(0, 0, 0, 8));
         sheet.addMergedRegion(new CellRangeAddress(1, 1, 0, 3));
         sheet.addMergedRegion(new CellRangeAddress(2, 2, 0, 3));
 

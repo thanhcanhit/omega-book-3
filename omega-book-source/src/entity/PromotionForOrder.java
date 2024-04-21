@@ -9,7 +9,7 @@ import jakarta.persistence.*;
 @Entity
 @NamedQueries({
 	@NamedQuery(name = "PromotionForOrder.findAll", query = "SELECT po FROM PromotionForOrder po"),
-	@NamedQuery(name = "PromotionForOrder.findByPromotionID", query = "SELECT po FROM PromotionForOrder po WHERE po.promotionID = :promotionID"),
+	@NamedQuery(name = "PromotionForOrder.findByPromotionID", query = "SELECT po FROM PromotionForOrder po WHERE po.promotionID like :promotionID"),
 })
 public class PromotionForOrder extends Promotion {
 	/**

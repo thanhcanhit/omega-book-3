@@ -111,7 +111,7 @@ public class MenuItem extends JPanel {
             if (i == 0) {
 //                Chuyển thành icon bị khóa nếu tài khoản không có quyền
                 if (isBan) {
-                    menuItem.setIcon(SVGIcon.getSVGIcon("imgs/menu/lock.svg"));
+                    menuItem.setIcon(SVGIcon.getSVGIcon("resources/imgs/menu/lock.svg"));
                 } else {
                     menuItem.setIcon(getIcon());
                 }
@@ -133,7 +133,7 @@ public class MenuItem extends JPanel {
             } else {
                 final int subIndex = i;
                 if (isBan) {
-                    menuItem.setIcon(SVGIcon.getSVGIcon("imgs/menu/lock.svg"));
+                    menuItem.setIcon(SVGIcon.getSVGIcon("resources/imgs/menu/lock.svg"));
                 }
                 menuItem.addActionListener((ActionEvent e) -> {
                     if (isBan) {

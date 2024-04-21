@@ -1,5 +1,7 @@
 package bus;
 
+import enums.Type;
+
 public interface StatisticSales_BUS {
 	 public int getTotalNumberOrder(int month, int year);
 	    public int getTotalNumberPurchaseOrder(int month, int year);
@@ -9,6 +11,6 @@ public interface StatisticSales_BUS {
 	    
 
 	    public double[] getTotalPerDay(int month, int year);
-	    public int getQuantityProductType(int type, int month, int year);
+	    public int getQuantityProductType(Type type, int month, int year);
 	    
 }

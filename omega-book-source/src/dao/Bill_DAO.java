@@ -5,12 +5,12 @@
  */
 package dao;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 //import java.sql.Date;
 //import java.sql.PreparedStatement;
 //import java.sql.ResultSet;
 //import java.sql.SQLException;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -18,7 +18,6 @@ import java.util.List;
 //import entity.Customer;
 //import entity.Employee;
 import entity.Bill;
-import entity.Product;
 //import entity.OrderDetail;
 import entity.Promotion;
 import interfaces.DAOBase;
@@ -48,18 +47,29 @@ public class Bill_DAO implements DAOBase<Bill> {
         return  result;
     }
 
+    
     @Override
     public String generateID() {
-    	String result = "HD";
+		String result = "HD";
+		LocalDate time = LocalDate.now();
+		DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("ddMMyyyy");
+		result += dateFormatter.format(time);
+
 		String hql = "from Bill where orderID like :orderID order by orderID desc";
 
 		try {
 			Query query = entityManager.createQuery(hql);
 			query.setParameter("orderID", result + "%");
 			query.setMaxResults(1);
-			Bill order = (Bill) query.getSingleResult();
+			Object object = null;
+			try {
+				object = query.getSingleResult();
+			} catch (Exception e) {
 
-			if (order != null) {
+			}
+
+			if (object != null) {
+				Bill order = (Bill) object;
 				String lastID = order.getOrderID();
 				String sNumber = lastID.substring(lastID.length() - 2);
 				int num = Integer.parseInt(sNumber) + 1;
@@ -67,6 +77,7 @@ public class Bill_DAO implements DAOBase<Bill> {
 			} else {
 				result += String.format("%04d", 0);
 			}
+			System.out.println(result);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -134,8 +145,18 @@ public class Bill_DAO implements DAOBase<Bill> {
 
     @Override
     public Boolean delete(String id) {
-    	entityManager.remove(entityManager.find(Bill.class, id));
-    	return entityManager.find(Bill.class, id) == null;
+    	int n = 0;
+    	try {
+    		Bill bill = entityManager.find(Bill.class, id);
+			entityManager.getTransaction().begin();
+			entityManager.remove(bill);
+			entityManager.getTransaction().commit();
+			n = 1;
+		} catch (Exception e) {
+			entityManager.getTransaction().rollback();
+			e.printStackTrace();
+    	}
+    	return n > 0;
     }
 
     public int getLength() {
@@ -177,11 +198,7 @@ public class Bill_DAO implements DAOBase<Bill> {
 
         } catch (Exception e) {
             e.printStackTrace();
-        } finally {
-            if (entityManager != null) {
-                entityManager.close();
-            }
-        }
+        } 
 
         return result;
     }
@@ -218,11 +235,7 @@ public class Bill_DAO implements DAOBase<Bill> {
             e.printStackTrace();
             return false;
 
-        } finally {
-            if (entityManager != null) {
-                entityManager.close();
-            }
-        }
+        } 
     }
 
     /**
@@ -242,11 +255,7 @@ public class Bill_DAO implements DAOBase<Bill> {
     	    	        .setParameter("orderIDPattern", orderID + "%").getResultList();
     	    } catch (Exception e) {
     	        e.printStackTrace();
-    	    } finally {
-    	        if (entityManager != null) {
-    	            entityManager.close();
-    	        }
-    	    }
+    	    } 
 
     	    ArrayList<Bill> result = new ArrayList<>(list);
     	    return result;
@@ -297,11 +306,12 @@ public class Bill_DAO implements DAOBase<Bill> {
 
         } catch (Exception e) {
             e.printStackTrace();
-        } finally {
-            if (entityManager != null) {
-                entityManager.close();
-            }
-        }
+        } 
+//        finally {
+//            if (entityManager != null) {
+//                entityManager.close();
+//            }
+//        }
 
         return result;
     }
@@ -317,20 +327,13 @@ public class Bill_DAO implements DAOBase<Bill> {
                          "AND FUNCTION('MONTH', o.orderAt) = :month " +
                          "AND o.status = true";
 
-            List<Integer> resultList = entityManager.createQuery(hql,Integer.class)
+           result =  entityManager.createQuery(hql,Long.class)
             		.setParameter("year", year)
-            		.setParameter("month", month).getResultList();
-            if (resultList != null && !resultList.isEmpty()) {
-                result = resultList.get(0).intValue(); 
-            }
-
+            		.setParameter("month", month).getSingleResult().intValue();
+            
         } catch (Exception e) {
             e.printStackTrace();
-        } finally {
-            if (entityManager != null) {
-                entityManager.close();
-            }
-        }
+        } 
 
         return result;
     }
@@ -348,18 +351,19 @@ public class Bill_DAO implements DAOBase<Bill> {
 
         } catch (Exception e) {
             e.printStackTrace();
-        } finally {
-            if (entityManager != null) {
-                entityManager.close();
-            }
-        }
+        } 
         return result;
     }
 
     public void clearExpiredOrderSaved() {
+//    	String query = "SELECT * FROM Bill "
+//    			+ "WHERE o.status = 0 AND "
+//    			+ "DATEDIFF(DAY, o.orderAt, CONVERT(date, GETDATE())) < 1";
         try {
         	OrderDetail_DAO od_DAO = new OrderDetail_DAO();
            List<Bill> resultSet=entityManager.createNamedQuery("Bill.clearExpiredOrderSaved",Bill.class).getResultList();
+//        	@SuppressWarnings("unchecked")
+//			List<Bill> resultSet = entityManager.createNativeQuery(query).getResultList();
            resultSet.forEach(x->{
         	   od_DAO.delete(x.getOrderID());
            });
@@ -388,6 +392,8 @@ public class Bill_DAO implements DAOBase<Bill> {
     }
 
     public int getQuantityOrderSaved() {
-        return (int) entityManager.createNamedQuery("Bill.getQuantityOrderSaved").getSingleResult();
+    	int n = 0;
+    	n = Integer.valueOf(entityManager.createNamedQuery("Bill.getQuantityOrderSaved",Long.class).getSingleResult().toString());
+        return n;
     }
 }

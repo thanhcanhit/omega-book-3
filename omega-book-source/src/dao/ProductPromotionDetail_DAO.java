@@ -37,10 +37,10 @@ public class ProductPromotionDetail_DAO implements DAOBase<ProductPromotionDetai
     public ArrayList<ProductPromotionDetail> getAllForProductAndAvailable(String productID) {        
         String query = """
                        select pd
-                       from ProductPromotionDetail pd 
-                       where pd.endedDate > GETDATE() and pd.productID = :id
+                       from ProductPromotionDetail pd  join pd.product as p join pd.promotion as pro
+                       where pro.endedDate > current_date() and p.productID = :id
                        """;
-        return (ArrayList<ProductPromotionDetail>) em.createNamedQuery(query, ProductPromotionDetail.class).setParameter("id", productID).getResultList();
+        return (ArrayList<ProductPromotionDetail>) em.createQuery(query, ProductPromotionDetail.class).setParameter("id", productID).getResultList();
     }
 
     @Override

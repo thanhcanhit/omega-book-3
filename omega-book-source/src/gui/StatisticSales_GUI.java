@@ -8,6 +8,7 @@ import java.awt.Color;
 import java.beans.PropertyChangeEvent;
 
 import bus.impl.StatisticSales_BUSImpl;
+import enums.Type;
 import gui.customchart.ModelChart;
 import gui.customchart.piechart.ModelPolarAreaChart;
 import gui.customchart.piechart.PolarAreaChart;
@@ -95,8 +96,8 @@ public final class StatisticSales_GUI extends javax.swing.JPanel {
         
         polarAreaChart.setBackground(getBackground());
         
-        double bookItem = bus.getQuantityProductType(1, month_statisticSales.getMonth() + 1, year_statisticSales.getYear());
-        double categoryItem =bus.getQuantityProductType(2, month_statisticSales.getMonth() + 1, year_statisticSales.getYear());
+        double bookItem = bus.getQuantityProductType(Type.BOOK, month_statisticSales.getMonth() + 1, year_statisticSales.getYear());
+        double categoryItem =bus.getQuantityProductType(Type.STATIONERY, month_statisticSales.getMonth() + 1, year_statisticSales.getYear());
         double sum = bookItem+categoryItem;
         polarAreaChart.addItem(new ModelPolarAreaChart(new Color(71, 118, 185), "Sách", (bookItem*100)/sum));
 
