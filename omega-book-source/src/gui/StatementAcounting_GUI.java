@@ -4,6 +4,7 @@
  */
 package gui;
 
+import java.rmi.RemoteException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -61,8 +62,9 @@ public class StatementAcounting_GUI extends javax.swing.JPanel {
 
 	/**
 	 * Creates new form Statement_GUI
+	 * @throws RemoteException 
 	 */
-	public StatementAcounting_GUI() {
+	public StatementAcounting_GUI() throws RemoteException {
 		initTableModel();
 		initComponents();
 		initForm();
@@ -90,7 +92,12 @@ public class StatementAcounting_GUI extends javax.swing.JPanel {
 						}
 
 //                        Notifications.getInstance().show(Notifications.Type.ERROR, "Số lượng không hợp lệ!");
-						sum = acountingVoucher_BUS.getTotal(getValueInTable());
+						try {
+							sum = acountingVoucher_BUS.getTotal(getValueInTable());
+						} catch (RemoteException e1) {
+							// TODO Auto-generated catch block
+							e1.printStackTrace();
+						}
 						txt_difference.setText(FormatNumber.toVND(sum - withdraw - 1765000));
 						txt_total.setText(FormatNumber.toVND(sum));
 						txt_totalMoney.setText(FormatNumber.toVND(sum));
@@ -117,7 +124,7 @@ public class StatementAcounting_GUI extends javax.swing.JPanel {
 		}
 	}
 
-	public void initForm() {
+	public void initForm() throws RemoteException {
 		// Lấy thời gian kết thúc phiếu kết toán trước đó (Thời gian bắt đầu
 		// lần kết toán này)
 		Date start = acountingVoucher_BUS.getLastAcounting().getEndedDate();
@@ -226,8 +233,9 @@ public class StatementAcounting_GUI extends javax.swing.JPanel {
 	 * Tạo phiếu kiểm tiền dựa trên thông tin có sẵn
 	 *
 	 * @return
+	 * @throws RemoteException 
 	 */
-	public CashCountSheet getCashCountSheet() {
+	public CashCountSheet getCashCountSheet() throws RemoteException {
 		String cashCountSheetID = statementCashCount_BUS.generateID(endDate);
 		ArrayList<CashCount> cashCounts = getValueInTable();
 		ArrayList<CashCountSheetDetail> listEmployee = new ArrayList<>();
@@ -428,7 +436,12 @@ public class StatementAcounting_GUI extends javax.swing.JPanel {
 		btn_addEmployee.setText("+");
 		btn_addEmployee.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
-				btn_addEmployeeActionPerformed(evt);
+				try {
+					btn_addEmployeeActionPerformed(evt);
+				} catch (RemoteException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 			}
 		});
 		pnl_employeeAcounting2.add(btn_addEmployee);
@@ -587,7 +600,12 @@ public class StatementAcounting_GUI extends javax.swing.JPanel {
 				"background: $Menu.background;" + "foreground: $Menu.foreground;");
 		btn_accountingConform.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
-				btn_accountingConformActionPerformed(evt);
+				try {
+					btn_accountingConformActionPerformed(evt);
+				} catch (RemoteException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 			}
 		});
 		pnl_accountingConfirm.add(btn_accountingConform, java.awt.BorderLayout.PAGE_END);
@@ -676,7 +694,7 @@ public class StatementAcounting_GUI extends javax.swing.JPanel {
 		// TODO add your handling code here:
 	}// GEN-LAST:event_txt_employeeAccounting2ActionPerformed
 
-	private void btn_accountingConformActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_btn_accountingConformActionPerformed
+	private void btn_accountingConformActionPerformed(java.awt.event.ActionEvent evt) throws RemoteException {// GEN-FIRST:event_btn_accountingConformActionPerformed
 		// TODO add your handling code here:
 		if (employee2 != null) {
 			acountingVoucher_BUS.createAcountingVoucher(getCashCountSheet(), endDate);
@@ -719,7 +737,7 @@ public class StatementAcounting_GUI extends javax.swing.JPanel {
 		// TODO add your handling code here:
 	}// GEN-LAST:event_txt_totalActionPerformed
 
-	private void btn_addEmployeeActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_btn_addEmployeeActionPerformed
+	private void btn_addEmployeeActionPerformed(java.awt.event.ActionEvent evt) throws RemoteException {// GEN-FIRST:event_btn_addEmployeeActionPerformed
 		String id = JOptionPane.showInputDialog("Nhập mã nhân viên");
 		Employee e = acountingVoucher_BUS.getEmployeeByID(id);
 		System.out.println(e);

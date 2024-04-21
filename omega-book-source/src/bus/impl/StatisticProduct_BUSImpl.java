@@ -18,7 +18,7 @@ import bus.StatisticProduct_BUS;
  * @author KienTran
  */
 public class StatisticProduct_BUSImpl extends UnicastRemoteObject implements StatisticProduct_BUS{
-    protected StatisticProduct_BUSImpl() throws RemoteException {
+    public StatisticProduct_BUSImpl() throws RemoteException {
 		super();
 		// TODO Auto-generated constructor stub
 	}

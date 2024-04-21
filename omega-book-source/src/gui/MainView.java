@@ -9,6 +9,7 @@ import java.awt.Insets;
 import java.awt.LayoutManager;
 import java.awt.event.ActionEvent;
 import java.io.File;
+import java.rmi.RemoteException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -66,7 +67,7 @@ public class MainView extends JLayeredPane {
 		initMenuArrowIcon();
 	}
 
-	public void refreshSalesForm() {
+	public void refreshSalesForm() throws RemoteException {
 		salesForm = new Sales_GUI();
 		Application.showForm(salesForm);
 	}
@@ -143,13 +144,28 @@ public class MainView extends JLayeredPane {
 			case 7:
 				switch (subIndex) {
 				case 1:
-					Application.showForm(new StatisticSales_GUI());
+					try {
+						Application.showForm(new StatisticSales_GUI());
+					} catch (RemoteException e5) {
+						// TODO Auto-generated catch block
+						e5.printStackTrace();
+					}
 					break;
 				case 2:
-					Application.showForm(new StatisticProduct_GUI());
+					try {
+						Application.showForm(new StatisticProduct_GUI());
+					} catch (RemoteException e4) {
+						// TODO Auto-generated catch block
+						e4.printStackTrace();
+					}
 					break;
 				case 3:
-					Application.showForm(new StatisticCustomer_GUI());
+					try {
+						Application.showForm(new StatisticCustomer_GUI());
+					} catch (RemoteException e3) {
+						// TODO Auto-generated catch block
+						e3.printStackTrace();
+					}
 					break;
 				default:
 					action.cancel();
@@ -159,16 +175,36 @@ public class MainView extends JLayeredPane {
 			case 8:
 				switch (subIndex) {
 				case 1:
-					Application.showForm(new StatementCashCount_GUI());
+					try {
+						Application.showForm(new StatementCashCount_GUI());
+					} catch (RemoteException e2) {
+						// TODO Auto-generated catch block
+						e2.printStackTrace();
+					}
 					break;
 				case 2:
-					Application.showForm(new StatementAcounting_GUI());
+					try {
+						Application.showForm(new StatementAcounting_GUI());
+					} catch (RemoteException e2) {
+						// TODO Auto-generated catch block
+						e2.printStackTrace();
+					}
 					break;
 				case 3:
-					Application.showForm(new ViewCashCountSheetList_GUI());
+					try {
+						Application.showForm(new ViewCashCountSheetList_GUI());
+					} catch (RemoteException e2) {
+						// TODO Auto-generated catch block
+						e2.printStackTrace();
+					}
 					break;
 				case 4:
-					Application.showForm(new ViewAcountingVoucherList_GUI());
+					try {
+						Application.showForm(new ViewAcountingVoucherList_GUI());
+					} catch (RemoteException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
 					break;
 				default:
 					action.cancel();
@@ -178,10 +214,20 @@ public class MainView extends JLayeredPane {
 			case 9:
 				switch (subIndex) {
 				case 1:
-					Application.showForm(new ManagemantShifts_GUI());
+					try {
+						Application.showForm(new ManagemantShifts_GUI());
+					} catch (RemoteException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
 					break;
 				case 2:
-					Application.showForm(new SupplierManagement_GUI());
+					try {
+						Application.showForm(new SupplierManagement_GUI());
+					} catch (RemoteException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
 					break;
 				case 3:
 					Application.showForm(new BrandManagement_GUI());

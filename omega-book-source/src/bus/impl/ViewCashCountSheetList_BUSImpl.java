@@ -20,7 +20,7 @@ import utilities.CashCountSheetPrinter;
  */
 public class ViewCashCountSheetList_BUSImpl extends UnicastRemoteObject implements ViewCashCountSheetList_BUS {
 
-    protected ViewCashCountSheetList_BUSImpl() throws RemoteException {
+    public ViewCashCountSheetList_BUSImpl() throws RemoteException {
 		super();
 		// TODO Auto-generated constructor stub
 	}

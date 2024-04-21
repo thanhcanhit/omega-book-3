@@ -6,6 +6,7 @@ package gui;
 
 import java.awt.Dimension;
 import java.awt.Toolkit;
+import java.rmi.RemoteException;
 
 import com.formdev.flatlaf.FlatClientProperties;
 
@@ -18,18 +19,21 @@ import raven.toast.Notifications;
  *
  * @author KienTran
  */
-public class Login_GUI extends javax.swing.JPanel {
+public class Login_GUI extends javax.swing.JPanel{
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = -262088147392596571L;
-	private final Login_BUSImpl log_BUS = new Login_BUSImpl();
+	private Login_BUSImpl log_BUS = new Login_BUSImpl();
+
 
 	/**
 	 * Creates new form Login
+	 * @throws RemoteException 
 	 */
-	public Login_GUI() {
+	public Login_GUI() throws RemoteException {
+		log_BUS = new Login_BUSImpl();
 		initComponents();
 		pnl_changePasswordForm.setVisible(false);
 	}

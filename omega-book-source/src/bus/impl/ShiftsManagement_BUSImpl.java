@@ -18,13 +18,9 @@ import bus.ShiftsManagement_BUS;
  *
  * @author Hoàng Khang
  */
-<<<<<<< HEAD:omega-book-source/src/bus/impl/ShiftsManagemant_BUSImpl.java
-public class ShiftsManagemant_BUSImpl extends UnicastRemoteObject implements ShiftsManagement_BUS{
-=======
-public class ShiftsManagement_BUSImpl implements ShiftsManagement_BUS{
->>>>>>> refs/remotes/origin/main:omega-book-source/src/bus/impl/ShiftsManagement_BUSImpl.java
+public class ShiftsManagement_BUSImpl extends UnicastRemoteObject implements ShiftsManagement_BUS{
 
-    protected ShiftsManagemant_BUSImpl() throws RemoteException {
+    public ShiftsManagement_BUSImpl() throws RemoteException {
 		super();
 		// TODO Auto-generated constructor stub
 	}

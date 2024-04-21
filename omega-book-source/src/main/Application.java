@@ -5,6 +5,7 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.io.File;
+import java.rmi.RemoteException;
 import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -75,7 +76,12 @@ public class Application extends javax.swing.JFrame {
 						} catch (Exception ex) {
 							Logger.getLogger(Application.class.getName()).log(Level.SEVERE, null, ex);
 						}
-						shift_BUS.createShifts(shift);
+						try {
+							shift_BUS.createShifts(shift);
+						} catch (RemoteException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
 					}
 					System.exit(0);
 				}
@@ -88,7 +94,7 @@ public class Application extends javax.swing.JFrame {
 		app.mainForm.showForm(component);
 	}
 
-	public static void refreshMainView() {
+	public static void refreshMainView() throws RemoteException {
 		app.mainForm.refreshSalesForm();
 	}
 

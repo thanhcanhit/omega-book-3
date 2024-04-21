@@ -18,7 +18,7 @@ import bus.SupplierManagement_BUS;
  * @author KienTran
  */
 public class SupplierManagement_BUSImpl extends UnicastRemoteObject implements SupplierManagement_BUS{
-        protected SupplierManagement_BUSImpl() throws RemoteException {
+        public SupplierManagement_BUSImpl() throws RemoteException {
 		super();
 		// TODO Auto-generated constructor stub
 	}

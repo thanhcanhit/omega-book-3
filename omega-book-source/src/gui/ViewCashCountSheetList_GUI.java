@@ -4,6 +4,7 @@
  */
 package gui;
 
+import java.rmi.RemoteException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -33,8 +34,9 @@ public class ViewCashCountSheetList_GUI extends javax.swing.JPanel {
 
     /**
      * Creates new form ViewCashCountSheetList
+     * @throws RemoteException 
      */
-    public ViewCashCountSheetList_GUI() {
+    public ViewCashCountSheetList_GUI() throws RemoteException {
         initTableModel();
         initComponents();
         alterTable();
@@ -247,7 +249,12 @@ public class ViewCashCountSheetList_GUI extends javax.swing.JPanel {
         tbl_cashCountSheetList.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         tbl_cashCountSheetList.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                tbl_cashCountSheetListMouseClicked(evt);
+                try {
+					tbl_cashCountSheetListMouseClicked(evt);
+				} catch (RemoteException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
             }
         });
         jScrollPane1.setViewportView(tbl_cashCountSheetList);
@@ -259,7 +266,7 @@ public class ViewCashCountSheetList_GUI extends javax.swing.JPanel {
         // TODO add your handling code here:
     }//GEN-LAST:event_jTextField1ActionPerformed
 
-    private void tbl_cashCountSheetListMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbl_cashCountSheetListMouseClicked
+    private void tbl_cashCountSheetListMouseClicked(java.awt.event.MouseEvent evt) throws RemoteException {//GEN-FIRST:event_tbl_cashCountSheetListMouseClicked
         // TODO add your handling code here: // Lấy chỉ số dòng được chọn
         int selectedRow = tbl_cashCountSheetList.getSelectedRow();
 

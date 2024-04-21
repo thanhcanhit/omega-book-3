@@ -1,7 +1,7 @@
 package bus;
 
-import java.io.IOException;
 import java.rmi.Remote;
+import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -15,42 +15,42 @@ import enums.PromotionType;
 
 public interface PromotionManagement_BUS extends Remote{
     
-    public ArrayList<Promotion> getAllPromotion() throws IOException;
-    public ArrayList<PromotionForOrder> getAllPromotionForOrder()throws IOException;
-    public ArrayList<PromotionForProduct> getAllPromotionForProduct()throws IOException ;
+    public ArrayList<Promotion> getAllPromotion() throws RemoteException;
+    public ArrayList<PromotionForOrder> getAllPromotionForOrder()throws RemoteException;
+    public ArrayList<PromotionForProduct> getAllPromotionForProduct()throws RemoteException ;
     
-    public Promotion getOne(String promotionIDthrows)throws IOException;
+    public Promotion getOne(String promotionIDthrows)throws RemoteException;
     
-    public String generateID(PromotionType promotionType, DiscountType typeDiscount, Date ended)throws IOException ;
+    public String generateID(PromotionType promotionType, DiscountType typeDiscount, Date ended)throws RemoteException ;
 
-    public Promotion getPromotion(String promotionID)throws IOException ;
+    public Promotion getPromotion(String promotionID)throws RemoteException ;
 
-    public ArrayList<Promotion> searchById(String searchQuery)throws IOException;
+    public ArrayList<Promotion> searchById(String searchQuery)throws RemoteException;
 
-    public ArrayList<Promotion> filter(int type, int status)throws IOException;
+    public ArrayList<Promotion> filter(int type, int status)throws RemoteException;
 
-    public boolean addNewPromotion(Promotion newPromotion)throws IOException;
+    public boolean addNewPromotion(Promotion newPromotion)throws RemoteException;
 
-    public boolean removePromotion(String promotionID)throws IOException ;
+    public boolean removePromotion(String promotionID)throws RemoteException ;
 
-    public Product searchProductById(String searchQuery)throws IOException ;
-    public ArrayList<PromotionForOrder> searchForOrderById(String searchQuery)throws IOException;
+    public Product searchProductById(String searchQuery)throws RemoteException ;
+    public ArrayList<PromotionForOrder> searchForOrderById(String searchQuery)throws RemoteException;
 
-    public Product getProduct(String productID)throws IOException ;
+    public Product getProduct(String productID)throws RemoteException ;
 
-    public void createProductPromotionDetail(Promotion newPromotion, ArrayList<ProductPromotionDetail> cart)throws IOException;
+    public void createProductPromotionDetail(Promotion newPromotion, ArrayList<ProductPromotionDetail> cart)throws RemoteException;
 
-    public boolean removeProductPromotionDetail(String promotionID)throws IOException ;
+    public boolean removeProductPromotionDetail(String promotionID)throws RemoteException ;
 
-    public boolean removeProductPromotionOther(Promotion pm)throws IOException ;
+    public boolean removeProductPromotionOther(Promotion pm)throws RemoteException ;
 
-    public boolean removeOrderPromotionOther(Promotion pm)throws IOException ;
+    public boolean removeOrderPromotionOther(Promotion pm)throws RemoteException ;
 
-    public boolean addNewOrderPromotion(PromotionForOrder newPromotion)throws IOException ;
+    public boolean addNewOrderPromotion(PromotionForOrder newPromotion)throws RemoteException ;
 
-    public ArrayList<PromotionForProduct> filterForProduct(int type, int status)throws IOException;
+    public ArrayList<PromotionForProduct> filterForProduct(int type, int status)throws RemoteException;
 
-    public ArrayList<PromotionForOrder> filterForOrder(int type, int status)throws IOException;
+    public ArrayList<PromotionForOrder> filterForOrder(int type, int status)throws RemoteException;
 
-    public Product getOneProduct(String productID) throws IOException;
+    public Product getOneProduct(String productID) throws RemoteException;
 }

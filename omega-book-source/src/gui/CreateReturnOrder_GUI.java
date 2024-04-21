@@ -1,6 +1,7 @@
 package gui;
 
 import java.awt.event.KeyEvent;
+import java.rmi.RemoteException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -43,13 +44,18 @@ public class CreateReturnOrder_GUI extends javax.swing.JPanel {
 	private double totalRefund;
 	String tempInput = "";
 
-	public CreateReturnOrder_GUI() {
+	public CreateReturnOrder_GUI() throws RemoteException {
 		initComponents();
 		init();
 	}
 
+<<<<<<< HEAD
+	private void init() throws RemoteException {
+		bus = new ReturnOrderManagament_BUSImpl();
+=======
 	private void init() {
 		bus = new ReturnOrderManagement_BUSImpl();
+>>>>>>> ddc6b436ec355db02ea7d7fa653c6440e65974fb
 		cart = new ArrayList<>();
 		//model
 		tblModel_orderDetail = new DefaultTableModel(new String[]{"Mã hoá đơn", "Mã sản phẩm", "Tên sản phẩm", "Số lượng", "Đơn giá", "Tổng tiền"}, 0);
@@ -103,7 +109,7 @@ public class CreateReturnOrder_GUI extends javax.swing.JPanel {
 		}
 	}
 
-	private void renderOrderDetail(String orderID) {
+	private void renderOrderDetail(String orderID) throws RemoteException {
 		tblModel_orderDetail.setRowCount(0);
 		ArrayList<OrderDetail> orderDetailList = bus.getAllOrderDetail(orderID);
 		for (OrderDetail orderDetail1 : orderDetailList) {
@@ -160,7 +166,7 @@ public class CreateReturnOrder_GUI extends javax.swing.JPanel {
 		return new ReturnOrder(returnDate, ReturnOrderStatus.PENDING, returnOrderID, employee, order, type, refund, cart, reason);
 	}
 
-	private void handleAddItem(String productID, int quantityOrder, double price) {
+	private void handleAddItem(String productID, int quantityOrder, double price) throws RemoteException {
 		maxQuantity = quantityOrder;
 		for (ReturnOrderDetail returnOrderDetail : cart) {
 			if (returnOrderDetail.getProduct().getProductID().equals(productID)) {
@@ -171,7 +177,7 @@ public class CreateReturnOrder_GUI extends javax.swing.JPanel {
 		addItemToCart(productID, quantityOrder, price);
 	}
 
-	private void addItemToCart(String productID, int quantityOrder, double price) {
+	private void addItemToCart(String productID, int quantityOrder, double price) throws RemoteException {
 		Product item = bus.getProduct(productID);
 		if (item == null) {
 			Notifications.getInstance().show(Notifications.Type.INFO, "Không tìm thấy sản phẩm có mã " + productID);
@@ -224,7 +230,7 @@ public class CreateReturnOrder_GUI extends javax.swing.JPanel {
 	//        return count > 0;
 	//    }
 
-	private void createNewReturnOrder(ReturnOrder newReturnOrder) {
+	private void createNewReturnOrder(ReturnOrder newReturnOrder) throws RemoteException {
 		if (bus.createNew(newReturnOrder)) {
 			if(bus.createReturnOrderDetail(newReturnOrder, cart)) {
 				Notifications.getInstance().show(Notifications.Type.SUCCESS, "Thêm thành công");
@@ -330,7 +336,12 @@ public class CreateReturnOrder_GUI extends javax.swing.JPanel {
 		});
 		txt_searchOrder.addKeyListener(new java.awt.event.KeyAdapter() {
 			public void keyPressed(java.awt.event.KeyEvent evt) {
-				txt_searchOrderKeyPressed(evt);
+				try {
+					txt_searchOrderKeyPressed(evt);
+				} catch (RemoteException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 			}
 		});
 		pnl_searchOrder.add(txt_searchOrder);
@@ -345,7 +356,12 @@ public class CreateReturnOrder_GUI extends javax.swing.JPanel {
 				+ "foreground:$Menu.foreground;");
 		btn_searchOrder.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
-				btn_searchOrderActionPerformed(evt);
+				try {
+					btn_searchOrderActionPerformed(evt);
+				} catch (RemoteException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 			}
 		});
 		pnl_buttonSearchOrder.add(btn_searchOrder, java.awt.BorderLayout.CENTER);
@@ -628,7 +644,12 @@ public class CreateReturnOrder_GUI extends javax.swing.JPanel {
 		btn_addProduct.setIcon(SVGIcon.getSVGIcon("resources/imgs/public/add.svg"));
 		btn_addProduct.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
-				btn_addProductActionPerformed(evt);
+				try {
+					btn_addProductActionPerformed(evt);
+				} catch (RemoteException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 			}
 		});
 		pnl_createReturnOrder.add(btn_addProduct);
@@ -640,7 +661,12 @@ public class CreateReturnOrder_GUI extends javax.swing.JPanel {
 				+ "foreground:$Menu.foreground;");
 		btn_createReturnOrder.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
-				btn_createReturnOrderActionPerformed(evt);
+				try {
+					btn_createReturnOrderActionPerformed(evt);
+				} catch (RemoteException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 			}
 		});
 		pnl_createReturnOrder.add(btn_createReturnOrder);
@@ -656,7 +682,7 @@ public class CreateReturnOrder_GUI extends javax.swing.JPanel {
 		add(spl_createReturnOrder, java.awt.BorderLayout.CENTER);
 	}// </editor-fold>//GEN-END:initComponents
 
-	private void btn_createReturnOrderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_createReturnOrderActionPerformed
+	private void btn_createReturnOrderActionPerformed(java.awt.event.ActionEvent evt) throws RemoteException {//GEN-FIRST:event_btn_createReturnOrderActionPerformed
 		if (order == null) {
 			Notifications.getInstance().show(Notifications.Type.WARNING, "Vui lòng chọn hoá đơn để đổi trả");
 			txt_searchOrder.requestFocus();
@@ -689,7 +715,7 @@ public class CreateReturnOrder_GUI extends javax.swing.JPanel {
 
 	}//GEN-LAST:event_btn_createReturnOrderActionPerformed
 
-	private void btn_addProductActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_addProductActionPerformed
+	private void btn_addProductActionPerformed(java.awt.event.ActionEvent evt) throws RemoteException {//GEN-FIRST:event_btn_addProductActionPerformed
 		int rowIndex = tbl_orderDetail.getSelectedRow();
 		String productID = tblModel_orderDetail.getValueAt(rowIndex, 1).toString();
 		int quantityOrder = Integer.parseInt(tblModel_orderDetail.getValueAt(rowIndex, 3).toString());
@@ -698,7 +724,7 @@ public class CreateReturnOrder_GUI extends javax.swing.JPanel {
 
 	}//GEN-LAST:event_btn_addProductActionPerformed
 
-	private void btn_searchOrderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_searchOrderActionPerformed
+	private void btn_searchOrderActionPerformed(java.awt.event.ActionEvent evt) throws RemoteException {//GEN-FIRST:event_btn_searchOrderActionPerformed
 		String orderID = txt_searchOrder.getText();
 		if (orderID.isBlank()) {
 			Notifications.getInstance().show(Notifications.Type.INFO, "Vui lòng nhập mã hoá đơn để tìm");
@@ -724,7 +750,7 @@ public class CreateReturnOrder_GUI extends javax.swing.JPanel {
 
 	}//GEN-LAST:event_txt_searchOrderActionPerformed
 
-	private void txt_searchOrderKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_searchOrderKeyPressed
+	private void txt_searchOrderKeyPressed(java.awt.event.KeyEvent evt) throws RemoteException {//GEN-FIRST:event_txt_searchOrderKeyPressed
 		if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
 			String orderID = txt_searchOrder.getText();
 			if (orderID.isBlank()) {

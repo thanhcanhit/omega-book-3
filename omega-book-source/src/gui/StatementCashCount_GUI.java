@@ -4,6 +4,7 @@
  */
 package gui;
 
+import java.rmi.RemoteException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -45,7 +46,7 @@ public class StatementCashCount_GUI extends javax.swing.JPanel {
     private Employee employee2;
     private Date createAt;
 
-    public StatementCashCount_GUI() {
+    public StatementCashCount_GUI() throws RemoteException {
         initTableModel();
         initComponents();
         initInfo(employee1);
@@ -71,7 +72,12 @@ public class StatementCashCount_GUI extends javax.swing.JPanel {
                         }
 
 //                        sum += total;
-                        sum = statementCashCount_BUS.getTotal(getValueInTable());
+                        try {
+							sum = statementCashCount_BUS.getTotal(getValueInTable());
+						} catch (RemoteException e1) {
+							// TODO Auto-generated catch block
+							e1.printStackTrace();
+						}
                         txt_difference.setText(FormatNumber.toVND(sum - 1765000));
                         txt_total.setText(FormatNumber.toVND(sum));
                         model.setValueAt(FormatNumber.toVND(total), row, 3); // Tổng
@@ -117,7 +123,7 @@ public class StatementCashCount_GUI extends javax.swing.JPanel {
         }
     }
 
-    public void initInfo(Employee e) {
+    public void initInfo(Employee e) throws RemoteException {
         createAt = new Date();
 
         SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
@@ -261,7 +267,12 @@ public class StatementCashCount_GUI extends javax.swing.JPanel {
         btn_saveCashCount.setIcon(SVGIcon.getPrimarySVGIcon("resources/imgs/public/add.svg"));
         btn_saveCashCount.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btn_saveCashCountActionPerformed(evt);
+                try {
+					btn_saveCashCountActionPerformed(evt);
+				} catch (RemoteException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
             }
         });
         pnl_cashCountSave.add(btn_saveCashCount);
@@ -386,7 +397,12 @@ public class StatementCashCount_GUI extends javax.swing.JPanel {
         btn_addEmoloyee.setText("+");
         btn_addEmoloyee.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btn_addEmoloyeeActionPerformed(evt);
+                try {
+					btn_addEmoloyeeActionPerformed(evt);
+				} catch (RemoteException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
             }
         });
         pnl_employeeCashCount2.add(btn_addEmoloyee);
@@ -531,7 +547,7 @@ public class StatementCashCount_GUI extends javax.swing.JPanel {
         // TODO add your handling code here:
     }//GEN-LAST:event_txt_employeeCashCount1ActionPerformed
 
-    private void btn_saveCashCountActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_saveCashCountActionPerformed
+    private void btn_saveCashCountActionPerformed(java.awt.event.ActionEvent evt) throws RemoteException {//GEN-FIRST:event_btn_saveCashCountActionPerformed
         // TODO add your handling code here:
         if (employee2 == null) {
             Notifications.getInstance().show(Notifications.Type.ERROR, "Chưa có nhân viên đồng kiểm!");
@@ -555,7 +571,7 @@ public class StatementCashCount_GUI extends javax.swing.JPanel {
         // TODO add your handling code here:
     }//GEN-LAST:event_txt_totalActionPerformed
 
-    private void btn_addEmoloyeeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_addEmoloyeeActionPerformed
+    private void btn_addEmoloyeeActionPerformed(java.awt.event.ActionEvent evt) throws RemoteException {//GEN-FIRST:event_btn_addEmoloyeeActionPerformed
         String id = JOptionPane.showInputDialog("Nhập mã nhân viên");
         Employee e = statementCashCount_BUS.getEmployeeByID(id);
         if (e == null) {

@@ -9,6 +9,9 @@ import dao.Account_DAO;
 import dao.Employee_DAO;
 import entity.Account;
 import entity.Employee;
+
+import java.rmi.RemoteException;
+import java.rmi.server.UnicastRemoteObject;
 import java.util.regex.Pattern;
 
 import bus.Login_BUS;
@@ -18,9 +21,17 @@ import utilities.PasswordHash;
  *
  * @author Hoàng Khang
  */
-public class Login_BUSImpl implements Login_BUS{
+public class Login_BUSImpl extends UnicastRemoteObject implements Login_BUS{
 
-    private final Account_DAO accountDAO = new Account_DAO();
+    public Login_BUSImpl() throws RemoteException {
+    	
+	}
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -7528431121500580483L;
+	private final Account_DAO accountDAO = new Account_DAO();
     private final Employee_DAO employeeDAO = new Employee_DAO();
 
     public Employee login(String id, String password) throws Exception {

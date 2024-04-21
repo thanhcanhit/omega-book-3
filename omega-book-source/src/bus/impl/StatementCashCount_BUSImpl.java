@@ -27,7 +27,7 @@ import utilities.CashCountSheetPrinter;
  */
 public class StatementCashCount_BUSImpl extends UnicastRemoteObject implements StatementCashCount_BUS {
 
-    protected StatementCashCount_BUSImpl() throws RemoteException {
+    public StatementCashCount_BUSImpl() throws RemoteException {
 		super();
 		// TODO Auto-generated constructor stub
 	}

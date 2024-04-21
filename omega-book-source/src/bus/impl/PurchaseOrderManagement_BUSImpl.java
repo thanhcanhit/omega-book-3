@@ -14,6 +14,9 @@ import entity.Product;
 import entity.PurchaseOrder;
 import entity.PurchaseOrderDetail;
 import entity.Supplier;
+
+import java.rmi.RemoteException;
+import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
 
 import bus.PurchaseOrderManagement_BUS;
@@ -22,8 +25,16 @@ import bus.PurchaseOrderManagement_BUS;
  *
  * @author KienTran
  */
-public class PurchaseOrderManagement_BUSImpl implements PurchaseOrderManagement_BUS{
-    private final PurchaseOrder_DAO purchaseOrderDAO = new PurchaseOrder_DAO();
+public class PurchaseOrderManagement_BUSImpl extends UnicastRemoteObject implements PurchaseOrderManagement_BUS{
+    protected PurchaseOrderManagement_BUSImpl() throws RemoteException {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 4098337098271224574L;
+	private final PurchaseOrder_DAO purchaseOrderDAO = new PurchaseOrder_DAO();
     private final PurchaseOrderDetail_DAO orderDetailDAO = new PurchaseOrderDetail_DAO();
  
     private final Product_DAO productDAO = new Product_DAO();
@@ -54,15 +65,15 @@ public class PurchaseOrderManagement_BUSImpl implements PurchaseOrderManagement_
         
         return purchaseOrder;
     }
-    public ArrayList<PurchaseOrder> getAll(){
+    public ArrayList<PurchaseOrder> getAll() throws RemoteException{
         return purchaseOrderDAO.getAll();
     }
 
-    public ArrayList<PurchaseOrderDetail> getPurchaseOrderDetailList(String purchaseOrderID) {
+    public ArrayList<PurchaseOrderDetail> getPurchaseOrderDetailList(String purchaseOrderID) throws RemoteException{
 
         return orderDetailDAO.getAll(purchaseOrderID);
     }
-    public Boolean updateStatus(String id, int status){
+    public Boolean updateStatus(String id, int status) throws RemoteException{
         return purchaseOrderDAO.updateStatus(id, status);
     }
 }

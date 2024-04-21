@@ -4,6 +4,7 @@
  */
 package gui;
 
+import java.rmi.RemoteException;
 import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -48,12 +49,12 @@ public class SupplierManagement_GUI extends javax.swing.JPanel {
     @SuppressWarnings({ "unused", "rawtypes" })
     private DefaultComboBoxModel cmbModel_suplier;
 
-    public SupplierManagement_GUI() {
+    public SupplierManagement_GUI() throws RemoteException {
         initComponents();
         init();
     }
 
-    private void init() {
+    private void init() throws RemoteException {
         bus = new SupplierManagement_BUSImpl();
 
 
@@ -96,7 +97,7 @@ public class SupplierManagement_GUI extends javax.swing.JPanel {
 
 
 
-    private void rerender() {
+    private void rerender() throws RemoteException {
         Application.showForm(new SupplierManagement_GUI());
     }
 
@@ -169,7 +170,12 @@ public class SupplierManagement_GUI extends javax.swing.JPanel {
             + "foreground:$Menu.foreground;");
         btn_search.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btn_searchActionPerformed(evt);
+                try {
+					btn_searchActionPerformed(evt);
+				} catch (RemoteException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
             }
         });
         pnl_header.add(btn_search);
@@ -304,7 +310,7 @@ public class SupplierManagement_GUI extends javax.swing.JPanel {
         add(splitPane_main);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void btn_searchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_searchActionPerformed
+    private void btn_searchActionPerformed(java.awt.event.ActionEvent evt) throws RemoteException {//GEN-FIRST:event_btn_searchActionPerformed
         if(txt_search.getText().trim().length()>0){
             renderSupplierTable(bus.search(txt_search.getText()));
         }
@@ -344,7 +350,12 @@ public class SupplierManagement_GUI extends javax.swing.JPanel {
             txt_supplierID.setText("");
             txt_supplierName.setText("");
             txa_address.setText("");
-            rerender();
+            try {
+				rerender();
+			} catch (RemoteException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
             Notifications.getInstance().show(Notifications.Type.INFO, "Đã xoá trắng");
         
     }//GEN-LAST:event_btn_clearActionPerformed

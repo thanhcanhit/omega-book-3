@@ -4,6 +4,8 @@
  */
 package bus.impl;
 
+import java.rmi.RemoteException;
+import java.rmi.server.UnicastRemoteObject;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -17,25 +19,32 @@ import entity.Customer;
  *
  * @author Hoàng Khang
  */
-public class CustomerManagement_BUSImpl implements CustomerManagement_BUS{
+public class CustomerManagement_BUSImpl extends UnicastRemoteObject implements CustomerManagement_BUS{
 
-    private Customer_DAO customer_DAO = new Customer_DAO();
+    public CustomerManagement_BUSImpl() throws RemoteException {
+	}
 
-    public ArrayList<Customer> getAllCustomer() {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 229822782660670951L;
+	private Customer_DAO customer_DAO = new Customer_DAO();
+
+    public ArrayList<Customer> getAllCustomer() throws RemoteException{
         ArrayList<Customer> customerList = new Customer_DAO().getAll();
         return customerList;
     }
 
-    public Customer getOne(String customerID) {
+    public Customer getOne(String customerID) throws RemoteException{
         return customer_DAO.getOne(customerID);
     }
 
-    public ArrayList<Customer> getCustomersByRank() {
+    public ArrayList<Customer> getCustomersByRank() throws RemoteException{
         ArrayList<Customer> customerList = new Customer_DAO().getAll();
         return customerList;
     }
 
-    public String generateID(Date date, boolean gender) {
+    public String generateID(Date date, boolean gender) throws RemoteException{
         //Khởi tạo mã Khách hàng KH
         String prefix = "KH";
         //4 Kí tự kế tiếp là năm sinh khách hàng
@@ -71,7 +80,7 @@ public class CustomerManagement_BUSImpl implements CustomerManagement_BUS{
         customer_DAO.update(customerID, customer);
     }
 
-    public Customer searchByPhoneNumber(String phoneNumber) {
+    public Customer searchByPhoneNumber(String phoneNumber) throws RemoteException{
         ArrayList<Customer> list = customer_DAO.getAll();
         for (Customer customer : list) {
             if (customer.getPhoneNumber().equals(phoneNumber)) {
@@ -81,7 +90,7 @@ public class CustomerManagement_BUSImpl implements CustomerManagement_BUS{
         return null;
     }
 
-    public ArrayList<Customer> filterCustomer(String gender, String rank, String age, String phone) {
+    public ArrayList<Customer> filterCustomer(String gender, String rank, String age, String phone) throws RemoteException{
 
         if (rank.equals("Chưa có")) {
             rank = "Không";
@@ -153,7 +162,7 @@ public class CustomerManagement_BUSImpl implements CustomerManagement_BUS{
      * @param dateOfBirth Ngày sinh của đối tượng
      * @return Số tuổi của đối tượng
      */
-    public int getAge(Date dateOfBirth) {
+    public int getAge(Date dateOfBirth) throws RemoteException{
         long diffInMillies = Math.abs(new Date().getTime() - dateOfBirth.getTime());
         long diff = TimeUnit.DAYS.convert(diffInMillies, TimeUnit.MILLISECONDS);
         return (int) (diff / 365);
