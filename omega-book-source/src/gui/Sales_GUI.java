@@ -242,7 +242,8 @@ public class Sales_GUI extends javax.swing.JPanel {
 
 //        Khởi tạo hóa đơn
 		try {
-			order = bus.createNewOrder();
+//			order = bus.createNewOrder();
+			order = new Bill();
 			renderOrder();
 		} catch (Exception ex) {
 			Notifications.getInstance().show(Notifications.Type.ERROR, 5000,
@@ -804,6 +805,7 @@ public class Sales_GUI extends javax.swing.JPanel {
 		}
 
 		try {
+			order.setOrderID(bus.createNewOrder().getOrderID());
 			boolean isSaved = isOldOrder ? updateOrder(isOldOrder) : saveOrder(true);
 
 			if (isSaved) {
@@ -1760,6 +1762,7 @@ public class Sales_GUI extends javax.swing.JPanel {
 				order.setCustomer(customer);
 			}
 			order.setStatus(isComplete);
+			order.setOrderID(bus.createNewOrder().getOrderID());
 		} catch (Exception e) {
 			e.printStackTrace();
 			return false;
