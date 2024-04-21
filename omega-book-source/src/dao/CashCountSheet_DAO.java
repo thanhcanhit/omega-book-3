@@ -5,6 +5,7 @@
 package dao;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import entity.CashCountSheet;
 import jakarta.persistence.EntityManager;
@@ -17,7 +18,7 @@ import utilities.AccessDatabase;
  *
  * @author Hoàng Khang
  */
-public class CashCountSheet_DAO implements interfaces.DAOBase<CashCountSheet> {
+public class CashCountSheet_DAO {
 	
 	EntityManager em;
 
@@ -25,7 +26,6 @@ public class CashCountSheet_DAO implements interfaces.DAOBase<CashCountSheet> {
     	em = AccessDatabase.getEntityManager();
 	}
 
-    @Override
     public CashCountSheet getOne(String id) {
         CashCountSheet cashCountSheet = null;
 
@@ -42,39 +42,14 @@ public class CashCountSheet_DAO implements interfaces.DAOBase<CashCountSheet> {
         return cashCountSheet;
     }
 
-    @Override
+    
     /**
      * Lấy ra tất cả các CashCountSheet
      */
-    public ArrayList<CashCountSheet> getAll() {
-//        ArrayList<CashCountSheet> cashCountSheets = new ArrayList<>();
-//
-//        try {
-//            String sql = "SELECT * FROM CashCountSheet";
-//            PreparedStatement preparedStatement = ConnectDB.conn.prepareStatement(sql);
-//
-//            ResultSet resultSet = preparedStatement.executeQuery();
-//
-//            while (resultSet.next()) {
-//                String cashCountSheetID = resultSet.getString("cashCountSheetID");
-//                Timestamp startTimestamp = resultSet.getTimestamp("startedDate");
-//                Timestamp endTimestamp = resultSet.getTimestamp("endedDate");
-//                
-//                Date startDate = new Date(startTimestamp.getTime());
-//                Date endDate = new Date(endTimestamp.getTime());
-//                CashCountSheet cashCountSheet = new CashCountSheet(cashCountSheetID, new CashCount_DAO().getAll(cashCountSheetID), new CashCountSheetDetail_DAO().getAllCashCountSheetDetailInCashCountSheet(cashCountSheetID), startDate, endDate);
-//
-//                cashCountSheets.add(cashCountSheet);
-//            }
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-//
-//        return cashCountSheets;
-    	return (ArrayList<CashCountSheet>) em.createNamedQuery("CashCountSheet.findAll", CashCountSheet.class).getResultList();
+    public List<CashCountSheet> getAll() {
+    	return em.createNamedQuery("CashCountSheet.findAll", CashCountSheet.class).getResultList();
     }
 
-    @Override
     public String generateID() {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
@@ -92,7 +67,6 @@ public class CashCountSheet_DAO implements interfaces.DAOBase<CashCountSheet> {
             return null;
         }
     }
-    @Override
     public Boolean create(CashCountSheet cashCountSheet) {
         try {
             em.getTransaction().begin();
@@ -109,16 +83,5 @@ public class CashCountSheet_DAO implements interfaces.DAOBase<CashCountSheet> {
         }
     }
 
-    @Override
-    public Boolean update(String id, CashCountSheet newObject
-    ) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
-
-    @Override
-    public Boolean delete(String id
-    ) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
 
 }

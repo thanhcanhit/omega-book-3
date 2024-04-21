@@ -69,15 +69,24 @@ public final class Bill {
 	@Cascade({ org.hibernate.annotations.CascadeType.ALL })
 	private List<OrderDetail> orderDetail;
 	private double moneyGiven;
+	
 	@ManyToOne
-	@JoinColumn(name = "acountingVoucherID")
-	private AcountingVoucher acountingVoucher;
+	@JoinColumn(name = "accountingVoucherID")
+	private AcountingVoucher accountingVoucher;
 
 	public Bill() {
 	}
 
 	public Bill(String orderID) {
 		this.orderID = orderID;
+	}
+
+	public AcountingVoucher getAccountingVoucher() {
+		return accountingVoucher;
+	}
+
+	public void setAccountingVoucher(AcountingVoucher accountingVoucher) {
+		this.accountingVoucher = accountingVoucher;
 	}
 
 	public Bill(String orderID, Date orderAt, boolean payment, boolean status, Employee employee, Customer customer,
@@ -292,7 +301,7 @@ public final class Bill {
 		return "Bill [orderID=" + orderID + ", orderAt=" + orderAt + ", status=" + status + ", subTotal=" + subTotal
 				+ ", totalDue=" + totalDue + ", payment=" + payment + ", promotion=" + promotion + ", employee="
 				+ employee + ", customer=" + customer + ", moneyGiven=" + moneyGiven + ", acountingVoucher="
-				+ acountingVoucher + "]";
+				+ accountingVoucher + "]";
 	}
 	
 

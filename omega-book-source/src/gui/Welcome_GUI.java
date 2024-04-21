@@ -97,7 +97,7 @@ public class Welcome_GUI extends javax.swing.JFrame {
         lbl_header.setBounds(100, 90, 240, 50);
 
         lbl_date.setFont(lbl_date.getFont().deriveFont(lbl_date.getFont().getStyle() | java.awt.Font.BOLD, 18));
-        lbl_date.setText("10-2023");
+        lbl_date.setText("04-2024");
         lbl_date.putClientProperty(FlatClientProperties.STYLE, "foreground:$Menu.foreground;");
         pnl_container.add(lbl_date);
         lbl_date.setBounds(320, 230, 80, 25);

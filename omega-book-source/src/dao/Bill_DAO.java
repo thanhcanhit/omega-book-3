@@ -203,23 +203,27 @@ public class Bill_DAO implements DAOBase<Bill> {
 		return result;
 	}
 
-	/**
-	 * Phương thức thực hiện việc cập nhật mã phiếu kết toán cho một hóa
-	 * đơn
-	 *
-	 * @param orderID            Mã hóa đơn
-	 * @param acountingVoucherID Mã phiếu kết toán
-	 * @author Hoàng Khang
-	 */
-	public boolean updateOrderAcountingVoucher(String orderID, String acountingVoucherID) {
+    /**
+     * Phương thức thực hiện việc cập nhật mã phiếu kết toán cho một
+     * hóa đơn
+     *
+     * @param orderID Mã hóa đơn
+     * @param acountingVoucherID Mã phiếu kết toán
+     * @author Hoàng Khang
+     */
+    public boolean updateOrderAcountingVoucher(String orderID, String accountingVoucherID) {
+    	
 
 		try {
 			entityManager.getTransaction().begin();
 
-			// Sử dụng câu truy vấn HQL để cập nhật trường acountingVoucherID của Order
-			String hql = "UPDATE Bill o SET o.acountingVoucherID = :acountingVoucherID " + "WHERE o.orderID = :orderID";
-			int updatedEntities = entityManager.createQuery(hql).setParameter("acountingVoucherID", acountingVoucherID)
-					.setParameter("orderID", orderID).executeUpdate();
+            // Sử dụng câu truy vấn HQL để cập nhật trường acountingVoucherID của Order
+            String hql = "UPDATE Bill o SET o.accountingVoucherID = :accountingVoucherID " +
+                         "WHERE o.orderID = :orderID";
+            int updatedEntities = entityManager.createQuery(hql)
+                    .setParameter("accountingVoucherID", accountingVoucherID)
+                    .setParameter("orderID", orderID)
+                    .executeUpdate();
 
 			entityManager.getTransaction().commit();
 			return updatedEntities > 0;

@@ -46,7 +46,14 @@ public class StatementAcounting_BUSImpl implements StatementAccounting_BUS{
         SimpleDateFormat dateFormat = new SimpleDateFormat("ddMMyyyy");
         String format = dateFormat.format(date);
         String code = "KTO" + format;
-        AcountingVoucher acountingVoucherLast = acountingVoucher_DAO.getOne(acountingVoucher_DAO.getMaxSequence(code));
+        AcountingVoucher acountingVoucherLast;
+        String lastID = acountingVoucher_DAO.getMaxSequence(code);
+		if (lastID != null) {
+			acountingVoucherLast = acountingVoucher_DAO.getOne(acountingVoucher_DAO.getMaxSequence(code));
+		}
+		else {
+			acountingVoucherLast = null;
+		}
         if (acountingVoucherLast == null) {
             Calendar calendar = Calendar.getInstance();
             calendar.set(Calendar.HOUR_OF_DAY, 6);

@@ -6,8 +6,10 @@ package entity;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Objects;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.Id;
@@ -24,7 +26,7 @@ import jakarta.persistence.TemporalType;
  */
 @Entity
 @NamedQuery(name = "AcountingVoucher.findAll", query = "SELECT a FROM AcountingVoucher a")
-public class AcountingVoucher{
+public class AcountingVoucher implements Comparable<AcountingVoucher>{
 	@Id
     private String accountingVoucherID;
 	@Temporal(TemporalType.TIMESTAMP)
@@ -40,8 +42,8 @@ public class AcountingVoucher{
     @JoinColumn(name = "cashCountSheetID")
     private CashCountSheet cashCountSheet;
     
-    @OneToMany(mappedBy = "acountingVoucher",fetch = FetchType.LAZY)
-    private ArrayList<Bill> orderList;
+    @OneToMany(mappedBy = "accountingVoucher",fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<Bill> orderList;
 
     public AcountingVoucher() {
     }
@@ -109,7 +111,7 @@ public class AcountingVoucher{
         return endedDate;
     }
 
-    public ArrayList<Bill> getOrderList() {
+    public List<Bill> getOrderList() {
         return orderList;
     }
 
@@ -172,8 +174,18 @@ public class AcountingVoucher{
         }
         this.sale = sum;
     }
+    
+    
 
-    public void setWithDraw() {
+    public String getAccountingVoucherID() {
+		return accountingVoucherID;
+	}
+
+	public void setAccountingVoucherID(String accountingVoucherID) {
+		this.accountingVoucherID = accountingVoucherID;
+	}
+
+	public void setWithDraw() {
         this.withDraw = this.sale - this.payViaATM;
     }
 
@@ -181,5 +193,11 @@ public class AcountingVoucher{
     public String toString() {
         return "AccountingVoucher{" + "accountingVoucherID=" + accountingVoucherID + ", createdDate=" + createdDate + ", endedDate=" + endedDate + ", sale=" + sale + ", payViaATM=" + payViaATM + ", withDraw=" + withDraw + ", difference=" + difference + ", cashCountSheet=" + cashCountSheet + ", accoutinVoucherDetailList=" + '}';
     }
+
+	@Override
+	public int compareTo(AcountingVoucher o) {
+		// TODO Auto-generated method stub
+		 return this.createdDate.compareTo(o.createdDate);
+	}
 
 }
