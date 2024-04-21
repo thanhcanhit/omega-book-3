@@ -23,7 +23,7 @@ import com.formdev.flatlaf.themes.FlatMacLightLaf;
 import com.github.kwhat.jnativehook.GlobalScreen;
 import com.github.kwhat.jnativehook.NativeHookException;
 
-import bus.impl.ShiftsManagemant_BUSImpl;
+import bus.impl.ShiftsManagement_BUSImpl;
 import entity.Account;
 import entity.Employee;
 import entity.Shift;
@@ -46,7 +46,7 @@ public class Application extends javax.swing.JFrame {
 	private final MainView mainForm;
 	public static Employee employee = null;
 	private final Login_GUI loginForm;
-	private static ShiftsManagemant_BUSImpl shift_BUS = new ShiftsManagemant_BUSImpl();
+	private static ShiftsManagement_BUSImpl shift_BUS = new ShiftsManagement_BUSImpl();
 	private static Shift shift;
 
 	public Application() {

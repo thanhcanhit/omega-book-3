@@ -20,7 +20,7 @@ import javax.swing.table.TableModel;
 
 import com.formdev.flatlaf.FlatClientProperties;
 
-import bus.impl.StatementAcounting_BUSImpl;
+import bus.impl.StatementAccounting_BUSImpl;
 import bus.impl.StatementCashCount_BUSImpl;
 import entity.AcountingVoucher;
 import entity.CashCount;
@@ -47,7 +47,7 @@ public class StatementAcounting_GUI extends javax.swing.JPanel {
     private double sum = 0;
     private Employee employee1 = Application.employee;
     private Employee employee2;
-    private StatementAcounting_BUSImpl acountingVoucher_BUS = new StatementAcounting_BUSImpl();
+    private StatementAccounting_BUSImpl acountingVoucher_BUS = new StatementAccounting_BUSImpl();
     private Date endDate = new Date();
     private ArrayList<Bill> listOrder;
     private AcountingVoucher acountingVoucher;

@@ -21,7 +21,7 @@ public class ViewCashCountSheetList_BUSImpl implements ViewCashCountSheetList_BU
     private CashCountSheet_DAO cashDAO = new CashCountSheet_DAO();
 
     public ArrayList<CashCountSheet> getAll() {
-        ArrayList<CashCountSheet> list = cashDAO.getAll();
+        ArrayList<CashCountSheet> list = (ArrayList<CashCountSheet>) cashDAO.getAll();
         Collections.sort(list, Collections.reverseOrder());
         return list;
     }

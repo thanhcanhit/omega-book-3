@@ -15,7 +15,7 @@ import bus.ShiftsManagement_BUS;
  *
  * @author Hoàng Khang
  */
-public class ShiftsManagemant_BUSImpl implements ShiftsManagement_BUS{
+public class ShiftsManagement_BUSImpl implements ShiftsManagement_BUS{
 
     private Shift_DAO shift_DAO = new Shift_DAO();
 
