@@ -29,7 +29,7 @@ public class Shift_DAO implements DAOBase<Shift> {
 	EntityManager entityManager;
 
 	public Shift_DAO() {
-		entityManager = AccessDatabase.getEntityManager();
+		entityManager = AccessDatabase.getInstance();
 	}
 
 	@Override

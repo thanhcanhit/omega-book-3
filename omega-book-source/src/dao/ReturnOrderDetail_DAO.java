@@ -15,7 +15,7 @@ import utilities.AccessDatabase;
 public class ReturnOrderDetail_DAO implements DAOBase<ReturnOrderDetail>{
 	EntityManager em;
 	public ReturnOrderDetail_DAO() {
-		em = AccessDatabase.getEntityManager();
+		em = AccessDatabase.getInstance();
 	}
 
 	public ReturnOrderDetail getOne(String returnOrderID, String productID) {

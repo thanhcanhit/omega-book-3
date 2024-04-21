@@ -17,7 +17,7 @@ public class Supplier_DAO implements DAOBase<Supplier> {
 	EntityManager entityManager;
 
 	public Supplier_DAO() {
-		entityManager = AccessDatabase.getEntityManager();
+		entityManager = AccessDatabase.getInstance();
 	}
 
 	@Override

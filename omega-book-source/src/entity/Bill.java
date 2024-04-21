@@ -69,7 +69,7 @@ public final class Bill implements Serializable{
 	@Cascade({ org.hibernate.annotations.CascadeType.ALL })
 	private List<OrderDetail> orderDetail;
 	private double moneyGiven;
-	
+
 	@ManyToOne
 	@JoinColumn(name = "accountingVoucherID")
 	private AcountingVoucher accountingVoucher;
@@ -303,6 +303,5 @@ public final class Bill implements Serializable{
 				+ employee + ", customer=" + customer + ", moneyGiven=" + moneyGiven + ", acountingVoucher="
 				+ accountingVoucher + "]";
 	}
-	
 
 }

@@ -18,7 +18,7 @@ public class ReturnOrder_DAO implements DAOBase<ReturnOrder>{
 	EntityManager em;
 	ReturnOrderDetail_DAO detail_dao = new ReturnOrderDetail_DAO();
 	public ReturnOrder_DAO() {
-		em = AccessDatabase.getEntityManager();
+		em = AccessDatabase.getInstance();
 	}
 
 	@Override

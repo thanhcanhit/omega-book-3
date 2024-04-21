@@ -19,7 +19,7 @@ public class Account_DAO implements DAOBase<Account> {
 	EntityManager em;
 
 	public Account_DAO() {
-		em = AccessDatabase.getEntityManager();
+		em = AccessDatabase.getInstance();
 	}
 
 	@Override

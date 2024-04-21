@@ -30,7 +30,11 @@ import utilities.AcountingVoucherPrinter;
  *
  * @author Hoàng Khang
  */
+<<<<<<< HEAD:omega-book-source/src/bus/impl/StatementAcounting_BUSImpl.java
 public class StatementAcounting_BUSImpl extends UnicastRemoteObject implements StatementAccounting_BUS{
+=======
+public class StatementAccounting_BUSImpl implements StatementAccounting_BUS{
+>>>>>>> refs/remotes/origin/main:omega-book-source/src/bus/impl/StatementAccounting_BUSImpl.java
 
     protected StatementAcounting_BUSImpl() throws RemoteException {
 		super();
