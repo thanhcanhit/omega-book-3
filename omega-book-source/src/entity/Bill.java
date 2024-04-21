@@ -1,5 +1,6 @@
 package entity;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -38,12 +39,11 @@ import jakarta.persistence.TemporalType;
 				+ "WHERE FUNCTION('YEAR', o.orderAt) = :year " + "AND FUNCTION('MONTH', o.orderAt) = :month "
 				+ "AND o.status = true") })
 @Table(name = "Bill")
-public final class Bill {
+public final class Bill implements Serializable{
 
+	private static final long serialVersionUID = 5312449002126723120L;
 	private static final String ORDERID_ERROR = "Mã hoá đơn không hợp lệ !";
 	private static final String ORDERAT_ERROR = "Ngày tạo hoá đơn không hợp lệ !";
-	@SuppressWarnings("unused")
-	private static final String PROMOTION_ERROR = "Khuyến mãi không được rỗng !";
 	private static final String EMPLOYEE_ERROR = "Nhân viên không được rỗng !";
 	private static final String CUSTOMER_ERROR = "Khách hàng không được rỗng !";
 	private static final String ORDERDETAIL_ERROR = "Chi tiết hoá đơn không được rỗng !";

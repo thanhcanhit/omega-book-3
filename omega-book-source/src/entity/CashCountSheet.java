@@ -4,6 +4,7 @@
  */
 package entity;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -25,7 +26,9 @@ import jakarta.persistence.TemporalType;
 @Entity
 //Query
 @NamedQuery(name = "CashCountSheet.findAll", query = "SELECT c FROM CashCountSheet c")
-public class CashCountSheet{
+public class CashCountSheet implements Serializable{
+	private static final long serialVersionUID = -487779931541293692L;
+
 	@Id
     private String cashCountSheetID;
 	

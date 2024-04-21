@@ -1,5 +1,6 @@
 package entity;
 
+import java.io.Serializable;
 import java.util.Date;
 
 import enums.CustomerRank;
@@ -11,11 +12,11 @@ import jakarta.persistence.*;
 	@NamedQuery(name = "PromotionForOrder.findAll", query = "SELECT po FROM PromotionForOrder po"),
 	@NamedQuery(name = "PromotionForOrder.findByPromotionID", query = "SELECT po FROM PromotionForOrder po WHERE po.promotionID like :promotionID"),
 })
-public class PromotionForOrder extends Promotion {
+public class PromotionForOrder extends Promotion implements Serializable{
+	private static final long serialVersionUID = 7740004243045420514L;
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 1L;
 	@Enumerated(EnumType.ORDINAL)
 	private CustomerRank condition;
 

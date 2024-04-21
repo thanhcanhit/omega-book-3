@@ -36,10 +36,10 @@ import jakarta.persistence.TemporalType;
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name = "promotionType", discriminatorType = DiscriminatorType.STRING)
 public class Promotion implements Serializable {
+	private static final long serialVersionUID = -431182684421565393L;
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 1L;
 	public static final String PROMOTIONID_ERROR = "Mã chương trình khuyến mãi không hợp lệ!";
 	public static final String STARTEDDATE_ERROR = "Ngày tạo chương trình khuyến mãi không được rỗng!";
 	public static final String ENDEDDATE_ERROR = "Ngày kết thúc phải sau ngày tạo chương trình khuyến mãi!";

@@ -4,6 +4,7 @@
  */
 package entity;
 
+import java.io.Serializable;
 import java.util.Objects;
 import java.util.regex.Pattern;
 import jakarta.persistence.*;
@@ -17,8 +18,9 @@ import jakarta.persistence.*;
 	@NamedQuery(name = "Brand.findByBrandID", query = "SELECT b FROM Brand b WHERE b.brandID = :brandID"),
 	@NamedQuery(name = "Brand.findAll", query = "SELECT b FROM Brand b") 
 })
-public final class Brand {
+public final class Brand implements Serializable{
 
+	private static final long serialVersionUID = -3970030031680091138L;
 	// Hằng báo lỗi
 	public static final String BRAND_ID_INVALID = "Brand id không hợp lệ";
 	public static final String NAME_EMPTY = "Brand name không được rỗng";

@@ -18,10 +18,11 @@ import jakarta.persistence.OneToMany;
 @Entity
 public class Store implements Serializable {
 
+	private static final long serialVersionUID = 1712467925096175175L;
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 1L;
+	
 	/* Hằng báo lỗi */
 	public static final String ID_EMPTY = "Mã cửa hàng không được phép rỗng";
 	public static final String NAME_EMPTY = "Tên cửa hàng không được phép rỗng";

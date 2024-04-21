@@ -4,6 +4,7 @@
  */
 package entity;
 
+import java.io.Serializable;
 import java.util.Objects;
 
 import jakarta.persistence.Entity;
@@ -19,7 +20,9 @@ import jakarta.persistence.NamedQuery;
 @Entity
 //Lấy toàn bộ CashCountSheetDetail của một CashCountSheet
 @NamedQuery(name = "CashCountSheetDetail.findAllByCashCountSheetID", query = "SELECT c FROM CashCountSheetDetail c WHERE c.cashCountSheet.id = :cashCountSheetID")
-public class CashCountSheetDetail {
+public class CashCountSheetDetail implements Serializable{
+	private static final long serialVersionUID = 1417453742946260418L;
+
 	@Id
 	@ManyToOne
 	@JoinColumn(name = "employeeID")

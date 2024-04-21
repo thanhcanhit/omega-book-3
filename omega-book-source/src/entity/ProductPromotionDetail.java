@@ -1,5 +1,6 @@
 package entity;
 
+import java.io.Serializable;
 import java.util.Objects;
 
 import jakarta.persistence.*;
@@ -15,7 +16,9 @@ import jakarta.persistence.*;
 	@NamedQuery(name = "ProductPromotionDetail.findByProduct", query = "SELECT pd FROM ProductPromotionDetail pd WHERE pd.product.productID = :productID"),
 	@NamedQuery(name = "ProductPromotionDetail.findByPromotionAndProduct", query = "SELECT pd FROM ProductPromotionDetail pd WHERE pd.promotion.promotionID = :promotionID AND pd.product.productID = :productID")
 })
-public class ProductPromotionDetail {
+public class ProductPromotionDetail implements Serializable{
+	private static final long serialVersionUID = -8356773560168947617L;
+
 	@Id
 	@ManyToOne
 	@JoinColumn(name = "promotionID")

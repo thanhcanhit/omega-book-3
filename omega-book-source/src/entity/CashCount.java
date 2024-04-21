@@ -4,6 +4,8 @@
  */
 package entity;
 
+import java.io.Serializable;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
@@ -23,7 +25,8 @@ import jakarta.persistence.Transient;
 //	Thêm CashCount xuống database
 //	@NamedQuery(name = "CashCount.insert", query = "INSERT INTO CashCount (value, quantity, cashCountSheetID) VALUES (:value, :quantity, :cashCountSheetID)"),
 })
-public class CashCount {
+public class CashCount implements Serializable{
+	private static final long serialVersionUID = -427318693942296752L;
 	@Id
 	private double value;
 	@Id

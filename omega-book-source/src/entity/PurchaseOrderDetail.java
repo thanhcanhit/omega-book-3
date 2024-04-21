@@ -12,10 +12,11 @@ import jakarta.persistence.*;
 @Entity
 public class PurchaseOrderDetail implements Serializable {
 
-    /**
+    private static final long serialVersionUID = 5153220844909036759L;
+	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 1L;
+	
 	/* Hằng báo lỗi*/
     public static final String QUANTITY_ERROR = "Số lượng không được bé hơn 0";
     public static final String ORDERID_EMPTY = "Đơn hàng không được rỗng";
