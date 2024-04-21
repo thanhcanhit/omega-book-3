@@ -9,7 +9,9 @@ import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.Id;
 import jakarta.persistence.NamedQuery;
 import jakarta.persistence.OneToMany;
@@ -27,8 +29,8 @@ public class CashCountSheet{
 	@Id
     private String cashCountSheetID;
 	
-	@OneToMany(mappedBy = "cashCountSheet")
-    private ArrayList<CashCount> cashCountList;
+	@OneToMany(mappedBy = "cashCountSheet", cascade = CascadeType.ALL, orphanRemoval = true)
+	private List<CashCount> cashCountList = new ArrayList<>();
 	
 	@Temporal(TemporalType.TIMESTAMP)
     private Date createdDate;
@@ -37,8 +39,8 @@ public class CashCountSheet{
     private double total;
     private double difference;
 
-    @OneToMany(mappedBy = "cashCountSheet")
-    private ArrayList<CashCountSheetDetail> cashCountSheetDetailList;
+    @OneToMany(mappedBy = "cashCountSheet", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<CashCountSheetDetail> cashCountSheetDetailList;
 
     public CashCountSheet() {
     }
@@ -55,11 +57,6 @@ public class CashCountSheet{
         setDifference();
         this.cashCountSheetDetailList = cashCountSheetDetailList;
     }
-
-//    @Override
-//    public int compareTo(CashCountSheet o) {
-//        return this.createdDate.compareTo(o.createdDate);
-//    }
 
     @Override
     public boolean equals(Object obj) {
@@ -80,7 +77,7 @@ public class CashCountSheet{
         return cashCountList;
     }
 
-    public ArrayList<CashCountSheetDetail> getCashCountSheetDetailList() {
+    public List<CashCountSheetDetail> getCashCountSheetDetailList() {
         return cashCountSheetDetailList;
     }
 
@@ -145,8 +142,13 @@ public class CashCountSheet{
         }
         this.total = sum;
     }
+    
+    
 
-    @Override
+    public void setCashCountList(List<CashCount> cashCountList) {
+		this.cashCountList = cashCountList;
+	}
+	@Override
     public String toString() {
         return "CashCountSheet{" + "cashCountSheetID=" + cashCountSheetID + ", cashCountList=" + cashCountList + ", createdDate=" + createdDate + ", endedDate=" + endedDate + ", total=" + total + '}';
     }

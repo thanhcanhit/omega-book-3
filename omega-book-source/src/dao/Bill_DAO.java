@@ -211,17 +211,17 @@ public class Bill_DAO implements DAOBase<Bill> {
      * @param acountingVoucherID Mã phiếu kết toán
      * @author Hoàng Khang
      */
-    public boolean updateOrderAcountingVoucher(String orderID, String acountingVoucherID) {
+    public boolean updateOrderAcountingVoucher(String orderID, String accountingVoucherID) {
     	
 
         try {
            entityManager.getTransaction().begin();
 
             // Sử dụng câu truy vấn HQL để cập nhật trường acountingVoucherID của Order
-            String hql = "UPDATE Bill o SET o.acountingVoucherID = :acountingVoucherID " +
+            String hql = "UPDATE Bill o SET o.accountingVoucherID = :accountingVoucherID " +
                          "WHERE o.orderID = :orderID";
             int updatedEntities = entityManager.createQuery(hql)
-                    .setParameter("acountingVoucherID", acountingVoucherID)
+                    .setParameter("accountingVoucherID", accountingVoucherID)
                     .setParameter("orderID", orderID)
                     .executeUpdate();
 
