@@ -4,6 +4,7 @@
  */
 package entity;
 
+import java.io.Serializable;
 import java.util.Objects;
 
 import enums.StationeryType;
@@ -22,7 +23,8 @@ import jakarta.persistence.ManyToOne;
  */
 @Entity
 @DiscriminatorValue("Stationary")
-public final class Stationery extends Product {
+public final class Stationery extends Product implements Serializable{
+	private static final long serialVersionUID = 7305231286843662397L;
 	// Hằng báo lỗi
 	public static final String COLOR_EMPTY = "Stationery color không được rỗng";
 	public static final String WEIGHT_LOWER_ZERO = "Stationery weight không được rỗng";

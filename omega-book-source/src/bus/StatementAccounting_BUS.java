@@ -1,31 +1,32 @@
 package bus;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 
 import entity.AcountingVoucher;
+import entity.Bill;
 import entity.CashCount;
 import entity.CashCountSheet;
 import entity.Employee;
-import entity.Bill;
 
 public interface StatementAccounting_BUS {
-	 public AcountingVoucher getAcountingByID(String id) ;
+	 public AcountingVoucher getAcountingByID(String id) throws IOException;
 
-	    public AcountingVoucher getLastAcounting() ;
-	    public String generateID(Date date) ;
+	    public AcountingVoucher getLastAcounting() throws IOException;
+	    public String generateID(Date date) throws IOException;
 
-	    public void createAcountingVoucher(CashCountSheet cashCountSheet, Date end) ;
+	    public void createAcountingVoucher(CashCountSheet cashCountSheet, Date end) throws IOException;
 
-	    public Employee getEmployeeByID(String id);
+	    public Employee getEmployeeByID(String id) throws IOException;
 
-	    public ArrayList<Bill> getAllOrderInAcounting(Date start, Date end);
+	    public ArrayList<Bill> getAllOrderInAcounting(Date start, Date end) throws IOException;
 
-	    public double getSale(ArrayList<Bill> list) ;
+	    public double getSale(ArrayList<Bill> list) throws IOException;
 
-	    public double getPayViaATM(ArrayList<Bill> list);
+	    public double getPayViaATM(ArrayList<Bill> list) throws IOException;
 
-	    public double getTotal(ArrayList<CashCount> list) ;
+	    public double getTotal(ArrayList<CashCount> list) throws IOException;
 
-	    public void generatePDF(AcountingVoucher acounting);
+	    public void generatePDF(AcountingVoucher acounting) throws IOException;
 }

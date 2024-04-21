@@ -1,38 +1,41 @@
 package bus;
 
+import java.io.IOException;
+import java.rmi.Remote;
 import java.util.ArrayList;
-import entity.Customer;
+
 import entity.Bill;
+import entity.Customer;
 import entity.Product;
 import entity.ProductPromotionDetail;
 import entity.Promotion;
 
-public interface Sales_BUS {
-	public Product getProduct(String id) ;
+public interface Sales_BUS extends Remote{
+	public Product getProduct(String id) throws IOException;
 
-    public Customer getCustomerByPhone(String phone) ;
+    public Customer getCustomerByPhone(String phone) throws IOException;
 
-    public Bill createNewOrder() throws Exception;
+    public Bill createNewOrder() throws Exception ;
 
-    public boolean saveToDatabase(Bill order);
-    public boolean updateInDatabase(Bill order) ;
+    public boolean saveToDatabase(Bill order) throws IOException;
+    public boolean updateInDatabase(Bill order) throws IOException;
 
-    public boolean decreaseProductInventory(Product product, int quantity);
+    public boolean decreaseProductInventory(Product product, int quantity) throws IOException;
 
-    public boolean increaseProductInventory(Product product, int quantity) ;
+    public boolean increaseProductInventory(Product product, int quantity) throws IOException;
 
-    public ArrayList<ProductPromotionDetail> getListProductPromotionAvailable(String productID) ;
-    public ArrayList<Bill> getSavedOrders();
-    public Bill getOrder(String id);
+    public ArrayList<ProductPromotionDetail> getListProductPromotionAvailable(String productID)throws IOException;
+    public ArrayList<Bill> getSavedOrders() throws IOException;
+    public Bill getOrder(String id) throws IOException;
 
-    public boolean deleteOrder(String id) ;
-    public ArrayList<ProductPromotionDetail> getPromotionOfProductAvailable(String productID) ;
+    public boolean deleteOrder(String id) throws IOException;
+    public ArrayList<ProductPromotionDetail> getPromotionOfProductAvailable(String productID) throws IOException;
 
-    public double getBestProductPromotionDiscountAmountAvailable(String productID) ;
+    public double getBestProductPromotionDiscountAmountAvailable(String productID) throws IOException;
 
-    public ArrayList<Promotion> getPromotionOfOrderAvailable(int customerRank);
+    public ArrayList<Promotion> getPromotionOfOrderAvailable(int customerRank)throws IOException;
 
-    public Promotion getPromotion(String promotionID);
+    public Promotion getPromotion(String promotionID)throws IOException;
     
-    public int getSavedOrderQuantity();
+    public int getSavedOrderQuantity() throws IOException;
 }

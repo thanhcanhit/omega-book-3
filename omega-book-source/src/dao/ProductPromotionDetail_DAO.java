@@ -14,7 +14,7 @@ import utilities.AccessDatabase;
 public class ProductPromotionDetail_DAO implements DAOBase<ProductPromotionDetail> {
 	EntityManager em;
 	public ProductPromotionDetail_DAO() {
-		em = AccessDatabase.getEntityManager();
+		em = AccessDatabase.getInstance();
 	}
 
     public ProductPromotionDetail getOne(String promotionID, String productID) {

@@ -4,8 +4,8 @@
  */
 package bus.impl;
 
-import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 
 import bus.ViewCashCountSheetList_BUS;
 import dao.CashCountSheet_DAO;
@@ -20,8 +20,8 @@ public class ViewCashCountSheetList_BUSImpl implements ViewCashCountSheetList_BU
 
     private CashCountSheet_DAO cashDAO = new CashCountSheet_DAO();
 
-    public ArrayList<CashCountSheet> getAll() {
-        ArrayList<CashCountSheet> list = (ArrayList<CashCountSheet>) cashDAO.getAll();
+    public List<CashCountSheet> getAll() {
+        List<CashCountSheet> list = cashDAO.getAll();
         Collections.sort(list, Collections.reverseOrder());
         return list;
     }

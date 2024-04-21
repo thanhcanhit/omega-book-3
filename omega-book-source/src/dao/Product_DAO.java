@@ -33,7 +33,7 @@ public class Product_DAO implements DAOBase<Product> {
 	EntityManager em;
 
 	public Product_DAO() {
-		em = AccessDatabase.getEntityManager();
+		em = AccessDatabase.getInstance();
 	}
 
 //    With img

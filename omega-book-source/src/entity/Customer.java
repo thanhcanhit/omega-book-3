@@ -4,6 +4,7 @@
  */
 package entity;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
@@ -25,8 +26,9 @@ import jakarta.persistence.Transient;
  * @author Nhu Tam
  */
 @Entity
-public class Customer {
+public class Customer implements Serializable{
 
+	private static final long serialVersionUID = -7194278049336834537L;
 	/* Hằng báo lỗi */
 	public static final String ID_EMPTY = "Mã khách hàng không được phép rỗng";
 	public static final String NAME_EMPTY = "Họ tên không được phép rỗng";

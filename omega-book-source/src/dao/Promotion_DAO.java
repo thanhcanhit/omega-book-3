@@ -21,7 +21,7 @@ public class Promotion_DAO implements DAOBase<Promotion> {
 	EntityManager em;
 
 	public Promotion_DAO() {
-		em = AccessDatabase.getEntityManager();
+		em = AccessDatabase.getInstance();
 	}
 
 	@Override

@@ -19,7 +19,7 @@ public class CashCountSheetDetail_DAO implements interfaces.DAOBase<CashCountShe
 	EntityManager entityManager;
 
 	public CashCountSheetDetail_DAO() {
-		entityManager = AccessDatabase.getEntityManager();
+		entityManager = AccessDatabase.getInstance();
 	}
 
 	@Override

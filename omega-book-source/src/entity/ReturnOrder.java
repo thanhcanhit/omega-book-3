@@ -20,10 +20,11 @@ import java.util.regex.Pattern;
 		@NamedQuery(name = "ReturnOrder.findAll", query = "SELECT r FROM ReturnOrder r") 
 })
 public class ReturnOrder implements Serializable {
-    /**
+    private static final long serialVersionUID = -1009769225031700953L;
+	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 1L;
+	
 	private static final String ORDER_ERROR="Order không được rỗng";
     private static final String EMPLOYEE_ERROR="Employee không được rỗng";
     private static final String REASON_EMPTY = "Lý do không được rỗng";
