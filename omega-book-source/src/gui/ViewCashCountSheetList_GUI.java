@@ -7,6 +7,7 @@ package gui;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import javax.swing.JLabel;
 import javax.swing.table.DefaultTableCellRenderer;
@@ -51,7 +52,7 @@ public class ViewCashCountSheetList_GUI extends javax.swing.JPanel {
 
     }
 
-    public void renderCustomerTable(ArrayList<CashCountSheet> list) {
+    public void renderCustomerTable(List<CashCountSheet> list) {
         tblModel_cashCountSheetList.setRowCount(0);
         for (CashCountSheet cashCountSheet : list) {
             String id = cashCountSheet.getCashCountSheetID();
