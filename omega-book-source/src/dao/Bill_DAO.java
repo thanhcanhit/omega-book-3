@@ -32,24 +32,25 @@ import utilities.AccessDatabase;
 public class Bill_DAO implements DAOBase<Bill> {
 
 	EntityManager entityManager;
+
 	public Bill_DAO() {
 		entityManager = AccessDatabase.getEntityManager();
 	}
-    @Override
-    public Bill getOne(String id) {
-        return entityManager.find(Bill.class, id);
-    }
 
-    @Override
-    public ArrayList<Bill> getAll() {
-    	List<Bill> list= entityManager.createNamedQuery("Bill.getAll", Bill.class).getResultList();
-    	ArrayList<Bill> result = new ArrayList<>(list);
-        return  result;
-    }
+	@Override
+	public Bill getOne(String id) {
+		return entityManager.find(Bill.class, id);
+	}
 
-    
-    @Override
-    public String generateID() {
+	@Override
+	public ArrayList<Bill> getAll() {
+		List<Bill> list = entityManager.createNamedQuery("Bill.getAll", Bill.class).getResultList();
+		ArrayList<Bill> result = new ArrayList<>(list);
+		return result;
+	}
+
+	@Override
+	public String generateID() {
 		String result = "HD";
 		LocalDate time = LocalDate.now();
 		DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("ddMMyyyy");
@@ -115,39 +116,39 @@ public class Bill_DAO implements DAOBase<Bill> {
 //        }
 //
 //        return result;
-    }
+	}
 
-    @Override
-    public Boolean create(Bill object) {
+	@Override
+	public Boolean create(Bill object) {
 
-    	entityManager.getTransaction().begin();
-    	entityManager.persist(object);
-    	entityManager.getTransaction().commit();
-    	return entityManager.find(Bill.class, object.getOrderID()) != null;
-    }
+		entityManager.getTransaction().begin();
+		entityManager.persist(object);
+		entityManager.getTransaction().commit();
+		return entityManager.find(Bill.class, object.getOrderID()) != null;
+	}
 
-    @Override
-    public Boolean update(String id, Bill newObject) {
-    	int n = 0;
-    	n = entityManager.createNamedQuery("Bill.update", Bill.class)
-    	.setParameter("payment", newObject.isPayment())
-    	.setParameter("status", newObject.isStatus())
-    	.setParameter("orderAt", newObject.getOrderAt())
-    	.setParameter("employeeID", newObject.getEmployee().getEmployeeID())
-    	.setParameter("customerID", newObject.getCustomer().getCustomerID())
-    	.setParameter("promotionID", newObject.getPromotion().getPromotionID())
-    	.setParameter("totalDue", newObject.getTotalDue())
-    	.setParameter("subTotal", newObject.getSubTotal())
-    	.setParameter("moneyGiven", newObject.getMoneyGiven())
-    	.setParameter("orderID", id).executeUpdate();
-    	return n > 0;
-    }
+	@Override
+	public Boolean update(String id, Bill newObject) {
+		try {
+			if (!newObject.getOrderID().equals(id)) {
+				return false;
+			}
+			entityManager.getTransaction().begin();
+			entityManager.merge(newObject);
+			entityManager.getTransaction().commit();
+			return true;
+		} catch (Exception e) {
+			entityManager.getTransaction().rollback();
+			e.printStackTrace();
+			return false;
+		}
+	}
 
-    @Override
-    public Boolean delete(String id) {
-    	int n = 0;
-    	try {
-    		Bill bill = entityManager.find(Bill.class, id);
+	@Override
+	public Boolean delete(String id) {
+		int n = 0;
+		try {
+			Bill bill = entityManager.find(Bill.class, id);
 			entityManager.getTransaction().begin();
 			entityManager.remove(bill);
 			entityManager.getTransaction().commit();
@@ -155,12 +156,12 @@ public class Bill_DAO implements DAOBase<Bill> {
 		} catch (Exception e) {
 			entityManager.getTransaction().rollback();
 			e.printStackTrace();
-    	}
-    	return n > 0;
-    }
+		}
+		return n > 0;
+	}
 
-    public int getLength() {
-    	int length = 0;
+	public int getLength() {
+		int length = 0;
 		try {
 			String hql = "SELECT COUNT(*) FROM Bill";
 			Query query = entityManager.createQuery(hql);
@@ -169,97 +170,92 @@ public class Bill_DAO implements DAOBase<Bill> {
 			e.printStackTrace();
 		}
 		return length;
-    }
+	}
 
-    public ArrayList<Bill> getPage(int page) {
-    	List<Bill> list = new ArrayList<>();
-       list= entityManager.createNamedQuery("Bill.getAll",Bill.class).setFirstResult(page).setMaxResults(50).getResultList();
-       ArrayList<Bill> result = new ArrayList<>(list);
-       return result;
-    }
+	public ArrayList<Bill> getPage(int page) {
+		List<Bill> list = new ArrayList<>();
+		list = entityManager.createNamedQuery("Bill.getAll", Bill.class).setFirstResult(page).setMaxResults(50)
+				.getResultList();
+		ArrayList<Bill> result = new ArrayList<>(list);
+		return result;
+	}
 
-    /**
-     * @param acountingVoucherID Mã phiếu kết toán
-     * @return ArrayList<Order> Danh sách hóa đơn đã được kết toán trong
-     * phiếu kết toán
-     * @author Hoàng Khang
-     */
-    public ArrayList<Bill> getAllOrderInAcountingVoucher(String accountingVoucherID) {
-        ArrayList<Bill> result = new ArrayList<>();
+	/**
+	 * @param acountingVoucherID Mã phiếu kết toán
+	 * @return ArrayList<Order> Danh sách hóa đơn đã được kết toán trong
+	 *         phiếu kết toán
+	 * @author Hoàng Khang
+	 */
+	public ArrayList<Bill> getAllOrderInAcountingVoucher(String accountingVoucherID) {
+		ArrayList<Bill> result = new ArrayList<>();
 
-        try {
-            String hql = "SELECT o FROM Bill o " +
-                         "WHERE o.acountingVoucherID = :accountingVoucherID";
-         
+		try {
+			String hql = "SELECT o FROM Bill o " + "WHERE o.acountingVoucherID = :accountingVoucherID";
 
-            List<Bill> orders = entityManager.createQuery(hql,Bill.class)
-                    .setParameter("accountingVoucherID", accountingVoucherID).getResultList();
-            result.addAll(orders);
+			List<Bill> orders = entityManager.createQuery(hql, Bill.class)
+					.setParameter("accountingVoucherID", accountingVoucherID).getResultList();
+			result.addAll(orders);
 
-        } catch (Exception e) {
-            e.printStackTrace();
-        } 
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 
-        return result;
-    }
+		return result;
+	}
 
-    /**
-     * Phương thức thực hiện việc cập nhật mã phiếu kết toán cho một
-     * hóa đơn
-     *
-     * @param orderID Mã hóa đơn
-     * @param acountingVoucherID Mã phiếu kết toán
-     * @author Hoàng Khang
-     */
-    public boolean updateOrderAcountingVoucher(String orderID, String acountingVoucherID) {
-    	
+	/**
+	 * Phương thức thực hiện việc cập nhật mã phiếu kết toán cho một hóa
+	 * đơn
+	 *
+	 * @param orderID            Mã hóa đơn
+	 * @param acountingVoucherID Mã phiếu kết toán
+	 * @author Hoàng Khang
+	 */
+	public boolean updateOrderAcountingVoucher(String orderID, String acountingVoucherID) {
 
-        try {
-           entityManager.getTransaction().begin();
+		try {
+			entityManager.getTransaction().begin();
 
-            // Sử dụng câu truy vấn HQL để cập nhật trường acountingVoucherID của Order
-            String hql = "UPDATE Bill o SET o.acountingVoucherID = :acountingVoucherID " +
-                         "WHERE o.orderID = :orderID";
-            int updatedEntities = entityManager.createQuery(hql)
-                    .setParameter("acountingVoucherID", acountingVoucherID)
-                    .setParameter("orderID", orderID)
-                    .executeUpdate();
+			// Sử dụng câu truy vấn HQL để cập nhật trường acountingVoucherID của Order
+			String hql = "UPDATE Bill o SET o.acountingVoucherID = :acountingVoucherID " + "WHERE o.orderID = :orderID";
+			int updatedEntities = entityManager.createQuery(hql).setParameter("acountingVoucherID", acountingVoucherID)
+					.setParameter("orderID", orderID).executeUpdate();
 
-            entityManager.getTransaction().commit();
-            return updatedEntities > 0;
+			entityManager.getTransaction().commit();
+			return updatedEntities > 0;
 
-        } catch (Exception e) {
-            if (entityManager.getTransaction() != null && entityManager.getTransaction().isActive()) {
-            	entityManager.getTransaction().rollback();
-            }
-            e.printStackTrace();
-            return false;
+		} catch (Exception e) {
+			if (entityManager.getTransaction() != null && entityManager.getTransaction().isActive()) {
+				entityManager.getTransaction().rollback();
+			}
+			e.printStackTrace();
+			return false;
 
-        } 
-    }
+		}
+	}
 
-    /**
-     * Phương thức thực hiện việc lấy ra các hoá đơn theo mã hoá đơn
-     *
-     * @param orderID Mã hóa đơn
-     * @author Như Tâm
-     */
-    public ArrayList<Bill> findById(String orderID) {
-    		List<Bill> list = new ArrayList<>();
+	/**
+	 * Phương thức thực hiện việc lấy ra các hoá đơn theo mã hoá đơn
+	 *
+	 * @param orderID Mã hóa đơn
+	 * @author Như Tâm
+	 */
+	public ArrayList<Bill> findById(String orderID) {
+		List<Bill> list = new ArrayList<>();
 
-    	    try {
+		try {
 
-    	        String hql = "SELECT o FROM Bill o WHERE o.orderID LIKE :orderIDPattern";
+			String hql = "SELECT o FROM Bill o WHERE o.orderID LIKE :orderIDPattern";
 
-    	        list = entityManager.createQuery(hql,Bill.class)
-    	    	        .setParameter("orderIDPattern", orderID + "%").getResultList();
-    	    } catch (Exception e) {
-    	        e.printStackTrace();
-    	    } 
+			list = entityManager.createQuery(hql, Bill.class).setParameter("orderIDPattern", orderID + "%")
+					.getResultList();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 
-    	    ArrayList<Bill> result = new ArrayList<>(list);
-    	    return result;
-    }
+		ArrayList<Bill> result = new ArrayList<>(list);
+		return result;
+	}
 
 //    private Bill getOrderData(ResultSet rs) throws Exception {
 //        Bill result = null;
@@ -282,118 +278,112 @@ public class Bill_DAO implements DAOBase<Bill> {
 //        return result;
 //    }
 
-    public double[] getToTalInMonth(int month, int year) {
-        double[] result = new double[31]; // Mảng kết quả, tối đa 31 ngày trong một tháng
+	public double[] getToTalInMonth(int month, int year) {
+		double[] result = new double[31]; // Mảng kết quả, tối đa 31 ngày trong một tháng
 
-        try {
-            Arrays.fill(result, 0);
+		try {
+			Arrays.fill(result, 0);
 
-             String hql = "SELECT DAY(o.orderAt) AS dayOfMonth, SUM(o.totalDue) " +
-                         "FROM Bill o " +
-                         "WHERE FUNCTION('YEAR', o.orderAt) = :year " +
-                         "AND FUNCTION('MONTH', o.orderAt) = :month " +
-                         "AND o.status = true " +
-                         "GROUP BY DAY(o.orderAt)";
-           
-            List<Object[]> resultList = entityManager.createQuery(hql,Object[].class)
-                    .setParameter("year", year)
-                    .setParameter("month", month).getResultList();
-            for (Object[] row : resultList) {
-                int dayOfMonth = (int) row[0];
-                double totalDue = (double) row[1];
-                result[dayOfMonth - 1] = totalDue;
-            }
+			String hql = "SELECT DAY(o.orderAt) AS dayOfMonth, SUM(o.totalDue) " + "FROM Bill o "
+					+ "WHERE FUNCTION('YEAR', o.orderAt) = :year " + "AND FUNCTION('MONTH', o.orderAt) = :month "
+					+ "AND o.status = true " + "GROUP BY DAY(o.orderAt)";
 
-        } catch (Exception e) {
-            e.printStackTrace();
-        } 
+			List<Object[]> resultList = entityManager.createQuery(hql, Object[].class).setParameter("year", year)
+					.setParameter("month", month).getResultList();
+			for (Object[] row : resultList) {
+				int dayOfMonth = (int) row[0];
+				double totalDue = (double) row[1];
+				result[dayOfMonth - 1] = totalDue;
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 //        finally {
 //            if (entityManager != null) {
 //                entityManager.close();
 //            }
 //        }
 
-        return result;
-    }
+		return result;
+	}
 
-    public int getNumberOfOrderInMonth(int month, int year) {
-    	
-        int result = 0;
+	public int getNumberOfOrderInMonth(int month, int year) {
 
-        try {
+		int result = 0;
 
-            String hql = "SELECT COUNT(o.orderID) FROM Bill o " +
-                         "WHERE FUNCTION('YEAR', o.orderAt) = :year " +
-                         "AND FUNCTION('MONTH', o.orderAt) = :month " +
-                         "AND o.status = true";
+		try {
 
-           result =  entityManager.createQuery(hql,Long.class)
-            		.setParameter("year", year)
-            		.setParameter("month", month).getSingleResult().intValue();
-            
-        } catch (Exception e) {
-            e.printStackTrace();
-        } 
+			String hql = "SELECT COUNT(o.orderID) FROM Bill o " + "WHERE FUNCTION('YEAR', o.orderAt) = :year "
+					+ "AND FUNCTION('MONTH', o.orderAt) = :month " + "AND o.status = true";
 
-        return result;
-    }
+			result = entityManager.createQuery(hql, Long.class).setParameter("year", year).setParameter("month", month)
+					.getSingleResult().intValue();
 
-    public double getTotalInMonth(int month, int year) {
-    	double result = 0;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 
-        try {
-            List<Double> resultList = entityManager.createNamedQuery("Bill.getTotalInMonth",Double.class)
-            		.setParameter("year", year)
-                    .setParameter("month", month).getResultList();
-            if (resultList != null && !resultList.isEmpty() && resultList.get(0) != null) {
-                result = resultList.get(0);
-            }
+		return result;
+	}
 
-        } catch (Exception e) {
-            e.printStackTrace();
-        } 
-        return result;
-    }
+	public double getTotalInMonth(int month, int year) {
+		double result = 0;
 
-    public void clearExpiredOrderSaved() {
+		try {
+			List<Double> resultList = entityManager.createNamedQuery("Bill.getTotalInMonth", Double.class)
+					.setParameter("year", year).setParameter("month", month).getResultList();
+			if (resultList != null && !resultList.isEmpty() && resultList.get(0) != null) {
+				result = resultList.get(0);
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return result;
+	}
+
+	public void clearExpiredOrderSaved() {
 //    	String query = "SELECT * FROM Bill "
 //    			+ "WHERE o.status = 0 AND "
 //    			+ "DATEDIFF(DAY, o.orderAt, CONVERT(date, GETDATE())) < 1";
-        try {
-        	OrderDetail_DAO od_DAO = new OrderDetail_DAO();
-           List<Bill> resultSet=entityManager.createNamedQuery("Bill.clearExpiredOrderSaved",Bill.class).getResultList();
+		try {
+			OrderDetail_DAO od_DAO = new OrderDetail_DAO();
+			List<Bill> resultSet = entityManager.createNamedQuery("Bill.clearExpiredOrderSaved", Bill.class)
+					.getResultList();
 //        	@SuppressWarnings("unchecked")
 //			List<Bill> resultSet = entityManager.createNativeQuery(query).getResultList();
-           resultSet.forEach(x->{
-        	   od_DAO.delete(x.getOrderID());
-           });
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
+			resultSet.forEach(x -> {
+				od_DAO.delete(x.getOrderID());
+			});
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 
-    public ArrayList<Bill> getNotCompleteOrder() {
-        ArrayList<Bill> result ;
+	public ArrayList<Bill> getNotCompleteOrder() {
+		ArrayList<Bill> result;
 //        Xóa các hóa đơn lưu tạm quá 24 giờ  không còn dùng tới
-        clearExpiredOrderSaved();
-        String query = "SELECT o FROM Bill o WHERE o.status = false";
-        List<Bill> list = entityManager.createQuery(query,Bill.class).getResultList();
-        result = new ArrayList<>(list);
+		clearExpiredOrderSaved();
+		String query = "SELECT o FROM Bill o WHERE o.status = false";
+		List<Bill> list = entityManager.createQuery(query, Bill.class).getResultList();
+		result = new ArrayList<>(list);
 
-        return result;
-    }
+		return result;
+	}
 
-    public Promotion getDiscount(String orderID) {
-        Bill order = getOne(orderID);
-        if (order.getPromotion() == null) {
-            return null;
-        }
-        return new Promotion_DAO().getOne(order.getPromotion().getPromotionID());
-    }
+	public Promotion getDiscount(String orderID) {
+		Bill order = getOne(orderID);
+		if (order.getPromotion() == null) {
+			return null;
+		}
+		return new Promotion_DAO().getOne(order.getPromotion().getPromotionID());
+	}
 
-    public int getQuantityOrderSaved() {
-    	int n = 0;
-    	n = Integer.valueOf(entityManager.createNamedQuery("Bill.getQuantityOrderSaved",Long.class).getSingleResult().toString());
-        return n;
-    }
+	public int getQuantityOrderSaved() {
+		int n = 0;
+		n = Integer.valueOf(
+				entityManager.createNamedQuery("Bill.getQuantityOrderSaved", Long.class).getSingleResult().toString());
+		return n;
+	}
 }

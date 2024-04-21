@@ -103,7 +103,8 @@ public class OrderPrinter {
         }
 
         if (myService == null) {
-            throw new IllegalStateException("Printer not found");
+//            throw new IllegalStateException("Printer not found");
+        	return PrintStatus.NOT_FOUND_PRINTER;
         }
 
         try (FileInputStream fis = new FileInputStream(FILE_PATH)) {

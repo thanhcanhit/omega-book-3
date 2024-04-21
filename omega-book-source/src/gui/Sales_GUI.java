@@ -252,6 +252,11 @@ public class Sales_GUI extends javax.swing.JPanel {
 		cart = new ArrayList<>();
 		tblModel_cart = new DefaultTableModel(new String[] { "Mã sản phẩm", "Tên sản phẩm", "Số lượng", "Giá bán",
 				"VAT", "Tổng tiền", "Tiền giảm", "Thành tiền" }, 0) {
+			/**
+					 * 
+					 */
+					private static final long serialVersionUID = -7730903121878789725L;
+
 			@Override
 			public boolean isCellEditable(int row, int column) {
 //                Chỉ cho cột 2 tức là Số lượng mới sửa được
@@ -547,7 +552,7 @@ public class Sales_GUI extends javax.swing.JPanel {
 			setDiscount(discountAmount);
 			renderOrderTotal();
 		}
-		txt_orderPay.setText(utilities.FormatNumber.toVND(total - discount));
+		txt_orderPay.setText(utilities.FormatNumber.toVND(totalAfterDiscount));
 
 		calculateOptionCashGive();
 
@@ -1589,6 +1594,7 @@ public class Sales_GUI extends javax.swing.JPanel {
 		String orderID = tbl_savedOrder.getValueAt(row, 0).toString();
 		isOldOrder = true;
 		loadSavedOrder(orderID);
+		frame_savedOrder.setVisible(false);
 		frame_savedOrder.dispose();
 		Notifications.getInstance().show(Notifications.Type.INFO, "Đã tải lên thông tin của hóa đơn " + orderID);
 
@@ -1612,6 +1618,7 @@ public class Sales_GUI extends javax.swing.JPanel {
 				Notifications.getInstance().show(Notifications.Type.SUCCESS,
 						"Đã xóa thành công đơn lưu tạm " + orderID);
 				renderSavedOrderTable();
+
 			} else {
 				Notifications.getInstance().show(Notifications.Type.ERROR,
 						"Không thể xóa đơn lưu tạm " + orderID + " lỗi không xác định");
@@ -1895,13 +1902,21 @@ public class Sales_GUI extends javax.swing.JPanel {
 					.addRow(new Object[] { item.getOrderID(), item.getCustomer().getName(), item.getOrderAt() });
 		}
 		tbl_savedOrder.setModel(tblModel_savedOrder);
+		tbl_saveOrderDetail.setModel(new javax.swing.table.DefaultTableModel(
+				new Object[][] { { null, null }, { null, null }, { null, null }, { null, null } },
+				new String[] { "Tên sản phẩm", "Số lượng" }));
 	}
 
 	private void loadSavedOrder(String id) {
 		Bill savedOrder = bus.getOrder(id);
+		Customer temp = order.getCustomer();
+
+		setOrderCustomer(temp != null ? temp : defaultCustomer);
 //        update state
-		order = savedOrder;
-		cart = order.getOrderDetail();
+		order = savedOrder;  
+		cart = savedOrder.getOrderDetail();
+		setDiscount(0);
+		setTotal(0);
 //        Tự động thêm khuyến mãi có thể áp dụng ở thời điểm hiện tại vào các  sản phẩm
 		for (OrderDetail item : cart) {
 			double discountAmount = bus
@@ -1913,12 +1928,11 @@ public class Sales_GUI extends javax.swing.JPanel {
 						+ " này được giảm " + utilities.FormatNumber.toVND(discountAmount) + " trên 1 sản phẩm");
 			}
 		}
-
 //        Update view
+
 		disableCustomerForm();
 		renderOrder();
 		renderCartTable();
-		setOrderCustomer(order.getCustomer());
 		handleAddBest();
 	}
 
@@ -1926,6 +1940,11 @@ public class Sales_GUI extends javax.swing.JPanel {
 	private void renderPromotionOrderTable() {
 		DefaultTableModel tblModel_promotionList = new DefaultTableModel(
 				new String[] { "Mã khuyến mãi", "Loại khuyến mãi", "Giá trị khuyến mãi", "Số tiền giảm" }, 0) {
+			/**
+					 * 
+					 */
+			private static final long serialVersionUID = -3854913882503520360L;
+
 			@Override
 			public boolean isCellEditable(int row, int column) {
 				return false;

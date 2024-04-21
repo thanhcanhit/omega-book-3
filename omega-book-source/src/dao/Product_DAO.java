@@ -68,16 +68,16 @@ public class Product_DAO implements DAOBase<Product> {
 
 	public boolean updateInventory(String productID, int quantity) {
 		try {
-			String hql = "UPDATE Product SET inventory = :quantity WHERE productID = :productID";
-			Query query = em.createQuery(hql);
-			query.setParameter("quantity", quantity);
-			query.setParameter("productID", productID);
-			int n = query.executeUpdate();
-			return n > 0;
+			Product product = em.find(Product.class, productID);
+			em.getTransaction().begin();
+			product.setInventory(quantity);
+			em.getTransaction().commit();
+			return true;
 		} catch (Exception e) {
+			em.getTransaction().rollback();
 			e.printStackTrace();
+			return false;
 		}
-		return false;
 	}
 
 	/**

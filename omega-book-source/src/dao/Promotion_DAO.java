@@ -213,8 +213,7 @@ public class Promotion_DAO implements DAOBase<Promotion> {
 		try {
 			promotion = em.createNamedQuery("Promotion.findByPromotionID", Promotion.class)
 					.setParameter("id", prefix + "%").getSingleResult();
-		} catch (Exception e) {
-			e.printStackTrace();
+		} catch (Exception e) {			
 		}
 		if (promotion != null) {
 			String lastID = promotion.getPromotionID();
