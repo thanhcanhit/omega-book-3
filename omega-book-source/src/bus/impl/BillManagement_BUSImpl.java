@@ -4,6 +4,8 @@
  */
 package bus.impl;
 
+import java.rmi.RemoteException;
+import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -25,41 +27,51 @@ import entity.Promotion;
  *
  * @author KienTran
  */
-public class BillManagement_BUSImpl implements BillManagement_BUS{
+public class BillManagement_BUSImpl extends UnicastRemoteObject implements BillManagement_BUS{
 
-    private final Bill_DAO orderDAO = new Bill_DAO();
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 4955945117204405086L;
+
+	protected BillManagement_BUSImpl() throws RemoteException {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+
+	private final Bill_DAO orderDAO = new Bill_DAO();
     private final OrderDetail_DAO orderDetailDAO = new OrderDetail_DAO();
     private final Customer_DAO customerDAO = new Customer_DAO();
     private final Product_DAO productDAO = new Product_DAO();
     private final Employee_DAO employeeDAO = new Employee_DAO();
     private final Promotion_DAO promotionDAO = new Promotion_DAO();
 
-    public Promotion getPromotion(String promotionID) {
+    public Promotion getPromotion(String promotionID) throws RemoteException{
         return promotionDAO.getOne(promotionID);
     }
 
-    public ArrayList<Bill> getDataOfPage(int page) {
+    public ArrayList<Bill> getDataOfPage(int page) throws RemoteException {
         ArrayList<Bill> list = orderDAO.getPage(page);
         
         return list;
     }
-    public ArrayList<Bill> getAll(){
+    public ArrayList<Bill> getAll() throws RemoteException{
         return orderDAO.getAll();
     }
-    public Employee getEmployee(String emplpyeeID) {
+    public Employee getEmployee(String emplpyeeID) throws RemoteException{
         return employeeDAO.getOne(emplpyeeID);
     }
 
-    public Customer getCustomer(String customerID) {
+    public Customer getCustomer(String customerID)throws RemoteException {
         return customerDAO.getOne(customerID);
 
     }
 
-    public Product getProduct(String productID) {
+    public Product getProduct(String productID) throws RemoteException{
         return productDAO.getOne(productID);
     }
 
-    public Bill getOrder(String ID) throws Exception {
+    public Bill getOrder(String ID) throws Exception{
         Bill order = orderDAO.getOne(ID);
         Customer customer = getCustomer(order.getCustomer().getCustomerID());
         order.setCustomer(customer);
@@ -73,17 +85,17 @@ public class BillManagement_BUSImpl implements BillManagement_BUS{
         return order;
     }
 
-    public ArrayList<OrderDetail> getOrderDetailList(String orderID) {
+    public ArrayList<OrderDetail> getOrderDetailList(String orderID) throws RemoteException{
         return orderDetailDAO.getAll(orderID);
     }
 
-    public int getLastPage() {
+    public int getLastPage() throws RemoteException{
 
         int result = (int) Math.ceil(Double.valueOf(orderDAO.getLength()) / 50);
         return result;
     }
 
-    public ArrayList<Bill> orderListWithFilter(String orderID, String customerID, String phoneNumber, String priceFrom, String priceTo, Date orderFrom, Date orderTo) {
+    public ArrayList<Bill> orderListWithFilter(String orderID, String customerID, String phoneNumber, String priceFrom, String priceTo, Date orderFrom, Date orderTo)throws RemoteException {
         ArrayList<Bill> list = orderDAO.getAll();
         //for(Order order:list){
         for(int i = 0; i < list.size(); i++) {

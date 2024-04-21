@@ -4,6 +4,8 @@
  */
 package bus.impl;
 
+import java.rmi.RemoteException;
+import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -23,34 +25,43 @@ import enums.Type;
  *
  * @author thanhcanhit
  */
-public class ProductManagement_BUSImpl implements ProductManagement_BUS{
+public class ProductManagement_BUSImpl extends UnicastRemoteObject implements ProductManagement_BUS{
 
-    private final Product_DAO productDAO = new Product_DAO();
+    protected ProductManagement_BUSImpl() throws RemoteException {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -215476132767080495L;
+	private final Product_DAO productDAO = new Product_DAO();
     private final Brand_DAO brandDAO = new Brand_DAO();
 
-    public ArrayList<Product> getDataOfPage(int page) {
+    public ArrayList<Product> getDataOfPage(int page) throws RemoteException{
         return productDAO.getPage(page);
     }
 
-    public Product getProduct(String ID) {
+    public Product getProduct(String ID) throws RemoteException{
         return productDAO.getOne(ID);
     }
 
-    public int getLastPage() {
+    public int getLastPage() throws RemoteException{
 //       Tổng số sản phẩm / số sản phẩm 1 trang sau đó làm tròn lên
         int result = (int) Math.ceil(Double.valueOf(productDAO.getLength()) / 50);
         return result;
     }
 
-    public ArrayList<Product> searchById(String searchQuery) {
+    public ArrayList<Product> searchById(String searchQuery) throws RemoteException{
         return productDAO.findById(searchQuery);
     }
 
-    public boolean updateProduct(String id, Product product) {
+    public boolean updateProduct(String id, Product product) throws RemoteException{
         return productDAO.update(id, product);
     }
 
-    public boolean createProduct(Product productWithoutId) {
+    public boolean createProduct(Product productWithoutId) throws RemoteException{
         String id = "SP";
 //        SPabccxxxx. Trong đó: 
 //      - a: là 1 nếu là sách, 2 nếu là văn phòng phẩm và các sản phẩm khác là 3
@@ -79,7 +90,7 @@ public class ProductManagement_BUSImpl implements ProductManagement_BUS{
         return true;
     }
 
-    public ArrayList<Product> filter(String name, Boolean isEmpty, int type, int detailType) {
+    public ArrayList<Product> filter(String name, Boolean isEmpty, int type, int detailType) throws RemoteException{
 //      Nếu không lọc loại sản phẩm
         if (type == 0) {
             return productDAO.filter(name, isEmpty, null, null, null);
@@ -99,11 +110,11 @@ public class ProductManagement_BUSImpl implements ProductManagement_BUS{
 
     }
 
-    public ArrayList<Brand> getAllBrand() {
+    public ArrayList<Brand> getAllBrand() throws RemoteException{
         return brandDAO.getAll();
     }
 
-    public ArrayList<Product> filter(int type, int detailType) {
+    public ArrayList<Product> filter(int type, int detailType) throws RemoteException{
         ArrayList<Product> list = getAll();
         ArrayList<Product> result = new ArrayList<>();
 
@@ -140,7 +151,7 @@ public class ProductManagement_BUSImpl implements ProductManagement_BUS{
 //        }
     }
 
-    public ArrayList<Product> getAll() {
+    public ArrayList<Product> getAll() throws RemoteException{
         return productDAO.getAll();
     }
 

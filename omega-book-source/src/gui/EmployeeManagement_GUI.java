@@ -11,6 +11,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.rmi.RemoteException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
@@ -68,13 +69,14 @@ public class EmployeeManagement_GUI extends javax.swing.JPanel {
 
     /**
      * Creates new form EmployeeManagement_GUI
+     * @throws RemoteException 
      */
-    public EmployeeManagement_GUI() {
+    public EmployeeManagement_GUI() throws RemoteException {
         initComponents();
         init();
     }
     
-    private void init() {
+    private void init() throws RemoteException {
         bus = new EmployeeManagament_BUSImpl();
         //model
         tblModel_employee = new DefaultTableModel(new String[] {"Mã nhân viên", "Tên nhân viên", "Ngày sinh", "Trạng thái"}, 0);
@@ -85,7 +87,12 @@ public class EmployeeManagement_GUI extends javax.swing.JPanel {
                 return;
             
             String employeeID = tblModel_employee.getValueAt(rowIndex, 0).toString();
-            this.currentEmployee = bus.getEmployee(employeeID);
+            try {
+				this.currentEmployee = bus.getEmployee(employeeID);
+			} catch (RemoteException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
             renderCurrentEmployee();
         });
         //combobox
@@ -187,7 +194,7 @@ public class EmployeeManagement_GUI extends javax.swing.JPanel {
         }
         return true;
     }
-    private Employee getCurrentValue() {
+    private Employee getCurrentValue() throws RemoteException {
         String name = txt_name.getText();
         String phoneNumber = txt_phoneNumberEmp.getText();
         String address = txt_addressEmp.getText();
@@ -483,7 +490,12 @@ public class EmployeeManagement_GUI extends javax.swing.JPanel {
         });
         txt_searchEmp.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
-                txt_searchEmpKeyPressed(evt);
+                try {
+					txt_searchEmpKeyPressed(evt);
+				} catch (RemoteException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
             }
         });
         pnl_searchEmp.add(txt_searchEmp);
@@ -496,7 +508,12 @@ public class EmployeeManagement_GUI extends javax.swing.JPanel {
             + "foreground:$Menu.foreground;");
         btn_searchEmp.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btn_searchEmpActionPerformed(evt);
+                try {
+					btn_searchEmpActionPerformed(evt);
+				} catch (RemoteException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
             }
         });
         pnl_btnSearchEmp.add(btn_searchEmp, java.awt.BorderLayout.CENTER);
@@ -523,7 +540,12 @@ public class EmployeeManagement_GUI extends javax.swing.JPanel {
         btn_searchFilterEmp.setIcon(SVGIcon.getSVGIcon("resources/imgs/public/filter.svg"));
         btn_searchFilterEmp.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btn_searchFilterEmpActionPerformed(evt);
+                try {
+					btn_searchFilterEmpActionPerformed(evt);
+				} catch (RemoteException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
             }
         });
         pnl_cmb.add(btn_searchFilterEmp);
@@ -531,7 +553,12 @@ public class EmployeeManagement_GUI extends javax.swing.JPanel {
         btn_reloadEmp.setIcon(SVGIcon.getSVGIcon("resources/imgs/public/refresh.svg"));
         btn_reloadEmp.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btn_reloadEmpActionPerformed(evt);
+                try {
+					btn_reloadEmpActionPerformed(evt);
+				} catch (RemoteException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
             }
         });
         pnl_cmb.add(btn_reloadEmp);
@@ -811,7 +838,12 @@ public class EmployeeManagement_GUI extends javax.swing.JPanel {
         btn_clearValue.setIcon(SVGIcon.getSVGIcon("resources/imgs/public/clear.svg"));
         btn_clearValue.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btn_clearValueActionPerformed(evt);
+                try {
+					btn_clearValueActionPerformed(evt);
+				} catch (RemoteException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
             }
         });
         jPanel1.add(btn_clearValue);
@@ -828,7 +860,12 @@ public class EmployeeManagement_GUI extends javax.swing.JPanel {
         btn_changePass.setText("Đặt lại mật khẩu");
         btn_changePass.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btn_changePassActionPerformed(evt);
+                try {
+					btn_changePassActionPerformed(evt);
+				} catch (RemoteException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
             }
         });
         jPanel1.add(btn_changePass);
@@ -878,7 +915,7 @@ public class EmployeeManagement_GUI extends javax.swing.JPanel {
         // TODO add your handling code here:
     }//GEN-LAST:event_rdb_wokingActionPerformed
 
-    private void btn_searchEmpActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_searchEmpActionPerformed
+    private void btn_searchEmpActionPerformed(java.awt.event.ActionEvent evt) throws RemoteException {//GEN-FIRST:event_btn_searchEmpActionPerformed
         String searchQuery = txt_searchEmp.getText();
         if (searchQuery.isEmpty()) {
             Notifications.getInstance().show(Notifications.Type.INFO, "Vui lòng điền mã nhân viên");
@@ -888,13 +925,13 @@ public class EmployeeManagement_GUI extends javax.swing.JPanel {
         //disablePage();
     }//GEN-LAST:event_btn_searchEmpActionPerformed
 
-    private void btn_searchFilterEmpActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_searchFilterEmpActionPerformed
+    private void btn_searchFilterEmpActionPerformed(java.awt.event.ActionEvent evt) throws RemoteException {//GEN-FIRST:event_btn_searchFilterEmpActionPerformed
         int role = cmb_roleEmp.getSelectedIndex();
         int status = cmb_statusEmp.getSelectedIndex();
         renderEmployeeTable(bus.filter(role, status));
     }//GEN-LAST:event_btn_searchFilterEmpActionPerformed
 
-    private void btn_reloadEmpActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_reloadEmpActionPerformed
+    private void btn_reloadEmpActionPerformed(java.awt.event.ActionEvent evt) throws RemoteException {//GEN-FIRST:event_btn_reloadEmpActionPerformed
         renderEmployeeTable(bus.getAllEmployee());
         renderEmployeeInfor();
     }//GEN-LAST:event_btn_reloadEmpActionPerformed
@@ -935,7 +972,7 @@ public class EmployeeManagement_GUI extends javax.swing.JPanel {
         }
     }//GEN-LAST:event_btn_addEmpActionPerformed
 
-    private void txt_searchEmpKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_searchEmpKeyPressed
+    private void txt_searchEmpKeyPressed(java.awt.event.KeyEvent evt) throws RemoteException {//GEN-FIRST:event_txt_searchEmpKeyPressed
         if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
             String searchQuery = txt_searchEmp.getText();
             if (searchQuery.isEmpty()) {
@@ -946,7 +983,7 @@ public class EmployeeManagement_GUI extends javax.swing.JPanel {
         }
     }//GEN-LAST:event_txt_searchEmpKeyPressed
 
-    private void btn_changePassActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_changePassActionPerformed
+    private void btn_changePassActionPerformed(java.awt.event.ActionEvent evt) throws RemoteException {//GEN-FIRST:event_btn_changePassActionPerformed
         if(currentEmployee == null) {
             Notifications.getInstance().show(Notifications.Type.WARNING, "Vui lòng chọn nhân viên cần đặt lại mật khẩu");
             return;
@@ -958,7 +995,7 @@ public class EmployeeManagement_GUI extends javax.swing.JPanel {
             Notifications.getInstance().show(Notifications.Type.ERROR, "Đặt lại mật khẩu không thành công");
     }//GEN-LAST:event_btn_changePassActionPerformed
 
-    private void btn_clearValueActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_clearValueActionPerformed
+    private void btn_clearValueActionPerformed(java.awt.event.ActionEvent evt) throws RemoteException {//GEN-FIRST:event_btn_clearValueActionPerformed
         renderEmployeeTable(bus.getAllEmployee());
         renderEmployeeInfor();
     }//GEN-LAST:event_btn_clearValueActionPerformed

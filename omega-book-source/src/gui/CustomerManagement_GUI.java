@@ -7,6 +7,7 @@ package gui;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -41,7 +42,7 @@ import utilities.SVGIcon;
  *
  * @author Hoàng Khang
  */
-public class CustomerManagement_GUI extends javax.swing.JPanel {
+public class CustomerManagement_GUI extends javax.swing.JPanel{
 
     /**
 	 * 
@@ -52,8 +53,9 @@ public class CustomerManagement_GUI extends javax.swing.JPanel {
 
     /**
      * Creates new form CustomerManagement_GUI
+     * @throws RemoteException 
      */
-    public CustomerManagement_GUI() {
+    public CustomerManagement_GUI() throws RemoteException {
         initTableModel();
         initComponents();
         alterTable();
@@ -62,20 +64,26 @@ public class CustomerManagement_GUI extends javax.swing.JPanel {
             int row = tbl_customer.getSelectedRow();
             if (row != -1) {
                 String customerID = tblModel_customer.getValueAt(row, 0).toString();
-                Customer customer = customer_BUS.getOne(customerID);
-                txt_customerID.setText(customerID);
-                txt_name.setText(customer.getName());
-                txt_phoneNumber.setText(customer.getPhoneNumber());
-                txt_address.setText(customer.getAddress());
-                txt_score.setText(Integer.toString(customer.getScore()));
-                txt_rank.setText(customer.getRank());
-                if (customer.isGender()) {
-                    rad_men.setSelected(true);
-                } else {
-                    rad_women.setSelected(true);
-                }
-                ;
-                date_dateOfBirth.setDate(customer.getDateOfBirth());
+                Customer customer;
+				try {
+					customer = customer_BUS.getOne(customerID);
+					txt_customerID.setText(customerID);
+					txt_name.setText(customer.getName());
+					txt_phoneNumber.setText(customer.getPhoneNumber());
+					txt_address.setText(customer.getAddress());
+					txt_score.setText(Integer.toString(customer.getScore()));
+					txt_rank.setText(customer.getRank());
+					if (customer.isGender()) {
+						rad_men.setSelected(true);
+					} else {
+						rad_women.setSelected(true);
+					}
+					;
+					date_dateOfBirth.setDate(customer.getDateOfBirth());
+				} catch (RemoteException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
             }
         });
     }
@@ -323,7 +331,12 @@ public class CustomerManagement_GUI extends javax.swing.JPanel {
         btn_filter.setIcon(SVGIcon.getSVGIcon("resources/imgs/public/filter.svg"));
         btn_filter.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btn_filterActionPerformed(evt);
+                try {
+					btn_filterActionPerformed(evt);
+				} catch (RemoteException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
             }
         });
         pnl_searchCustomer.add(btn_filter);
@@ -331,7 +344,12 @@ public class CustomerManagement_GUI extends javax.swing.JPanel {
         btn_reloadList.setIcon(SVGIcon.getSVGIcon("resources/imgs/public/refresh.svg"));
         btn_reloadList.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btn_reloadListActionPerformed(evt);
+                try {
+					btn_reloadListActionPerformed(evt);
+				} catch (RemoteException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
             }
         });
         pnl_searchCustomer.add(btn_reloadList);
@@ -571,7 +589,12 @@ public class CustomerManagement_GUI extends javax.swing.JPanel {
         btn_exportExcel.setIcon(SVGIcon.getSVGIcon("resources/imgs/public/excel.svg"));
         btn_exportExcel.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btn_exportExcelActionPerformed(evt);
+                try {
+					btn_exportExcelActionPerformed(evt);
+				} catch (RemoteException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
             }
         });
         jPanel10.add(btn_exportExcel);
@@ -599,7 +622,7 @@ public class CustomerManagement_GUI extends javax.swing.JPanel {
         // TODO add your handling code here:
     }//GEN-LAST:event_txt_addressActionPerformed
 
-    private void btn_exportExcelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_exportExcelActionPerformed
+    private void btn_exportExcelActionPerformed(java.awt.event.ActionEvent evt) throws RemoteException {//GEN-FIRST:event_btn_exportExcelActionPerformed
         // Hiển thị hộp thoại chọn file
         JFileChooser fileChooser = new JFileChooser();
         fileChooser.setDialogTitle("Chọn đường dẫn và tên file");
@@ -613,15 +636,20 @@ public class CustomerManagement_GUI extends javax.swing.JPanel {
             String filePath = fileToSave.getAbsolutePath();
 
             // Gọi phương thức để tạo file Excel với đường dẫn và tên file đã chọn
-            createExcel(customer_BUS.getAllCustomer(), filePath + ".xlsx");
+            try {
+				createExcel(customer_BUS.getAllCustomer(), filePath + ".xlsx");
+			} catch (RemoteException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
         }
     }//GEN-LAST:event_btn_exportExcelActionPerformed
 
-    private void btn_reloadListActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_reloadListActionPerformed
+    private void btn_reloadListActionPerformed(java.awt.event.ActionEvent evt) throws RemoteException {//GEN-FIRST:event_btn_reloadListActionPerformed
         renderCustomerTable(customer_BUS.getAllCustomer());        // TODO add your handling code here:
     }//GEN-LAST:event_btn_reloadListActionPerformed
 
-    private void btn_searchActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_btn_searchActionPerformed
+    private void btn_searchActionPerformed(java.awt.event.ActionEvent evt) throws RemoteException {// GEN-FIRST:event_btn_searchActionPerformed
         // TODO add your handling code here:
         Customer customer = customer_BUS.searchByPhoneNumber(txt_searchForPhone.getText().trim());
         if (customer == null) {
@@ -643,7 +671,7 @@ public class CustomerManagement_GUI extends javax.swing.JPanel {
         // TODO add your handling code here:
     }// GEN-LAST:event_txt_customerIDActionPerformed
 
-    private void btn_reloadActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_btn_reloadActionPerformed
+    private void btn_reloadActionPerformed(java.awt.event.ActionEvent evt) throws RemoteException {// GEN-FIRST:event_btn_reloadActionPerformed
         // TODO add your handling code here:
         renderCustomerTable(customer_BUS.getAllCustomer());
     }// GEN-LAST:event_btn_reloadActionPerformed
@@ -702,7 +730,7 @@ public class CustomerManagement_GUI extends javax.swing.JPanel {
         txt_searchForPhone.setText("");
     }
 
-    private void btn_filterActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_btn_filterActionPerformed
+    private void btn_filterActionPerformed(java.awt.event.ActionEvent evt) throws RemoteException {// GEN-FIRST:event_btn_filterActionPerformed
         // TODO add your handling code here:
         String gender = cbo_filterGender.getSelectedItem().toString();
         String rank = cbo_filterRank.getSelectedItem().toString();

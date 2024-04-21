@@ -5,6 +5,7 @@
 package gui;
 
 import java.awt.event.KeyEvent;
+import java.rmi.RemoteException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.regex.Matcher;
@@ -51,12 +52,12 @@ public class CreatePurchaseOrder_GUI extends javax.swing.JPanel {
     private DefaultTableModel tblModel_cart;
     private DefaultComboBoxModel cmbModel_suplier;
 
-    public CreatePurchaseOrder_GUI() {
+    public CreatePurchaseOrder_GUI() throws RemoteException {
         initComponents();
         init();
     }
 
-    private void init() {
+    private void init() throws RemoteException {
         bus = new CreatePurchaseOrder_BUSImpl();
         try {
             purchaseOrder = bus.createNewPurchaseOrder();
@@ -178,12 +179,12 @@ public class CreatePurchaseOrder_GUI extends javax.swing.JPanel {
         txt_search.requestFocus();
     }
 
-    private void rerender() {
+    private void rerender() throws RemoteException {
         Application.showForm(new CreatePurchaseOrder_GUI());
         toogleChangeToSearch();
     }
 
-    private void addItemToCart(String productID) {
+    private void addItemToCart(String productID) throws RemoteException {
 //        Nếu chưa có trong giỏ hàng
         Product item = bus.getProduct(productID);
         if (item == null) {
@@ -216,7 +217,7 @@ public class CreatePurchaseOrder_GUI extends javax.swing.JPanel {
 
     }
 
-    private void handleAddItem() {
+    private void handleAddItem() throws RemoteException {
         String productID = txt_search.getText();
 
         //  Nếu chưa điền mã sẽ cảnh báo
@@ -325,7 +326,12 @@ public class CreatePurchaseOrder_GUI extends javax.swing.JPanel {
         txt_search.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "Mã sản phẩm");
         txt_search.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
-                txt_searchKeyPressed(evt);
+                try {
+					txt_searchKeyPressed(evt);
+				} catch (RemoteException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
             }
         });
         pnl_header.add(txt_search);
@@ -339,7 +345,12 @@ public class CreatePurchaseOrder_GUI extends javax.swing.JPanel {
             + "foreground:$Menu.foreground;");
         btn_search.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btn_searchActionPerformed(evt);
+                try {
+					btn_searchActionPerformed(evt);
+				} catch (RemoteException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
             }
         });
         pnl_header.add(btn_search);
@@ -462,7 +473,12 @@ public class CreatePurchaseOrder_GUI extends javax.swing.JPanel {
         btn_cancle.setText("HỦY");
         btn_cancle.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btn_cancleActionPerformed(evt);
+                try {
+					btn_cancleActionPerformed(evt);
+				} catch (RemoteException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
             }
         });
         pnl_btnGroup.add(btn_cancle);
@@ -490,7 +506,7 @@ public class CreatePurchaseOrder_GUI extends javax.swing.JPanel {
 
     }//GEN-LAST:event_txt_orderDateActionPerformed
 
-    private void btn_searchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_searchActionPerformed
+    private void btn_searchActionPerformed(java.awt.event.ActionEvent evt) throws RemoteException {//GEN-FIRST:event_btn_searchActionPerformed
         handleAddItem();
     }//GEN-LAST:event_btn_searchActionPerformed
 
@@ -498,14 +514,14 @@ public class CreatePurchaseOrder_GUI extends javax.swing.JPanel {
         handleCreateOrder();
     }//GEN-LAST:event_btn_createActionPerformed
 
-    private void txt_searchKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_searchKeyPressed
+    private void txt_searchKeyPressed(java.awt.event.KeyEvent evt) throws RemoteException {//GEN-FIRST:event_txt_searchKeyPressed
 //        Bắt sự kiện bấm enter
         if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
             handleAddItem();
         }
     }//GEN-LAST:event_txt_searchKeyPressed
 
-    private void btn_cancleActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_cancleActionPerformed
+    private void btn_cancleActionPerformed(java.awt.event.ActionEvent evt) throws RemoteException {//GEN-FIRST:event_btn_cancleActionPerformed
         if (JOptionPane.showConfirmDialog(this, "Bạn có muốn hủy hóa đơn " + purchaseOrder.getPurchaseOrderID(), "Xác nhận hủy hóa đơn", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
             // Tạo lại trang mới
             rerender();

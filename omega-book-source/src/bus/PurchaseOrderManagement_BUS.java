@@ -1,7 +1,7 @@
 package bus;
 
-import java.io.IOException;
 import java.rmi.Remote;
+import java.rmi.RemoteException;
 import java.util.ArrayList;
 
 import entity.Employee;
@@ -11,16 +11,16 @@ import entity.PurchaseOrderDetail;
 import entity.Supplier;
 
 public interface PurchaseOrderManagement_BUS extends Remote{
-	 public Employee getEmployee(String emplpyeeID) throws IOException;
+	 public Employee getEmployee(String emplpyeeID) throws RemoteException;
 	    
-	    public Supplier getSupplier(String supplierID) throws IOException;
+	    public Supplier getSupplier(String supplierID) throws RemoteException;
 
 
-	    public Product getProduct(String productID) throws IOException;
+	    public Product getProduct(String productID) throws RemoteException;
 
 	    public PurchaseOrder getPurchaseOrder(String ID) throws Exception;
-	    public ArrayList<PurchaseOrder> getAll() throws IOException;
+	    public ArrayList<PurchaseOrder> getAll() throws RemoteException;
 
-	    public ArrayList<PurchaseOrderDetail> getPurchaseOrderDetailList(String purchaseOrderID) throws IOException ;
-	    public Boolean updateStatus(String id, int status) throws IOException;
+	    public ArrayList<PurchaseOrderDetail> getPurchaseOrderDetailList(String purchaseOrderID) throws RemoteException ;
+	    public Boolean updateStatus(String id, int status) throws RemoteException;
 }

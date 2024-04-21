@@ -4,18 +4,32 @@
  */
 package bus.impl;
 
-import dao.Brand_DAO;
-import entity.Brand;
+import java.rmi.RemoteException;
+import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
 
 import bus.BrandManagement_BUS;
+import dao.Brand_DAO;
+import entity.Brand;
 
 /**
  *
  * @author Như Tâm
  */
-public class BrandManagement_BUSImpl implements BrandManagement_BUS{
-    private Brand_DAO brand_DAO = new Brand_DAO();
+public class BrandManagement_BUSImpl extends UnicastRemoteObject implements BrandManagement_BUS{
+	
+    protected BrandManagement_BUSImpl() throws RemoteException {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 818984963360983464L;
+	
+	
+	private Brand_DAO brand_DAO = new Brand_DAO();
     
     public ArrayList<Brand> getALLBrand(){
         ArrayList<Brand> brandList = new Brand_DAO().getAll();

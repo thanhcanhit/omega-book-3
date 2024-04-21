@@ -13,6 +13,9 @@ import entity.PurchaseOrder;
 import entity.PurchaseOrderDetail;
 import entity.Supplier;
 import enums.PurchaseOrderStatus;
+
+import java.rmi.RemoteException;
+import java.rmi.server.UnicastRemoteObject;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.ArrayList;
@@ -25,14 +28,24 @@ import main.Application;
  *
  * @author thanhcanhit
  */
-public class CreatePurchaseOrder_BUSImpl implements CreatePurchaseOrder_BUS{
+public class CreatePurchaseOrder_BUSImpl extends UnicastRemoteObject implements CreatePurchaseOrder_BUS{
 
-    private final Product_DAO productDAO = new Product_DAO();
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = -9177655287231944749L;
+
+	public CreatePurchaseOrder_BUSImpl() throws RemoteException {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+
+	private final Product_DAO productDAO = new Product_DAO();
     private final Supplier_DAO suplierDAO = new Supplier_DAO();
     private final PurchaseOrder_DAO purchaseOrderDAO = new PurchaseOrder_DAO();
     private final PurchaseOrderDetail_DAO purchaseOrderDetailDAO = new PurchaseOrderDetail_DAO();
 
-    public Product getProduct(String id) {
+    public Product getProduct(String id) throws RemoteException{
         return productDAO.getOne(id);
     }
 
@@ -49,7 +62,7 @@ public class CreatePurchaseOrder_BUSImpl implements CreatePurchaseOrder_BUS{
         return order;
     }
 
-    public boolean saveToDatabase(PurchaseOrder order) {
+    public boolean saveToDatabase(PurchaseOrder order) throws RemoteException{
         if (!purchaseOrderDAO.create(order)) {
             return false;
         }
