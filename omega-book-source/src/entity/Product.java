@@ -4,6 +4,7 @@
  */
 package entity;
 
+import java.io.Serializable;
 import java.util.List;
 import java.util.Objects;
 import java.util.regex.Pattern;
@@ -31,8 +32,9 @@ import jakarta.persistence.OneToMany;
 @Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name = "productType", discriminatorType = DiscriminatorType.STRING)
-public class Product {
+public class Product implements Serializable{
 
+	private static final long serialVersionUID = -4753296235054272360L;
 	// Hằng số mô tả lỗi
 	public static final String PRODUCT_ID_INVALID = "Product id không hợp lệ";
 	public static final String NAME_EMPTY = "Product name không thể rỗng";

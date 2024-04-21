@@ -4,6 +4,7 @@
  */
 package entity;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -26,7 +27,8 @@ import jakarta.persistence.TemporalType;
  */
 @Entity
 @NamedQuery(name = "AcountingVoucher.findAll", query = "SELECT a FROM AcountingVoucher a")
-public class AcountingVoucher implements Comparable<AcountingVoucher>{
+public class AcountingVoucher implements Comparable<AcountingVoucher>, Serializable{
+	private static final long serialVersionUID = -7751721364902398270L;
 	@Id
     private String accountingVoucherID;
 	@Temporal(TemporalType.TIMESTAMP)

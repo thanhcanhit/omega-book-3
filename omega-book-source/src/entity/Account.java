@@ -4,6 +4,8 @@
  */
 package entity;
 
+import java.io.Serializable;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
@@ -21,8 +23,9 @@ import jakarta.persistence.OneToOne;
 		@NamedQuery(name = "Account.changePassword", query = "UPDATE Account a SET a.password = :password WHERE a.employee.employeeID = :employeeID"),
 
 })
-public class Account {
+public class Account implements Serializable{
 
+	private static final long serialVersionUID = -5491946647936720196L;
 	private static final String PASSWORD_ERROR = "Mật khẩu phải ít nhất 8 kí tự (Bao gồm chữ hoa, chữ thường và số)!";
 	private static final String EMPLOYEE_ERROR = "Employee không được rỗng !";
 

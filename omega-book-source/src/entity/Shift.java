@@ -4,6 +4,7 @@
  */
 package entity;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.Objects;
 import java.util.regex.Pattern;
@@ -20,9 +21,10 @@ import jakarta.persistence.TemporalType;
  * @author KienTran
  */
 @Entity
-public final class Shift {
+public final class Shift implements Serializable{
 
-    private static final String ID_EMPTY = "ID không được rỗng !";
+    private static final long serialVersionUID = -7638876334557551590L;
+	private static final String ID_EMPTY = "ID không được rỗng !";
     private static final String STARTEDAT_ERROR = "StartedAt không được rỗng !";
     private static final String ENDEDAD_ERROR = "EndedAt Không được rỗng !";
     private static final String ACCOUNT_ERROR = "Account không được rỗng !";

@@ -1,5 +1,6 @@
 package entity;
 
+import java.io.Serializable;
 import java.util.*;
 
 import enums.DiscountType;
@@ -10,11 +11,12 @@ import jakarta.persistence.*;
 	@NamedQuery(name = "PromotionForProduct.findById", query = "SELECT pp FROM PromotionForProduct pp WHERE pp.promotionID = :id"),
 	@NamedQuery(name = "PromotionForProduct.findAll", query = "SELECT pp FROM PromotionForProduct pp")
 })
-public class PromotionForProduct extends Promotion {
+public class PromotionForProduct extends Promotion implements Serializable{
+	private static final long serialVersionUID = -5000246354599993538L;
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 1L;
+	
 	@OneToMany(mappedBy = "promotion", fetch = FetchType.LAZY)
 	private List<ProductPromotionDetail> details;
 

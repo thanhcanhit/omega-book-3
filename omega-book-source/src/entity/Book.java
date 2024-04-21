@@ -11,6 +11,8 @@ import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import enums.BookCategory;
 import enums.BookType;
+
+import java.io.Serializable;
 import java.time.LocalDate;
 
 /**
@@ -19,8 +21,9 @@ import java.time.LocalDate;
  */
 
 @Entity
-public final class Book extends Product {
+public final class Book extends Product implements Serializable {
 
+	private static final long serialVersionUID = 8018692539369756576L;
 	// Hằng báo lỗi
 	public static final String AUTHOR_EMPTY = "Book author không được rỗng";
 	public static final String PUBLISHER_EMPTY = "Book publisher không được rỗng";

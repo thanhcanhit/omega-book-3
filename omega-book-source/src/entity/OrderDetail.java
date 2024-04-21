@@ -4,6 +4,8 @@
  */
 package entity;
 
+import java.io.Serializable;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
@@ -14,8 +16,9 @@ import jakarta.persistence.ManyToOne;
  * @author KienTran
  */
 @Entity
-public final class OrderDetail {
-    private static final String QUANTITY_ERROR = "Số lượng sản phẩm không được nhỏ hơn 1 !";
+public final class OrderDetail implements Serializable{
+    private static final long serialVersionUID = -8146874889849915391L;
+	private static final String QUANTITY_ERROR = "Số lượng sản phẩm không được nhỏ hơn 1 !";
     private static final String PRICE_ERROR = "Giá bán phải lớn hơn giá nhập, không được rỗng và lớn hơn 0 !";
     private static final String ORDER_ERROR = "Hoá đơn không được rỗng !";
     private static final String PRODUCT_ERROR = "Sản phẩm không được rỗng !";
