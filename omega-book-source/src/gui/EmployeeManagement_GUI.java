@@ -79,7 +79,7 @@ public class EmployeeManagement_GUI extends javax.swing.JPanel {
     
     @SuppressWarnings({ "unchecked", "rawtypes" })
 	private void init() {
-        bus = new EmployeeManagament_BUSImpl();
+        bus = new EmployeeManagement_BUSImpl();
         //model
         tblModel_employee = new DefaultTableModel(new String[] {"Mã nhân viên", "Tên nhân viên", "Ngày sinh", "Trạng thái"}, 0);
         tbl_employeeInfor.setModel(tblModel_employee);

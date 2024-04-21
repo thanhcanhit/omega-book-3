@@ -48,7 +48,7 @@ public class StatementAcounting_GUI extends javax.swing.JPanel {
 	private double sum = 0;
 	private Employee employee1 = Application.employee;
 	private Employee employee2;
-	private StatementAcounting_BUSImpl acountingVoucher_BUS = new StatementAcounting_BUSImpl();
+	private StatementAccounting_BUSImpl acountingVoucher_BUS = new StatementAccounting_BUSImpl();
 	private Date endDate = new Date();
 	private ArrayList<Bill> listOrder;
 	@SuppressWarnings("unused")
