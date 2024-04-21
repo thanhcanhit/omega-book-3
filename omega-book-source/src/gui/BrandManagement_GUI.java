@@ -4,6 +4,7 @@
  */
 package gui;
 
+import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -45,12 +46,17 @@ public class BrandManagement_GUI extends javax.swing.JPanel {
     private DefaultTableModel tblModel_cart;
 //    private DefaultComboBoxModel cmbModel_suplier;
 
-    public BrandManagement_GUI() {
+    public BrandManagement_GUI(){
         initComponents();
-        init();
+        try {
+			init();
+		} catch (RemoteException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
     }
 
-    private void init() {
+    private void init() throws RemoteException {
         bus = new BrandManagement_BUSImpl();
 
 
@@ -91,7 +97,7 @@ public class BrandManagement_GUI extends javax.swing.JPanel {
 
 
 
-    private void rerender() {
+    private void rerender() throws RemoteException {
         Application.showForm(new BrandManagement_GUI());
     }
 
@@ -343,7 +349,12 @@ public class BrandManagement_GUI extends javax.swing.JPanel {
             txt_brandID.setText("");
             txt_brandName.setText("");
             txa_country.setText("");
-            rerender();
+            try {
+				rerender();
+			} catch (RemoteException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
             Notifications.getInstance().show(Notifications.Type.INFO, "Đã xoá trắng");
         
     }//GEN-LAST:event_btn_clearActionPerformed

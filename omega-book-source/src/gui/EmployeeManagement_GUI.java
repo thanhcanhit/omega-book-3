@@ -74,19 +74,25 @@ public class EmployeeManagement_GUI extends javax.swing.JPanel {
      * Creates new form EmployeeManagement_GUI
      * @throws RemoteException 
      */
-    public EmployeeManagement_GUI() throws RemoteException {
+    public EmployeeManagement_GUI(){
         initComponents();
-        init();
+        try {
+			init();
+		} catch (RemoteException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
     }
     
-<<<<<<< HEAD
-    private void init() throws RemoteException {
-        bus = new EmployeeManagament_BUSImpl();
-=======
+//<<<<<<< HEAD
     @SuppressWarnings({ "unchecked", "rawtypes" })
-	private void init() {
+    private void init() throws RemoteException {
         bus = new EmployeeManagement_BUSImpl();
->>>>>>> ddc6b436ec355db02ea7d7fa653c6440e65974fb
+//=======
+//   
+//	private void init() {
+//        bus = new EmployeeManagement_BUSImpl();
+//>>>>>>> ddc6b436ec355db02ea7d7fa653c6440e65974fb
         //model
         tblModel_employee = new DefaultTableModel(new String[] {"Mã nhân viên", "Tên nhân viên", "Ngày sinh", "Trạng thái"}, 0);
         tbl_employeeInfor.setModel(tblModel_employee);

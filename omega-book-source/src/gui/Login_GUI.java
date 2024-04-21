@@ -25,15 +25,20 @@ public class Login_GUI extends javax.swing.JPanel{
 	 * 
 	 */
 	private static final long serialVersionUID = -262088147392596571L;
-	private Login_BUSImpl log_BUS = new Login_BUSImpl();
+	private Login_BUSImpl log_BUS;// = new Login_BUSImpl();
 
 
 	/**
 	 * Creates new form Login
 	 * @throws RemoteException 
 	 */
-	public Login_GUI() throws RemoteException {
-		log_BUS = new Login_BUSImpl();
+	public Login_GUI(){
+		try {
+			log_BUS = new Login_BUSImpl();
+		} catch (RemoteException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		initComponents();
 		pnl_changePasswordForm.setVisible(false);
 	}

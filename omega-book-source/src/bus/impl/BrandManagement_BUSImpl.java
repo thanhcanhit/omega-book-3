@@ -18,7 +18,7 @@ import entity.Brand;
  */
 public class BrandManagement_BUSImpl extends UnicastRemoteObject implements BrandManagement_BUS{
 	
-    protected BrandManagement_BUSImpl() throws RemoteException {
+    public BrandManagement_BUSImpl() throws RemoteException {
 		super();
 		// TODO Auto-generated constructor stub
 	}

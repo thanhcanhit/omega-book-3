@@ -53,10 +53,15 @@ public class CreatePurchaseOrder_GUI extends javax.swing.JPanel {
 	@SuppressWarnings("rawtypes")
 	private DefaultComboBoxModel cmbModel_suplier;
 
-<<<<<<< HEAD
-    public CreatePurchaseOrder_GUI() throws RemoteException {
+//<<<<<<< HEAD
+    public CreatePurchaseOrder_GUI() {
         initComponents();
-        init();
+        try {
+			init();
+		} catch (RemoteException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
     }
 
     private void init() throws RemoteException {
@@ -68,24 +73,24 @@ public class CreatePurchaseOrder_GUI extends javax.swing.JPanel {
         } catch (Exception ex) {
             Notifications.getInstance().show(Notifications.Type.ERROR, 5000, "Không thể tạo hóa đơn mới, vui lòng thử lại lúc khác");
         }
-=======
-	public CreatePurchaseOrder_GUI() {
-		initComponents();
-		init();
-	}
-
-	@SuppressWarnings("serial")
-	private void init() {
-		bus = new CreatePurchaseOrder_BUSImpl();
-		try {
-			purchaseOrder = bus.createNewPurchaseOrder();
-			txt_orderID.setText(purchaseOrder.getPurchaseOrderID());
-			txt_orderID.setEditable(false);
-		} catch (Exception ex) {
-			Notifications.getInstance().show(Notifications.Type.ERROR, 5000,
-					"Không thể tạo hóa đơn mới, vui lòng thử lại lúc khác");
-		}
->>>>>>> ddc6b436ec355db02ea7d7fa653c6440e65974fb
+//=======
+//	public CreatePurchaseOrder_GUI() {
+//		initComponents();
+//		init();
+//	}
+//
+//	@SuppressWarnings("serial")
+//	private void init() {
+//		bus = new CreatePurchaseOrder_BUSImpl();
+//		try {
+//			purchaseOrder = bus.createNewPurchaseOrder();
+//			txt_orderID.setText(purchaseOrder.getPurchaseOrderID());
+//			txt_orderID.setEditable(false);
+//		} catch (Exception ex) {
+//			Notifications.getInstance().show(Notifications.Type.ERROR, 5000,
+//					"Không thể tạo hóa đơn mới, vui lòng thử lại lúc khác");
+//		}
+//>>>>>>> ddc6b436ec355db02ea7d7fa653c6440e65974fb
 
 //        table
 		cart = new ArrayList<>();
@@ -206,21 +211,21 @@ public class CreatePurchaseOrder_GUI extends javax.swing.JPanel {
 		txt_search.requestFocus();
 	}
 
-<<<<<<< HEAD
+//<<<<<<< HEAD
     private void rerender() throws RemoteException {
         Application.showForm(new CreatePurchaseOrder_GUI());
         toogleChangeToSearch();
     }
 
     private void addItemToCart(String productID) throws RemoteException {
-=======
-	private void rerender() {
-		Application.showForm(new CreatePurchaseOrder_GUI());
-		toogleChangeToSearch();
-	}
-
-	private void addItemToCart(String productID) {
->>>>>>> ddc6b436ec355db02ea7d7fa653c6440e65974fb
+//=======
+//	private void rerender() {
+//		Application.showForm(new CreatePurchaseOrder_GUI());
+//		toogleChangeToSearch();
+//	}
+//
+//	private void addItemToCart(String productID) {
+//>>>>>>> ddc6b436ec355db02ea7d7fa653c6440e65974fb
 //        Nếu chưa có trong giỏ hàng
 		Product item = bus.getProduct(productID);
 		if (item == null) {
@@ -254,13 +259,13 @@ public class CreatePurchaseOrder_GUI extends javax.swing.JPanel {
 
 	}
 
-<<<<<<< HEAD
+//<<<<<<< HEAD
     private void handleAddItem() throws RemoteException {
         String productID = txt_search.getText();
-=======
-	private void handleAddItem() {
-		String productID = txt_search.getText();
->>>>>>> ddc6b436ec355db02ea7d7fa653c6440e65974fb
+//=======
+//	private void handleAddItem() {
+//		String productID = txt_search.getText();
+//>>>>>>> ddc6b436ec355db02ea7d7fa653c6440e65974fb
 
 		// Nếu chưa điền mã sẽ cảnh báo
 		if (productID.isBlank()) {
@@ -368,43 +373,48 @@ public class CreatePurchaseOrder_GUI extends javax.swing.JPanel {
 		pnl_header.setPreferredSize(new java.awt.Dimension(1366, 50));
 		pnl_header.setLayout(new javax.swing.BoxLayout(pnl_header, javax.swing.BoxLayout.LINE_AXIS));
 
-<<<<<<< HEAD
-        txt_search.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "Mã sản phẩm");
-        txt_search.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                try {
+//<<<<<<< HEAD
+//        txt_search.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "Mã sản phẩm");
+//        txt_search.addKeyListener(new java.awt.event.KeyAdapter() {
+//            public void keyPressed(java.awt.event.KeyEvent evt) {
+//                try {
+//					txt_searchKeyPressed(evt);
+//				} catch (RemoteException e) {
+//					// TODO Auto-generated catch block
+//					e.printStackTrace();
+//				}
+//            }
+//        });
+//        pnl_header.add(txt_search);
+//
+//        btn_search.setText("Thêm");
+//        btn_search.setMaximumSize(new java.awt.Dimension(100, 50));
+//        btn_search.setMinimumSize(new java.awt.Dimension(100, 50));
+//        btn_search.setPreferredSize(new java.awt.Dimension(100, 50));
+//        btn_search.putClientProperty(FlatClientProperties.STYLE,""
+//            + "background:$Menu.background;"
+//            + "foreground:$Menu.foreground;");
+//        btn_search.addActionListener(new java.awt.event.ActionListener() {
+//            public void actionPerformed(java.awt.event.ActionEvent evt) {
+//                try {
+//					btn_searchActionPerformed(evt);
+//				} catch (RemoteException e) {
+//					// TODO Auto-generated catch block
+//					e.printStackTrace();
+//				}
+//            }
+//        });
+//        pnl_header.add(btn_search);
+//=======
+		txt_search.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "Mã sản phẩm");
+		txt_search.addKeyListener(new java.awt.event.KeyAdapter() {
+			public void keyPressed(java.awt.event.KeyEvent evt) {
+				try {
 					txt_searchKeyPressed(evt);
 				} catch (RemoteException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
-            }
-        });
-        pnl_header.add(txt_search);
-
-        btn_search.setText("Thêm");
-        btn_search.setMaximumSize(new java.awt.Dimension(100, 50));
-        btn_search.setMinimumSize(new java.awt.Dimension(100, 50));
-        btn_search.setPreferredSize(new java.awt.Dimension(100, 50));
-        btn_search.putClientProperty(FlatClientProperties.STYLE,""
-            + "background:$Menu.background;"
-            + "foreground:$Menu.foreground;");
-        btn_search.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                try {
-					btn_searchActionPerformed(evt);
-				} catch (RemoteException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-            }
-        });
-        pnl_header.add(btn_search);
-=======
-		txt_search.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "Mã sản phẩm");
-		txt_search.addKeyListener(new java.awt.event.KeyAdapter() {
-			public void keyPressed(java.awt.event.KeyEvent evt) {
-				txt_searchKeyPressed(evt);
 			}
 		});
 		pnl_header.add(txt_search);
@@ -417,11 +427,16 @@ public class CreatePurchaseOrder_GUI extends javax.swing.JPanel {
 				"" + "background:$Menu.background;" + "foreground:$Menu.foreground;");
 		btn_search.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
-				btn_searchActionPerformed(evt);
+				try {
+					btn_searchActionPerformed(evt);
+				} catch (RemoteException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 			}
 		});
 		pnl_header.add(btn_search);
->>>>>>> ddc6b436ec355db02ea7d7fa653c6440e65974fb
+//>>>>>>> ddc6b436ec355db02ea7d7fa653c6440e65974fb
 
 		pnl_left.add(pnl_header, java.awt.BorderLayout.NORTH);
 
@@ -545,28 +560,33 @@ public class CreatePurchaseOrder_GUI extends javax.swing.JPanel {
 		pnl_btnGroup.setPreferredSize(new java.awt.Dimension(281, 60));
 		pnl_btnGroup.setLayout(new java.awt.GridLayout(1, 2, 5, 5));
 
-<<<<<<< HEAD
-        btn_cancle.setText("HỦY");
-        btn_cancle.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                try {
+//<<<<<<< HEAD
+//        btn_cancle.setText("HỦY");
+//        btn_cancle.addActionListener(new java.awt.event.ActionListener() {
+//            public void actionPerformed(java.awt.event.ActionEvent evt) {
+//                try {
+//					btn_cancleActionPerformed(evt);
+//				} catch (RemoteException e) {
+//					// TODO Auto-generated catch block
+//					e.printStackTrace();
+//				}
+//            }
+//        });
+//        pnl_btnGroup.add(btn_cancle);
+//=======
+		btn_cancle.setText("HỦY");
+		btn_cancle.addActionListener(new java.awt.event.ActionListener() {
+			public void actionPerformed(java.awt.event.ActionEvent evt) {
+				try {
 					btn_cancleActionPerformed(evt);
 				} catch (RemoteException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
-            }
-        });
-        pnl_btnGroup.add(btn_cancle);
-=======
-		btn_cancle.setText("HỦY");
-		btn_cancle.addActionListener(new java.awt.event.ActionListener() {
-			public void actionPerformed(java.awt.event.ActionEvent evt) {
-				btn_cancleActionPerformed(evt);
 			}
 		});
 		pnl_btnGroup.add(btn_cancle);
->>>>>>> ddc6b436ec355db02ea7d7fa653c6440e65974fb
+//>>>>>>> ddc6b436ec355db02ea7d7fa653c6440e65974fb
 
 		btn_create.setText("TẠO ĐƠN NHẬP");
 		btn_create.putClientProperty(FlatClientProperties.STYLE,
@@ -590,47 +610,47 @@ public class CreatePurchaseOrder_GUI extends javax.swing.JPanel {
 
 	}// GEN-LAST:event_txt_orderDateActionPerformed
 
-<<<<<<< HEAD
+//<<<<<<< HEAD
     private void btn_searchActionPerformed(java.awt.event.ActionEvent evt) throws RemoteException {//GEN-FIRST:event_btn_searchActionPerformed
         handleAddItem();
     }//GEN-LAST:event_btn_searchActionPerformed
-=======
-	private void btn_searchActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_btn_searchActionPerformed
-		handleAddItem();
-	}// GEN-LAST:event_btn_searchActionPerformed
->>>>>>> ddc6b436ec355db02ea7d7fa653c6440e65974fb
+//=======
+//	private void btn_searchActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_btn_searchActionPerformed
+//		handleAddItem();
+//	}// GEN-LAST:event_btn_searchActionPerformed
+//>>>>>>> ddc6b436ec355db02ea7d7fa653c6440e65974fb
 
 	private void btn_createActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_btn_createActionPerformed
 		handleCreateOrder();
 	}// GEN-LAST:event_btn_createActionPerformed
 
-<<<<<<< HEAD
+//<<<<<<< HEAD
     private void txt_searchKeyPressed(java.awt.event.KeyEvent evt) throws RemoteException {//GEN-FIRST:event_txt_searchKeyPressed
-=======
-	private void txt_searchKeyPressed(java.awt.event.KeyEvent evt) {// GEN-FIRST:event_txt_searchKeyPressed
->>>>>>> ddc6b436ec355db02ea7d7fa653c6440e65974fb
+//=======
+//	private void txt_searchKeyPressed(java.awt.event.KeyEvent evt) {// GEN-FIRST:event_txt_searchKeyPressed
+//>>>>>>> ddc6b436ec355db02ea7d7fa653c6440e65974fb
 //        Bắt sự kiện bấm enter
 		if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
 			handleAddItem();
 		}
 	}// GEN-LAST:event_txt_searchKeyPressed
 
-<<<<<<< HEAD
+//<<<<<<< HEAD
     private void btn_cancleActionPerformed(java.awt.event.ActionEvent evt) throws RemoteException {//GEN-FIRST:event_btn_cancleActionPerformed
         if (JOptionPane.showConfirmDialog(this, "Bạn có muốn hủy hóa đơn " + purchaseOrder.getPurchaseOrderID(), "Xác nhận hủy hóa đơn", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
             // Tạo lại trang mới
             rerender();
             Notifications.getInstance().show(Notifications.Type.INFO, "Đã hủy thành công hóa đơn");
         }
-=======
-	private void btn_cancleActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_btn_cancleActionPerformed
-		if (JOptionPane.showConfirmDialog(this, "Bạn có muốn hủy hóa đơn " + purchaseOrder.getPurchaseOrderID(),
-				"Xác nhận hủy hóa đơn", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
-			// Tạo lại trang mới
-			rerender();
-			Notifications.getInstance().show(Notifications.Type.INFO, "Đã hủy thành công hóa đơn");
-		}
->>>>>>> ddc6b436ec355db02ea7d7fa653c6440e65974fb
+//=======
+//	private void btn_cancleActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_btn_cancleActionPerformed
+//		if (JOptionPane.showConfirmDialog(this, "Bạn có muốn hủy hóa đơn " + purchaseOrder.getPurchaseOrderID(),
+//				"Xác nhận hủy hóa đơn", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
+//			// Tạo lại trang mới
+//			rerender();
+//			Notifications.getInstance().show(Notifications.Type.INFO, "Đã hủy thành công hóa đơn");
+//		}
+//>>>>>>> ddc6b436ec355db02ea7d7fa653c6440e65974fb
 
 	}// GEN-LAST:event_btn_cancleActionPerformed
 

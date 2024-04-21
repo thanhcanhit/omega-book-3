@@ -4,6 +4,7 @@
  */
 package gui;
 
+import java.rmi.RemoteException;
 import java.util.ArrayList;
 
 import javax.swing.ButtonGroup;
@@ -46,11 +47,16 @@ public final class PurchaseOrderManagement_GUI extends javax.swing.JPanel {
      */
     public PurchaseOrderManagement_GUI() {
         initComponents();
-        init();
+        try {
+			init();
+		} catch (RemoteException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
         alterTable();
     }
 
-    public final void init() {
+    public final void init() throws RemoteException {
         bus = new PurchaseOrderManagement_BUSImpl();
         
         ButtonGroup buttonGroup = new ButtonGroup();
@@ -421,7 +427,12 @@ public final class PurchaseOrderManagement_GUI extends javax.swing.JPanel {
                 int row = tbl_purchaseOrder.getSelectedRow();
                 if (row != -1) {
                     String ID = tbl_purchaseOrder.getValueAt(row, 0).toString();
-                    bus.updateStatus(ID, 1);
+                    try {
+						bus.updateStatus(ID, 1);
+					} catch (RemoteException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
                     rad_notReceiver.setSelected(false);
                     rad_decline.setEnabled(true);
                     rad_receiver.setEnabled(false);
@@ -440,7 +451,12 @@ public final class PurchaseOrderManagement_GUI extends javax.swing.JPanel {
                 int row = tbl_purchaseOrder.getSelectedRow();
                 if (row != -1) {
                     String ID = tbl_purchaseOrder.getValueAt(row, 0).toString();
-                    bus.updateStatus(ID, 2);
+                    try {
+						bus.updateStatus(ID, 2);
+					} catch (RemoteException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
                     rad_notReceiver.setEnabled(false);
                     rad_receiver.setSelected(false);
                     rad_notReceiver.setSelected(false);

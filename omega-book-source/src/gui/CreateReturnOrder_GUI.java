@@ -44,18 +44,23 @@ public class CreateReturnOrder_GUI extends javax.swing.JPanel {
 	private double totalRefund;
 	String tempInput = "";
 
-	public CreateReturnOrder_GUI() throws RemoteException {
+	public CreateReturnOrder_GUI(){
 		initComponents();
-		init();
+		try {
+			init();
+		} catch (RemoteException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
-<<<<<<< HEAD
+//<<<<<<< HEAD
 	private void init() throws RemoteException {
-		bus = new ReturnOrderManagament_BUSImpl();
-=======
-	private void init() {
 		bus = new ReturnOrderManagement_BUSImpl();
->>>>>>> ddc6b436ec355db02ea7d7fa653c6440e65974fb
+//=======
+//	private void init() {
+//		bus = new ReturnOrderManagement_BUSImpl();
+//>>>>>>> ddc6b436ec355db02ea7d7fa653c6440e65974fb
 		cart = new ArrayList<>();
 		//model
 		tblModel_orderDetail = new DefaultTableModel(new String[]{"Mã hoá đơn", "Mã sản phẩm", "Tên sản phẩm", "Số lượng", "Đơn giá", "Tổng tiền"}, 0);

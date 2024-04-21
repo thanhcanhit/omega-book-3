@@ -86,6 +86,7 @@ import java.awt.event.MouseEvent;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -145,12 +146,17 @@ public final class OrderManagement_GUI extends javax.swing.JPanel {
      */
     public OrderManagement_GUI() {
         initComponents();
-        init();
+        try {
+			init();
+		} catch (RemoteException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
         alterTable();
 
     }
 
-    public void init() {
+    public void init() throws RemoteException {
         bus = new BillManagement_BUSImpl();
 
         tblModel_order = new DefaultTableModel(new String[]{"Mã hoá đơn", "Nhân viên", "Khách hàng", "Ngày mua", "Thành tiền"}, 0);
@@ -211,7 +217,7 @@ public final class OrderManagement_GUI extends javax.swing.JPanel {
         }
     }
 
-    private void renderCurrentPage() {
+    private void renderCurrentPage() throws RemoteException {
         lbl_pageNumber.setText(currentPage + "/" + lastPage);
         renderOrdersTable(bus.getDataOfPage(currentPage));
 
@@ -228,7 +234,7 @@ public final class OrderManagement_GUI extends javax.swing.JPanel {
         }
     }
 
-    private void renderOrderDetailTable(ArrayList<OrderDetail> list) {
+    private void renderOrderDetailTable(ArrayList<OrderDetail> list) throws RemoteException {
         tblModel_orderDetail.setRowCount(0);
         for (OrderDetail orderDetail : list) {
             ProductManagement_BUSImpl productBUS = new ProductManagement_BUSImpl();
@@ -238,7 +244,7 @@ public final class OrderManagement_GUI extends javax.swing.JPanel {
         }
     }
 
-    public void renderInfomationOrder(Bill order) {
+    public void renderInfomationOrder(Bill order) throws RemoteException {
         Customer customer = bus.getCustomer(order.getCustomer().getCustomerID());
         txt_customerName.setText(customer.getName());
         txt_phone.setText(customer.getPhoneNumber());
@@ -695,12 +701,22 @@ public final class OrderManagement_GUI extends javax.swing.JPanel {
 
     private void btn_previousActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_previousActionPerformed
         this.currentPage--;
-        renderCurrentPage();
+        try {
+			renderCurrentPage();
+		} catch (RemoteException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
     }//GEN-LAST:event_btn_previousActionPerformed
 
     private void btn_nextActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_nextActionPerformed
         this.currentPage++;
-        renderCurrentPage();
+        try {
+			renderCurrentPage();
+		} catch (RemoteException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
     }//GEN-LAST:event_btn_nextActionPerformed
 
     private void btn_refreshActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_refreshActionPerformed
@@ -720,7 +736,12 @@ public final class OrderManagement_GUI extends javax.swing.JPanel {
         cal.set(Calendar.DAY_OF_MONTH, cal.getActualMaximum(Calendar.DAY_OF_MONTH));
         jDateChooser2.setDate(cal.getTime());
 
-        init();
+        try {
+			init();
+		} catch (RemoteException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
         alterTable();
     }//GEN-LAST:event_btn_refreshActionPerformed
 
@@ -758,7 +779,13 @@ public final class OrderManagement_GUI extends javax.swing.JPanel {
             Date end = jDateChooser2.getDate();
             end.setHours(23);
             end.setMinutes(59);
-            ArrayList<Bill> list = bus.orderListWithFilter(oderID, customerID, phone, priceFrom, priceTo, begin, end);
+            ArrayList<Bill> list = null;
+			try {
+				list = bus.orderListWithFilter(oderID, customerID, phone, priceFrom, priceTo, begin, end);
+			} catch (RemoteException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 
             renderOrdersTable(list);
         }
@@ -791,7 +818,12 @@ public final class OrderManagement_GUI extends javax.swing.JPanel {
                         String filePath = fileToSave.getAbsolutePath();
 
                         // Gọi phương thức để tạo file Excel với đường dẫn và tên file đã chọn
-                        createExcel(bus.getAll(), filePath + ".xlsx");
+                        try {
+							createExcel(bus.getAll(), filePath + ".xlsx");
+						} catch (RemoteException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
                     }
                 }
             }
@@ -818,7 +850,13 @@ public final class OrderManagement_GUI extends javax.swing.JPanel {
             Date end = jDateChooser2.getDate();
             end.setHours(23);
             end.setMinutes(59);
-            ArrayList<Bill> list = bus.orderListWithFilter(orderID, customerID, phone, priceFrom, priceTo, begin, end);
+            ArrayList<Bill> list = null;
+			try {
+				list = bus.orderListWithFilter(orderID, customerID, phone, priceFrom, priceTo, begin, end);
+			} catch (RemoteException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
             if (list.isEmpty()) {
                 Notifications.getInstance().show(Notifications.Type.INFO, "Không có hoá đơn !");
             } else {

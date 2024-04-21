@@ -27,7 +27,7 @@ import enums.Type;
  */
 public class ProductManagement_BUSImpl extends UnicastRemoteObject implements ProductManagement_BUS{
 
-    protected ProductManagement_BUSImpl() throws RemoteException {
+    public ProductManagement_BUSImpl() throws RemoteException {
 		super();
 		// TODO Auto-generated constructor stub
 	}

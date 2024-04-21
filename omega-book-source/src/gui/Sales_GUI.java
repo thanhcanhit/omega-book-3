@@ -167,12 +167,17 @@ public class Sales_GUI extends javax.swing.JPanel {
 		}
 	}
 
-	public Sales_GUI() throws RemoteException {
+	public Sales_GUI() {
 		initComponents();
 		this.btnOptionsList = new JButton[] { btn_option1, btn_option2, btn_option3, btn_option4, btn_option5,
 				btn_option6, btn_option7, btn_option8, btn_option9 };
 
-		init();
+		try {
+			init();
+		} catch (RemoteException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 
 		disableCart();
 

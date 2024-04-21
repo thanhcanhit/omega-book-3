@@ -47,10 +47,16 @@ public class Application extends javax.swing.JFrame {
 	private final MainView mainForm;
 	public static Employee employee = null;
 	private final Login_GUI loginForm;
-	private static ShiftsManagement_BUSImpl shift_BUS = new ShiftsManagement_BUSImpl();
+	private static ShiftsManagement_BUSImpl shift_BUS;// = new ShiftsManagement_BUSImpl();
 	private static Shift shift;
 
 	public Application() {
+		try {
+			shift_BUS = new ShiftsManagement_BUSImpl();
+		} catch (RemoteException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		initComponents();
 		setExtendedState(JFrame.MAXIMIZED_BOTH);
 		setLocationRelativeTo(null);

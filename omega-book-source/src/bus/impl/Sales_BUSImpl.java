@@ -35,22 +35,11 @@ import bus.Sales_BUS;
  * @author thanhcanhit
  */
 public class Sales_BUSImpl extends UnicastRemoteObject implements Sales_BUS {
-
-<<<<<<< HEAD
-	protected Sales_BUSImpl() throws RemoteException {
-=======
 	public Sales_BUSImpl() throws RemoteException {
->>>>>>> ddc6b436ec355db02ea7d7fa653c6440e65974fb
 		super();
 		// TODO Auto-generated constructor stub
 	}
 
-<<<<<<< HEAD
-	/**
-	 * 
-	 */
-=======
->>>>>>> ddc6b436ec355db02ea7d7fa653c6440e65974fb
 	private static final long serialVersionUID = 463925661216328438L;
 	private final Bill_DAO orderDAO = new Bill_DAO();
 	private final OrderDetail_DAO orderDetailDAO = new OrderDetail_DAO();
@@ -228,11 +217,7 @@ public class Sales_BUSImpl extends UnicastRemoteObject implements Sales_BUS {
 		return promotionDAO.getPromotionOrderAvailable(CustomerRank.fromInt(customerRank));
 	}
 
-<<<<<<< HEAD
-	public Promotion getPromotion(String promotionID)throws RemoteException {
-=======
 	public Promotion getPromotion(String promotionID) throws RemoteException{
->>>>>>> ddc6b436ec355db02ea7d7fa653c6440e65974fb
 		return promotionDAO.getOne(promotionID);
 	}
 

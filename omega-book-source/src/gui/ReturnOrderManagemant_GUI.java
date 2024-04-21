@@ -1,6 +1,7 @@
 package gui;
 
 import java.awt.event.KeyEvent;
+import java.rmi.RemoteException;
 import java.util.ArrayList;
 
 import javax.swing.DefaultComboBoxModel;
@@ -64,13 +65,28 @@ public class ReturnOrderManagemant_GUI extends javax.swing.JPanel {
                 return;
             
             String returnOrderID = tblModel_returnOrder.getValueAt(rowIndex, 0).toString();
-            this.currentReturnOrder = bus.getReturnOrder(returnOrderID);
-            this.listDetail = bus.getAllReturnOrderDetail(currentReturnOrder.getReturnOrderID());
+            try {
+				this.currentReturnOrder = bus.getReturnOrder(returnOrderID);
+			} catch (RemoteException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+            try {
+				this.listDetail = bus.getAllReturnOrderDetail(currentReturnOrder.getReturnOrderID());
+			} catch (RemoteException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
             renderCurrentReturnOrder();
         });
         rdb_admit.setSelected(true);
         rdb_exchange.setSelected(true);
-        renderReturnOrderTables(bus.getAllReturnOrder());
+        try {
+			renderReturnOrderTables(bus.getAllReturnOrder());
+		} catch (RemoteException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
     }
     
     private void renderCurrentReturnOrder() {
@@ -91,7 +107,12 @@ public class ReturnOrderManagemant_GUI extends javax.swing.JPanel {
             rdb_exchange.setSelected(true);
         txt_refund.setText(FormatNumber.toVND(currentReturnOrder.getRefund()));
         txt_reason.setText(currentReturnOrder.getReason());
-        renderProductTable(currentReturnOrder.getReturnOrderID());
+        try {
+			renderProductTable(currentReturnOrder.getReturnOrderID());
+		} catch (RemoteException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
     }
     private void renderReturnOrderDetail() {
         txt_returnOrderID.setText("");
@@ -104,7 +125,7 @@ public class ReturnOrderManagemant_GUI extends javax.swing.JPanel {
         txt_refund.setText("");
         tblModel_product.setRowCount(0);
     }
-    private void renderProductTable(String returnOrderID) {
+    private void renderProductTable(String returnOrderID) throws RemoteException {
         tblModel_product.setRowCount(0);
         ArrayList<ReturnOrderDetail> detailList = bus.getAllReturnOrderDetail(returnOrderID);
         for (ReturnOrderDetail returnOrderDetail : detailList) {
@@ -137,7 +158,7 @@ public class ReturnOrderManagemant_GUI extends javax.swing.JPanel {
         currentReturnOrder.setStatus(ReturnOrderStatus.fromInt(status));
         return currentReturnOrder;
     }
-    private void updateReturnOrder() {
+    private void updateReturnOrder() throws RemoteException {
         ReturnOrder newReturnOrder = getNewValue();
         if(newReturnOrder == null) {
             Notifications.getInstance().show(Notifications.Type.WARNING, "Không có đơn đổi trả để xác nhận");
@@ -586,7 +607,12 @@ public class ReturnOrderManagemant_GUI extends javax.swing.JPanel {
             renderCurrentReturnOrder();
             return;
         }
-        updateReturnOrder();
+        try {
+			updateReturnOrder();
+		} catch (RemoteException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
         Print();
     }//GEN-LAST:event_btn_saveReturnOrderActionPerformed
 
@@ -596,18 +622,33 @@ public class ReturnOrderManagemant_GUI extends javax.swing.JPanel {
             Notifications.getInstance().show(Notifications.Type.INFO, "Vui lòng nhập mã hoá đơn cần tìm");
             return;
         }
-        renderReturnOrderTables(bus.searchById(returnOrderID));
+        try {
+			renderReturnOrderTables(bus.searchById(returnOrderID));
+		} catch (RemoteException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
         
     }//GEN-LAST:event_btn_searchReturnOrderActionPerformed
 
     private void btn_searchFilterReturnOrderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_searchFilterReturnOrderActionPerformed
         int type = cmb_typeReturnOrder.getSelectedIndex();
         int status = cmb_statusReturnOrder.getSelectedIndex();
-        renderReturnOrderTables(bus.filter(type, status));
+        try {
+			renderReturnOrderTables(bus.filter(type, status));
+		} catch (RemoteException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
     }//GEN-LAST:event_btn_searchFilterReturnOrderActionPerformed
 
     private void btn_refeshReturnOrderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_refeshReturnOrderActionPerformed
-        renderReturnOrderTables(bus.getAllReturnOrder());
+        try {
+			renderReturnOrderTables(bus.getAllReturnOrder());
+		} catch (RemoteException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
         renderReturnOrderDetail();
     }//GEN-LAST:event_btn_refeshReturnOrderActionPerformed
 
@@ -618,7 +659,12 @@ public class ReturnOrderManagemant_GUI extends javax.swing.JPanel {
                 Notifications.getInstance().show(Notifications.Type.INFO, "Vui lòng nhập mã hoá đơn cần tìm");
                 return;
             }
-            renderReturnOrderTables(bus.searchById(returnOrderID));
+            try {
+				renderReturnOrderTables(bus.searchById(returnOrderID));
+			} catch (RemoteException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
         }
     }//GEN-LAST:event_txt_searchReturnOrderKeyPressed
 

@@ -3,6 +3,7 @@ package gui;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
+import java.rmi.RemoteException;
 import java.text.DecimalFormat;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -67,7 +68,12 @@ public class OrderPromotionManagement_GUI extends javax.swing.JPanel implements 
                 return;
             
             String promotionID = tblModel_promotion.getValueAt(rowIndex, 0).toString();
-            this.currentPromotion = bus.getPromotionForOrder(promotionID);
+            try {
+				this.currentPromotion = bus.getPromotionForOrder(promotionID);
+			} catch (RemoteException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
             renderCurrentPromotion();
         });
         //combobox
@@ -81,7 +87,12 @@ public class OrderPromotionManagement_GUI extends javax.swing.JPanel implements 
         group_typePromo.add(rdb_price);
         group_typePromo.add(rdb_percent);
         
-        renderPromotionTables(bus.getAllPromotionForOrder());
+        try {
+			renderPromotionTables(bus.getAllPromotionForOrder());
+		} catch (RemoteException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
     }
     private void renderCurrentPromotion() {
         txt_promotionID.setText(currentPromotion.getPromotionID());
@@ -182,7 +193,7 @@ public class OrderPromotionManagement_GUI extends javax.swing.JPanel implements 
         else
             Notifications.getInstance().show(Notifications.Type.ERROR, "Gỡ không thành công");
     }
-    private void removeOrderPromotionOther(Promotion pm) {
+    private void removeOrderPromotionOther(Promotion pm) throws RemoteException {
         if(bus.removeOrderPromotionOther(pm)) {
             Notifications.getInstance().show(Notifications.Type.SUCCESS, "Đã gỡ khuyến mãi " + pm.getPromotionID());
             renderPromotionTables(bus.getAllPromotionForOrder());
@@ -571,7 +582,13 @@ public class OrderPromotionManagement_GUI extends javax.swing.JPanel implements 
             return;
         }
         String promotionID = txt_promotionID.getText();
-        Promotion pm = bus.getPromotion(promotionID);
+        Promotion pm = null;
+		try {
+			pm = bus.getPromotion(promotionID);
+		} catch (RemoteException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
         if(pm.getEndedDate().before(java.sql.Date.valueOf(LocalDate.now()))) {
             Notifications.getInstance().show(Notifications.Type.WARNING, "Khuyến mãi đã hết hạn");
         }
@@ -585,7 +602,12 @@ public class OrderPromotionManagement_GUI extends javax.swing.JPanel implements 
                 } catch (Exception ex) {
                     ex.printStackTrace();
                 }
-                renderPromotionTables(bus.getAllPromotionForOrder());
+                try {
+					renderPromotionTables(bus.getAllPromotionForOrder());
+				} catch (RemoteException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
                 renderPromotionInfor();
             }
             else
@@ -602,7 +624,12 @@ public class OrderPromotionManagement_GUI extends javax.swing.JPanel implements 
                 } catch (Exception ex) {
                     ex.printStackTrace();
                 }
-                renderPromotionTables(bus.getAllPromotionForOrder());
+                try {
+					renderPromotionTables(bus.getAllPromotionForOrder());
+				} catch (RemoteException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
                 renderPromotionInfor();
             }
             else
@@ -624,7 +651,13 @@ public class OrderPromotionManagement_GUI extends javax.swing.JPanel implements 
             Notifications.getInstance().show(Notifications.Type.INFO, "Vui lòng điền mã khuyến mãi");
             return;
         }
-        ArrayList<PromotionForOrder> list = bus.searchForOrderById(searchQuery);
+        ArrayList<PromotionForOrder> list = null;
+		try {
+			list = bus.searchForOrderById(searchQuery);
+		} catch (RemoteException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
         if(list.size() == 0) {
         	 Notifications.getInstance().show(Notifications.Type.INFO, "Không tìm thấy khuyến mãi");
         	 return;
@@ -635,7 +668,12 @@ public class OrderPromotionManagement_GUI extends javax.swing.JPanel implements 
     private void btn_searchFilterPromoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_searchFilterPromoActionPerformed
         int type = cmb_typePromo.getSelectedIndex();
         int status = cmb_statusPromo.getSelectedIndex();
-        renderPromotionTables(bus.filterForOrder(type, status));
+        try {
+			renderPromotionTables(bus.filterForOrder(type, status));
+		} catch (RemoteException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
     }//GEN-LAST:event_btn_searchFilterPromoActionPerformed
     
     private void btn_createPromoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_createPromoActionPerformed
@@ -658,7 +696,12 @@ public class OrderPromotionManagement_GUI extends javax.swing.JPanel implements 
     }//GEN-LAST:event_btn_createPromoActionPerformed
 
     private void btn_refreshActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_refreshActionPerformed
-        renderPromotionTables(bus.getAllPromotionForOrder());
+        try {
+			renderPromotionTables(bus.getAllPromotionForOrder());
+		} catch (RemoteException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
         renderPromotionInfor();
     }//GEN-LAST:event_btn_refreshActionPerformed
 
@@ -669,7 +712,13 @@ public class OrderPromotionManagement_GUI extends javax.swing.JPanel implements 
                 Notifications.getInstance().show(Notifications.Type.INFO, "Vui lòng điền mã khuyến mãi");
                 return;
             }
-            ArrayList<PromotionForOrder> list = bus.searchForOrderById(searchQuery);
+            ArrayList<PromotionForOrder> list = null;
+			try {
+				list = bus.searchForOrderById(searchQuery);
+			} catch (RemoteException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
             if(list.size() == 0) {
             	 Notifications.getInstance().show(Notifications.Type.INFO, "Không tìm thấy khuyến mãi");
             	 return;
@@ -679,7 +728,12 @@ public class OrderPromotionManagement_GUI extends javax.swing.JPanel implements 
     }//GEN-LAST:event_txt_searchPromoKeyPressed
 
     private void btn_clearValueActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_clearValueActionPerformed
-        renderPromotionTables(bus.getAllPromotionForOrder());
+        try {
+			renderPromotionTables(bus.getAllPromotionForOrder());
+		} catch (RemoteException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
         renderPromotionInfor();
     }//GEN-LAST:event_btn_clearValueActionPerformed
     

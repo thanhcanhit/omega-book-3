@@ -22,22 +22,9 @@ import entity.ReturnOrderDetail;
  *
  * @author Như Tâm
  */
-<<<<<<< HEAD:omega-book-source/src/bus/impl/ReturnOrderManagament_BUSImpl.java
-public class ReturnOrderManagament_BUSImpl extends UnicastRemoteObject implements ReturnOrderManagement_BUS{
-    public ReturnOrderManagament_BUSImpl() throws RemoteException {
-		super();
-		// TODO Auto-generated constructor stub
-	}
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 3968029429425643254L;
-	private ReturnOrder_DAO dao = new ReturnOrder_DAO();
-=======
 public class ReturnOrderManagement_BUSImpl implements ReturnOrderManagement_BUS{
     private ReturnOrder_DAO dao = new ReturnOrder_DAO();
->>>>>>> ddc6b436ec355db02ea7d7fa653c6440e65974fb:omega-book-source/src/bus/impl/ReturnOrderManagement_BUSImpl.java
     private ReturnOrderDetail_DAO detail_dao = new ReturnOrderDetail_DAO();
     private Bill_DAO order_dao = new Bill_DAO();
 

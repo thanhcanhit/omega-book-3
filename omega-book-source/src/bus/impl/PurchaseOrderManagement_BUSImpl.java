@@ -26,7 +26,7 @@ import bus.PurchaseOrderManagement_BUS;
  * @author KienTran
  */
 public class PurchaseOrderManagement_BUSImpl extends UnicastRemoteObject implements PurchaseOrderManagement_BUS{
-    protected PurchaseOrderManagement_BUSImpl() throws RemoteException {
+    public PurchaseOrderManagement_BUSImpl() throws RemoteException {
 		super();
 		// TODO Auto-generated constructor stub
 	}

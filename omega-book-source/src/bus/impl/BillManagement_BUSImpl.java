@@ -34,7 +34,7 @@ public class BillManagement_BUSImpl extends UnicastRemoteObject implements BillM
 	 */
 	private static final long serialVersionUID = 4955945117204405086L;
 
-	protected BillManagement_BUSImpl() throws RemoteException {
+	public BillManagement_BUSImpl() throws RemoteException {
 		super();
 		// TODO Auto-generated constructor stub
 	}

@@ -16,6 +16,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.nio.file.Files;
+import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.regex.Matcher;
@@ -110,10 +111,15 @@ public class ProductManagement_GUI extends javax.swing.JPanel {
 
 	public ProductManagement_GUI() {
 		initComponents();
-		init();
+		try {
+			init();
+		} catch (RemoteException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
-	private void init() {
+	private void init() throws RemoteException {
 		bus = new ProductManagement_BUSImpl();
 
 //        Frame
@@ -168,7 +174,12 @@ public class ProductManagement_GUI extends javax.swing.JPanel {
 			}
 
 			String productID = tbl_products.getValueAt(rowIndex, 0).toString();
-			this.currentProduct = bus.getProduct(productID);
+			try {
+				this.currentProduct = bus.getProduct(productID);
+			} catch (RemoteException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			fileChooser_productImg.setSelectedFile(null);
 			renderCurrentProduct();
 
@@ -189,11 +200,16 @@ public class ProductManagement_GUI extends javax.swing.JPanel {
 		cmb_bookCategory.setModel(cmbModel_bookCategory);
 
 		renderComboboxType();
-		renderBrand();
+		try {
+			renderBrand();
+		} catch (RemoteException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
-	private void renderBrand() {
+	private void renderBrand() throws RemoteException {
 		Object[] items = bus.getAllBrand().toArray();
 		cmbModel_stationeryBrand = new DefaultComboBoxModel(items);
 		cmb_stationeryBrand.setModel(cmbModel_stationeryBrand);
@@ -260,7 +276,7 @@ public class ProductManagement_GUI extends javax.swing.JPanel {
 		}
 	}
 
-	private void renderCurrentPage() {
+	private void renderCurrentPage() throws RemoteException {
 		lbl_pageNumber.setText(currentPage + "/" + lastPage);
 		renderProductsTable(bus.getDataOfPage(currentPage));
 
@@ -1356,12 +1372,22 @@ public class ProductManagement_GUI extends javax.swing.JPanel {
 
 	private void btn_nextActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_btn_nextActionPerformed
 		this.currentPage++;
-		renderCurrentPage();
+		try {
+			renderCurrentPage();
+		} catch (RemoteException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}// GEN-LAST:event_btn_nextActionPerformed
 
 	private void btn_previousActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_btn_previousActionPerformed
 		this.currentPage--;
-		renderCurrentPage();
+		try {
+			renderCurrentPage();
+		} catch (RemoteException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}// GEN-LAST:event_btn_previousActionPerformed
 
 	private static byte[] getImageBytes(File file) throws IOException {
@@ -1375,7 +1401,12 @@ public class ProductManagement_GUI extends javax.swing.JPanel {
 			Notifications.getInstance().show(Notifications.Type.INFO, "Vui lòng điền mã sản phẩm");
 			return;
 		}
-		renderProductsTable(bus.searchById(searchQuery));
+		try {
+			renderProductsTable(bus.searchById(searchQuery));
+		} catch (RemoteException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		disablePage();
 	}// GEN-LAST:event_btn_searchActionPerformed
 
@@ -1389,7 +1420,12 @@ public class ProductManagement_GUI extends javax.swing.JPanel {
 		int type = cmb_type.getSelectedIndex();
 		int detailType = cmb_typeDetail.getSelectedIndex();
 
-		renderProductsTable(bus.filter(queryName, isEmpty, type, detailType));
+		try {
+			renderProductsTable(bus.filter(queryName, isEmpty, type, detailType));
+		} catch (RemoteException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		disablePage();
 	}// GEN-LAST:event_btn_filterActionPerformed
 
@@ -1400,13 +1436,18 @@ public class ProductManagement_GUI extends javax.swing.JPanel {
 	private void btn_updateActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_btn_updateActionPerformed
 
 		Product newData = revertObjectFromForm();
-		if (bus.updateProduct(currentProduct.getProductID(), newData)) {
-			Notifications.getInstance().show(Notifications.Type.SUCCESS, "Cập nhật thông tin sản phẩm thành công!");
-			currentProduct = bus.getProduct(currentProduct.getProductID());
-			renderCurrentProduct();
-			renderCurrentPage();
-		} else {
-			Notifications.getInstance().show(Notifications.Type.ERROR, "Cập nhật thông tin sản phẩm thất bại!");
+		try {
+			if (bus.updateProduct(currentProduct.getProductID(), newData)) {
+				Notifications.getInstance().show(Notifications.Type.SUCCESS, "Cập nhật thông tin sản phẩm thành công!");
+				currentProduct = bus.getProduct(currentProduct.getProductID());
+				renderCurrentProduct();
+				renderCurrentPage();
+			} else {
+				Notifications.getInstance().show(Notifications.Type.ERROR, "Cập nhật thông tin sản phẩm thất bại!");
+			}
+		} catch (RemoteException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 	}// GEN-LAST:event_btn_updateActionPerformed
 
@@ -1488,7 +1529,13 @@ public class ProductManagement_GUI extends javax.swing.JPanel {
 
 	private void btn_exportActionPerformed(java.awt.event.ActionEvent evt) {
 		// TODO add your handling code here:
-		ArrayList<Product> list = bus.getAll();
+		ArrayList<Product> list = null;
+		try {
+			list = bus.getAll();
+		} catch (RemoteException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		// Hiển thị hộp thoại và kiểm tra nếu người dùng chọn OK
 		JFileChooser fileChooser = new JFileChooser();
 		fileChooser.setDialogTitle("Chọn đường dẫn và tên file");
@@ -1502,11 +1549,21 @@ public class ProductManagement_GUI extends javax.swing.JPanel {
 				createExcelAll(list, filePath + ".xlsx");
 			}
 			if (cbo_typeEx.getSelectedIndex() == 1) {
-				list = bus.filter(1, cbo_categoryEx.getSelectedIndex());
+				try {
+					list = bus.filter(1, cbo_categoryEx.getSelectedIndex());
+				} catch (RemoteException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 				createExcelBook(list, filePath + ".xlsx");
 			}
 			if (cbo_typeEx.getSelectedIndex() == 2) {
-				list = bus.filter(2, cbo_categoryEx.getSelectedIndex());
+				try {
+					list = bus.filter(2, cbo_categoryEx.getSelectedIndex());
+				} catch (RemoteException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 				createExcelStationery(list, filePath + ".xlsx");
 
 			}
@@ -1821,7 +1878,12 @@ public class ProductManagement_GUI extends javax.swing.JPanel {
 		currentPage = 1;
 		btn_next.setEnabled(true);
 		btn_previous.setEnabled(false);
-		renderCurrentPage();
+		try {
+			renderCurrentPage();
+		} catch (RemoteException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	public void disablePage() {

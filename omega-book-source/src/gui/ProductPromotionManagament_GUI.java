@@ -1,6 +1,7 @@
 package gui;
 
 import java.awt.event.KeyEvent;
+import java.rmi.RemoteException;
 import java.text.DecimalFormat;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -66,7 +67,12 @@ public class ProductPromotionManagament_GUI extends javax.swing.JPanel {
 				return;
 
 			String promotionID = tblModel_inforProductPromotion.getValueAt(rowIndex, 0).toString();
-			this.currentPromotion = bus.getPromotionForProduct(promotionID);
+			try {
+				this.currentPromotion = bus.getPromotionForProduct(promotionID);
+			} catch (RemoteException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
 			renderCurrentPromotion();
 		});
 
@@ -79,7 +85,12 @@ public class ProductPromotionManagament_GUI extends javax.swing.JPanel {
 		cmbModel_status = new DefaultComboBoxModel(new String[] { "Trạng thái", "Đang diễn ra", "Đã kết thúc" });
 		cmb_statusPromo.setModel(cmbModel_status);
 
-		renderPromotionTables(bus.getAllPromotionForProduct());
+		try {
+			renderPromotionTables(bus.getAllPromotionForProduct());
+		} catch (RemoteException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
 	}
 
 	private void renderCurrentPromotion() {
@@ -94,10 +105,15 @@ public class ProductPromotionManagament_GUI extends javax.swing.JPanel {
 
 		chooseStartDate.setDate(currentPromotion.getStartedDate());
 		chooseEndDate.setDate(currentPromotion.getEndedDate());
-		renderProductPromotionTables(currentPromotion.getDetails());
+		try {
+			renderProductPromotionTables(currentPromotion.getDetails());
+		} catch (RemoteException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
-	private void renderProductPromotionTables(List<ProductPromotionDetail> listDetail) {
+	private void renderProductPromotionTables(List<ProductPromotionDetail> listDetail) throws RemoteException {
         tblModel_productPromotion.setRowCount(0);
         for (ProductPromotionDetail productPromotionDetail : listDetail) {
             Product product = bus.getProduct(productPromotionDetail.getProduct().getProductID());
@@ -151,7 +167,7 @@ public class ProductPromotionManagament_GUI extends javax.swing.JPanel {
 		return promotion;
 	}
 
-	private void removeProductPromotion(String promotionID) {
+	private void removeProductPromotion(String promotionID) throws RemoteException {
 		if (bus.removePromotion(promotionID)) {
 			Notifications.getInstance().show(Notifications.Type.SUCCESS, "Đã gỡ khuyến mãi " + promotionID);
 			renderPromotionTables(bus.getAllPromotionForProduct());
@@ -159,7 +175,7 @@ public class ProductPromotionManagament_GUI extends javax.swing.JPanel {
 			Notifications.getInstance().show(Notifications.Type.ERROR, "Gỡ không thành công");
 	}
 
-	private void removeProductPromotionOther(Promotion pm) {
+	private void removeProductPromotionOther(Promotion pm) throws RemoteException {
 		if (bus.removeProductPromotionOther(pm)) {
 			Notifications.getInstance().show(Notifications.Type.SUCCESS, "Đã gỡ khuyến mãi " + pm.getPromotionID());
 			renderPromotionTables(bus.getAllPromotionForProduct());
@@ -606,7 +622,13 @@ public class ProductPromotionManagament_GUI extends javax.swing.JPanel {
 				Notifications.getInstance().show(Notifications.Type.INFO, "Vui lòng điền mã sản phẩm");
 				return;
 			}
-			Product product = bus.searchProductById(searchQuery);
+			Product product = null;
+			try {
+				product = bus.searchProductById(searchQuery);
+			} catch (RemoteException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			if (product == null) {
 				Notifications.getInstance().show(Notifications.Type.WARNING, "Không tồn tại sản phẩm " + searchQuery);
 				return;
@@ -622,7 +644,13 @@ public class ProductPromotionManagament_GUI extends javax.swing.JPanel {
 			Notifications.getInstance().show(Notifications.Type.INFO, "Vui lòng điền mã sản phẩm");
 			return;
 		}
-		Product product = bus.searchProductById(searchQuery);
+		Product product = null;
+		try {
+			product = bus.searchProductById(searchQuery);
+		} catch (RemoteException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		if (product == null) {
 			Notifications.getInstance().show(Notifications.Type.WARNING, "Không tồn tại sản phẩm " + searchQuery);
 			return;
@@ -633,11 +661,21 @@ public class ProductPromotionManagament_GUI extends javax.swing.JPanel {
 	private void btn_searchFilterPromoActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_btn_searchFilterPromoActionPerformed
 		int type = cmb_typePromo.getSelectedIndex();
 		int status = cmb_statusPromo.getSelectedIndex();
-		renderPromotionTables(bus.filterForProduct(type, status));
+		try {
+			renderPromotionTables(bus.filterForProduct(type, status));
+		} catch (RemoteException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}// GEN-LAST:event_btn_searchFilterPromoActionPerformed
 
 	private void btn_refreshActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_btn_refreshActionPerformed
-		renderPromotionTables(bus.getAllPromotionForProduct());
+		try {
+			renderPromotionTables(bus.getAllPromotionForProduct());
+		} catch (RemoteException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		renderPromotionInfor();
 	}// GEN-LAST:event_btn_refreshActionPerformed
 
@@ -675,7 +713,13 @@ public class ProductPromotionManagament_GUI extends javax.swing.JPanel {
 			return;
 		}
 		String promotionID = txt_promotionID.getText();
-		Promotion pm = bus.getPromotion(promotionID);
+		Promotion pm = null;
+		try {
+			pm = bus.getPromotion(promotionID);
+		} catch (RemoteException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		if (pm.getEndedDate().before(java.sql.Date.valueOf(LocalDate.now()))) {
 			Notifications.getInstance().show(Notifications.Type.WARNING, "Khuyến mãi đã hết hạn");
 		}
@@ -689,7 +733,12 @@ public class ProductPromotionManagament_GUI extends javax.swing.JPanel {
 				} catch (Exception ex) {
 					ex.printStackTrace();
 				}
-				renderPromotionTables(bus.getAllPromotionForProduct());
+				try {
+					renderPromotionTables(bus.getAllPromotionForProduct());
+				} catch (RemoteException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 				renderPromotionInfor();
 			} else
 				Notifications.getInstance().show(Notifications.Type.INFO, "Đã huỷ thao tác!");
@@ -702,7 +751,12 @@ public class ProductPromotionManagament_GUI extends javax.swing.JPanel {
 				} catch (Exception ex) {
 					ex.printStackTrace();
 				}
-				renderPromotionTables(bus.getAllPromotionForProduct());
+				try {
+					renderPromotionTables(bus.getAllPromotionForProduct());
+				} catch (RemoteException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 				renderPromotionInfor();
 			} else
 				Notifications.getInstance().show(Notifications.Type.INFO, "Đã huỷ thao tác!");
@@ -710,7 +764,12 @@ public class ProductPromotionManagament_GUI extends javax.swing.JPanel {
 	}// GEN-LAST:event_btn_removePromoActionPerformed
 
 	private void btn_clearValueActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_btn_clearValueActionPerformed
-		renderPromotionTables(bus.getAllPromotionForProduct());
+		try {
+			renderPromotionTables(bus.getAllPromotionForProduct());
+		} catch (RemoteException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		renderPromotionInfor();
 	}// GEN-LAST:event_btn_clearValueActionPerformed
 

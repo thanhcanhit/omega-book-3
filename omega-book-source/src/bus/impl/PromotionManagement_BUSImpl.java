@@ -25,21 +25,11 @@ import enums.PromotionType;
  *
  * @author Như Tâm
  */
-<<<<<<< HEAD:omega-book-source/src/bus/impl/PromotionManagament_BUSImpl.java
-public class PromotionManagament_BUSImpl extends UnicastRemoteObject implements PromotionManagement_BUS{
-    /**
-	 * 
-	 */
-	private static final long serialVersionUID = -8672696748777813265L;
-	private Promotion_DAO promotion_DAO = new Promotion_DAO();
 
-    public PromotionManagament_BUSImpl() throws RemoteException{
-=======
 public class PromotionManagement_BUSImpl implements PromotionManagement_BUS{
     private Promotion_DAO promotion_DAO = new Promotion_DAO();
 
     public PromotionManagement_BUSImpl() {
->>>>>>> ddc6b436ec355db02ea7d7fa653c6440e65974fb:omega-book-source/src/bus/impl/PromotionManagement_BUSImpl.java
     }
     
     public ArrayList<Promotion> getAllPromotion() throws RemoteException{
