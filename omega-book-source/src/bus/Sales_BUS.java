@@ -2,6 +2,7 @@ package bus;
 
 import java.io.IOException;
 import java.rmi.Remote;
+import java.rmi.RemoteException;
 import java.util.ArrayList;
 
 import entity.Bill;
@@ -15,7 +16,7 @@ public interface Sales_BUS extends Remote{
 
     public Customer getCustomerByPhone(String phone) throws IOException;
 
-    public Bill createNewOrder() throws Exception ;
+    public Bill createNewOrder() throws RemoteException,Exception ;
 
     public boolean saveToDatabase(Bill order) throws IOException;
     public boolean updateInDatabase(Bill order) throws IOException;

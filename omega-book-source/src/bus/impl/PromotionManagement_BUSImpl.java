@@ -23,10 +23,10 @@ import bus.PromotionManagement_BUS;
  *
  * @author Như Tâm
  */
-public class PromotionManagament_BUSImpl implements PromotionManagement_BUS{
+public class PromotionManagement_BUSImpl implements PromotionManagement_BUS{
     private Promotion_DAO promotion_DAO = new Promotion_DAO();
 
-    public PromotionManagament_BUSImpl() {
+    public PromotionManagement_BUSImpl() {
     }
     
     public ArrayList<Promotion> getAllPromotion(){

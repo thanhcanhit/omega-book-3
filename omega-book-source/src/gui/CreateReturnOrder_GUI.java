@@ -11,7 +11,7 @@ import javax.swing.table.DefaultTableModel;
 
 import com.formdev.flatlaf.FlatClientProperties;
 
-import bus.impl.ReturnOrderManagament_BUSImpl;
+import bus.impl.ReturnOrderManagement_BUSImpl;
 import entity.Employee;
 import entity.Bill;
 import entity.OrderDetail;
@@ -33,7 +33,7 @@ import utilities.SVGIcon;
 public class CreateReturnOrder_GUI extends javax.swing.JPanel {
 
 	private static final long serialVersionUID = 7483255411620707846L;
-	private ReturnOrderManagament_BUSImpl bus;
+	private ReturnOrderManagement_BUSImpl bus;
 	private Bill order;
 	private final Employee employee = Application.employee;
 	private DefaultTableModel tblModel_orderDetail;
@@ -49,7 +49,7 @@ public class CreateReturnOrder_GUI extends javax.swing.JPanel {
 	}
 
 	private void init() {
-		bus = new ReturnOrderManagament_BUSImpl();
+		bus = new ReturnOrderManagement_BUSImpl();
 		cart = new ArrayList<>();
 		//model
 		tblModel_orderDetail = new DefaultTableModel(new String[]{"Mã hoá đơn", "Mã sản phẩm", "Tên sản phẩm", "Số lượng", "Đơn giá", "Tổng tiền"}, 0);

@@ -19,7 +19,7 @@ import bus.EmployeeManagement_BUS;
  *
  * @author Như Tâm
  */
-public class EmployeeManagament_BUSImpl implements EmployeeManagement_BUS{
+public class EmployeeManagement_BUSImpl implements EmployeeManagement_BUS{
     private Employee_DAO dao = new Employee_DAO();
     private Account_DAO accountDAO = new Account_DAO();
     private Store_DAO store_dao = new Store_DAO();

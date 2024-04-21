@@ -20,7 +20,7 @@ import entity.ReturnOrderDetail;
  *
  * @author Như Tâm
  */
-public class ReturnOrderManagament_BUSImpl implements ReturnOrderManagement_BUS{
+public class ReturnOrderManagement_BUSImpl implements ReturnOrderManagement_BUS{
     private ReturnOrder_DAO dao = new ReturnOrder_DAO();
     private ReturnOrderDetail_DAO detail_dao = new ReturnOrderDetail_DAO();
     private Bill_DAO order_dao = new Bill_DAO();

@@ -1,14 +1,14 @@
 package bus;
 
-import java.io.IOException;
 import java.rmi.Remote;
+import java.rmi.RemoteException;
 
 public interface StatisticCustomer_BUS extends Remote {
-	public int getNumberCus() throws IOException;
+	public int getNumberCus() throws RemoteException;
 
-	public int sumCustomer() throws IOException;
+	public int sumCustomer() throws RemoteException;
 
-	public int countMaleCustomers() throws IOException;
+	public int countMaleCustomers() throws RemoteException;
 
-	public int[] filterCustomers() throws IOException;
+	public int[] filterCustomers() throws RemoteException;
 }
