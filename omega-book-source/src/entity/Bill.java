@@ -8,7 +8,6 @@ import java.util.Objects;
 import org.hibernate.annotations.Cascade;
 
 import enums.DiscountType;
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.Id;
@@ -43,6 +42,7 @@ public final class Bill {
 
 	private static final String ORDERID_ERROR = "Mã hoá đơn không hợp lệ !";
 	private static final String ORDERAT_ERROR = "Ngày tạo hoá đơn không hợp lệ !";
+	@SuppressWarnings("unused")
 	private static final String PROMOTION_ERROR = "Khuyến mãi không được rỗng !";
 	private static final String EMPLOYEE_ERROR = "Nhân viên không được rỗng !";
 	private static final String CUSTOMER_ERROR = "Khách hàng không được rỗng !";
@@ -69,7 +69,7 @@ public final class Bill {
 	@Cascade({ org.hibernate.annotations.CascadeType.ALL })
 	private List<OrderDetail> orderDetail;
 	private double moneyGiven;
-	
+
 	@ManyToOne
 	@JoinColumn(name = "accountingVoucherID")
 	private AcountingVoucher accountingVoucher;
@@ -303,6 +303,5 @@ public final class Bill {
 				+ employee + ", customer=" + customer + ", moneyGiven=" + moneyGiven + ", acountingVoucher="
 				+ accountingVoucher + "]";
 	}
-	
 
 }

@@ -20,7 +20,7 @@ public class CashCount_DAO implements interfaces.DAOBase<CashCount> {
 	EntityManager entityManager;
 
 	public CashCount_DAO() {
-		entityManager = AccessDatabase.getEntityManager();
+		entityManager = AccessDatabase.getInstance();
 	}
 
 	public CashCount getCashCount(double value, String cashCountSheetID) {

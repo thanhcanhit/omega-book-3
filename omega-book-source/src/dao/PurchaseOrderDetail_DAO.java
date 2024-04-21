@@ -20,7 +20,7 @@ public class PurchaseOrderDetail_DAO implements DAOBase<PurchaseOrderDetail>{
 	EntityManager entityManager;
 	
     public PurchaseOrderDetail_DAO() {
-		entityManager = AccessDatabase.getEntityManager();
+		entityManager = AccessDatabase.getInstance();
 	}
 
 	@Override

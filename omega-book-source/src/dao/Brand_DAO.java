@@ -20,7 +20,7 @@ import utilities.AccessDatabase;
 public class Brand_DAO implements DAOBase<Brand> {
 	EntityManager em;
 	public Brand_DAO() {
-		em = AccessDatabase.getEntityManager();
+		em = AccessDatabase.getInstance();
 	}
     @Override
     public Brand getOne(String id) {

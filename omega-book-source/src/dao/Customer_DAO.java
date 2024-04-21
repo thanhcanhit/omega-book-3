@@ -22,7 +22,7 @@ public class Customer_DAO implements interfaces.DAOBase<Customer> {
 	EntityManager entityManager;
 
 	public Customer_DAO() {
-		entityManager = AccessDatabase.getEntityManager();
+		entityManager = AccessDatabase.getInstance();
 	}
 
 	@Override

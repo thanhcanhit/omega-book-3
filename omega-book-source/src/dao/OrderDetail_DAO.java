@@ -21,7 +21,7 @@ public class OrderDetail_DAO implements DAOBase<OrderDetail> {
 	EntityManager em;
 
 	public OrderDetail_DAO() {
-		em = AccessDatabase.getEntityManager();
+		em = AccessDatabase.getInstance();
 	}
 
 	@Override

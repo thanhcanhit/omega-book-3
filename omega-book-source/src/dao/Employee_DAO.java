@@ -23,14 +23,14 @@ public class Employee_DAO implements DAOBase<Employee> {
 	public EntityManager em;
 
 	public Employee_DAO() {
-		em = AccessDatabase.getEntityManager();
+		em = AccessDatabase.getInstance();
 	}
 
 	public static String getMaxSequence(String prefix) {
 		try {
 			prefix += "%";
 			String hql = "FROM Employee WHERE employeeID LIKE :prefix ORDER BY employeeID DESC";
-			Query query = AccessDatabase.getEntityManager().createQuery(hql);
+			Query query = AccessDatabase.getInstance().createQuery(hql);
 			query.setParameter("prefix", prefix);
 			query.setMaxResults(1);
 			Employee result = (Employee) query.getSingleResult();
