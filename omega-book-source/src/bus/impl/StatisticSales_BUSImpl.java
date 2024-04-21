@@ -19,7 +19,7 @@ import enums.Type;
  * @author KienTran
  */
 public class StatisticSales_BUSImpl extends UnicastRemoteObject implements StatisticSales_BUS{
-    protected StatisticSales_BUSImpl() throws RemoteException {
+    public StatisticSales_BUSImpl() throws RemoteException {
 		super();
 		// TODO Auto-generated constructor stub
 	}

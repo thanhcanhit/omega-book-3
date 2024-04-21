@@ -22,7 +22,7 @@ import bus.ViewAccoutingVoucherList_BUS;
  */
 public class ViewAcountingVoucherList_BUSImpl extends UnicastRemoteObject implements ViewAccoutingVoucherList_BUS{
 
-    protected ViewAcountingVoucherList_BUSImpl() throws RemoteException {
+    public ViewAcountingVoucherList_BUSImpl() throws RemoteException {
 		super();
 		// TODO Auto-generated constructor stub
 	}

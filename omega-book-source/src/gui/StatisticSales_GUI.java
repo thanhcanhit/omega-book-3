@@ -6,6 +6,7 @@ package gui;
 
 import java.awt.Color;
 import java.beans.PropertyChangeEvent;
+import java.rmi.RemoteException;
 
 import bus.impl.StatisticSales_BUSImpl;
 import enums.Type;
@@ -30,14 +31,15 @@ public final class StatisticSales_GUI extends javax.swing.JPanel {
 
     /**
      * Creates new form StatisticSales_GUI
+     * @throws RemoteException 
      */
-    public StatisticSales_GUI() {
+    public StatisticSales_GUI() throws RemoteException {
         initComponents();
         init();
     }
 
     @SuppressWarnings("unused")
-	public void init() {
+	public void init() throws RemoteException {
         
         chart.setBackground(getBackground());
         chart.addLegend("Doanh thu", new Color(71, 118, 185));
@@ -53,13 +55,28 @@ public final class StatisticSales_GUI extends javax.swing.JPanel {
                 int year = year_statisticSales.getYear();
 //                pnl_productTypeStatistic.remove(pieChartPanel);
                 polarAreaChart.clear();
-                getPieChart();
+                try {
+					getPieChart();
+				} catch (RemoteException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
                 chart.clear();
-                getChart();
+                try {
+					getChart();
+				} catch (RemoteException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 //                pieChartPanel = new XChartPanel<>(getPieChart());
 //                pnl_productTypeStatistic.add(pieChartPanel);
 //                pieChartPanel.updateUI();
-                renderInfo();
+                try {
+					renderInfo();
+				} catch (RemoteException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 
             }
         });
@@ -68,21 +85,36 @@ public final class StatisticSales_GUI extends javax.swing.JPanel {
                 int month = month_statisticSales.getMonth();
                 int year = year_statisticSales.getYear();
                 polarAreaChart.clear();
-                getPieChart();
+                try {
+					getPieChart();
+				} catch (RemoteException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 //                pieChartPanel = new XChartPanel<>(getPieChart());
 //                pnl_productTypeStatistic.add(pieChartPanel);
 //                pieChartPanel.updateUI();
                 chart.clear();
-                getChart();
+                try {
+					getChart();
+				} catch (RemoteException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 
-                renderInfo();
+                try {
+					renderInfo();
+				} catch (RemoteException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 
             }
         });
 
     }
 
-    public void getChart() {
+    public void getChart() throws RemoteException {
 
         double[] listTotal = bus.getTotalPerDay(month_statisticSales.getMonth() + 1, year_statisticSales.getYear());
 
@@ -93,7 +125,7 @@ public final class StatisticSales_GUI extends javax.swing.JPanel {
 
     }
 
-    public void getPieChart() {
+    public void getPieChart() throws RemoteException {
         
         polarAreaChart.setBackground(getBackground());
         
@@ -107,7 +139,7 @@ public final class StatisticSales_GUI extends javax.swing.JPanel {
 
     }
 
-    public void renderInfo() {
+    public void renderInfo() throws RemoteException {
 
         txt_orderQuantity.setText(bus.getTotalNumberOrder(month_statisticSales.getMonth() + 1, year_statisticSales.getYear()) + "");
         txt_returnOrderQuantity.setText(bus.getTotalNumberReturnOrder(month_statisticSales.getMonth() + 1, year_statisticSales.getYear()) + "");

@@ -5,6 +5,7 @@
 package gui;
 
 import java.awt.Color;
+import java.rmi.RemoteException;
 
 import bus.impl.StatisticCustomer_BUSImpl;
 import gui.customchart.piechart.ModelPolarAreaChart;
@@ -28,14 +29,15 @@ public class StatisticCustomer_GUI extends javax.swing.JPanel {
 
     /**
      * Creates new form StatisticCustomer_GUI
+     * @throws RemoteException 
      */
-    public StatisticCustomer_GUI() {
+    public StatisticCustomer_GUI() throws RemoteException {
         initComponents();
         initDataInfo();
         initPieChart();
     }
 
-    public void initDataInfo() {
+    public void initDataInfo() throws RemoteException {
         txt_totalCustomer.setText(Integer.toString(statisticCustomer_BUS.sumCustomer()));
 
         txt_femaleUnder18.setText(Integer.toString(data[0]));

@@ -10,6 +10,7 @@ import java.awt.FocusTraversalPolicy;
 import java.awt.HeadlessException;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.rmi.RemoteException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -166,7 +167,7 @@ public class Sales_GUI extends javax.swing.JPanel {
 		}
 	}
 
-	public Sales_GUI() {
+	public Sales_GUI() throws RemoteException {
 		initComponents();
 		this.btnOptionsList = new JButton[] { btn_option1, btn_option2, btn_option3, btn_option4, btn_option5,
 				btn_option6, btn_option7, btn_option8, btn_option9 };
@@ -227,7 +228,7 @@ public class Sales_GUI extends javax.swing.JPanel {
 		pnl_right.setEnabled(true);
 	}
 
-	private void init() {
+	private void init() throws RemoteException {
 		bus = new Sales_BUSImpl();
 		txt_orderId.setEditable(false);
 		txt_orderDate.setEditable(false);
@@ -641,11 +642,11 @@ public class Sales_GUI extends javax.swing.JPanel {
 		tbl_cart.editCellAt(row, 2);
 	}
 
-	private void rerender() {
+	private void rerender() throws RemoteException {
 		Application.refreshMainView();
 	}
 
-	private void getCustomer(String phone) {
+	private void getCustomer(String phone) throws RemoteException {
 		customer = bus.getCustomerByPhone(phone);
 		if (customer == null) {
 			Notifications.getInstance().show(Notifications.Type.INFO,
@@ -668,7 +669,7 @@ public class Sales_GUI extends javax.swing.JPanel {
 		txt_customerRank.setText(customer.getRank());
 	}
 
-	private void addItemToCart(String productID) {
+	private void addItemToCart(String productID) throws RemoteException {
 //        Nếu chưa có trong giỏ hàng
 		Product item = bus.getProduct(productID);
 		if (item == null) {
@@ -721,7 +722,7 @@ public class Sales_GUI extends javax.swing.JPanel {
 		txt_search.setText("");
 	}
 
-	private void handleAddItem() {
+	private void handleAddItem() throws RemoteException {
 		String productID = txt_search.getText();
 
 //      Hủy bỏ giá trị tiền khách đưa nếu đã nhập
@@ -730,7 +731,7 @@ public class Sales_GUI extends javax.swing.JPanel {
 		handleAddItem(productID);
 	}
 
-	private void handleAddItem(String productID) {
+	private void handleAddItem(String productID) throws RemoteException {
 
 //        Bắt buộc nhập thông tin khách hàng trước tiên
 		if (customer == null) {
@@ -952,7 +953,12 @@ public class Sales_GUI extends javax.swing.JPanel {
 				"" + "background:$Menu.background;" + "foreground:$Menu.foreground;");
 		btn_savedOrderSelect.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
-				btn_savedOrderSelectActionPerformed(evt);
+				try {
+					btn_savedOrderSelectActionPerformed(evt);
+				} catch (RemoteException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 			}
 		});
 		pnl_savedOrderControl.add(btn_savedOrderSelect);
@@ -960,7 +966,12 @@ public class Sales_GUI extends javax.swing.JPanel {
 		btn_savedOrderDelete.setText("Xóa đơn");
 		btn_savedOrderDelete.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
-				btn_savedOrderDeleteActionPerformed(evt);
+				try {
+					btn_savedOrderDeleteActionPerformed(evt);
+				} catch (RemoteException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 			}
 		});
 		pnl_savedOrderControl.add(btn_savedOrderDelete);
@@ -968,7 +979,12 @@ public class Sales_GUI extends javax.swing.JPanel {
 		btn_savedOrderDeleteAll.setText("Xóa toàn bộ đơn lưu tạm");
 		btn_savedOrderDeleteAll.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
-				btn_savedOrderDeleteAllActionPerformed(evt);
+				try {
+					btn_savedOrderDeleteAllActionPerformed(evt);
+				} catch (RemoteException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 			}
 		});
 		pnl_savedOrderControl.add(btn_savedOrderDeleteAll);
@@ -994,7 +1010,13 @@ public class Sales_GUI extends javax.swing.JPanel {
 			}
 
 			String orderId = tbl_savedOrder.getValueAt(rowIndex, 0).toString();
-			Bill order = bus.getOrder(orderId);
+			Bill order = null;
+			try {
+				order = bus.getOrder(orderId);
+			} catch (RemoteException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			DefaultTableModel tblModel_savedOrderDetail = new DefaultTableModel(
 					new String[] { "Tên sản phẩm", "Số lượng" }, 50) {
 				@Override
@@ -1058,7 +1080,12 @@ public class Sales_GUI extends javax.swing.JPanel {
 				"" + "background:$Menu.background;" + "foreground:$Menu.foreground;");
 		btn_promotionSelectBest.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
-				btn_promotionSelectBestActionPerformed(evt);
+				try {
+					btn_promotionSelectBestActionPerformed(evt);
+				} catch (RemoteException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 			}
 		});
 		pnl_promotionControl.add(btn_promotionSelectBest);
@@ -1101,7 +1128,12 @@ public class Sales_GUI extends javax.swing.JPanel {
 		txt_search.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "Mã sản phẩm (ESC)");
 		txt_search.addKeyListener(new java.awt.event.KeyAdapter() {
 			public void keyPressed(java.awt.event.KeyEvent evt) {
-				txt_searchKeyPressed(evt);
+				try {
+					txt_searchKeyPressed(evt);
+				} catch (RemoteException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 			}
 		});
 		pnl_header.add(txt_search);
@@ -1114,7 +1146,12 @@ public class Sales_GUI extends javax.swing.JPanel {
 				"" + "background:$Menu.background;" + "foreground:$Menu.foreground;");
 		btn_search.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
-				btn_searchActionPerformed(evt);
+				try {
+					btn_searchActionPerformed(evt);
+				} catch (RemoteException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 			}
 		});
 		pnl_header.add(btn_search);
@@ -1196,7 +1233,12 @@ public class Sales_GUI extends javax.swing.JPanel {
 		txt_customerPhone.setPreferredSize(new java.awt.Dimension(30, 30));
 		txt_customerPhone.addKeyListener(new java.awt.event.KeyAdapter() {
 			public void keyPressed(java.awt.event.KeyEvent evt) {
-				txt_customerPhoneKeyPressed(evt);
+				try {
+					txt_customerPhoneKeyPressed(evt);
+				} catch (RemoteException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 			}
 		});
 		pnl_customerPhone.add(txt_customerPhone);
@@ -1472,7 +1514,12 @@ public class Sales_GUI extends javax.swing.JPanel {
 		btn_save.setText("LƯU TẠM (F2)");
 		btn_save.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
-				btn_saveActionPerformed(evt);
+				try {
+					btn_saveActionPerformed(evt);
+				} catch (RemoteException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 			}
 		});
 		pnl_btnGroup.add(btn_save);
@@ -1480,7 +1527,12 @@ public class Sales_GUI extends javax.swing.JPanel {
 		btn_viewSaves.setText("XỨ LÍ ĐƠN TẠM (F3)");
 		btn_viewSaves.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
-				btn_viewSavesActionPerformed(evt);
+				try {
+					btn_viewSavesActionPerformed(evt);
+				} catch (RemoteException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 			}
 		});
 		pnl_btnGroup.add(btn_viewSaves);
@@ -1488,7 +1540,12 @@ public class Sales_GUI extends javax.swing.JPanel {
 		btn_cancle.setText("HỦY (F4)");
 		btn_cancle.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
-				btn_cancleActionPerformed(evt);
+				try {
+					btn_cancleActionPerformed(evt);
+				} catch (RemoteException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 			}
 		});
 		pnl_btnGroup.add(btn_cancle);
@@ -1496,7 +1553,12 @@ public class Sales_GUI extends javax.swing.JPanel {
 		btn_promotion.setText("KHUYẾN MÃI (F5)");
 		btn_promotion.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
-				btn_promotionActionPerformed(evt);
+				try {
+					btn_promotionActionPerformed(evt);
+				} catch (RemoteException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 			}
 		});
 		pnl_btnGroup.add(btn_promotion);
@@ -1527,7 +1589,7 @@ public class Sales_GUI extends javax.swing.JPanel {
 		add(splitPane_main);
 	}// </editor-fold>//GEN-END:initComponents
 
-	private void btn_cancleActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_btn_cancleActionPerformed
+	private void btn_cancleActionPerformed(java.awt.event.ActionEvent evt) throws RemoteException {// GEN-FIRST:event_btn_cancleActionPerformed
 		if (JOptionPane.showConfirmDialog(this, "Bạn có muốn hủy hóa đơn " + order.getOrderID(), "Xác nhận hủy hóa đơn",
 				JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
 			// Tạo lại trang mới
@@ -1548,11 +1610,11 @@ public class Sales_GUI extends javax.swing.JPanel {
 
 	}// GEN-LAST:event_btn_cancleActionPerformed
 
-	private void btn_searchActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_btn_searchActionPerformed
+	private void btn_searchActionPerformed(java.awt.event.ActionEvent evt) throws RemoteException {// GEN-FIRST:event_btn_searchActionPerformed
 		handleAddItem();
 	}// GEN-LAST:event_btn_searchActionPerformed
 
-	private void txt_searchKeyPressed(java.awt.event.KeyEvent evt) {// GEN-FIRST:event_txt_searchKeyPressed
+	private void txt_searchKeyPressed(java.awt.event.KeyEvent evt) throws RemoteException {// GEN-FIRST:event_txt_searchKeyPressed
 //        Tránh thêm 2 lần khi mà trùng với xử lí quét mã
 		if (!tempInput.trim().toLowerCase().equals(txt_search.getText().trim().toLowerCase())
 				&& evt.getKeyCode() == KeyEvent.VK_ENTER) {
@@ -1565,21 +1627,21 @@ public class Sales_GUI extends javax.swing.JPanel {
 
 	}// GEN-LAST:event_btn_submitActionPerformed
 
-	private void txt_customerPhoneKeyPressed(java.awt.event.KeyEvent evt) {// GEN-FIRST:event_txt_customerPhoneKeyPressed
+	private void txt_customerPhoneKeyPressed(java.awt.event.KeyEvent evt) throws RemoteException {// GEN-FIRST:event_txt_customerPhoneKeyPressed
 		String phoneInput = txt_customerPhone.getText();
 		if (phoneInput.length() == 10) {
 			getCustomer(phoneInput);
 		}
 	}// GEN-LAST:event_txt_customerPhoneKeyPressed
 
-	private void btn_viewSavesActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_btn_viewSavesActionPerformed
+	private void btn_viewSavesActionPerformed(java.awt.event.ActionEvent evt) throws RemoteException {// GEN-FIRST:event_btn_viewSavesActionPerformed
 //        Căn giữa theo ứng dụng lớn
 		frame_savedOrder.setLocationRelativeTo(Application.app);
 		renderSavedOrderTable();
 		frame_savedOrder.setVisible(true);
 	}// GEN-LAST:event_btn_viewSavesActionPerformed
 
-	private void btn_savedOrderSelectActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_btn_savedOrderSelectActionPerformed
+	private void btn_savedOrderSelectActionPerformed(java.awt.event.ActionEvent evt) throws RemoteException {// GEN-FIRST:event_btn_savedOrderSelectActionPerformed
 		if (!cart.isEmpty()) {
 			Notifications.getInstance().show(Notifications.Type.WARNING, 3000,
 					"Đơn hàng hiện tại vẫn chưa xử lí xong, hãy hoàn thành hoặc hủy bỏ đơn hiện tại để xử lí đơn lưu tạm");
@@ -1603,7 +1665,7 @@ public class Sales_GUI extends javax.swing.JPanel {
 
 	}// GEN-LAST:event_btn_savedOrderSelectActionPerformed
 
-	private void btn_savedOrderDeleteActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_btn_savedOrderDeleteActionPerformed
+	private void btn_savedOrderDeleteActionPerformed(java.awt.event.ActionEvent evt) throws RemoteException {// GEN-FIRST:event_btn_savedOrderDeleteActionPerformed
 		int row = tbl_savedOrder.getSelectedRow();
 
 //        Nếu đang không chọn dòng nào thì thông báo
@@ -1629,7 +1691,7 @@ public class Sales_GUI extends javax.swing.JPanel {
 		}
 	}// GEN-LAST:event_btn_savedOrderDeleteActionPerformed
 
-	private boolean updateOrder(boolean isCompleted) {
+	private boolean updateOrder(boolean isCompleted) throws RemoteException {
 
 		Notifications.getInstance().show(Notifications.Type.INFO, "Đang lưu trữ hóa đơn...");
 		try {
@@ -1667,7 +1729,7 @@ public class Sales_GUI extends javax.swing.JPanel {
 		return bus.updateInDatabase(order);
 	}
 
-	private boolean saveOrder(boolean isComplete) {
+	private boolean saveOrder(boolean isComplete) throws RemoteException {
 		Notifications.getInstance().show(Notifications.Type.INFO, "Đang lưu trữ hóa đơn...");
 
 		try {
@@ -1706,7 +1768,7 @@ public class Sales_GUI extends javax.swing.JPanel {
 		return bus.saveToDatabase(order);
 	}
 
-	private void btn_saveActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_btn_saveActionPerformed
+	private void btn_saveActionPerformed(java.awt.event.ActionEvent evt) throws RemoteException {// GEN-FIRST:event_btn_saveActionPerformed
 		if (!orderValidate(false)) {
 			return;
 		}
@@ -1751,7 +1813,7 @@ public class Sales_GUI extends javax.swing.JPanel {
 		}
 	}// GEN-LAST:event_btn_saveActionPerformed
 
-	private void btn_savedOrderDeleteAllActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_btn_savedOrderDeleteAllActionPerformed
+	private void btn_savedOrderDeleteAllActionPerformed(java.awt.event.ActionEvent evt) throws RemoteException {// GEN-FIRST:event_btn_savedOrderDeleteAllActionPerformed
 		int rows = tbl_savedOrder.getRowCount();
 		if (JOptionPane.showConfirmDialog(frame_savedOrder,
 				"Bạn có muốn xóa toàn bộ đơn hàng đã lưu tạm này (Không thể phục hồi)?", "Xóa đơn lưu tạm",
@@ -1813,7 +1875,7 @@ public class Sales_GUI extends javax.swing.JPanel {
 		}
 	}
 
-	private void btn_promotionActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_btn_promotionActionPerformed
+	private void btn_promotionActionPerformed(java.awt.event.ActionEvent evt) throws RemoteException {// GEN-FIRST:event_btn_promotionActionPerformed
 		if (customer == null) {
 			Notifications.getInstance().show(Notifications.Type.INFO,
 					"Bạn phải thêm thông tin khách hàng để làm hành động này");
@@ -1831,7 +1893,7 @@ public class Sales_GUI extends javax.swing.JPanel {
 		frame_promotionList.setVisible(true);
 	}// GEN-LAST:event_btn_promotionActionPerformed
 
-	private void handleAddBest() {
+	private void handleAddBest() throws RemoteException {
 		Promotion bestPromotion = getBestPromotionForCustomer(total);
 		if (bestPromotion != null) {
 			try {
@@ -1852,7 +1914,7 @@ public class Sales_GUI extends javax.swing.JPanel {
 		}
 	}
 
-	private void btn_promotionSelectBestActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_btn_promotionSelectBestActionPerformed
+	private void btn_promotionSelectBestActionPerformed(java.awt.event.ActionEvent evt) throws RemoteException {// GEN-FIRST:event_btn_promotionSelectBestActionPerformed
 		handleAddBest();
 	}// GEN-LAST:event_btn_promotionSelectBestActionPerformed
 
@@ -1886,7 +1948,7 @@ public class Sales_GUI extends javax.swing.JPanel {
 		}
 	}// GEN-LAST:event_chk_defaultCustomerActionPerformed
 
-	private void renderSavedOrderTable() {
+	private void renderSavedOrderTable() throws RemoteException {
 		DefaultTableModel tblModel_savedOrder = new DefaultTableModel(
 				new String[] { "Mã hóa đơn", "Tên khách hàng", "Ngày tạo" }, 0) {
 			/**
@@ -1910,7 +1972,7 @@ public class Sales_GUI extends javax.swing.JPanel {
 				new String[] { "Tên sản phẩm", "Số lượng" }));
 	}
 
-	private void loadSavedOrder(String id) {
+	private void loadSavedOrder(String id) throws RemoteException {
 		Bill savedOrder = bus.getOrder(id);
 		Customer temp = order.getCustomer();
 
@@ -1940,7 +2002,7 @@ public class Sales_GUI extends javax.swing.JPanel {
 	}
 
 //    Promotion
-	private void renderPromotionOrderTable() {
+	private void renderPromotionOrderTable() throws RemoteException {
 		DefaultTableModel tblModel_promotionList = new DefaultTableModel(
 				new String[] { "Mã khuyến mãi", "Loại khuyến mãi", "Giá trị khuyến mãi", "Số tiền giảm" }, 0) {
 			/**
@@ -1980,7 +2042,7 @@ public class Sales_GUI extends javax.swing.JPanel {
 		tbl_promotionList.setModel(tblModel_promotionList);
 	}
 
-	private Promotion getBestPromotionForCustomer(double total) {
+	private Promotion getBestPromotionForCustomer(double total) throws RemoteException {
 		Promotion bestPromotion = null;
 		if (customer == null || customer == defaultCustomer) {
 			return null;

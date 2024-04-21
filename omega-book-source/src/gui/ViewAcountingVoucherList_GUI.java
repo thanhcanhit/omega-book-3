@@ -4,6 +4,7 @@
  */
 package gui;
 
+import java.rmi.RemoteException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -34,8 +35,9 @@ public class ViewAcountingVoucherList_GUI extends javax.swing.JPanel {
 
     /**
      * Creates new form ViewAcountingVoucherList_GUI
+     * @throws RemoteException 
      */
-    public ViewAcountingVoucherList_GUI() {
+    public ViewAcountingVoucherList_GUI() throws RemoteException {
         initTableModel();
         initComponents();
         alterTable();
@@ -250,7 +252,12 @@ public class ViewAcountingVoucherList_GUI extends javax.swing.JPanel {
         tbl_acountingVoucherList.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         tbl_acountingVoucherList.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                tbl_acountingVoucherListMouseClicked(evt);
+                try {
+					tbl_acountingVoucherListMouseClicked(evt);
+				} catch (RemoteException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
             }
         });
         jScrollPane1.setViewportView(tbl_acountingVoucherList);
@@ -270,7 +277,7 @@ public class ViewAcountingVoucherList_GUI extends javax.swing.JPanel {
 
     }//GEN-LAST:event_btn_reloadActionPerformed
 
-    private void tbl_acountingVoucherListMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbl_acountingVoucherListMouseClicked
+    private void tbl_acountingVoucherListMouseClicked(java.awt.event.MouseEvent evt) throws RemoteException {//GEN-FIRST:event_tbl_acountingVoucherListMouseClicked
         // TODO add your handling code here:
         // Lấy chỉ số dòng được chọn
         int selectedRow = tbl_acountingVoucherList.getSelectedRow();

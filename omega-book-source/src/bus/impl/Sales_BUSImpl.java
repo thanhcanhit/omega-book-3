@@ -36,7 +36,7 @@ import bus.Sales_BUS;
  */
 public class Sales_BUSImpl extends UnicastRemoteObject implements Sales_BUS {
 
-	protected Sales_BUSImpl() throws RemoteException {
+	public Sales_BUSImpl() throws RemoteException {
 		super();
 		// TODO Auto-generated constructor stub
 	}

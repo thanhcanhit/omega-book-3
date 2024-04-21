@@ -4,6 +4,7 @@
  */
 package gui;
 
+import java.rmi.RemoteException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -30,8 +31,9 @@ public class ManagemantShifts_GUI extends javax.swing.JPanel {
 
     /**
      * Creates new form ManagemantShifts_GUI
+     * @throws RemoteException 
      */
-    public ManagemantShifts_GUI() {
+    public ManagemantShifts_GUI() throws RemoteException {
         initTableModel();
         initComponents();
         renderShiftsTable(shift_bus.getShiftsByDate(new Date()));
@@ -133,7 +135,12 @@ public class ManagemantShifts_GUI extends javax.swing.JPanel {
         btn_filter.setIcon(SVGIcon.getSVGIcon("resources/imgs/public/filter.svg"));
         btn_filter.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btn_filterActionPerformed(evt);
+                try {
+					btn_filterActionPerformed(evt);
+				} catch (RemoteException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
             }
         });
         jPanel4.add(btn_filter);
@@ -142,7 +149,12 @@ public class ManagemantShifts_GUI extends javax.swing.JPanel {
         btn_reload.setText("Làm mới");
         btn_reload.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btn_reloadActionPerformed(evt);
+                try {
+					btn_reloadActionPerformed(evt);
+				} catch (RemoteException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
             }
         });
         jPanel4.add(btn_reload);
@@ -152,7 +164,7 @@ public class ManagemantShifts_GUI extends javax.swing.JPanel {
         add(pnl_header, java.awt.BorderLayout.PAGE_START);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void btn_filterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_filterActionPerformed
+    private void btn_filterActionPerformed(java.awt.event.ActionEvent evt) throws RemoteException {//GEN-FIRST:event_btn_filterActionPerformed
         // TODO add your handling code here:e
         Date date = date_dateAt.getDate();
         String id = txt_empID.getText().trim();
@@ -160,7 +172,7 @@ public class ManagemantShifts_GUI extends javax.swing.JPanel {
         renderShiftsTable(shift_bus.filter(id, role, date));
     }//GEN-LAST:event_btn_filterActionPerformed
 
-    private void btn_reloadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_reloadActionPerformed
+    private void btn_reloadActionPerformed(java.awt.event.ActionEvent evt) throws RemoteException {//GEN-FIRST:event_btn_reloadActionPerformed
           ArrayList<Shift> list = shift_bus.getShiftsByDate(new Date());
           for (@SuppressWarnings("unused") Shift shift : list) {
         }

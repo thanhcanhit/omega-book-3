@@ -16,7 +16,7 @@ import bus.StatisticCustomer_BUS;
  */
 public class StatisticCustomer_BUSImpl extends UnicastRemoteObject implements StatisticCustomer_BUS{
 
-    protected StatisticCustomer_BUSImpl() throws RemoteException {
+    public StatisticCustomer_BUSImpl() throws RemoteException {
 		super();
 		// TODO Auto-generated constructor stub
 	}
