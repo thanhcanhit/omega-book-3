@@ -1,21 +1,21 @@
 package bus;
 
-import java.io.IOException;
 import java.rmi.Remote;
+import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.Date;
 
 import entity.Shift;
 
 public interface ShiftsManagement_BUS extends Remote{
-	 public Shift getOne(String id) throws IOException;
+	 public Shift getOne(String id) throws RemoteException;
 
-	    public ArrayList<Shift> getAll() throws IOException;
+	    public ArrayList<Shift> getAll() throws RemoteException;
 
-	    public boolean createShifts(Shift shift) throws IOException;
-	    public String renderID() throws IOException;
+	    public boolean createShifts(Shift shift) throws RemoteException;
+	    public String renderID() throws RemoteException;
 
-	    public ArrayList<Shift> getShiftsByDate(Date date) throws IOException;
+	    public ArrayList<Shift> getShiftsByDate(Date date) throws RemoteException;
 
-	    public ArrayList<Shift> filter(String emloyeeID, String role, Date date) throws IOException;
+	    public ArrayList<Shift> filter(String emloyeeID, String role, Date date) throws RemoteException;
 }
