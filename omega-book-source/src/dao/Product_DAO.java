@@ -39,6 +39,7 @@ public class Product_DAO implements DAOBase<Product> {
 //    With img
 	@Override
 	public Product getOne(String id) {
+		System.out.println("id: " + id);
 		return em.find(Product.class, id);
 	}
 
@@ -88,12 +89,11 @@ public class Product_DAO implements DAOBase<Product> {
 	 */
 	public ArrayList<Product> getPage(int page) {
 		ArrayList<Product> result = new ArrayList<>();
-		String hql = "FROM Product ORDER BY productID";
+		String hql = "FROM Product ORDER BY productID OFFSET :offset ROWS FETCH NEXT 50 ROWS ONLY";
 		int offsetQuantity = (page - 1) * 50;
 		try {
 			TypedQuery<Product> query = em.createQuery(hql, Product.class);
-			query.setFirstResult(offsetQuantity);
-			query.setMaxResults(50);
+			query.setParameter("offset", offsetQuantity);
 			query.getResultStream().forEach(o -> result.add((Product) o));
 		} catch (Exception e) {
 			e.printStackTrace();
