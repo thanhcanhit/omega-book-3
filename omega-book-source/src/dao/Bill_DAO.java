@@ -78,7 +78,7 @@ public class Bill_DAO implements DAOBase<Bill> {
 			} else {
 				result += String.format("%04d", 0);
 			}
-			System.out.println(result);
+			// System.out.println(result);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

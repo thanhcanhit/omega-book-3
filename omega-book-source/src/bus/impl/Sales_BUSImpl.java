@@ -152,7 +152,7 @@ public class Sales_BUSImpl extends UnicastRemoteObject implements Sales_BUS {
 
 	public Bill getOrder(String id) throws RemoteException{
 		Bill result = orderDAO.getOne(id);
-		System.out.println("LOG" + result);
+		// System.out.println("LOG" + result);
 		try {
 //Lấy thông tin khách hàng
 			Customer fullInfoCustomer = customerDAO.getOne(result.getCustomer().getCustomerID());

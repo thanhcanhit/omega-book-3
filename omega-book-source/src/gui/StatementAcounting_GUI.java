@@ -740,7 +740,7 @@ public class StatementAcounting_GUI extends javax.swing.JPanel {
 	private void btn_addEmployeeActionPerformed(java.awt.event.ActionEvent evt) throws RemoteException {// GEN-FIRST:event_btn_addEmployeeActionPerformed
 		String id = JOptionPane.showInputDialog("Nhập mã nhân viên");
 		Employee e = acountingVoucher_BUS.getEmployeeByID(id);
-		System.out.println(e);
+		// System.out.println(e);
 		if (e == null) {
 			Notifications.getInstance().show(Notifications.Type.ERROR, "Nhân viên không tồn tại!");
 		} else {

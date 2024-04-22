@@ -39,7 +39,7 @@ public class Product_DAO implements DAOBase<Product> {
 //    With img
 	@Override
 	public Product getOne(String id) {
-		System.out.println("id: " + id);
+		// System.out.println("id: " + id);
 		return em.find(Product.class, id);
 	}
 

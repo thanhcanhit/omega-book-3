@@ -34,7 +34,7 @@ public class Customer_DAO implements interfaces.DAOBase<Customer> {
 			query.setParameter("customerID", customerID);
 
 			customer = (Customer) query.getSingleResult();
-			System.out.println("Khách hàng: " + customer);
+			// System.out.println("Khách hàng: " + customer);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
