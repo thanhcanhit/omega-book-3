@@ -55,7 +55,12 @@ public class ProductPromotionManagament_GUI extends javax.swing.JPanel {
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	private void init() {
-		bus = new PromotionManagement_BUSImpl();
+		try {
+			bus = new PromotionManagement_BUSImpl();
+		} catch (RemoteException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		cart = new ArrayList<>();
 		// model
 		tblModel_inforProductPromotion = new DefaultTableModel(

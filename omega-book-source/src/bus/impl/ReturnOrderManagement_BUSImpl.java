@@ -1,6 +1,7 @@
 package bus.impl;
 
 import java.rmi.RemoteException;
+import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -22,8 +23,17 @@ import entity.ReturnOrderDetail;
  * @author Như Tâm
  */
 
-public class ReturnOrderManagement_BUSImpl implements ReturnOrderManagement_BUS{
-    private ReturnOrder_DAO dao = new ReturnOrder_DAO();
+public class ReturnOrderManagement_BUSImpl extends UnicastRemoteObject implements ReturnOrderManagement_BUS{
+    public ReturnOrderManagement_BUSImpl() throws RemoteException {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -133764097754668000L;
+	private ReturnOrder_DAO dao = new ReturnOrder_DAO();
     private ReturnOrderDetail_DAO detail_dao = new ReturnOrderDetail_DAO();
     private Bill_DAO order_dao = new Bill_DAO();
 

@@ -7,6 +7,7 @@ package bus.impl;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import bus.ViewCashCountSheetList_BUS;
@@ -28,11 +29,11 @@ public class ViewCashCountSheetList_BUSImpl extends UnicastRemoteObject implemen
 	private static final long serialVersionUID = 5010136432970475895L;
 	private CashCountSheet_DAO cashDAO = new CashCountSheet_DAO();
 
-    public List<CashCountSheet> getAll() throws RemoteException{
-        List<CashCountSheet> list = cashDAO.getAll();
-        Collections.sort(list, Collections.reverseOrder());
-        return list;
-    }
+	public List<CashCountSheet> getAll() throws RemoteException{
+	    List<CashCountSheet> list = cashDAO.getAll();
+	    Collections.sort(list, Comparator.comparing(CashCountSheet::getCreatedDate).reversed());
+	    return list;
+	}
 
     public void GeneratePDF(CashCountSheet cash) throws RemoteException{
         CashCountSheetPrinter printer = new CashCountSheetPrinter(cash);

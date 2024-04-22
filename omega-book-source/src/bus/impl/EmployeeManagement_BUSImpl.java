@@ -5,6 +5,7 @@
 package bus.impl;
 
 import java.rmi.RemoteException;
+import java.rmi.server.UnicastRemoteObject;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -20,8 +21,18 @@ import entity.Store;
  *
  * @author Như Tâm
  */
-public class EmployeeManagement_BUSImpl implements EmployeeManagement_BUS{
-    private Employee_DAO dao = new Employee_DAO();
+public class EmployeeManagement_BUSImpl extends UnicastRemoteObject implements EmployeeManagement_BUS{
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = -7965147195058433475L;
+
+	public EmployeeManagement_BUSImpl() throws RemoteException {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+
+	private Employee_DAO dao = new Employee_DAO();
     private Account_DAO accountDAO = new Account_DAO();
     private Store_DAO store_dao = new Store_DAO();
     

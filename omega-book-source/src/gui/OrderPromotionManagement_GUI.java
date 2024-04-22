@@ -58,7 +58,12 @@ public class OrderPromotionManagement_GUI extends javax.swing.JPanel implements 
     
     @SuppressWarnings({ "unchecked", "rawtypes" })
 	private void init() {
-        bus = new PromotionManagement_BUSImpl();
+        try {
+			bus = new PromotionManagement_BUSImpl();
+		} catch (RemoteException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
         //model
         tblModel_promotion = new DefaultTableModel(new String[]{"Mã khuyến mãi", "Loại", "Giảm giá", "Hạng khách hàng", "Trạng thái"}, 0);
         tbl_inforPromo.setModel(tblModel_promotion);

@@ -47,7 +47,12 @@ public class ReturnOrderManagemant_GUI extends javax.swing.JPanel {
     }
     @SuppressWarnings({ "unchecked", "rawtypes" })
 	private void init(){
-        bus = new ReturnOrderManagement_BUSImpl();
+        try {
+			bus = new ReturnOrderManagement_BUSImpl();
+		} catch (RemoteException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
         //model
         tblModel_returnOrder = new DefaultTableModel(new String[]{"Mã hoá đơn đổi trả", "Mã hoá đơn", "Ngày đổi trả", "Trạng thái"}, 0);
         tbl_inforReturnOrder.setModel(tblModel_returnOrder);

@@ -5,6 +5,7 @@
 package bus.impl;
 
 import java.rmi.RemoteException;
+import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -25,10 +26,14 @@ import enums.PromotionType;
  * @author Như Tâm
  */
 
-public class PromotionManagement_BUSImpl implements PromotionManagement_BUS{
-    private Promotion_DAO promotion_DAO = new Promotion_DAO();
+public class PromotionManagement_BUSImpl extends UnicastRemoteObject implements PromotionManagement_BUS{
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = -6292940889149175303L;
+	private Promotion_DAO promotion_DAO = new Promotion_DAO();
 
-    public PromotionManagement_BUSImpl() {
+    public PromotionManagement_BUSImpl() throws RemoteException{
     }
     
     public ArrayList<Promotion> getAllPromotion() throws RemoteException{
