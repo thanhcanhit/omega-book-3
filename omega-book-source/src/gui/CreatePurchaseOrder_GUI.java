@@ -64,7 +64,8 @@ public class CreatePurchaseOrder_GUI extends javax.swing.JPanel {
 		}
     }
 
-    private void init() throws RemoteException {
+    @SuppressWarnings("serial")
+	private void init() throws RemoteException {
         bus = new CreatePurchaseOrder_BUSImpl();
         try {
             purchaseOrder = bus.createNewPurchaseOrder();

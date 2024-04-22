@@ -69,7 +69,8 @@ public class Customer_DAO implements interfaces.DAOBase<Customer> {
 		return customer;
 	}
 
-    @Override
+    @SuppressWarnings("unchecked")
+	@Override
     public ArrayList<Customer> getAll() {
         ArrayList<Customer> customers = new ArrayList<>();
         try {
