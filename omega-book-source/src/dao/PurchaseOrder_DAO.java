@@ -10,6 +10,7 @@ import java.util.ArrayList;
 
 import entity.PurchaseOrder;
 import entity.PurchaseOrderDetail;
+import enums.PurchaseOrderStatus;
 import interfaces.DAOBase;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.NoResultException;
@@ -157,26 +158,7 @@ public class PurchaseOrder_DAO implements DAOBase<PurchaseOrder> {
 
 	@Override
 	public Boolean create(PurchaseOrder object) {
-//        int n = 0;
-//
-//        try {
-//            PreparedStatement st = ConnectDB.conn.prepareStatement("insert into PurchaseOrder (purchaseOrderID, orderDate, receiveDate, status, note, supplierID, employeeID) values (?, ?, ?, ?, ?, ?, ? )");
-//            st.setString(1, object.getPurchaseOrderID());
-//            st.setDate(2, new java.sql.Date(object.getOrderDate().getTime()));
-//            st.setDate(3, new java.sql.Date(object.getReceiveDate().getTime()));
-//            st.setInt(4, object.getStatus().getValue());
-//            st.setString(5, object.getNote());
-//            st.setString(7, object.getEmployee().getEmployeeID());
-//            st.setString(6, object.getSupplier().getSupplierID());
-//
-//            n = st.executeUpdate();
-//            
-//            
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-//
-//        return n > 0;
+
 		try {
 			entityManager.getTransaction().begin();
 			entityManager.persist(object);
@@ -195,48 +177,27 @@ public class PurchaseOrder_DAO implements DAOBase<PurchaseOrder> {
 
 	}
 
-	public Boolean updateStatus(String id, int status) {
-//        int n = 0;
-//
-//        try {
-//            PreparedStatement st = ConnectDB.conn.prepareStatement("update PurchaseOrder set status = ? where purchaseOrderID = ?");
-//            st.setString(2, id);
-//            st.setInt(1, status);
-//
-//            if(status==1){
-//                PurchaseOrder purchaseOrder = getOne(id);
-//                for (PurchaseOrderDetail pod : purchaseOrder.getPurchaseOrderDetailList()) {
-//                    new Product_DAO().updateInventory(pod.getProduct().getProductID(),pod.getQuantity());
-//                }
-//            }
-//
-//            n = st.executeUpdate();
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-//
-//        return n > 0;
-		entityManager.getTransaction().begin();
+	public Boolean updateStatus(String id, PurchaseOrderStatus status) {
 		try {
 			String hql = "UPDATE PurchaseOrder po SET po.status = :status WHERE po.purchaseOrderID = :id";
+			
 			Query query = entityManager.createQuery(hql);
 			query.setParameter("status", status);
 			query.setParameter("id", id);
 
-			if (status == 1) {
+			if (status == PurchaseOrderStatus.SUCCESS) {
 				PurchaseOrder purchaseOrder = getOne(id);
 				for (PurchaseOrderDetail pod : purchaseOrder.getPurchaseOrderDetailList()) {
 					new Product_DAO().updateInventory(pod.getProduct().getProductID(), pod.getQuantity());
 				}
+				entityManager.clear();
 			}
 
-			int n = query.executeUpdate();
+			entityManager.getTransaction().begin();
+			int n= query.executeUpdate();
 			entityManager.getTransaction().commit();
-			return n > 0;
+			return n>0;
 		} catch (Exception e) {
-			if (entityManager.getTransaction().isActive()) {
-				entityManager.getTransaction().rollback();
-			}
 			e.printStackTrace();
 			return false;
 		} 

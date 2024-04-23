@@ -14,6 +14,7 @@ import entity.Product;
 import entity.PurchaseOrder;
 import entity.PurchaseOrderDetail;
 import entity.Supplier;
+import enums.PurchaseOrderStatus;
 
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
@@ -73,7 +74,7 @@ public class PurchaseOrderManagement_BUSImpl extends UnicastRemoteObject impleme
 
         return orderDetailDAO.getAll(purchaseOrderID);
     }
-    public Boolean updateStatus(String id, int status) throws RemoteException{
+    public Boolean updateStatus(String id, PurchaseOrderStatus status) throws RemoteException{
         return purchaseOrderDAO.updateStatus(id, status);
     }
 }

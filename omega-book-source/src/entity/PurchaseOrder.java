@@ -7,6 +7,8 @@ import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.*;
 
+import org.hibernate.annotations.Cascade;
+
 /**
  *
  * @author Nhu Tam
@@ -40,7 +42,8 @@ public final class PurchaseOrder implements Serializable {
     @JoinColumn(name = "employeeID")
     private Employee employee;
     @OneToMany(mappedBy = "purchaseOrder", fetch = FetchType.LAZY)
-    private ArrayList<PurchaseOrderDetail> purchaseOrderDetailList;
+    @Cascade({ org.hibernate.annotations.CascadeType.ALL })
+    private List<PurchaseOrderDetail> purchaseOrderDetailList;
     private double total;
 
     public PurchaseOrder() {
@@ -100,7 +103,7 @@ public final class PurchaseOrder implements Serializable {
         return orderDate;
     }
 
-    public ArrayList<PurchaseOrderDetail> getPurchaseOrderDetailList() {
+    public List<PurchaseOrderDetail> getPurchaseOrderDetailList() {
         return purchaseOrderDetailList;
     }
 
@@ -146,7 +149,7 @@ public final class PurchaseOrder implements Serializable {
         this.orderDate = orderDate;
     }
 
-    public void setPurchaseOrderDetailList(ArrayList<PurchaseOrderDetail> purchaseOrderDetailList) {
+    public void setPurchaseOrderDetailList(List<PurchaseOrderDetail> purchaseOrderDetailList) {
         this.purchaseOrderDetailList = purchaseOrderDetailList;
         setTotal();
     }

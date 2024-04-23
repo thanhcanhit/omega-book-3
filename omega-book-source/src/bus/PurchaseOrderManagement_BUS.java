@@ -9,6 +9,7 @@ import entity.Product;
 import entity.PurchaseOrder;
 import entity.PurchaseOrderDetail;
 import entity.Supplier;
+import enums.PurchaseOrderStatus;
 
 public interface PurchaseOrderManagement_BUS extends Remote{
 	 public Employee getEmployee(String emplpyeeID) throws RemoteException;
@@ -22,5 +23,5 @@ public interface PurchaseOrderManagement_BUS extends Remote{
 	    public ArrayList<PurchaseOrder> getAll() throws RemoteException;
 
 	    public ArrayList<PurchaseOrderDetail> getPurchaseOrderDetailList(String purchaseOrderID) throws RemoteException ;
-	    public Boolean updateStatus(String id, int status) throws RemoteException;
+	    public Boolean updateStatus(String id, PurchaseOrderStatus status) throws RemoteException;
 }

@@ -428,7 +428,7 @@ public final class PurchaseOrderManagement_GUI extends javax.swing.JPanel {
                 if (row != -1) {
                     String ID = tbl_purchaseOrder.getValueAt(row, 0).toString();
                     try {
-						bus.updateStatus(ID, 1);
+						bus.updateStatus(ID,PurchaseOrderStatus.SUCCESS);
 					} catch (RemoteException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
@@ -452,7 +452,7 @@ public final class PurchaseOrderManagement_GUI extends javax.swing.JPanel {
                 if (row != -1) {
                     String ID = tbl_purchaseOrder.getValueAt(row, 0).toString();
                     try {
-						bus.updateStatus(ID, 2);
+						bus.updateStatus(ID, PurchaseOrderStatus.CANCEL);
 					} catch (RemoteException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();

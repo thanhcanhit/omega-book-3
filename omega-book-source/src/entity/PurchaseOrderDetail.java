@@ -33,8 +33,14 @@ public class PurchaseOrderDetail implements Serializable {
     @ManyToOne
     @JoinColumn(name = "productID")
     private Product product;
+    
 
-    public PurchaseOrderDetail(PurchaseOrder purchaseOrder, Product product) throws Exception {
+    public PurchaseOrderDetail() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+
+	public PurchaseOrderDetail(PurchaseOrder purchaseOrder, Product product) throws Exception {
         setPurchaseOrder(purchaseOrder);
         setProduct(product);
     }
