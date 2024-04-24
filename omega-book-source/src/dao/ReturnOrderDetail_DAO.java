@@ -12,8 +12,9 @@ import utilities.AccessDatabase;
  *
  * @author Như Tâm
  */
-public class ReturnOrderDetail_DAO implements DAOBase<ReturnOrderDetail>{
+public class ReturnOrderDetail_DAO implements DAOBase<ReturnOrderDetail> {
 	EntityManager em;
+
 	public ReturnOrderDetail_DAO() {
 		em = AccessDatabase.getInstance();
 	}
@@ -25,18 +26,20 @@ public class ReturnOrderDetail_DAO implements DAOBase<ReturnOrderDetail>{
 
 	@Override
 	public ArrayList<ReturnOrderDetail> getAll() {
-		return (ArrayList<ReturnOrderDetail>) em.createNamedQuery("ReturnOrderDetail.findAll", ReturnOrderDetail.class).getResultList();
+		return (ArrayList<ReturnOrderDetail>) em.createNamedQuery("ReturnOrderDetail.findAll", ReturnOrderDetail.class)
+				.getResultList();
 	}
 
 	@Override
 	public String generateID() {
-		throw new UnsupportedOperationException("Not supported yet."); 
+		throw new UnsupportedOperationException("Not supported yet.");
 	}
 
 	@Override
-	public Boolean create(ReturnOrderDetail returnOrderDetail) {
+	public synchronized Boolean create(ReturnOrderDetail returnOrderDetail) {
 		int n = 0;
-		if(em.getTransaction().isActive() == true) em.getTransaction().rollback();
+		if (em.getTransaction().isActive() == true)
+			em.getTransaction().rollback();
 		try {
 			em.getTransaction().begin();
 			em.persist(returnOrderDetail);
@@ -48,12 +51,14 @@ public class ReturnOrderDetail_DAO implements DAOBase<ReturnOrderDetail>{
 		}
 		return n > 0;
 	}
-	public void update(List<ReturnOrderDetail> detail) {
-		detail.forEach( t -> {
+
+	public synchronized void update(List<ReturnOrderDetail> detail) {
+		detail.forEach(t -> {
 			updateProduct(t.getProduct().getProductID(), t.getQuantity());
 		});
 	}
-	public Boolean updateProduct(String id, int quantity) {
+
+	public synchronized Boolean updateProduct(String id, int quantity) {
 		int n = 0;
 		Product product = new Product_DAO().getOne(id);
 		int newQuantity = product.getInventory() - quantity;
@@ -66,26 +71,26 @@ public class ReturnOrderDetail_DAO implements DAOBase<ReturnOrderDetail>{
 
 		return n > 0;
 	}
+
 	public ArrayList<ReturnOrderDetail> getAllForOrderReturnID(String id) {
-		return (ArrayList<ReturnOrderDetail>) em.createNamedQuery("ReturnOrderDetail.findByReturnOrderID", ReturnOrderDetail.class)
+		return (ArrayList<ReturnOrderDetail>) em
+				.createNamedQuery("ReturnOrderDetail.findByReturnOrderID", ReturnOrderDetail.class)
 				.setParameter("returnOrderID", id).getResultList();
 	}
 
 	@Override
-	public Boolean update(String id, ReturnOrderDetail newObject) {
-		throw new UnsupportedOperationException("Not supported yet."); 
+	public synchronized Boolean update(String id, ReturnOrderDetail newObject) {
+		throw new UnsupportedOperationException("Not supported yet.");
 	}
 
 	@Override
-	public Boolean delete(String id) {
-		throw new UnsupportedOperationException("Not supported yet."); 
+	public synchronized Boolean delete(String id) {
+		throw new UnsupportedOperationException("Not supported yet.");
 	}
 
 	@Override
 	public ReturnOrderDetail getOne(String id) {
-		throw new UnsupportedOperationException("Not supported yet."); 	
+		throw new UnsupportedOperationException("Not supported yet.");
 	}
-
-
 
 }

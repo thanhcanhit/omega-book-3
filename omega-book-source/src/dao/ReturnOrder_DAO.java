@@ -88,7 +88,7 @@ public class ReturnOrder_DAO implements DAOBase<ReturnOrder>{
 	}
 
 	@Override
-	public Boolean create(ReturnOrder returnOrder) {
+	public synchronized Boolean create(ReturnOrder returnOrder) {
 		int n = 0;
 		if (em.getTransaction().isActive()) {
 			em.getTransaction().rollback();
@@ -107,7 +107,7 @@ public class ReturnOrder_DAO implements DAOBase<ReturnOrder>{
 	}
 
 	@Override
-	public Boolean update(String id, ReturnOrder returnOrder) {
+	public synchronized Boolean update(String id, ReturnOrder returnOrder) {
 		int n = 0;
 		try {
 			em.getTransaction().begin();
@@ -134,7 +134,7 @@ public class ReturnOrder_DAO implements DAOBase<ReturnOrder>{
 	}
 
 	@Override
-	public Boolean delete(String id) {
+	public synchronized Boolean delete(String id) {
 		throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
 	}
 
