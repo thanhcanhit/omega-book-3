@@ -34,3 +34,4 @@ local.properties
 .classpath
 .settings/
 .loadpath
+resources/temp
