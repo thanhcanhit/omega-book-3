@@ -4,7 +4,10 @@
  */
 package bus.impl;
 
+import dao.Account_DAO;
 import dao.Shift_DAO;
+import entity.Account;
+import entity.Employee;
 import entity.Shift;
 
 import java.rmi.RemoteException;
@@ -27,6 +30,7 @@ public class ShiftsManagement_BUSImpl extends UnicastRemoteObject implements Shi
 
 	private static final long serialVersionUID = -5094553891891076328L;
 	private Shift_DAO shift_DAO = new Shift_DAO();
+	private Account_DAO acc_dao = new Account_DAO();
 
     public Shift getOne(String id) throws RemoteException{
         return shift_DAO.getOne(id);
@@ -82,5 +86,9 @@ public class ShiftsManagement_BUSImpl extends UnicastRemoteObject implements Shi
 
 	public Shift getAccount(String employeeID) {
 		return shift_DAO.getAccount(employeeID);
+	}
+
+	public Account findAccount(Employee employee) {
+		return acc_dao.getOne(employee.getEmployeeID());
 	}
 }

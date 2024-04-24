@@ -121,7 +121,7 @@ public class Application extends javax.swing.JFrame {
 		setSelectedMenu(0, 0);
 		SwingUtilities.updateComponentTreeUI(app.mainForm);
 		FlatAnimatedLafChange.hideSnapshotWithAnimation();
-		Account acc_current = new Account(employee);
+		Account acc_current = shift_BUS.findAccount(employee);
 		try {
 			if (isLogining(acc_current) == true) {
 				System.out.println("...");

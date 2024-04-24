@@ -5,6 +5,8 @@ import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.Date;
 
+import entity.Account;
+import entity.Employee;
 import entity.Shift;
 
 public interface ShiftsManagement_BUS extends Remote{
@@ -20,4 +22,5 @@ public interface ShiftsManagement_BUS extends Remote{
 	    public ArrayList<Shift> filter(String emloyeeID, String role, Date date) throws RemoteException;
 	    public void updateShift(Shift shift) throws RemoteException;
 	    public Shift getAccount(String employeeID) throws RemoteException;
+	    public Account findAccount(Employee employee) throws RemoteException;
 }
