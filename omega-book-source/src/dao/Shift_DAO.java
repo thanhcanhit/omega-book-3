@@ -186,7 +186,8 @@ public class Shift_DAO implements DAOBase<Shift> {
 	public synchronized Boolean update(String id, Shift newObject) {
 		try {
 			entityManager.getTransaction().begin();
-			entityManager.merge(newObject);
+			Shift shift = entityManager.find(Shift.class, id);
+			shift.setEndedAt(newObject.getEndedAt());
 			entityManager.getTransaction().commit();
 			return true;
 		} catch (Exception e) {

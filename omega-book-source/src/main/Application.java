@@ -79,6 +79,7 @@ public class Application extends javax.swing.JFrame {
 						try {
 							// Đóng kết nối
 							shift.setEndedAt(new Date());
+							shift_BUS.updateShift(shift);
 						} catch (Exception ex) {
 							Logger.getLogger(Application.class.getName()).log(Level.SEVERE, null, ex);
 						}
@@ -109,7 +110,7 @@ public class Application extends javax.swing.JFrame {
 	}
 
 	public static void login(Employee employee) throws Exception {
-//        Update UI
+		//        Update UI
 		FlatAnimatedLafChange.showSnapshot();
 		app.setContentPane(app.mainForm);
 		app.mainForm.applyComponentOrientation(app.getComponentOrientation());
@@ -118,39 +119,40 @@ public class Application extends javax.swing.JFrame {
 		SwingUtilities.updateComponentTreeUI(app.mainForm);
 		FlatAnimatedLafChange.hideSnapshotWithAnimation();
 		Account acc_current = shift_BUS.findAccount(employee);
-		try {
-			if (isLogining(acc_current) == true) {
-				System.out.println("...");
-				Notifications.getInstance().show(Notifications.Type.ERROR, "Tài khoản đang đăng nhập ở client khác!");
-				return;
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
+		if (isLogining(acc_current) == true) {
+			System.out.println("...");
+			Notifications.getInstance().show(Notifications.Type.ERROR, "Tài khoản đang đăng nhập ở client khác!");
+			return;
 		}
-		
 		shift = new Shift(shift_BUS.renderID(), new Date(), acc_current);
 		shift.setEndedAt(null);
 		shift_BUS.createShifts(shift);
-//        Update state
+		//        Update state
 		Application.employee = employee;
 		MainView.rerenderMenuByEmployee();
 		Notifications.getInstance().show(Notifications.Type.SUCCESS, "Đăng nhập vào hệ thống thành công");
 	}
 	public static boolean isLogining(Account acc) throws RemoteException {
-		if (shift_BUS.getAccount(acc.getEmployee().getEmployeeID()).getEndedAt() == null) {
+		Shift current_shift = null; // shift_BUS.getAccount(acc.getEmployee().getEmployeeID());
+		try {
+			current_shift = shift_BUS.getAccount(acc.getEmployee().getEmployeeID());
+		} catch (Exception e) {
+			current_shift = null;
+		}
+		if (current_shift.getEndedAt() == null) {
 			return true;
 		}
 		return false;
 	}
 	public static void logout() throws Exception {
-//        Update UI
+		//        Update UI
 		FlatAnimatedLafChange.showSnapshot();
 		app.setContentPane(app.loginForm);
 		app.loginForm.applyComponentOrientation(app.getComponentOrientation());
 		SwingUtilities.updateComponentTreeUI(app.loginForm);
 		FlatAnimatedLafChange.hideSnapshotWithAnimation();
 
-//        Update state
+		//        Update state
 		Application.employee = null;
 		shift.setEndedAt(new Date());
 		shift_BUS.updateShift(shift);
@@ -195,7 +197,7 @@ public class Application extends javax.swing.JFrame {
 		UIManager.put("defaultFont", new Font(FlatRobotoFont.FAMILY, Font.PLAIN, 15));
 		FlatMacLightLaf.setup();
 
-//        Contact native 
+		//        Contact native 
 		try {
 			GlobalScreen.registerNativeHook();
 		} catch (NativeHookException ex) {
@@ -205,19 +207,19 @@ public class Application extends javax.swing.JFrame {
 			System.exit(1);
 		}
 
-//        Fake loading
+		//        Fake loading
 		new Welcome_GUI().setVisible(true);
-//        Connect db
-//        try {
-//            ConnectDB.connect();
-//        } catch (SQLException e) {
-//            e.printStackTrace();
-//            JOptionPane.showMessageDialog(null, "Không thể kết nối đến database!", "Không thể khởi động ứng dụng", JOptionPane.DEFAULT_OPTION);
-//            System.exit(0);
-//        }
+		//        Connect db
+		//        try {
+		//            ConnectDB.connect();
+		//        } catch (SQLException e) {
+		//            e.printStackTrace();
+		//            JOptionPane.showMessageDialog(null, "Không thể kết nối đến database!", "Không thể khởi động ứng dụng", JOptionPane.DEFAULT_OPTION);
+		//            System.exit(0);
+		//        }
 
 		app = new Application();
-//        Delay render
+		//        Delay render
 		Timer timer = new Timer(2500, (ActionEvent evt) -> {
 			java.awt.EventQueue.invokeLater(() -> {
 				app.setVisible(true);
