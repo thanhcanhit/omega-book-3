@@ -7,6 +7,9 @@ package ui;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.net.MalformedURLException;
+import java.rmi.Naming;
+import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -36,6 +39,7 @@ import com.formdev.flatlaf.FlatClientProperties;
 import bus.CustomerManagement_BUS;
 import entity.Customer;
 import raven.toast.Notifications;
+import utilities.RMIService;
 import utilities.SVGIcon;
 
 /**
@@ -57,6 +61,12 @@ public class CustomerManagement_GUI extends javax.swing.JPanel {
 	 * @throws RemoteException
 	 */
 	public CustomerManagement_GUI() {
+		try {
+			customer_BUS = (CustomerManagement_BUS) Naming.lookup(RMIService.customerBus);
+		} catch (MalformedURLException | RemoteException | NotBoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		initTableModel();
 		initComponents();
 		alterTable();
