@@ -61,7 +61,7 @@ public class Brand_DAO implements DAOBase<Brand> {
     }
 
     @Override
-    public Boolean create(Brand brand) {
+    public synchronized Boolean create(Brand brand) {
 		int n = 0;
 		try {
 			em.getTransaction().begin();
@@ -75,7 +75,7 @@ public class Brand_DAO implements DAOBase<Brand> {
     }
 
     @Override
-    public Boolean update(String id, Brand brand) {
+    public synchronized Boolean update(String id, Brand brand) {
     	int n = 0;
 		try {
 			em.getTransaction().begin();
@@ -91,7 +91,7 @@ public class Brand_DAO implements DAOBase<Brand> {
     }
 
     @Override
-    public Boolean delete(String id) {
+    public synchronized Boolean delete(String id) {
         throw new UnsupportedOperationException("Not supported yet."); 
     }
     

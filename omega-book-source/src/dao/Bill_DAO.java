@@ -119,7 +119,7 @@ public class Bill_DAO implements DAOBase<Bill> {
 	}
 
 	@Override
-	public Boolean create(Bill object) {
+	public synchronized Boolean create(Bill object) {
 
 		entityManager.getTransaction().begin();
 		entityManager.persist(object);
@@ -128,7 +128,7 @@ public class Bill_DAO implements DAOBase<Bill> {
 	}
 
 	@Override
-	public Boolean update(String id, Bill newObject) {
+	public synchronized Boolean update(String id, Bill newObject) {
 		try {
 			if (!newObject.getOrderID().equals(id)) {
 				return false;
@@ -145,7 +145,7 @@ public class Bill_DAO implements DAOBase<Bill> {
 	}
 
 	@Override
-	public Boolean delete(String id) {
+	public synchronized Boolean delete(String id) {
 		int n = 0;
 		try {
 			Bill bill = entityManager.find(Bill.class, id);
@@ -211,7 +211,7 @@ public class Bill_DAO implements DAOBase<Bill> {
      * @param acountingVoucherID Mã phiếu kết toán
      * @author Hoàng Khang
      */
-    public boolean updateOrderAcountingVoucher(String orderID, String accountingVoucherID) {
+    public synchronized boolean updateOrderAcountingVoucher(String orderID, String accountingVoucherID) {
     	
 
 		try {
@@ -347,7 +347,7 @@ public class Bill_DAO implements DAOBase<Bill> {
 		return result;
 	}
 
-	public void clearExpiredOrderSaved() {
+	public synchronized void clearExpiredOrderSaved() {
 //    	String query = "SELECT * FROM Bill "
 //    			+ "WHERE o.status = 0 AND "
 //    			+ "DATEDIFF(DAY, o.orderAt, CONVERT(date, GETDATE())) < 1";
@@ -365,7 +365,7 @@ public class Bill_DAO implements DAOBase<Bill> {
 		}
 	}
 
-	public ArrayList<Bill> getNotCompleteOrder() {
+	public synchronized ArrayList<Bill> getNotCompleteOrder() {
 		ArrayList<Bill> result;
 //        Xóa các hóa đơn lưu tạm quá 24 giờ  không còn dùng tới
 		clearExpiredOrderSaved();

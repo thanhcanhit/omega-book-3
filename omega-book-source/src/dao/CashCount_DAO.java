@@ -76,7 +76,7 @@ public class CashCount_DAO implements interfaces.DAOBase<CashCount> {
 	}
 
 	@Override
-	public Boolean create(CashCount cashCount) {
+	public synchronized Boolean create(CashCount cashCount) {
 		throw new UnsupportedOperationException("Not supported yet."); // Generated from
 																		// nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
 	}
@@ -88,7 +88,7 @@ public class CashCount_DAO implements interfaces.DAOBase<CashCount> {
 	 * @param cashCountSheetID mã phiếu kết toán cần thêm CashCount
 	 * @return Boolean
 	 */
-	public Boolean create(CashCount cashCount, String cashCountSheetID) {
+	public synchronized Boolean create(CashCount cashCount, String cashCountSheetID) {
 		try {
 			entityManager.getTransaction().begin();
 			entityManager.persist(cashCount);
@@ -102,13 +102,13 @@ public class CashCount_DAO implements interfaces.DAOBase<CashCount> {
 	}
 
 	@Override
-	public Boolean update(String id, CashCount newObject) {
+	public synchronized Boolean update(String id, CashCount newObject) {
 		throw new UnsupportedOperationException("Not supported yet."); // Generated from
 																		// nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
 	}
 
 	@Override
-	public Boolean delete(String id) {
+	public synchronized Boolean delete(String id) {
 		throw new UnsupportedOperationException("Not supported yet."); // Generated from
 																		// nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
 	}

@@ -53,7 +53,7 @@ public class AcountingVoucher_DAO implements interfaces.DAOBase<AcountingVoucher
     }
 
     @Override
-    public Boolean create(AcountingVoucher acountingVoucher) {
+    public synchronized Boolean create(AcountingVoucher acountingVoucher) {
 		try {
 			entityManager.getTransaction().begin();
 			entityManager.persist(acountingVoucher);
@@ -67,12 +67,12 @@ public class AcountingVoucher_DAO implements interfaces.DAOBase<AcountingVoucher
     }
 
     @Override
-    public Boolean update(String id, AcountingVoucher newObject) {
+    public synchronized Boolean update(String id, AcountingVoucher newObject) {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
     @Override
-    public Boolean delete(String id) {
+    public synchronized Boolean delete(String id) {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
