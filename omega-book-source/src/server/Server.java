@@ -38,7 +38,7 @@ public class Server {
 		context.rebind(RMIService.billBus, billBus);
 		context.rebind(RMIService.brandBus, brandBus);
 		context.rebind(RMIService.createPurchaseOrderBus, createPurchaseOrderBus);
-		context.rebind(RMIService.employeeBus, customerBus);
+		context.rebind(RMIService.customerBus, customerBus);
 		context.rebind(RMIService.employeeBus, employeeBus);
 		context.rebind(RMIService.loginBus, loginBus);
 		context.rebind(RMIService.productBus, productBus);
