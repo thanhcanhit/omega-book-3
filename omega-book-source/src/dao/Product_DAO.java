@@ -67,7 +67,7 @@ public class Product_DAO implements DAOBase<Product> {
 		return length;
 	}
 
-	public boolean updateInventory(String productID, int quantity) {
+	public synchronized boolean updateInventory(String productID, int quantity) {
 		try {
 			Product product = em.find(Product.class, productID);
 			em.getTransaction().begin();
@@ -134,7 +134,7 @@ public class Product_DAO implements DAOBase<Product> {
 	}
 
 	@Override
-	public Boolean create(Product object) {
+	public synchronized Boolean create(Product object) {
 		int n = 0;
 		em.getTransaction().begin();
 
@@ -144,7 +144,7 @@ public class Product_DAO implements DAOBase<Product> {
 	}
 
 	@Override
-	public Boolean update(String id, Product newObject) {
+	public synchronized Boolean update(String id, Product newObject) {
 		boolean isUpdated = false;
 
 		try {

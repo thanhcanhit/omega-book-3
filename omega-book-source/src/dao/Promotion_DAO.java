@@ -81,7 +81,7 @@ public class Promotion_DAO implements DAOBase<Promotion> {
 	}
 
 	@Override
-	public Boolean create(Promotion promo) {
+	public synchronized Boolean create(Promotion promo) {
 		int n = 0;
 		try {
 			em.getTransaction().begin();
@@ -100,7 +100,7 @@ public class Promotion_DAO implements DAOBase<Promotion> {
 		throw new UnsupportedOperationException("Not supported yet.");
 	}
 
-	public Boolean update(String id) {
+	public synchronized Boolean update(String id) {
 		int n = 0;
 		try {
 			em.getTransaction().begin();
@@ -179,7 +179,7 @@ public class Promotion_DAO implements DAOBase<Promotion> {
 				.setParameter("rank", rank).getResultList();
 	}
 
-	public boolean updateDateStart(Promotion pm) {
+	public synchronized boolean updateDateStart(Promotion pm) {
 		int n = 0;
 		try {
 			em.getTransaction().begin();
@@ -227,7 +227,7 @@ public class Promotion_DAO implements DAOBase<Promotion> {
 		return prefix;
 	}
 
-	public boolean createForOrder(PromotionForOrder promo) {
+	public synchronized boolean createForOrder(PromotionForOrder promo) {
 		int n = 0;
 		try {
 			em.getTransaction().begin();
@@ -241,7 +241,7 @@ public class Promotion_DAO implements DAOBase<Promotion> {
 		return n > 0;
 	}
 
-	public boolean createForProduct(PromotionForProduct newPromotion) {
+	public synchronized boolean createForProduct(PromotionForProduct newPromotion) {
 		int n = 0;
 		try {
 			em.getTransaction().begin();

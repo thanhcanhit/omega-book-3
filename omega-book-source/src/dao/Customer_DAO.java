@@ -105,7 +105,7 @@ public class Customer_DAO implements interfaces.DAOBase<Customer> {
 	}
 
 	@Override
-	public Boolean create(Customer object) {
+	public synchronized Boolean create(Customer object) {
 		try {
 			String phoneCheck = "FROM Customer WHERE phoneNumber = :phoneNumber";
 			TypedQuery<Customer> phoneQuery = entityManager.createQuery(phoneCheck, Customer.class);
@@ -130,7 +130,7 @@ public class Customer_DAO implements interfaces.DAOBase<Customer> {
 	}
 
 	@Override
-	public Boolean update(String id, Customer newObject) {
+	public synchronized Boolean update(String id, Customer newObject) {
 		try {
 			String hql = "UPDATE Customer SET name = :name, dateOfBirth = :dob, gender = :gender, phoneNumber = :phone, score = :score, address = :address "
 					+ "WHERE customerID = :id";
@@ -159,7 +159,7 @@ public class Customer_DAO implements interfaces.DAOBase<Customer> {
 	}
 
 //    Tăng điểm thành viên
-	public boolean increatePoint(String customerID, int pointAddAmount) {
+	public synchronized boolean increatePoint(String customerID, int pointAddAmount) {
 		try {
 			String hql = "UPDATE Customer SET score = score + :pointAddAmount WHERE customerID = :customerID";
 			Query query = entityManager.createQuery(hql);

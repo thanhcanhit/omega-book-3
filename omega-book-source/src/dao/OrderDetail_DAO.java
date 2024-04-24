@@ -65,7 +65,7 @@ public class OrderDetail_DAO implements DAOBase<OrderDetail> {
 	}
 
 	@Override
-	public Boolean create(OrderDetail object) {
+	public synchronized Boolean create(OrderDetail object) {
 		int n = 0;
 		em.getTransaction().begin();
 		em.persist(object);
@@ -80,7 +80,7 @@ public class OrderDetail_DAO implements DAOBase<OrderDetail> {
 	}
 
 	@Override
-	public Boolean delete(String id) {
+	public synchronized Boolean delete(String id) {
 		int n = 0;
 		em.getTransaction().begin();
 		OrderDetail orderDetail = em.find(OrderDetail.class, id);

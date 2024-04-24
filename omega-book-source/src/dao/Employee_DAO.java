@@ -68,7 +68,7 @@ public class Employee_DAO implements DAOBase<Employee> {
 	}
 
 	@Override
-	public Boolean create(Employee object) {
+	public synchronized Boolean create(Employee object) {
 		em.getTransaction().begin();
 
 		em.persist(object);
@@ -86,7 +86,7 @@ public class Employee_DAO implements DAOBase<Employee> {
 	 * 
 	 */
 	@Override
-	public Boolean update(String id, Employee newObject) {
+	public synchronized Boolean update(String id, Employee newObject) {
 		boolean isUpdated = false;
 		try {
 			em.getTransaction().begin();
@@ -148,7 +148,7 @@ public class Employee_DAO implements DAOBase<Employee> {
 		return result;
 	}
 
-	public boolean createAccount(Employee employee) throws Exception {
+	public synchronized boolean createAccount(Employee employee) throws Exception {
 		Account_DAO account_dao = new Account_DAO();
 		Account account = new Account(employee);
 		if (account_dao.create(account))

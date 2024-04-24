@@ -60,7 +60,7 @@ public class ProductPromotionDetail_DAO implements DAOBase<ProductPromotionDetai
     }
 
     @Override
-    public Boolean create(ProductPromotionDetail productPromotionDetail) {
+    public synchronized Boolean create(ProductPromotionDetail productPromotionDetail) {
         int n = 0;
         try {
 			em.getTransaction().begin();
