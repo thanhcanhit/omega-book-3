@@ -70,7 +70,7 @@ public class CreatePurchaseOrder_GUI extends javax.swing.JPanel {
 	@SuppressWarnings("serial")
 	private void init() throws RemoteException {
 		try {
-			bus = (CreatePurchaseOrder_BUS) Naming.lookup(RMIService.purchaseOrderBus);
+			bus = (CreatePurchaseOrder_BUS) Naming.lookup(RMIService.createPurchaseOrderBus);
 		} catch (MalformedURLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
