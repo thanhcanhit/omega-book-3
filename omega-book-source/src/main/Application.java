@@ -118,6 +118,8 @@ public class Application extends javax.swing.JFrame {
 		SwingUtilities.updateComponentTreeUI(app.mainForm);
 		FlatAnimatedLafChange.hideSnapshotWithAnimation();
 		shift = new Shift(shift_BUS.renderID(), new Date(), new Account(employee));
+		shift.setEndedAt(null);
+		shift_BUS.createShifts(shift);
 //        Update state
 		Application.employee = employee;
 		MainView.rerenderMenuByEmployee();
@@ -135,7 +137,7 @@ public class Application extends javax.swing.JFrame {
 //        Update state
 		Application.employee = null;
 		shift.setEndedAt(new Date());
-		shift_BUS.createShifts(shift);
+		shift_BUS.updateShift(shift);
 		Notifications.getInstance().show(Notifications.Type.INFO, "Đăng xuất khỏi hệ thống thành công");
 	}
 

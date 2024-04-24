@@ -184,8 +184,16 @@ public class Shift_DAO implements DAOBase<Shift> {
 
 	@Override
 	public synchronized Boolean update(String id, Shift newObject) {
-		throw new UnsupportedOperationException("Not supported yet."); // Generated from
-																		// nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+		try {
+			entityManager.getTransaction().begin();
+			entityManager.merge(newObject);
+			entityManager.getTransaction().commit();
+			return true;
+		} catch (Exception e) {
+			entityManager.getTransaction().rollback();
+			e.printStackTrace();
+			return false;
+		}
 	}
 
 	@Override

@@ -74,4 +74,9 @@ public class ShiftsManagement_BUSImpl extends UnicastRemoteObject implements Shi
 
         return list;
     }
+
+	public void updateShift(Shift shift) throws RemoteException {
+		shift_DAO.update(shift.getShiftID(), shift);
+		
+	}
 }
