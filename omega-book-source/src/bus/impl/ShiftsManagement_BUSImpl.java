@@ -79,4 +79,8 @@ public class ShiftsManagement_BUSImpl extends UnicastRemoteObject implements Shi
 		shift_DAO.update(shift.getShiftID(), shift);
 		
 	}
+
+	public Shift getAccount(String employeeID) {
+		return shift_DAO.getAccount(employeeID);
+	}
 }

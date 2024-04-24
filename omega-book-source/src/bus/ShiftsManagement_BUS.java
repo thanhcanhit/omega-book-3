@@ -19,4 +19,5 @@ public interface ShiftsManagement_BUS extends Remote{
 
 	    public ArrayList<Shift> filter(String emloyeeID, String role, Date date) throws RemoteException;
 	    public void updateShift(Shift shift) throws RemoteException;
+	    public Shift getAccount(String employeeID) throws RemoteException;
 }

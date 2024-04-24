@@ -202,4 +202,10 @@ public class Shift_DAO implements DAOBase<Shift> {
 																		// nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
 	}
 
+	public Shift getAccount(String employeeID) {
+		String hql = "FROM Shift s JOIN s.account a WHERE a.employee.employeeID LIKE :id ORDER BY s.startedAt DESC";
+		return entityManager.createQuery(hql, Shift.class).setParameter("id", employeeID).setMaxResults(1)
+                .getSingleResult();
+	}
+
 }
