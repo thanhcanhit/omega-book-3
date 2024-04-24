@@ -16,4 +16,6 @@ public interface StatementCashCount_BUS extends Remote{
 	    public void createCashCountSheet(ArrayList<CashCount> cashCountList, ArrayList<Employee> employees, Date start) throws RemoteException;
 
 	    public String generateID(Date date) throws RemoteException;
+	    public void GeneratePDF(CashCountSheet cash) throws RemoteException;
+	    public double getTotal(ArrayList<CashCount> list) throws RemoteException;
 }
