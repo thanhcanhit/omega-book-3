@@ -104,12 +104,13 @@ public final class Shift implements Serializable{
         }
     }
 
-    public void setEndedAt(Date endedAt) throws Exception {
-        if (endedAt != null) {
-            this.endedAt = endedAt;
-        } else {
-            throw new Exception(ENDEDAD_ERROR);
-        }
+    public void setEndedAt(Date endedAt){
+//        if (endedAt != null) {
+//            this.endedAt = endedAt;
+//        } else {
+//            throw new Exception(ENDEDAD_ERROR);
+//        }
+    	        this.endedAt = endedAt;
     }
 
     public void setShiftID(String shiftID) throws Exception {
