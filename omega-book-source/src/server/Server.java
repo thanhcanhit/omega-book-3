@@ -34,7 +34,7 @@ public class Server {
 		ViewCashCountSheetList_BUS viewCashCountSheetListBus = new ViewCashCountSheetList_BUSImpl();
 
 		LocateRegistry.createRegistry(7878);
-		RMIService.setPU(7878, "rmi://localhost");
+		RMIService.setPU(7878, "rmi://localhost:");
 		context.rebind(RMIService.billBus, billBus);
 		context.rebind(RMIService.brandBus, brandBus);
 		context.rebind(RMIService.createPurchaseOrderBus, createPurchaseOrderBus);
