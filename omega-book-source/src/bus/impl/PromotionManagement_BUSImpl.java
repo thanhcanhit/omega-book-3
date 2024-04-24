@@ -92,6 +92,10 @@ public class PromotionManagement_BUSImpl extends UnicastRemoteObject implements 
     public Product getProduct(String productID) throws RemoteException{
         return new Product_DAO().getOne(productID);
     }
+//    @Override
+//    public Product getOneProduct(String productID) throws RemoteException{
+//        return new Product_DAO().getOne(productID);
+//    }
 
     public void createProductPromotionDetail(PromotionForProduct newPromotion, ArrayList<ProductPromotionDetail> cart)throws RemoteException {
         for (ProductPromotionDetail productPromotionDetail : cart) {
@@ -124,9 +128,6 @@ public class PromotionManagement_BUSImpl extends UnicastRemoteObject implements 
 //        return promotion_DAO.filterForOrder(type, status);
 //    }
 
-    public Product getOneProduct(String productID) throws RemoteException{
-        return new Product_DAO().getOne(productID);
-    }
 
 	@Override
 	public ArrayList<Promotion> filter(int type, int status) throws RemoteException{
@@ -173,16 +174,8 @@ public class PromotionManagement_BUSImpl extends UnicastRemoteObject implements 
 		return promotion_DAO.getForProduct(promotionID);
 	}
 
-	@Override
-	public void createProductPromotionDetail(Promotion newPromotion, ArrayList<ProductPromotionDetail> cart) throws RemoteException{
-		// TODO Auto-generated method stub
-		
-	}
-
 	public boolean addNewPromotionForProduct(PromotionForProduct newPromotion) throws RemoteException {
 		return promotion_DAO.createForProduct(newPromotion);
 	}
-
-
     
 }
