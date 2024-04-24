@@ -140,6 +140,7 @@ public class Application extends javax.swing.JFrame {
 		MainView.rerenderMenuByEmployee();
 		Notifications.getInstance().show(Notifications.Type.SUCCESS, "Đăng nhập vào hệ thống thành công");
 	}
+
 	public static boolean isLogining(Account acc) throws RemoteException {
 		if (shift_BUS.getOne(acc.getEmployee().getEmployeeID()).getEndedAt() == null) {
 			return true;

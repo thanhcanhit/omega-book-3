@@ -83,6 +83,9 @@ public class CustomerManagement_GUI extends javax.swing.JPanel {
 				Customer customer;
 				try {
 					customer = customer_BUS.getOne(customerID);
+					if (customer == null) {
+						return;
+					}
 					txt_customerID.setText(customerID);
 					txt_name.setText(customer.getName());
 					txt_phoneNumber.setText(customer.getPhoneNumber());
