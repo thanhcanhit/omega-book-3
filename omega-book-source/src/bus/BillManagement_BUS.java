@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.Date;
 
 import entity.Bill;
+import entity.Customer;
 import entity.Employee;
 import entity.OrderDetail;
 import entity.Product;
@@ -24,6 +25,6 @@ public interface BillManagement_BUS extends Remote{
     public ArrayList<OrderDetail> getOrderDetailList(String orderID)throws RemoteException;
 
     public int getLastPage() throws RemoteException;
-
+    public Customer getCustomer(String customerID)throws RemoteException;
     public ArrayList<Bill> orderListWithFilter(String orderID, String customerID, String phoneNumber, String priceFrom, String priceTo, Date orderFrom, Date orderTo) throws RemoteException;
 }
