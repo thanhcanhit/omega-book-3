@@ -174,7 +174,7 @@ public class Bill_DAO implements DAOBase<Bill> {
 
 	public ArrayList<Bill> getPage(int page) {
 		List<Bill> list = new ArrayList<>();
-		list = entityManager.createNamedQuery("Bill.getAll", Bill.class).setFirstResult(page).setMaxResults(50)
+		list = entityManager.createNamedQuery("Bill.getAll", Bill.class).setFirstResult((page - 1) * 50).setMaxResults(50)
 				.getResultList();
 		ArrayList<Bill> result = new ArrayList<>(list);
 		return result;
