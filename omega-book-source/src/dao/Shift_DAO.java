@@ -85,7 +85,7 @@ public class Shift_DAO implements DAOBase<Shift> {
 			shifts = query.getResultList();
 		} catch (NoResultException nre) {
 			shifts = new ArrayList<>();
-		} 
+		}
 
 		return (ArrayList<Shift>) shifts;
 	}
@@ -150,7 +150,7 @@ public class Shift_DAO implements DAOBase<Shift> {
 	/**
 	 * Create a new shift
 	 */
-	public Boolean create(Shift shift) {
+	public synchronized Boolean create(Shift shift) {
 //        int n = 0;
 //        try {
 //            PreparedStatement st = ConnectDB.conn.prepareStatement("insert into Shift(shiftID, startedAt, endedAt, employeeID) "
@@ -183,13 +183,13 @@ public class Shift_DAO implements DAOBase<Shift> {
 	}
 
 	@Override
-	public Boolean update(String id, Shift newObject) {
+	public synchronized Boolean update(String id, Shift newObject) {
 		throw new UnsupportedOperationException("Not supported yet."); // Generated from
 																		// nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
 	}
 
 	@Override
-	public Boolean delete(String id) {
+	public synchronized Boolean delete(String id) {
 		throw new UnsupportedOperationException("Not supported yet."); // Generated from
 																		// nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
 	}

@@ -78,7 +78,7 @@ public class PurchaseOrderDetail_DAO implements DAOBase<PurchaseOrderDetail>{
     /**
      * Thêm mới một chi tiết đơn đặt hàng vào cơ sở dữ liệu
      */
-    public Boolean create(PurchaseOrderDetail object) {
+    public synchronized Boolean create(PurchaseOrderDetail object) {
 //        int n = 0;
 //
 //        try {
@@ -107,12 +107,12 @@ public class PurchaseOrderDetail_DAO implements DAOBase<PurchaseOrderDetail>{
     }
 
     @Override
-    public Boolean update(String id, PurchaseOrderDetail newObject) {
+    public synchronized Boolean update(String id, PurchaseOrderDetail newObject) {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
     @Override
-    public Boolean delete(String id) {
+    public synchronized Boolean delete(String id) {
 //        int n = 0;
 //        try {
 //            PreparedStatement st = ConnectDB.conn.prepareStatement("delete from PurchaseOrderDetail where PurchaseOrderID = ?");

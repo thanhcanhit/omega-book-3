@@ -63,7 +63,7 @@ public class Supplier_DAO implements DAOBase<Supplier> {
 	}
 
 	@Override
-	public Boolean create(Supplier supplier) {
+	public synchronized Boolean create(Supplier supplier) {
 		int n = 0;
 		try {
 			entityManager.getTransaction().begin();
@@ -78,7 +78,7 @@ public class Supplier_DAO implements DAOBase<Supplier> {
 	}
 
 	@Override
-	public Boolean update(String id, Supplier supplier) {
+	public synchronized Boolean update(String id, Supplier supplier) {
 		int n = 0;
 		try {
 			entityManager.getTransaction().begin();
@@ -95,7 +95,7 @@ public class Supplier_DAO implements DAOBase<Supplier> {
 	}
 
 	@Override
-	public Boolean delete(String id) {
+	public synchronized Boolean delete(String id) {
 		throw new UnsupportedOperationException("Not supported yet."); // Generated from
 																		// nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
 	}

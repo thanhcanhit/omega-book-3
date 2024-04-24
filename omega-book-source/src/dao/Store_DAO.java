@@ -32,7 +32,7 @@ public class Store_DAO implements DAOBase<Store>{
     }
 
     @Override
-    public Boolean create(Store store) {
+    public synchronized Boolean create(Store store) {
         int n = 0;
         try {
 			em.getTransaction().begin();
@@ -46,12 +46,12 @@ public class Store_DAO implements DAOBase<Store>{
     }
 
     @Override
-    public Boolean update(String id, Store newObject) {
+    public synchronized Boolean update(String id, Store newObject) {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
     @Override
-    public Boolean delete(String id) {
+    public synchronized Boolean delete(String id) {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 }
