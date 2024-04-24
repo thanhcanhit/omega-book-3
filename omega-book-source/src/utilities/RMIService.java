@@ -12,6 +12,7 @@ public class RMIService {
 	public static String billBus = url + port + "/BillManagement_BUS";
 	public static String brandBus = url + port + "/BrandManagement_BUS";
 	public static String createPurchaseOrderBus = url + port + "/CreatePurchaseOrder_BUS";
+	public static String customerBus = url + port + "/CustomerManagement_BUS";
 	public static String employeeBus = url + port + "/EmployeeManagement_BUS";
 	public static String loginBus = url + port + "/Login_BUS";
 	public static String productBus = url + port + "/ProductManagement_BUS";
@@ -23,6 +24,7 @@ public class RMIService {
 	public static String statementAccountingBus = url + port + "/StatementAccounting_BUS";
 	public static String statementCashCountBus = url + port + "/StatementCashCount_BUS";
 	public static String statisticCustomerBus = url + port + "/StatisticCustomer_BUS";
+	public static String statisticProductBus = url + port + "/StatisticProduct_BUS";
 	public static String statisticSalesBus = url + port + "/StatisticSales_BUS";
 	public static String supplierBus = url + port + "/SupplierManagement_BUS";
 	public static String viewAccountingVoucherListBus = url + port + "/ViewAccoutingVoucherList_BUS";
