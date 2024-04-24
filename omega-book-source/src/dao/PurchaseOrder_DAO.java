@@ -157,7 +157,7 @@ public class PurchaseOrder_DAO implements DAOBase<PurchaseOrder> {
 	}
 
 	@Override
-	public Boolean create(PurchaseOrder object) {
+	public synchronized Boolean create(PurchaseOrder object) {
 
 		try {
 			entityManager.getTransaction().begin();
@@ -177,7 +177,7 @@ public class PurchaseOrder_DAO implements DAOBase<PurchaseOrder> {
 
 	}
 
-	public Boolean updateStatus(String id, PurchaseOrderStatus status) {
+	public synchronized Boolean updateStatus(String id, PurchaseOrderStatus status) {
 		try {
 			String hql = "UPDATE PurchaseOrder po SET po.status = :status WHERE po.purchaseOrderID = :id";
 			

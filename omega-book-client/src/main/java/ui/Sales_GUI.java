@@ -404,7 +404,7 @@ public class Sales_GUI extends javax.swing.JPanel {
 		for (int i = 0; i < roundValues.length; i++) {
 			final JButton temp = btnOptionsList[i];
 			temp.setText(roundValues[i] / 1000 + "k");
-			temp.addActionListener((var e) -> {
+			temp.addActionListener((e) -> {
 //                Chuyển từ 1k thành 1000
 				String value = temp.getText();
 				value = value.substring(0, value.indexOf("k"));
