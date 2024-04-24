@@ -121,7 +121,18 @@ public class Application extends javax.swing.JFrame {
 		setSelectedMenu(0, 0);
 		SwingUtilities.updateComponentTreeUI(app.mainForm);
 		FlatAnimatedLafChange.hideSnapshotWithAnimation();
-		shift = new Shift(shift_BUS.renderID(), new Date(), new Account(employee));
+		Account acc_current = new Account(employee);
+		try {
+			if (isLogining(acc_current) == true) {
+				System.out.println("...");
+				Notifications.getInstance().show(Notifications.Type.ERROR, "Tài khoản đang đăng nhập ở client khác!");
+				return;
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		shift = new Shift(shift_BUS.renderID(), new Date(), acc_current);
 		shift.setEndedAt(null);
 		shift_BUS.createShifts(shift);
 //        Update state
@@ -129,7 +140,16 @@ public class Application extends javax.swing.JFrame {
 		MainView.rerenderMenuByEmployee();
 		Notifications.getInstance().show(Notifications.Type.SUCCESS, "Đăng nhập vào hệ thống thành công");
 	}
+<<<<<<< HEAD
 
+=======
+	public static boolean isLogining(Account acc) throws RemoteException {
+		if (shift_BUS.getOne(acc.getEmployee().getEmployeeID()).getEndedAt() == null) {
+			return true;
+		}
+		return false;
+	}
+>>>>>>> 26da5bf459b9e5e2ce1abf3dd1ea23ef9c573058
 	public static void logout() throws Exception {
 //        Update UI
 		FlatAnimatedLafChange.showSnapshot();
