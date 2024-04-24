@@ -83,7 +83,7 @@ public class CashCountSheetDetail_DAO implements interfaces.DAOBase<CashCountShe
 	}
 
 	@Override
-	public Boolean create(CashCountSheetDetail cashCountSheetDetail) {
+	public synchronized Boolean create(CashCountSheetDetail cashCountSheetDetail) {
 //		try {
 //			String sql = "INSERT INTO CashCountSheetDetail (auditorIndex, cashCountSheetID, employeeID) VALUES (?, ?, ?)";
 //			PreparedStatement preparedStatement = ConnectDB.conn.prepareStatement(sql);
@@ -112,13 +112,13 @@ public class CashCountSheetDetail_DAO implements interfaces.DAOBase<CashCountShe
 	}
 
 	@Override
-	public Boolean update(String id, CashCountSheetDetail newObject) {
+	public synchronized Boolean update(String id, CashCountSheetDetail newObject) {
 		throw new UnsupportedOperationException("Not supported yet."); // Generated from
 																		// nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
 	}
 
 	@Override
-	public Boolean delete(String id) {
+	public synchronized Boolean delete(String id) {
 		throw new UnsupportedOperationException("Not supported yet."); // Generated from
 																		// nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
 	}

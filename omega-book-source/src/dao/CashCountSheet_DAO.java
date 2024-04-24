@@ -66,7 +66,7 @@ public class CashCountSheet_DAO {
             return null;
         }
     }
-    public Boolean create(CashCountSheet cashCountSheet) {
+    public synchronized Boolean create(CashCountSheet cashCountSheet) {
         try {
             em.getTransaction().begin();
             em.persist(cashCountSheet);

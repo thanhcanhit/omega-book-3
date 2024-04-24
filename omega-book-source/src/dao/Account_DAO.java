@@ -49,7 +49,7 @@ public class Account_DAO implements DAOBase<Account> {
 	}
 
 	@Override
-	public Boolean create(Account object) {
+	public synchronized Boolean create(Account object) {
 		em.getTransaction().begin();
 		em.persist(object);
 		em.getTransaction().commit();
@@ -58,14 +58,14 @@ public class Account_DAO implements DAOBase<Account> {
 	}
 
 	@Override
-	public Boolean update(String id, Account newObject) {
+	public synchronized Boolean update(String id, Account newObject) {
 		int n = 0;
 		n = em.createNamedQuery("Account.changePassword").setParameter("password", newObject.getPassword())
 				.setParameter("employeeID", id).executeUpdate();
 		return n > 0;
 	}
 
-	public Boolean updatePass(String id, String newPass) {
+	public synchronized Boolean updatePass(String id, String newPass) {
 		int n = 0;
 		n = em.createNamedQuery("Account.changePassword").setParameter("password", newPass)
 				.setParameter("employeeID", id).executeUpdate();
@@ -73,7 +73,7 @@ public class Account_DAO implements DAOBase<Account> {
 	}
 
 	@Override
-	public Boolean delete(String id) {
+	public synchronized Boolean delete(String id) {
 		throw new UnsupportedOperationException("Not supported yet."); // Generated from
 																		// nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
 	}
