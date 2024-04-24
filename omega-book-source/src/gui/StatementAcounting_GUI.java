@@ -8,6 +8,7 @@ import java.rmi.RemoteException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -51,7 +52,7 @@ public class StatementAcounting_GUI extends javax.swing.JPanel {
 	private Employee employee2;
 	private StatementAccounting_BUSImpl acountingVoucher_BUS = new StatementAccounting_BUSImpl();
 	private Date endDate = new Date();
-	private ArrayList<Bill> listOrder;
+	private List<Bill> listOrder;
 	@SuppressWarnings("unused")
 	private AcountingVoucher acountingVoucher;
 	private StatementCashCount_BUSImpl statementCashCount_BUS = new StatementCashCount_BUSImpl();
@@ -136,7 +137,7 @@ public class StatementAcounting_GUI extends javax.swing.JPanel {
 		// Hiển thị mã phiếu kết toán
 		txt_acountingVoucherID.setText(acountingVoucher_BUS.generateID(endDate));
 		listOrder = acountingVoucher_BUS.getAllOrderInAcounting(acountingVoucher_BUS.getLastAcounting().getEndedDate(),
-				endDate);
+				endDate, employee1.getEmployeeID());
 		sale = acountingVoucher_BUS.getSale(listOrder);
 		payViaATM = acountingVoucher_BUS.getPayViaATM(listOrder);
 		withdraw = sale - payViaATM;
