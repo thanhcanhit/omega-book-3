@@ -54,20 +54,8 @@
 			<attribute name="m2e-apt" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="src/main/resources/lib/lib.jar">
-		<attributes>
-			<attribute name="module" value="true"/>
-		</attributes>
-	</classpathentry>
-	<classpathentry kind="lib" path="src/main/resources/lib/custom-chart.jar">
-		<attributes>
-			<attribute name="module" value="true"/>
-		</attributes>
-	</classpathentry>
-	<classpathentry kind="lib" path="src/main/resources/lib/swing-toast-notifications-1.0.1.jar">
-		<attributes>
-			<attribute name="module" value="true"/>
-		</attributes>
-	</classpathentry>
+	<classpathentry kind="lib" path="A:/Source_Code/java/omega-book-3/omega-book-client/src/main/resources/lib/lib.jar"/>
+	<classpathentry kind="lib" path="A:/Source_Code/java/omega-book-3/omega-book-client/src/main/resources/lib/custom-chart.jar"/>
+	<classpathentry kind="lib" path="A:/Source_Code/java/omega-book-3/omega-book-client/src/main/resources/lib/swing-toast-notifications-1.0.1.jar"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>
