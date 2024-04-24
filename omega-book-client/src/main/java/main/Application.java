@@ -176,6 +176,9 @@ public class Application extends javax.swing.JFrame {
 	}// GEN-LAST:event_formKeyTyped
 
 	public static void main(String args[]) throws MalformedURLException, NotBoundException {
+//		SET PORT & URL SERVICE
+		RMIService.setPU(7878, "rmi://localhost:7878");
+		
 		FlatRobotoFont.install();
 		FlatLaf.registerCustomDefaultsSource("theme");
 		UIManager.put("defaultFont", new Font(FlatRobotoFont.FAMILY, Font.PLAIN, 15));

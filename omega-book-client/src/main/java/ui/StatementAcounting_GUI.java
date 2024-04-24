@@ -4,6 +4,9 @@
  */
 package ui;
 
+import java.net.MalformedURLException;
+import java.rmi.Naming;
+import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -21,18 +24,19 @@ import javax.swing.table.TableModel;
 
 import com.formdev.flatlaf.FlatClientProperties;
 
-import bus.impl.StatementAccounting_BUSImpl;
-import bus.impl.StatementCashCount_BUSImpl;
+import bus.StatementAccounting_BUS;
+import bus.StatementCashCount_BUS;
 import entity.AcountingVoucher;
+import entity.Bill;
 import entity.CashCount;
 import entity.CashCountSheet;
 import entity.CashCountSheetDetail;
 import entity.Employee;
-import entity.Bill;
 import main.Application;
 import raven.toast.Notifications;
 import utilities.AcountingVoucherPrinter;
 import utilities.FormatNumber;
+import utilities.RMIService;
 
 /**
  *
@@ -49,12 +53,12 @@ public class StatementAcounting_GUI extends javax.swing.JPanel {
 	private double sum = 0;
 	private Employee employee1 = Application.employee;
 	private Employee employee2;
-	private StatementAccounting_BUSImpl acountingVoucher_BUS = new StatementAccounting_BUSImpl();
+	private StatementAccounting_BUS acountingVoucher_BUS;
 	private Date endDate = new Date();
 	private ArrayList<Bill> listOrder;
 	@SuppressWarnings("unused")
 	private AcountingVoucher acountingVoucher;
-	private StatementCashCount_BUSImpl statementCashCount_BUS = new StatementCashCount_BUSImpl();
+	private StatementCashCount_BUS statementCashCount_BUS;
 	double sale = 0;
 	double payViaATM = 0;
 	double withdraw = 0;
@@ -62,9 +66,18 @@ public class StatementAcounting_GUI extends javax.swing.JPanel {
 
 	/**
 	 * Creates new form Statement_GUI
-	 * @throws RemoteException 
+	 * 
+	 * @throws RemoteException
 	 */
 	public StatementAcounting_GUI() throws RemoteException {
+		try {
+			acountingVoucher_BUS = (StatementAccounting_BUS) Naming.lookup(RMIService.statementAccountingBus);
+			statementCashCount_BUS = (StatementCashCount_BUS) Naming.lookup(RMIService.statementCashCountBus);
+		} catch (MalformedURLException | RemoteException | NotBoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
 		initTableModel();
 		initComponents();
 		initForm();
@@ -233,7 +246,7 @@ public class StatementAcounting_GUI extends javax.swing.JPanel {
 	 * Tạo phiếu kiểm tiền dựa trên thông tin có sẵn
 	 *
 	 * @return
-	 * @throws RemoteException 
+	 * @throws RemoteException
 	 */
 	public CashCountSheet getCashCountSheet() throws RemoteException {
 		String cashCountSheetID = statementCashCount_BUS.generateID(endDate);

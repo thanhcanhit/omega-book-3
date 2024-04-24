@@ -6,6 +6,9 @@ package ui;
 
 import java.awt.Color;
 import java.beans.PropertyChangeEvent;
+import java.net.MalformedURLException;
+import java.rmi.Naming;
+import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -21,10 +24,11 @@ import javax.swing.table.DefaultTableModel;
 import org.knowm.xchart.CategoryChart;
 import org.knowm.xchart.XChartPanel;
 
-import bus.impl.StatisticProduct_BUSImpl;
+import bus.StatisticProduct_BUS;
 import entity.Product;
 import gui.customchart.ModelChart;
 import utilities.FormatNumber;
+import utilities.RMIService;
 
 /**
  *
@@ -37,7 +41,7 @@ public final class StatisticProduct_GUI extends javax.swing.JPanel {
 	 */
 	private static final long serialVersionUID = -6903274326754762049L;
 	private DefaultTableModel tblModel_product;
-    private StatisticProduct_BUSImpl bus;
+    private StatisticProduct_BUS bus;
 
     @SuppressWarnings("unused")
 	private XChartPanel<CategoryChart> chartPanel;
@@ -55,7 +59,12 @@ public final class StatisticProduct_GUI extends javax.swing.JPanel {
 
     @SuppressWarnings("unused")
 	public void init() throws RemoteException {
-        bus = new StatisticProduct_BUSImpl();
+		try {
+			bus = (StatisticProduct_BUS) Naming.lookup(RMIService.statisticProductBus);
+		} catch (MalformedURLException | RemoteException | NotBoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
         tblModel_product = new DefaultTableModel(new String[]{"Mã sản phẩm", "Tên sản phẩm", "Số lượng", "Giá tiền", "Tổng doanh thu"
         }, 0);
         tbl_topProduct.setModel(tblModel_product);

@@ -1,7 +1,9 @@
 package ui;
 
 import java.awt.event.KeyEvent;
+import java.net.MalformedURLException;
 import java.rmi.Naming;
+import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.text.DecimalFormat;
 import java.time.LocalDate;
@@ -58,7 +60,12 @@ public class ProductPromotionManagament_GUI extends javax.swing.JPanel {
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	private void init() {
 		try {
-			bus = (PromotionManagement_BUS) Naming.lookup(RMIService.promotionBus);
+			try {
+				bus = (PromotionManagement_BUS) Naming.lookup(RMIService.promotionBus);
+			} catch (MalformedURLException | NotBoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		} catch (RemoteException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

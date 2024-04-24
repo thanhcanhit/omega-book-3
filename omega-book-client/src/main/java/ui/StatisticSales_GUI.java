@@ -6,14 +6,18 @@ package ui;
 
 import java.awt.Color;
 import java.beans.PropertyChangeEvent;
+import java.net.MalformedURLException;
+import java.rmi.Naming;
+import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 
-import bus.impl.StatisticSales_BUSImpl;
+import bus.StatisticSales_BUS;
 import enums.Type;
 import gui.customchart.ModelChart;
 import gui.customchart.piechart.ModelPolarAreaChart;
 import gui.customchart.piechart.PolarAreaChart;
 import utilities.FormatNumber;
+import utilities.RMIService;
 
 /**
  *
@@ -26,7 +30,7 @@ public final class StatisticSales_GUI extends javax.swing.JPanel {
 	 * 
 	 */
 	private static final long serialVersionUID = -2798409532507339236L;
-	private final StatisticSales_BUSImpl bus = new StatisticSales_BUSImpl();
+	private StatisticSales_BUS bus;
     private final PolarAreaChart polarAreaChart = new PolarAreaChart();
 
     /**
@@ -34,6 +38,12 @@ public final class StatisticSales_GUI extends javax.swing.JPanel {
      * @throws RemoteException 
      */
     public StatisticSales_GUI() throws RemoteException {
+    	try {
+			bus = (StatisticSales_BUS) Naming.lookup(RMIService.statisticSalesBus);
+		} catch (MalformedURLException | RemoteException | NotBoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
         initComponents();
         init();
     }
