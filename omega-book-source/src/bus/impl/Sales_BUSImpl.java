@@ -66,6 +66,12 @@ public class Sales_BUSImpl extends UnicastRemoteObject implements Sales_BUS {
 	}
 
 	public boolean saveToDatabase(Bill order) throws RemoteException{
+		for (OrderDetail detail : order.getOrderDetail()) {
+			if(productDAO.getOne(detail.getProduct().getProductID()).getInventory()<detail.getQuantity()) {
+				return false;
+			}
+		}
+		
 		if (!orderDAO.create(order)) {
 			return false;
 		}

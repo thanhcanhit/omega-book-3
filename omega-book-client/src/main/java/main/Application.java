@@ -116,7 +116,6 @@ public class Application extends javax.swing.JFrame {
 		//      Update UI
 		Account acc_current = shift_BUS.findAccount(employee);
 		if (isLogining(acc_current) == true) {
-			System.out.println("...");
 			Notifications.getInstance().show(Notifications.Type.ERROR, "Tài khoản đang đăng nhập ở thiết bị khác!");
 			return;
 		}
@@ -141,6 +140,7 @@ public class Application extends javax.swing.JFrame {
 			current_shift = shift_BUS.getAccount(acc.getEmployee().getEmployeeID());
 		} catch (Exception e) {
 			current_shift = null;
+			return false;
 		}
 		if (current_shift.getEndedAt() == null) {
 			return true;
@@ -198,6 +198,8 @@ public class Application extends javax.swing.JFrame {
 	public static void main(String args[]) throws MalformedURLException, NotBoundException {
 		//		SET PORT & URL SERVICE
 		RMIService.setPU(7878, "rmi://172.20.33.226:");
+
+
 
 		FlatRobotoFont.install();
 		FlatLaf.registerCustomDefaultsSource("theme");
