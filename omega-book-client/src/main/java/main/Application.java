@@ -141,6 +141,7 @@ public class Application extends javax.swing.JFrame {
 			current_shift = shift_BUS.getAccount(acc.getEmployee().getEmployeeID());
 		} catch (Exception e) {
 			current_shift = null;
+			return false;
 		}
 		if (current_shift.getEndedAt() == null) {
 			return true;
