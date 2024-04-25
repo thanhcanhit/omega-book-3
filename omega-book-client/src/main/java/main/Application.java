@@ -133,6 +133,7 @@ public class Application extends javax.swing.JFrame {
 		try {
 			current_shift = shift_BUS.getAccount(acc.getEmployee().getEmployeeID());
 		} catch (Exception e) {
+			current_shift = null;
 			return false;
 		}
 		if (current_shift.getEndedAt() == null) {
@@ -190,9 +191,8 @@ public class Application extends javax.swing.JFrame {
 
 	public static void main(String args[]) throws MalformedURLException, NotBoundException {
 		//		SET PORT & URL SERVICE
+		//RMIService.setPU(7878, "rmi://192.168.0.160:");
 		RMIService.setPU(7878, "rmi://172.20.33.226:");
-
-
 
 		FlatRobotoFont.install();
 		FlatLaf.registerCustomDefaultsSource("theme");
