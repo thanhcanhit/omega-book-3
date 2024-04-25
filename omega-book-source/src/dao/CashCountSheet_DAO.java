@@ -75,10 +75,6 @@ public class CashCountSheet_DAO {
         } catch (Exception e) {
             e.printStackTrace();
             return false;
-        } finally {
-            if (em != null) {
-                em.close();
-            }
         }
     }
 
