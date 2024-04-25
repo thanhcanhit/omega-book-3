@@ -16,7 +16,7 @@ public interface StatementAccounting_BUS {
 	    public AcountingVoucher getLastAcounting() throws RemoteException;
 	    public String generateID(Date date) throws RemoteException;
 
-	    public void createAcountingVoucher(CashCountSheet cashCountSheet, Date end) throws RemoteException;
+	    public void createAcountingVoucher(Employee employee,CashCountSheet cashCountSheet, Date end) throws RemoteException;
 
 	    public Employee getEmployeeByID(String id) throws RemoteException;
 

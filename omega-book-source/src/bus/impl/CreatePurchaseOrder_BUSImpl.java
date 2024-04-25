@@ -4,16 +4,6 @@
  */
 package bus.impl;
 
-import dao.Product_DAO;
-import dao.PurchaseOrderDetail_DAO;
-import dao.PurchaseOrder_DAO;
-import dao.Supplier_DAO;
-import entity.Product;
-import entity.PurchaseOrder;
-import entity.PurchaseOrderDetail;
-import entity.Supplier;
-import enums.PurchaseOrderStatus;
-
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.time.LocalDate;
@@ -22,7 +12,16 @@ import java.util.ArrayList;
 import java.util.Date;
 
 import bus.CreatePurchaseOrder_BUS;
-import main.Application;
+import dao.Product_DAO;
+import dao.PurchaseOrderDetail_DAO;
+import dao.PurchaseOrder_DAO;
+import dao.Supplier_DAO;
+import entity.Employee;
+import entity.Product;
+import entity.PurchaseOrder;
+import entity.PurchaseOrderDetail;
+import entity.Supplier;
+import enums.PurchaseOrderStatus;
 
 /**
  *
@@ -53,10 +52,10 @@ public class CreatePurchaseOrder_BUSImpl extends UnicastRemoteObject implements 
         return suplierDAO.getAll();
     }
 
-    public PurchaseOrder createNewPurchaseOrder() throws Exception {
+    public PurchaseOrder createNewPurchaseOrder(Employee employee) throws Exception {
         PurchaseOrder order = new PurchaseOrder(purchaseOrderDAO.generateID());
         order.setStatus(PurchaseOrderStatus.PENDING);
-        order.setEmployee(Application.employee);
+        order.setEmployee(employee);
         LocalDate now = LocalDate.now();
         order.setOrderDate(Date.from(now.atStartOfDay(ZoneId.systemDefault()).toInstant()));
         return order;
