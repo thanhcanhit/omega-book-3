@@ -10,7 +10,6 @@ import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-
 import entity.Shift;
 import interfaces.DAOBase;
 import jakarta.persistence.EntityManager;
@@ -77,11 +76,11 @@ public class Shift_DAO implements DAOBase<Shift> {
 				.from(localDate.plusDays(1).atStartOfDay(ZoneId.systemDefault()).minusSeconds(1).toInstant());
 
 		try {
-			String hql = "FROM Shift s WHERE s.startedAt >= :startOfDay AND s.startedAt <= :endOfDay";
+			String hql = "FROM Shift s WHERE s.startedAt >= :startOfDay AND s.startedAt <= :endOfDay ORDER BY s.startedAt DESC";
 			TypedQuery<Shift> query = entityManager.createQuery(hql, Shift.class);
 			query.setParameter("startOfDay", startOfDay);
 			query.setParameter("endOfDay", endOfDay);
-
+			query.setMaxResults(50);
 			shifts = query.getResultList();
 		} catch (NoResultException nre) {
 			shifts = new ArrayList<>();
@@ -207,6 +206,14 @@ public class Shift_DAO implements DAOBase<Shift> {
 		String hql = "FROM Shift s JOIN s.account a WHERE a.employee.employeeID LIKE :id ORDER BY s.startedAt DESC";
 		return entityManager.createQuery(hql, Shift.class).setParameter("id", employeeID).setMaxResults(1)
                 .getSingleResult();
+	}
+
+	public ArrayList<Shift> getPage(int page) {
+		ArrayList<Shift> list = new ArrayList<>();
+		list = (ArrayList<Shift>) entityManager.createNamedQuery("Shift.findAll", Shift.class).setFirstResult((page - 1) * 50).setMaxResults(50)
+				.getResultList();
+		ArrayList<Shift> result = new ArrayList<>(list);
+		return result;
 	}
 
 }
