@@ -346,7 +346,7 @@ public class Sales_GUI extends javax.swing.JPanel {
 
 				try {
 
-					if (current.getProduct().getInventory() >= newValue) {
+					if (bus.getProductInventory(current.getProduct().getProductID()) >= newValue) {
 //                    Cập nhật giá trị mới
 						current.setQuantity(newValue);
 //                        Lấy danh mục giảm giá
