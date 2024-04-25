@@ -65,7 +65,7 @@ public class Sales_BUSImpl extends UnicastRemoteObject implements Sales_BUS {
 		return order;
 	}
 
-	public boolean saveToDatabase(Bill order) throws RemoteException{
+	public synchronized boolean saveToDatabase(Bill order) throws RemoteException{
 		for (OrderDetail detail : order.getOrderDetail()) {
 			if(productDAO.getOne(detail.getProduct().getProductID()).getInventory()<detail.getQuantity()) {
 				return false;
@@ -93,7 +93,12 @@ public class Sales_BUSImpl extends UnicastRemoteObject implements Sales_BUS {
 		return true;
 	}
 
-	public boolean updateInDatabase(Bill order) throws RemoteException{
+	public synchronized boolean updateInDatabase(Bill order) throws RemoteException{
+		for (OrderDetail detail : order.getOrderDetail()) {
+			if(productDAO.getOne(detail.getProduct().getProductID()).getInventory()<detail.getQuantity()) {
+				return false;
+			}
+		}
 		if (!orderDAO.update(order.getOrderID(), order)) {
 			return false;
 		}
