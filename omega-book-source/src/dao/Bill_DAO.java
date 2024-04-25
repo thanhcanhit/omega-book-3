@@ -89,11 +89,18 @@ public class Bill_DAO implements DAOBase<Bill> {
 
 	@Override
 	public synchronized Boolean create(Bill object) {
-
-		entityManager.getTransaction().begin();
-		entityManager.persist(object);
-		entityManager.getTransaction().commit();
-		return entityManager.find(Bill.class, object.getOrderID()) != null;
+		try {
+			entityManager.getTransaction().begin();
+			entityManager.persist(object);
+			entityManager.getTransaction().commit();
+			return true;
+	
+		}catch(Exception e) {
+			entityManager.getTransaction().rollback();
+			e.printStackTrace();
+			return false;
+		}
+		
 	}
 	
 	public synchronized List<Bill> getOrdersInAccountingVoucher(Date start, Date end, String empID) {
