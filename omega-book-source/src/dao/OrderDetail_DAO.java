@@ -66,11 +66,17 @@ public class OrderDetail_DAO implements DAOBase<OrderDetail> {
 
 	@Override
 	public synchronized Boolean create(OrderDetail object) {
-		int n = 0;
-		em.getTransaction().begin();
-		em.persist(object);
-		em.getTransaction().commit();
-		return n > 0;
+		try {
+			em.getTransaction().begin();
+			em.persist(object);
+			em.getTransaction().commit();
+			return true;
+		}catch(Exception e) {
+			e.printStackTrace();
+			em.getTransaction().rollback();
+			return false;
+		}
+
 	}
 
 	@Override
