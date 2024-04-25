@@ -116,7 +116,6 @@ public class Application extends javax.swing.JFrame {
 		//      Update UI
 		Account acc_current = shift_BUS.findAccount(employee);
 		if (isLogining(acc_current) == true) {
-			System.out.println("...");
 			Notifications.getInstance().show(Notifications.Type.ERROR, "Tài khoản đang đăng nhập ở thiết bị khác!");
 			return;
 		}
