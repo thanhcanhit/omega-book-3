@@ -13,6 +13,7 @@ import java.time.format.DateTimeFormatter;
 //import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 
 //import entity.Customer;
@@ -84,38 +85,6 @@ public class Bill_DAO implements DAOBase<Bill> {
 		}
 
 		return result;
-//    	String result = "HD";
-//        LocalDate time = LocalDate.now();
-//        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("ddMMyyyy");
-//        result += dateFormatter.format(time);
-//
-//        try {
-//            entityManager.getTransaction().begin();
-//
-//            String lastID = (String) entityManager.createNamedQuery("Bill.generateID", Bill.class).setParameter("prefix", result + "%")
-//                    .setMaxResults(1).getSingleResult().toString();
-//            if (lastID != null) {
-//                String sNumber = lastID.substring(lastID.length() - 2);
-//                int num = Integer.parseInt(sNumber) + 1;
-//                result += String.format("%04d", num);
-//            } else {
-//                result += String.format("%04d", 0);
-//            }
-//
-//            entityManager.getTransaction().commit();
-//
-//        } catch (Exception e) {
-//            if (entityManager != null && entityManager.getTransaction().isActive()) {
-//                entityManager.getTransaction().rollback();
-//            }
-//            e.printStackTrace();
-//        } finally {
-//            if (entityManager != null) {
-//                entityManager.close();
-//            }
-//        }
-//
-//        return result;
 	}
 
 	@Override
@@ -126,6 +95,19 @@ public class Bill_DAO implements DAOBase<Bill> {
 		entityManager.getTransaction().commit();
 		return entityManager.find(Bill.class, object.getOrderID()) != null;
 	}
+	
+	public synchronized List<Bill> getOrdersInAccountingVoucher(Date start, Date end, String empID) {
+		List<Bill> list = new ArrayList<>();
+		try {
+			String hql = "SELECT o FROM Bill o WHERE o.orderAt BETWEEN :start AND :end AND o.employee.employeeID = :empID";
+			list = entityManager.createQuery(hql, Bill.class).setParameter("start", start).setParameter("end", end)
+					.setParameter("empID", empID).getResultList();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return list;
+	}
+		
 
 	@Override
 	public synchronized Boolean update(String id, Bill newObject) {

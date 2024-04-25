@@ -10,19 +10,18 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 import bus.StatementAccounting_BUS;
 import dao.AcountingVoucher_DAO;
+import dao.Bill_DAO;
 import dao.CashCountSheet_DAO;
 import dao.Employee_DAO;
-import dao.Bill_DAO;
 import entity.AcountingVoucher;
+import entity.Bill;
 import entity.CashCount;
 import entity.CashCountSheet;
 import entity.Employee;
-import entity.Bill;
-import gui.StatementAcounting_GUI;
-import main.Application;
 import raven.toast.Notifications;
 import utilities.AcountingVoucherPrinter;
 
@@ -100,9 +99,9 @@ public class StatementAccounting_BUSImpl extends UnicastRemoteObject implements 
 
     }
 
-    public void createAcountingVoucher(CashCountSheet cashCountSheet, Date end) throws RemoteException{
+    public void createAcountingVoucher(Employee employee, CashCountSheet cashCountSheet, Date end) throws RemoteException{
         Date start = getLastAcounting().getEndedDate();
-        ArrayList<Bill> list = getAllOrderInAcounting(start, end);
+        ArrayList<Bill> list = (ArrayList<Bill>) getAllOrderInAcounting(start, end, employee.getEmployeeID());
         String id = generateID(end);
 
         AcountingVoucher acountingVoucher = new AcountingVoucher(id, start, end, cashCountSheet, list);
@@ -113,7 +112,7 @@ public class StatementAccounting_BUSImpl extends UnicastRemoteObject implements 
             order_DAO.updateOrderAcountingVoucher(order.getOrderID(), acountingVoucher.getAcountingVoucherID());
         }
         Notifications.getInstance().show(Notifications.Type.SUCCESS, "Tạo phiếu kết toán thành công");
-        Application.showForm(new StatementAcounting_GUI());
+        
         generatePDF(acountingVoucher_DAO.getOne(id));
 
     }
@@ -122,27 +121,34 @@ public class StatementAccounting_BUSImpl extends UnicastRemoteObject implements 
         return employee_DAO.getOne(id);
     }
 
-    public ArrayList<Bill> getAllOrderInAcounting(Date start, Date end) throws RemoteException{
-        ArrayList<Bill> allOrder = order_DAO.getAll();
-        ArrayList<Bill> list = new ArrayList<>();
-        for (Bill order : allOrder) {
-            Date orderDate = order.getOrderAt();
-            if (orderDate.after(start) && orderDate.before(end)) {
-                list.add(order);
-            }
-        }
-        return list;
+    public List<Bill> getAllOrderInAcounting(Date start, Date end, String empID) throws RemoteException{
+//    	System.out.println(empID);
+//        ArrayList<Bill> allOrder = order_DAO.getAll();
+//        ArrayList<Bill> list = new ArrayList<>();
+//        for (Bill order : allOrder) {
+//        	System.out.println(order);
+//            Date orderDate = order.getOrderAt();
+//            System.out.println(orderDate + " " + start + " " + end);
+//            if (orderDate.after(start) && orderDate.before(end)) {
+//            	System.out.println("Pronfs---------------------------------"+order.getEmployee().getEmployeeID().equals(empID));
+//            	if (order.getEmployee().getEmployeeID().equals(empID)) {
+//                    list.add(order);
+//                } 
+//            }
+//        }
+//        return list;
+    	return order_DAO.getOrdersInAccountingVoucher(start, end, empID);
     }
 
-    public double getSale(ArrayList<Bill> list) throws RemoteException{
+    public double getSale(List<Bill> listOrder) throws RemoteException{
         double sum = 0;
-        for (Bill order : list) {
+        for (Bill order : listOrder) {
             sum += order.getTotalDue();
         }
         return sum;
     }
 
-    public double getPayViaATM(ArrayList<Bill> list) throws RemoteException{
+    public double getPayViaATM(List<Bill> list) throws RemoteException{
         double sum = 0;
         for (Bill order : list) {
             if (order.isPayment()) {
@@ -152,7 +158,7 @@ public class StatementAccounting_BUSImpl extends UnicastRemoteObject implements 
         return sum;
     }
 
-    public double getTotal(ArrayList<CashCount> list) throws RemoteException{
+    public double getTotal(List<CashCount> list) throws RemoteException{
         double sum = 0;
         for (CashCount cashCount : list) {
             sum += cashCount.getTotal();
@@ -171,4 +177,5 @@ public class StatementAccounting_BUSImpl extends UnicastRemoteObject implements 
             Notifications.getInstance().show(Notifications.Type.ERROR, "Lỗi không thể in hóa đơn: Không tìm thấy máy in");
         }
     }
+
 }

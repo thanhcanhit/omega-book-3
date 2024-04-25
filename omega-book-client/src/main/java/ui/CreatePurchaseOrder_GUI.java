@@ -82,7 +82,7 @@ public class CreatePurchaseOrder_GUI extends javax.swing.JPanel {
 			e.printStackTrace();
 		}
 		try {
-			purchaseOrder = bus.createNewPurchaseOrder();
+			purchaseOrder = bus.createNewPurchaseOrder(Application.employee);
 			txt_orderID.setText(purchaseOrder.getPurchaseOrderID());
 			txt_orderID.setEditable(false);
 		} catch (Exception ex) {
