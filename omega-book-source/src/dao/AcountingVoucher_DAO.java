@@ -17,11 +17,11 @@ import utilities.AccessDatabase;
  * @author Hoàng Khang
  */
 public class AcountingVoucher_DAO implements interfaces.DAOBase<AcountingVoucher> {
-	private static EntityManager entityManager = AccessDatabase.getInstance();
+	private static EntityManager entityManager;
 
 
     public AcountingVoucher_DAO() {
-    	// entityManager = AccessDatabase.getEntityManager();
+    	 entityManager = AccessDatabase.getInstance();
     }
 
     @Override
@@ -61,7 +61,7 @@ public class AcountingVoucher_DAO implements interfaces.DAOBase<AcountingVoucher
 			return true;
 		} catch (Exception e) {
 			entityManager.getTransaction().rollback();
-			e.printStackTrace();
+//			entityManager.clear();
 		}
 		return false;
     }

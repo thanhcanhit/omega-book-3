@@ -111,7 +111,7 @@ public class LightDarkMode extends JPanel {
         if (isDark) {
             buttonLighDark.setIcon(new FlatSVGIcon(new File("resources/imgs/menu/dark.svg")));
         } else {
-            buttonLighDark.setIcon(new FlatSVGIcon("resources/imgs/menu/light.svg"));
+            buttonLighDark.setIcon(new FlatSVGIcon(new File("resources/imgs/menu/light.svg")));
         }
     }
 
