@@ -38,4 +38,5 @@ public interface Sales_BUS extends Remote{
     public Promotion getPromotion(String promotionID)throws RemoteException;
     
     public int getSavedOrderQuantity() throws RemoteException;
+    public int getProductInventory(String id) throws RemoteException;
 }

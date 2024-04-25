@@ -690,7 +690,7 @@ public class Sales_GUI extends javax.swing.JPanel {
 		if (item == null) {
 			Notifications.getInstance().show(Notifications.Type.INFO, "Không tìm thấy sản phẩm có mã " + productID);
 		} else {
-			if (item.getInventory() == 0) {
+			if (bus.getProductInventory(productID) == 0) {
 				Notifications.getInstance().show(Notifications.Type.INFO, "Sản phẩm " + productID + " hiện đã hết");
 				return;
 			}
@@ -718,7 +718,7 @@ public class Sales_GUI extends javax.swing.JPanel {
 
 	private void increateItemInCart(OrderDetail detail) {
 		try {
-			if (detail.getProduct().getInventory() > detail.getQuantity()) {
+			if (bus.getProductInventory(detail.getProduct().getProductID()) > detail.getQuantity()) {
 				detail.setQuantity(detail.getQuantity() + 1);
 //                Lấy danh mục giảm giá
 				double discountAmount = bus

@@ -128,13 +128,17 @@ public class Sales_BUSImpl extends UnicastRemoteObject implements Sales_BUS {
 	}
 
 	public synchronized boolean decreaseProductInventory(Product product, int quantity) throws RemoteException{
-		int newInventory = product.getInventory() - quantity;
+		int newInventory = productDAO.getOne(product.getProductID()).getInventory() - quantity;
 		return productDAO.updateInventory(product.getProductID(), newInventory);
 	}
 
 	public boolean increaseProductInventory(Product product, int quantity) throws RemoteException{
 		int newInventory = product.getInventory() + quantity;
 		return productDAO.updateInventory(product.getProductID(), newInventory);
+	}
+	
+	public int getProductInventory(String id) throws RemoteException{
+		return productDAO.getOne(id).getInventory();
 	}
 
 	public ArrayList<ProductPromotionDetail> getListProductPromotionAvailable(String productID) throws RemoteException{
