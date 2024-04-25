@@ -62,9 +62,16 @@ public class ManagemantShifts_GUI extends javax.swing.JPanel {
 		tblModel_shift.setRowCount(0);
 		SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
 		for (Shift shift : list) {
+			String end= "";
+			if(shift.getEndedAt() == null) {
+				end = "Đang đăng nhập";
+			}
+			else {
+				end = formatter.format(shift.getEndedAt());
+			}
 			Object[] row = new Object[] { shift.getShiftID(), shift.getAccount().getEmployee().getEmployeeID(),
 					shift.getAccount().getEmployee().getName(), shift.getAccount().getEmployee().getRole(),
-					formatter.format(shift.getStartedAt()), formatter.format(shift.getEndedAt()) };
+					formatter.format(shift.getStartedAt()), end };
 			tblModel_shift.addRow(row);
 		}
 	}
