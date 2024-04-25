@@ -93,12 +93,14 @@ public class Bill_DAO implements DAOBase<Bill> {
 			entityManager.getTransaction().begin();
 			entityManager.persist(object);
 			entityManager.getTransaction().commit();
+			return true;
+	
 		}catch(Exception e) {
 			entityManager.getTransaction().rollback();
 			e.printStackTrace();
+			return false;
 		}
 		
-		return entityManager.find(Bill.class, object.getOrderID()) != null;
 	}
 	
 	public synchronized List<Bill> getOrdersInAccountingVoucher(Date start, Date end, String empID) {
