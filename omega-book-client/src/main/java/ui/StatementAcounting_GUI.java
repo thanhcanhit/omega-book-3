@@ -54,11 +54,11 @@ public class StatementAcounting_GUI extends javax.swing.JPanel {
 	private double sum = 0;
 	private Employee employee1 = Application.employee;
 	private Employee employee2;
-	private StatementAccounting_BUS acountingVoucher_BUS;
 	private Date endDate = new Date();
 	private List<Bill> listOrder;
 	@SuppressWarnings("unused")
 	private AcountingVoucher acountingVoucher;
+	private StatementAccounting_BUS acountingVoucher_BUS;
 	private StatementCashCount_BUS statementCashCount_BUS;
 	double sale = 0;
 	double payViaATM = 0;
@@ -71,7 +71,9 @@ public class StatementAcounting_GUI extends javax.swing.JPanel {
 	 */
 	public StatementAcounting_GUI() throws RemoteException {
 		try {
+			
 			acountingVoucher_BUS = (StatementAccounting_BUS) Naming.lookup(RMIService.statementAccountingBus);
+			statementCashCount_BUS = (StatementCashCount_BUS) Naming.lookup(RMIService.statementCashCountBus);
 		} catch (MalformedURLException | RemoteException | NotBoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -79,7 +81,6 @@ public class StatementAcounting_GUI extends javax.swing.JPanel {
 		initTableModel();
 		initComponents();
 		initForm();
-//        generatePDF(acountingVoucher_BUS.getAcountingByID("KTO151120230000"));
 		alterTable();
 
 		tbl_cashCounts.getModel().addTableModelListener(new TableModelListener() {
@@ -710,6 +711,7 @@ public class StatementAcounting_GUI extends javax.swing.JPanel {
 		if (employee2 != null) {
 			acountingVoucher_BUS.createAcountingVoucher(Application.employee ,getCashCountSheet(), endDate);
 			Notifications.getInstance().show(Notifications.Type.SUCCESS, "Tạo phiếu kết toán thành công");
+			
 		} else {
 			Notifications.getInstance().show(Notifications.Type.ERROR, "Chưa có người đồng kiểm!");
 			Notifications.getInstance().show(Notifications.Type.ERROR, "Kết toán thất bại!");
