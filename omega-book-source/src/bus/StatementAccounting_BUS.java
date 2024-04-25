@@ -14,7 +14,7 @@ import entity.Employee;
 public interface StatementAccounting_BUS extends Remote{
 	 public AcountingVoucher getAcountingByID(String id) throws RemoteException;
 
-	    public AcountingVoucher getLastAcounting() throws RemoteException;
+	    public AcountingVoucher getLastAcounting(Employee employee) throws RemoteException;
 	    public String generateID(Date date) throws RemoteException;
 
 	    public void createAcountingVoucher(Employee employee,CashCountSheet cashCountSheet, Date end) throws RemoteException;

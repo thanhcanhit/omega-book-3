@@ -138,7 +138,7 @@ public class StatementAcounting_GUI extends javax.swing.JPanel {
 	public void initForm() throws RemoteException {
 		// Lấy thời gian kết thúc phiếu kết toán trước đó (Thời gian bắt đầu
 		// lần kết toán này)
-		Date start = acountingVoucher_BUS.getLastAcounting().getEndedDate();
+		Date start = acountingVoucher_BUS.getLastAcounting(employee1).getEndedDate();
 		// Hiển thị thời gian bắt đầu -> kết thúc kết toán
 		SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
 		String endStr = formatter.format(endDate);
@@ -146,7 +146,7 @@ public class StatementAcounting_GUI extends javax.swing.JPanel {
 		txt_timeAccounting.setText(startStr + " - " + endStr);
 		// Hiển thị mã phiếu kết toán
 		txt_acountingVoucherID.setText(acountingVoucher_BUS.generateID(endDate));
-		listOrder = acountingVoucher_BUS.getAllOrderInAcounting(acountingVoucher_BUS.getLastAcounting().getEndedDate(),
+		listOrder = acountingVoucher_BUS.getAllOrderInAcounting(acountingVoucher_BUS.getLastAcounting(employee1).getEndedDate(),
 				endDate, employee1.getEmployeeID());
 		sale = acountingVoucher_BUS.getSale(listOrder);
 		payViaATM = acountingVoucher_BUS.getPayViaATM(listOrder);

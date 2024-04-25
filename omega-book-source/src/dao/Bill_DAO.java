@@ -16,6 +16,7 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
+import entity.AcountingVoucher;
 //import entity.Customer;
 //import entity.Employee;
 import entity.Bill;
@@ -94,15 +95,15 @@ public class Bill_DAO implements DAOBase<Bill> {
 			entityManager.persist(object);
 			entityManager.getTransaction().commit();
 			return true;
-	
-		}catch(Exception e) {
+
+		} catch (Exception e) {
 			entityManager.getTransaction().rollback();
 			e.printStackTrace();
 			return false;
 		}
-		
+
 	}
-	
+
 	public synchronized List<Bill> getOrdersInAccountingVoucher(Date start, Date end, String empID) {
 		List<Bill> list = new ArrayList<>();
 		try {
@@ -114,7 +115,6 @@ public class Bill_DAO implements DAOBase<Bill> {
 		}
 		return list;
 	}
-		
 
 	@Override
 	public synchronized Boolean update(String id, Bill newObject) {
@@ -163,8 +163,8 @@ public class Bill_DAO implements DAOBase<Bill> {
 
 	public ArrayList<Bill> getPage(int page) {
 		List<Bill> list = new ArrayList<>();
-		list = entityManager.createNamedQuery("Bill.getAll", Bill.class).setFirstResult((page - 1) * 50).setMaxResults(50)
-				.getResultList();
+		list = entityManager.createNamedQuery("Bill.getAll", Bill.class).setFirstResult((page - 1) * 50)
+				.setMaxResults(50).getResultList();
 		ArrayList<Bill> result = new ArrayList<>(list);
 		return result;
 	}
@@ -192,39 +192,51 @@ public class Bill_DAO implements DAOBase<Bill> {
 		return result;
 	}
 
-    /**
-     * Phương thức thực hiện việc cập nhật mã phiếu kết toán cho một
-     * hóa đơn
-     *
-     * @param orderID Mã hóa đơn
-     * @param acountingVoucherID Mã phiếu kết toán
-     * @author Hoàng Khang
-     */
-    public synchronized boolean updateOrderAcountingVoucher(String orderID, String accountingVoucherID) {
-    	
+	/**
+	 * Phương thức thực hiện việc cập nhật mã phiếu kết toán cho một hóa
+	 * đơn
+	 *
+	 * @param orderID            Mã hóa đơn
+	 * @param acountingVoucherID Mã phiếu kết toán
+	 * @author Hoàng Khang
+	 */
+	public synchronized boolean updateOrderAcountingVoucher(Bill order, AcountingVoucher accountingVoucher) {
 
 		try {
 			entityManager.getTransaction().begin();
-
-            // Sử dụng câu truy vấn HQL để cập nhật trường acountingVoucherID của Order
-            String hql = "UPDATE Bill o SET o.accountingVoucherID = :accountingVoucherID " +
-                         "WHERE o.orderID = :orderID";
-            int updatedEntities = entityManager.createQuery(hql)
-                    .setParameter("accountingVoucherID", accountingVoucherID)
-                    .setParameter("orderID", orderID)
-                    .executeUpdate();
-
+			order.setAccountingVoucher(accountingVoucher);
+			entityManager.merge(order);
 			entityManager.getTransaction().commit();
-			return updatedEntities > 0;
+			return true;
 
 		} catch (Exception e) {
-			if (entityManager.getTransaction() != null && entityManager.getTransaction().isActive()) {
-				entityManager.getTransaction().rollback();
-			}
+			entityManager.getTransaction().rollback();
 			e.printStackTrace();
 			return false;
-
 		}
+
+//		try {
+//			entityManager.getTransaction().begin();
+//
+//            // Sử dụng câu truy vấn HQL để cập nhật trường acountingVoucherID của Order
+//            String hql = "UPDATE Bill o SET o.accountingVoucherID = :accountingVoucherID " +
+//                         "WHERE o.orderID = :orderID";
+//            int updatedEntities = entityManager.createQuery(hql)
+//                    .setParameter("accountingVoucherID", accountingVoucherID)
+//                    .setParameter("orderID", orderID)
+//                    .executeUpdate();
+//
+//			entityManager.getTransaction().commit();
+//			return updatedEntities > 0;
+//
+//		} catch (Exception e) {
+//			if (entityManager.getTransaction() != null && entityManager.getTransaction().isActive()) {
+//				entityManager.getTransaction().rollback();
+//			}
+//			e.printStackTrace();
+//			return false;
+//
+//		}
 	}
 
 	/**

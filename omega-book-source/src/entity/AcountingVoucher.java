@@ -69,8 +69,6 @@ public class AcountingVoucher implements Comparable<AcountingVoucher>, Serializa
         setWithDraw();
         setDifference();
 
-        
-
     }
 
 //    @Override

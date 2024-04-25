@@ -23,4 +23,6 @@ public interface ShiftsManagement_BUS extends Remote{
 	    public void updateShift(Shift shift) throws RemoteException;
 	    public Shift getAccount(String employeeID) throws RemoteException;
 	    public Account findAccount(Employee employee) throws RemoteException;
+//	    Lấy lần đăng nhập đầu tiên trong ngày
+	    public Shift getFirstLogin(Employee employee) throws RemoteException;
 }
