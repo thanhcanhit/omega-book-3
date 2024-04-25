@@ -61,7 +61,7 @@ public class AcountingVoucher_DAO implements interfaces.DAOBase<AcountingVoucher
 			return true;
 		} catch (Exception e) {
 			entityManager.getTransaction().rollback();
-			e.printStackTrace();
+//			entityManager.clear();
 		}
 		return false;
     }
