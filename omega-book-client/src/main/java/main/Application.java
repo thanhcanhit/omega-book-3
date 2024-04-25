@@ -86,12 +86,6 @@ public class Application extends javax.swing.JFrame {
 						} catch (Exception ex) {
 							Logger.getLogger(Application.class.getName()).log(Level.SEVERE, null, ex);
 						}
-						try {
-							shift_BUS.createShifts(shift);
-						} catch (RemoteException e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
-						}
 					}
 					System.exit(0);
 				}
@@ -116,7 +110,6 @@ public class Application extends javax.swing.JFrame {
 		//      Update UI
 		Account acc_current = shift_BUS.findAccount(employee);
 		if (isLogining(acc_current) == true) {
-			System.out.println("...");
 			Notifications.getInstance().show(Notifications.Type.ERROR, "Tài khoản đang đăng nhập ở thiết bị khác!");
 			return;
 		}
