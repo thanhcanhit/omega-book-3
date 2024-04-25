@@ -197,8 +197,8 @@ public class Application extends javax.swing.JFrame {
 
 	public static void main(String args[]) throws MalformedURLException, NotBoundException {
 		//		SET PORT & URL SERVICE
-		//RMIService.setPU(7878, "rmi://192.168.0.160:");
-		RMIService.setPU(7878, "rmi://localhost:");
+		RMIService.setPU(7878, "rmi://172.20.33.226:");
+//		RMIService.setPU(7878, "rmi://localhost:");
 
 		FlatRobotoFont.install();
 		FlatLaf.registerCustomDefaultsSource("theme");
