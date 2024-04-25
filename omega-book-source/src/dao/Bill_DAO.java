@@ -106,7 +106,7 @@ public class Bill_DAO implements DAOBase<Bill> {
 	public synchronized List<Bill> getOrdersInAccountingVoucher(Date start, Date end, String empID) {
 		List<Bill> list = new ArrayList<>();
 		try {
-			String hql = "SELECT o FROM Bill o WHERE o.orderAt BETWEEN :start AND :end AND o.employee.employeeID = :empID";
+			String hql = "SELECT o FROM Bill o WHERE o.orderAt BETWEEN :start AND :end AND o.employee.employeeID = :empID AND o.status = true";
 			list = entityManager.createQuery(hql, Bill.class).setParameter("start", start).setParameter("end", end)
 					.setParameter("empID", empID).getResultList();
 		} catch (Exception e) {

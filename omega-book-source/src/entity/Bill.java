@@ -65,7 +65,7 @@ public final class Bill implements Serializable{
 	@ManyToOne
 	@JoinColumn(name = "customerID")
 	private Customer customer;
-	@OneToMany(mappedBy = "order", fetch = FetchType.LAZY)
+	@OneToMany(mappedBy = "order", fetch = FetchType.EAGER)
 	@Cascade({ org.hibernate.annotations.CascadeType.ALL })
 	private List<OrderDetail> orderDetail;
 	private double moneyGiven;
