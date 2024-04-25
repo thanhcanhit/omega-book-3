@@ -627,6 +627,7 @@ public class ReturnOrderManagemant_GUI extends javax.swing.JPanel {
 		Print();
 	}// GEN-LAST:event_btn_saveReturnOrderActionPerformed
 
+	@SuppressWarnings("unlikely-arg-type")
 	private void btn_searchReturnOrderActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_btn_searchReturnOrderActionPerformed
 		String returnOrderID = txt_searchReturnOrder.getText();
 		if (txt_searchReturnOrder.equals("")) {
@@ -663,6 +664,7 @@ public class ReturnOrderManagemant_GUI extends javax.swing.JPanel {
 		renderReturnOrderDetail();
 	}// GEN-LAST:event_btn_refeshReturnOrderActionPerformed
 
+	@SuppressWarnings("unlikely-arg-type")
 	private void txt_searchReturnOrderKeyPressed(java.awt.event.KeyEvent evt) {// GEN-FIRST:event_txt_searchReturnOrderKeyPressed
 		if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
 			String returnOrderID = txt_searchReturnOrder.getText();
