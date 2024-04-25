@@ -71,7 +71,6 @@ public class StatementAcounting_GUI extends javax.swing.JPanel {
 	 */
 	public StatementAcounting_GUI() throws RemoteException {
 		try {
-			
 			acountingVoucher_BUS = (StatementAccounting_BUS) Naming.lookup(RMIService.statementAccountingBus);
 			statementCashCount_BUS = (StatementCashCount_BUS) Naming.lookup(RMIService.statementCashCountBus);
 		} catch (MalformedURLException | RemoteException | NotBoundException e) {

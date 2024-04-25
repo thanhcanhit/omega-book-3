@@ -1,5 +1,6 @@
 package bus;
 
+import java.rmi.Remote;
 import java.rmi.RemoteException;
 import java.util.Date;
 import java.util.List;
@@ -10,7 +11,7 @@ import entity.CashCount;
 import entity.CashCountSheet;
 import entity.Employee;
 
-public interface StatementAccounting_BUS {
+public interface StatementAccounting_BUS extends Remote{
 	 public AcountingVoucher getAcountingByID(String id) throws RemoteException;
 
 	    public AcountingVoucher getLastAcounting() throws RemoteException;
