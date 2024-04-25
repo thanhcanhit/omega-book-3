@@ -14,16 +14,14 @@ import java.util.List;
 
 import bus.StatementAccounting_BUS;
 import dao.AcountingVoucher_DAO;
+import dao.Bill_DAO;
 import dao.CashCountSheet_DAO;
 import dao.Employee_DAO;
-import dao.Bill_DAO;
 import entity.AcountingVoucher;
+import entity.Bill;
 import entity.CashCount;
 import entity.CashCountSheet;
 import entity.Employee;
-import entity.Bill;
-import gui.StatementAcounting_GUI;
-import main.Application;
 import raven.toast.Notifications;
 import utilities.AcountingVoucherPrinter;
 
@@ -101,9 +99,9 @@ public class StatementAccounting_BUSImpl extends UnicastRemoteObject implements 
 
     }
 
-    public void createAcountingVoucher(CashCountSheet cashCountSheet, Date end) throws RemoteException{
+    public void createAcountingVoucher(Employee employee, CashCountSheet cashCountSheet, Date end) throws RemoteException{
         Date start = getLastAcounting().getEndedDate();
-        ArrayList<Bill> list = (ArrayList<Bill>) getAllOrderInAcounting(start, end, Application.employee.getEmployeeID());
+        ArrayList<Bill> list = (ArrayList<Bill>) getAllOrderInAcounting(start, end, employee.getEmployeeID());
         String id = generateID(end);
 
         AcountingVoucher acountingVoucher = new AcountingVoucher(id, start, end, cashCountSheet, list);
@@ -114,7 +112,7 @@ public class StatementAccounting_BUSImpl extends UnicastRemoteObject implements 
             order_DAO.updateOrderAcountingVoucher(order.getOrderID(), acountingVoucher.getAcountingVoucherID());
         }
         Notifications.getInstance().show(Notifications.Type.SUCCESS, "Tạo phiếu kết toán thành công");
-        Application.showForm(new StatementAcounting_GUI());
+        
         generatePDF(acountingVoucher_DAO.getOne(id));
 
     }

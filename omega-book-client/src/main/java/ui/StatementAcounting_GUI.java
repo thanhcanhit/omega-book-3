@@ -11,6 +11,7 @@ import java.rmi.RemoteException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -55,7 +56,7 @@ public class StatementAcounting_GUI extends javax.swing.JPanel {
 	private Employee employee2;
 	private StatementAccounting_BUS acountingVoucher_BUS;
 	private Date endDate = new Date();
-	private ArrayList<Bill> listOrder;
+	private List<Bill> listOrder;
 	@SuppressWarnings("unused")
 	private AcountingVoucher acountingVoucher;
 	private StatementCashCount_BUS statementCashCount_BUS;
@@ -66,18 +67,15 @@ public class StatementAcounting_GUI extends javax.swing.JPanel {
 
 	/**
 	 * Creates new form Statement_GUI
-	 * 
-	 * @throws RemoteException
+	 * @throws RemoteException 
 	 */
 	public StatementAcounting_GUI() throws RemoteException {
 		try {
 			acountingVoucher_BUS = (StatementAccounting_BUS) Naming.lookup(RMIService.statementAccountingBus);
-			statementCashCount_BUS = (StatementCashCount_BUS) Naming.lookup(RMIService.statementCashCountBus);
 		} catch (MalformedURLException | RemoteException | NotBoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-
 		initTableModel();
 		initComponents();
 		initForm();
@@ -149,7 +147,7 @@ public class StatementAcounting_GUI extends javax.swing.JPanel {
 		// Hiển thị mã phiếu kết toán
 		txt_acountingVoucherID.setText(acountingVoucher_BUS.generateID(endDate));
 		listOrder = acountingVoucher_BUS.getAllOrderInAcounting(acountingVoucher_BUS.getLastAcounting().getEndedDate(),
-				endDate);
+				endDate, employee1.getEmployeeID());
 		sale = acountingVoucher_BUS.getSale(listOrder);
 		payViaATM = acountingVoucher_BUS.getPayViaATM(listOrder);
 		withdraw = sale - payViaATM;
@@ -246,7 +244,7 @@ public class StatementAcounting_GUI extends javax.swing.JPanel {
 	 * Tạo phiếu kiểm tiền dựa trên thông tin có sẵn
 	 *
 	 * @return
-	 * @throws RemoteException
+	 * @throws RemoteException 
 	 */
 	public CashCountSheet getCashCountSheet() throws RemoteException {
 		String cashCountSheetID = statementCashCount_BUS.generateID(endDate);
@@ -710,7 +708,7 @@ public class StatementAcounting_GUI extends javax.swing.JPanel {
 	private void btn_accountingConformActionPerformed(java.awt.event.ActionEvent evt) throws RemoteException {// GEN-FIRST:event_btn_accountingConformActionPerformed
 		// TODO add your handling code here:
 		if (employee2 != null) {
-			acountingVoucher_BUS.createAcountingVoucher(getCashCountSheet(), endDate);
+			acountingVoucher_BUS.createAcountingVoucher(Application.employee ,getCashCountSheet(), endDate);
 			Notifications.getInstance().show(Notifications.Type.SUCCESS, "Tạo phiếu kết toán thành công");
 		} else {
 			Notifications.getInstance().show(Notifications.Type.ERROR, "Chưa có người đồng kiểm!");

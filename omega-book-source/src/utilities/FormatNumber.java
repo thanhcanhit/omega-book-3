@@ -21,6 +21,7 @@ public class FormatNumber {
      * @return string chuỗi sau khi được format
      */
     public static String toVND(Double value) {
+		@SuppressWarnings("deprecation")
 		NumberFormat vndFormat = NumberFormat.getCurrencyInstance(new Locale("vi", "vn"));
         return vndFormat.format(value);
     }
