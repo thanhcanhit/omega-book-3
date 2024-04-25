@@ -129,7 +129,7 @@ public class Application extends javax.swing.JFrame {
 		Notifications.getInstance().show(Notifications.Type.SUCCESS, "Đăng nhập vào hệ thống thành công");
 	}
 	public static boolean isLogining(Account acc) throws RemoteException {
-		Shift current_shift = null; // shift_BUS.getAccount(acc.getEmployee().getEmployeeID());
+		Shift current_shift = null;
 		try {
 			current_shift = shift_BUS.getAccount(acc.getEmployee().getEmployeeID());
 		} catch (Exception e) {
