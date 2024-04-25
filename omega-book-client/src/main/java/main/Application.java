@@ -86,12 +86,6 @@ public class Application extends javax.swing.JFrame {
 						} catch (Exception ex) {
 							Logger.getLogger(Application.class.getName()).log(Level.SEVERE, null, ex);
 						}
-						try {
-							shift_BUS.createShifts(shift);
-						} catch (RemoteException e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
-						}
 					}
 					System.exit(0);
 				}
@@ -139,7 +133,6 @@ public class Application extends javax.swing.JFrame {
 		try {
 			current_shift = shift_BUS.getAccount(acc.getEmployee().getEmployeeID());
 		} catch (Exception e) {
-			current_shift = null;
 			return false;
 		}
 		if (current_shift.getEndedAt() == null) {
