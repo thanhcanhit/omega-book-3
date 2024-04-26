@@ -6,8 +6,6 @@ package dao;
 
 import java.util.ArrayList;
 
-import javax.management.Notification;
-
 import entity.AcountingVoucher;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.NoResultException;

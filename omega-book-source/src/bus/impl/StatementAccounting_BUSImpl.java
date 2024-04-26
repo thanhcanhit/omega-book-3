@@ -8,7 +8,6 @@ import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -95,12 +94,11 @@ public class StatementAccounting_BUSImpl extends UnicastRemoteObject implements 
 
 	}
 
-	public void createAcountingVoucher(Employee employee, CashCountSheet cashCountSheet, Date end)
+	public synchronized void createAcountingVoucher(Employee employee, CashCountSheet cashCountSheet, Date end)
 			throws RemoteException {
 		Date start = getLastAcounting(employee).getEndedDate();
 		ArrayList<Bill> list = (ArrayList<Bill>) getAllOrderInAcounting(start, end, employee.getEmployeeID());
 		String id = generateID(end);
-		System.out.println("===================================================================");
 
 // Create CashCountSheet first
 		cashCountSheet_DAO.create(cashCountSheet);

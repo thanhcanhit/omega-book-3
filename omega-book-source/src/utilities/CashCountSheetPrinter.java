@@ -14,7 +14,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
+import java.util.List;
 import java.util.stream.Stream;
 
 import javax.imageio.ImageIO;
@@ -212,7 +212,7 @@ public class CashCountSheetPrinter {
             double[] denominations = {1000, 2000, 5000, 10000, 20000, 50000, 100000, 200000, 500000};
 
             for (double denomination : denominations) {
-                CashCount cash = isValueInArray(denomination, (ArrayList<CashCount>) cashCountSheet.getCashCountList());
+                CashCount cash = isValueInArray(denomination, (List<CashCount>) cashCountSheet.getCashCountList());
                 if (cash != null) {
                     table.addCell(createRightAlignedCell(Integer.toString(index++), font));
                     table.addCell(createRightAlignedCell(utilities.FormatNumber.toVND(cash.getValue()), font));
@@ -261,7 +261,7 @@ public class CashCountSheetPrinter {
     }
 
     // Hàm kiểm tra giá trị có nằm trong mảng hay không
-    public CashCount isValueInArray(double value, ArrayList<CashCount> list) {
+    public CashCount isValueInArray(double value, List<CashCount> list) {
         CashCount temp = null;
         for (CashCount cashCount : list) {
             if (value == cashCount.getValue()) {

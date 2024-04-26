@@ -6,6 +6,7 @@ package dao;
 
 import java.util.List;
 
+import entity.CashCount;
 import entity.CashCountSheet;
 import entity.CashCountSheetDetail;
 import jakarta.persistence.EntityManager;
@@ -50,7 +51,6 @@ public class CashCountSheet_DAO {
      * Lấy ra tất cả các CashCountSheet
      */
     public List<CashCountSheet> getAll() {
-    	System.out.println("getAll");
     	return em.createNamedQuery("CashCountSheet.findAll", CashCountSheet.class).getResultList();
     }
 
@@ -72,6 +72,10 @@ public class CashCountSheet_DAO {
         }
     }
     public synchronized Boolean create(CashCountSheet cashCountSheet) {
+//    	Gán giá trị cho thuộc tính cashCountSheet cho từn cashCount trong cashCountSheet
+    	for(CashCount cashCount : cashCountSheet.getCashCountList()) {
+    		cashCount.setCashCountSheet(cashCountSheet);
+    	}
         try {
             em.getTransaction().begin();
             em.persist(cashCountSheet);

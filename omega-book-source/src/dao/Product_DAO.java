@@ -87,18 +87,25 @@ public class Product_DAO implements DAOBase<Product> {
 	 * @param page trang hiện tại (1,...)
 	 * @return ArrayList<Product>
 	 */
-	public ArrayList<Product> getPage(int page) {
-		ArrayList<Product> result = new ArrayList<>();
-		String hql = "FROM Product ORDER BY productID OFFSET :offset ROWS FETCH NEXT 50 ROWS ONLY";
-		int offsetQuantity = (page - 1) * 50;
-		try {
-			TypedQuery<Product> query = em.createQuery(hql, Product.class);
-			query.setParameter("offset", offsetQuantity);
-			query.getResultStream().forEach(o -> result.add((Product) o));
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return result;
+//	public ArrayList<Product> getPage(int page) {
+//		ArrayList<Product> result = new ArrayList<>();
+//		String hql = "FROM Product ORDER BY productID OFFSET :offset ROWS FETCH NEXT 50 ROWS ONLY";
+//		int offsetQuantity = (page - 1) * 50;
+//		try {
+//			TypedQuery<Product> query = em.createQuery(hql, Product.class);
+//			query.setParameter("offset", offsetQuantity);
+//			query.getResultStream().forEach(o -> result.add((Product) o));
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//		}
+//		return result;
+//	}
+	public List<Product> getPage(int page) {
+	    String hql = "SELECT new Product(p.productID, p.name, p.costPrice, p.inventory, p.price) FROM Product p ORDER BY p.productID OFFSET :offset ROWS FETCH NEXT 50 ROWS ONLY";
+	    int offsetQuantity = (page - 1) * 50;
+	    TypedQuery<Product> query = em.createQuery(hql, Product.class);
+	    query.setParameter("offset", offsetQuantity);
+	    return query.getResultList();
 	}
 
 	@Override
