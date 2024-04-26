@@ -101,17 +101,17 @@ public class Promotion_DAO implements DAOBase<Promotion> {
 	}
 
 	public synchronized Boolean update(String id) {
-		int n = 0;
 		try {
 			em.getTransaction().begin();
 			Promotion promo = em.find(Promotion.class, id);
 			promo.setEndedDate(java.sql.Timestamp.valueOf(LocalDateTime.now()));
 			em.getTransaction().commit();
-			n = 1;
+			return true;
 		} catch (Exception e) {
+			em.getTransaction().rollback();
 			e.printStackTrace();
+			return false;
 		}
-		return n > 0;
 	}
 
 	public ArrayList<PromotionForOrder> filterForOrder(int type, int status) {
@@ -190,6 +190,7 @@ public class Promotion_DAO implements DAOBase<Promotion> {
 			n = 1;
 		} catch (Exception e) {
 			e.printStackTrace();
+			em.getTransaction().rollback();
 		}
 		return n > 0;
 	}

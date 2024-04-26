@@ -94,15 +94,15 @@ public class Bill_DAO implements DAOBase<Bill> {
 			entityManager.persist(object);
 			entityManager.getTransaction().commit();
 			return true;
-	
-		}catch(Exception e) {
+
+		} catch (Exception e) {
 			entityManager.getTransaction().rollback();
 			e.printStackTrace();
 			return false;
 		}
-		
+
 	}
-	
+
 	public synchronized List<Bill> getOrdersInAccountingVoucher(Date start, Date end, String empID) {
 		List<Bill> list = new ArrayList<>();
 		try {
@@ -114,7 +114,6 @@ public class Bill_DAO implements DAOBase<Bill> {
 		}
 		return list;
 	}
-		
 
 	@Override
 	public synchronized Boolean update(String id, Bill newObject) {
@@ -135,18 +134,17 @@ public class Bill_DAO implements DAOBase<Bill> {
 
 	@Override
 	public synchronized Boolean delete(String id) {
-		int n = 0;
 		try {
 			Bill bill = entityManager.find(Bill.class, id);
 			entityManager.getTransaction().begin();
 			entityManager.remove(bill);
 			entityManager.getTransaction().commit();
-			n = 1;
+			return true;
 		} catch (Exception e) {
 			entityManager.getTransaction().rollback();
 			e.printStackTrace();
+			return false;
 		}
-		return n > 0;
 	}
 
 	public int getLength() {
@@ -163,8 +161,8 @@ public class Bill_DAO implements DAOBase<Bill> {
 
 	public ArrayList<Bill> getPage(int page) {
 		List<Bill> list = new ArrayList<>();
-		list = entityManager.createNamedQuery("Bill.getAll", Bill.class).setFirstResult((page - 1) * 50).setMaxResults(50)
-				.getResultList();
+		list = entityManager.createNamedQuery("Bill.getAll", Bill.class).setFirstResult((page - 1) * 50)
+				.setMaxResults(50).getResultList();
 		ArrayList<Bill> result = new ArrayList<>(list);
 		return result;
 	}
@@ -192,27 +190,25 @@ public class Bill_DAO implements DAOBase<Bill> {
 		return result;
 	}
 
-    /**
-     * Phương thức thực hiện việc cập nhật mã phiếu kết toán cho một
-     * hóa đơn
-     *
-     * @param orderID Mã hóa đơn
-     * @param acountingVoucherID Mã phiếu kết toán
-     * @author Hoàng Khang
-     */
-    public synchronized boolean updateOrderAcountingVoucher(String orderID, String accountingVoucherID) {
-    	
+	/**
+	 * Phương thức thực hiện việc cập nhật mã phiếu kết toán cho một hóa
+	 * đơn
+	 *
+	 * @param orderID            Mã hóa đơn
+	 * @param acountingVoucherID Mã phiếu kết toán
+	 * @author Hoàng Khang
+	 */
+	public synchronized boolean updateOrderAcountingVoucher(String orderID, String accountingVoucherID) {
 
 		try {
 			entityManager.getTransaction().begin();
 
-            // Sử dụng câu truy vấn HQL để cập nhật trường acountingVoucherID của Order
-            String hql = "UPDATE Bill o SET o.accountingVoucherID = :accountingVoucherID " +
-                         "WHERE o.orderID = :orderID";
-            int updatedEntities = entityManager.createQuery(hql)
-                    .setParameter("accountingVoucherID", accountingVoucherID)
-                    .setParameter("orderID", orderID)
-                    .executeUpdate();
+			// Sử dụng câu truy vấn HQL để cập nhật trường acountingVoucherID của Order
+			String hql = "UPDATE Bill o SET o.accountingVoucherID = :accountingVoucherID "
+					+ "WHERE o.orderID = :orderID";
+			int updatedEntities = entityManager.createQuery(hql)
+					.setParameter("accountingVoucherID", accountingVoucherID).setParameter("orderID", orderID)
+					.executeUpdate();
 
 			entityManager.getTransaction().commit();
 			return updatedEntities > 0;
@@ -340,18 +336,18 @@ public class Bill_DAO implements DAOBase<Bill> {
 //    	String query = "SELECT * FROM Bill "
 //    			+ "WHERE o.status = 0 AND "
 //    			+ "DATEDIFF(DAY, o.orderAt, CONVERT(date, GETDATE())) < 1";
-		try {
-			OrderDetail_DAO od_DAO = new OrderDetail_DAO();
-			List<Bill> resultSet = entityManager.createNamedQuery("Bill.clearExpiredOrderSaved", Bill.class)
-					.getResultList();
-//        	@SuppressWarnings("unchecked")
-//			List<Bill> resultSet = entityManager.createNativeQuery(query).getResultList();
-			resultSet.forEach(x -> {
-				od_DAO.delete(x.getOrderID());
-			});
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+//		try {
+//			OrderDetail_DAO od_DAO = new OrderDetail_DAO();
+//			List<Bill> resultSet = entityManager.createNamedQuery("Bill.clearExpiredOrderSaved", Bill.class)
+//					.getResultList();
+////        	@SuppressWarnings("unchecked")
+////			List<Bill> resultSet = entityManager.createNativeQuery(query).getResultList();
+//			resultSet.forEach(x -> {
+//				od_DAO.delete(x.getOrderID());
+//			});
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//		}
 	}
 
 	public synchronized ArrayList<Bill> getNotCompleteOrder() {

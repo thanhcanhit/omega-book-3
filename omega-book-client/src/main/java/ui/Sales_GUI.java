@@ -566,7 +566,7 @@ public class Sales_GUI extends javax.swing.JPanel {
 			Double discountValue = order.getPromotion().getDiscount();
 			Double discountAmount = order.getPromotion().getTypeDiscount() == DiscountType.PERCENT
 					? totalTemp * discountValue / 100
-					: totalTemp - discountValue;
+					: discountValue;
 			setDiscount(discountAmount);
 			renderOrderTotal();
 		}
@@ -818,21 +818,25 @@ public class Sales_GUI extends javax.swing.JPanel {
 			return;
 		}
 
+		order.setStatus(true);
 		try {
-			order.setOrderID(bus.createNewOrder().getOrderID());
-			boolean isSaved = isOldOrder ? updateOrder(isOldOrder) : saveOrder(true);
+			if (!isOldOrder) {
+				order.setOrderID(bus.createNewOrder().getOrderID());
+			}
+			boolean isSaved = isOldOrder ? updateOrder(true) : saveOrder(true);
 
 			if (isSaved) {
 				Notifications.getInstance().show(Notifications.Type.SUCCESS,
 						"Đã tạo thành công đơn hàng" + order.getOrderID());
- 
+
 //		        tạo file pdf và hiển thị + in file pdf đó
 				OrderPrinter printer = new OrderPrinter(order);
 				printer.generatePDF();
 				OrderPrinter.PrintStatus status = printer.printFile();
 
 				if (status == OrderPrinter.PrintStatus.NOT_FOUND_FILE) {
-					Notifications.getInstance().show(Notifications.Type.ERROR, "Lỗi không thể in hóa đơn: Không tìm thấy file");
+					Notifications.getInstance().show(Notifications.Type.ERROR,
+							"Lỗi không thể in hóa đơn: Không tìm thấy file");
 				} else if (status == OrderPrinter.PrintStatus.NOT_FOUND_PRINTER) {
 					Notifications.getInstance().show(Notifications.Type.ERROR,
 							"Lỗi không thể in hóa đơn: Không tìm thấy máy in");
@@ -847,7 +851,6 @@ public class Sales_GUI extends javax.swing.JPanel {
 			Notifications.getInstance().show(Notifications.Type.ERROR,
 					"Không thể tạo đơn hàng " + order.getOrderID() + ": " + ex.getMessage());
 		}
-
 
 	}
 
@@ -1842,13 +1845,13 @@ public class Sales_GUI extends javax.swing.JPanel {
 				if (isDeleted) {
 					Notifications.getInstance().show(Notifications.Type.SUCCESS,
 							"Đã xóa thành công toàn bộ đơn lưu tạm " + orderID);
-					renderSavedOrderTable();
 				} else {
 					Notifications.getInstance().show(Notifications.Type.ERROR,
 							"Không thể xóa đơn lưu tạm " + orderID + " lỗi không xác định");
 				}
 			}
 
+			renderSavedOrderTable();
 		}
 	}// GEN-LAST:event_btn_savedOrderDeleteAllActionPerformed
 
@@ -1991,6 +1994,7 @@ public class Sales_GUI extends javax.swing.JPanel {
 	}
 
 	private void loadSavedOrder(String id) throws RemoteException {
+		isOldOrder = true;
 		Bill savedOrder = bus.getOrder(id);
 		Customer temp = order.getCustomer();
 
@@ -1998,13 +2002,15 @@ public class Sales_GUI extends javax.swing.JPanel {
 //        update state
 		order = savedOrder;
 		cart = savedOrder.getOrderDetail();
-		setDiscount(0);
-		setTotal(0);
+		totalAfterDiscount = 0.0;
+		setDiscount(0.0);
+		setTotal(0.0);
 //        Tự động thêm khuyến mãi có thể áp dụng ở thời điểm hiện tại vào các  sản phẩm
 		for (OrderDetail item : cart) {
 			double discountAmount = bus
 					.getBestProductPromotionDiscountAmountAvailable(item.getProduct().getProductID());
 			if (discountAmount > 0) {
+				System.out.println("PRODUCT ID" + item.getProduct().getProductID() + "::" + discountAmount);
 //                    Lấy phần giảm cho 1 sản phẩm để tăng lên
 				item.setSeasonalDiscount(discountAmount * item.getQuantity());
 				Notifications.getInstance().show(Notifications.Type.INFO, "Sản phẩm " + item.getProduct().getName()
@@ -2016,7 +2022,7 @@ public class Sales_GUI extends javax.swing.JPanel {
 		disableCustomerForm();
 		renderOrder();
 		renderCartTable();
-		handleAddBest();
+//		handleAddBest();
 	}
 
 //    Promotion

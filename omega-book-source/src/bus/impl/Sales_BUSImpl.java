@@ -4,14 +4,23 @@
  */
 package bus.impl;
 
-import dao.Customer_DAO;
-import dao.OrderDetail_DAO;
+import java.rmi.RemoteException;
+import java.rmi.server.UnicastRemoteObject;
+import java.sql.Date;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import bus.Sales_BUS;
 import dao.Bill_DAO;
+import dao.Customer_DAO;
 import dao.ProductPromotionDetail_DAO;
 import dao.Product_DAO;
 import dao.Promotion_DAO;
-import entity.Customer;
 import entity.Bill;
+import entity.Customer;
 import entity.OrderDetail;
 import entity.Product;
 import entity.ProductPromotionDetail;
@@ -19,16 +28,6 @@ import entity.Promotion;
 import entity.PromotionForProduct;
 import enums.CustomerRank;
 import enums.DiscountType;
-import java.time.LocalDate;
-import java.time.ZoneId;
-import java.rmi.RemoteException;
-import java.rmi.server.UnicastRemoteObject;
-import java.sql.Date;
-import java.util.ArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
-import bus.Sales_BUS;
 
 /**
  *
@@ -42,21 +41,21 @@ public class Sales_BUSImpl extends UnicastRemoteObject implements Sales_BUS {
 
 	private static final long serialVersionUID = 463925661216328438L;
 	private final Bill_DAO orderDAO = new Bill_DAO();
-	private final OrderDetail_DAO orderDetailDAO = new OrderDetail_DAO();
+//	private final OrderDetail_DAO orderDetailDAO = new OrderDetail_DAO();
 	private final Product_DAO productDAO = new Product_DAO();
 	private final Customer_DAO customerDAO = new Customer_DAO();
 	private final ProductPromotionDetail_DAO productPromotionDetail_DAO = new ProductPromotionDetail_DAO();
 	private final Promotion_DAO promotionDAO = new Promotion_DAO();
 
-	public Product getProduct(String id) throws RemoteException{
+	public Product getProduct(String id) throws RemoteException {
 		return productDAO.getOne(id);
 	}
 
-	public Customer getCustomerByPhone(String phone) throws RemoteException{
+	public Customer getCustomerByPhone(String phone) throws RemoteException {
 		return customerDAO.getByPhone(phone);
 	}
 
-	public Bill createNewOrder() throws RemoteException,Exception {
+	public Bill createNewOrder() throws RemoteException, Exception {
 		Bill order = new Bill(orderDAO.generateID());
 		order.setStatus(false);
 //        Chỉ hiển thị ngày lập, khi lưu sẽ lấy thời gian tại lúc bấm thanh toán
@@ -65,13 +64,13 @@ public class Sales_BUSImpl extends UnicastRemoteObject implements Sales_BUS {
 		return order;
 	}
 
-	public synchronized boolean saveToDatabase(Bill order) throws RemoteException{
+	public synchronized boolean saveToDatabase(Bill order) throws RemoteException {
 		for (OrderDetail detail : order.getOrderDetail()) {
-			if(productDAO.getOne(detail.getProduct().getProductID()).getInventory()<detail.getQuantity()) {
+			if (productDAO.getOne(detail.getProduct().getProductID()).getInventory() < detail.getQuantity()) {
 				return false;
 			}
 		}
-		
+
 		if (!orderDAO.create(order)) {
 			return false;
 		}
@@ -93,9 +92,9 @@ public class Sales_BUSImpl extends UnicastRemoteObject implements Sales_BUS {
 		return true;
 	}
 
-	public synchronized boolean updateInDatabase(Bill order) throws RemoteException{
+	public synchronized boolean updateInDatabase(Bill order) throws RemoteException {
 		for (OrderDetail detail : order.getOrderDetail()) {
-			if(productDAO.getOne(detail.getProduct().getProductID()).getInventory()<detail.getQuantity()) {
+			if (productDAO.getOne(detail.getProduct().getProductID()).getInventory() < detail.getQuantity()) {
 				return false;
 			}
 		}
@@ -104,19 +103,20 @@ public class Sales_BUSImpl extends UnicastRemoteObject implements Sales_BUS {
 		}
 
 //        Xóa hết detail cũ vì nếu cập nhật từng thành phần sẽ rất mất thời gian (cập nhật, thêm vào detail mới, xóa detail cũ,...)
-		if (!orderDetailDAO.delete(order.getOrderID())) {
-			return false;
-		}
+//		if (!orderDetailDAO.delete(order.getOrderID())) {
+//			System.out.println("Error when delete old order detail");
+//			return false;
+//		}
 
 		for (OrderDetail detail : order.getOrderDetail()) {
-			if (!orderDetailDAO.create(detail)) {
-				return false;
-			} else {
+//			if (!orderDetailDAO.create(detail)) {
+//				return false;
+//			} else {
 //                Giảm số lượng tồn kho nếu trạng thái đã thành công
 				if (order.isStatus()) {
 					decreaseProductInventory(detail.getProduct(), detail.getQuantity());
 				}
-			}
+//			}
 		}
 		// Tăng điểm thành viên nếu không phải là tài khoản mặc định và đã thanh toán
 		if (order.isStatus() && !order.getCustomer().getCustomerID().equals("KH000000000")) {
@@ -127,28 +127,28 @@ public class Sales_BUSImpl extends UnicastRemoteObject implements Sales_BUS {
 		return true;
 	}
 
-	public synchronized boolean decreaseProductInventory(Product product, int quantity) throws RemoteException{
+	public synchronized boolean decreaseProductInventory(Product product, int quantity) throws RemoteException {
 		int newInventory = productDAO.getOne(product.getProductID()).getInventory() - quantity;
 		return productDAO.updateInventory(product.getProductID(), newInventory);
 	}
 
-	public boolean increaseProductInventory(Product product, int quantity) throws RemoteException{
+	public boolean increaseProductInventory(Product product, int quantity) throws RemoteException {
 		int newInventory = product.getInventory() + quantity;
 		return productDAO.updateInventory(product.getProductID(), newInventory);
 	}
-	
-	public int getProductInventory(String id) throws RemoteException{
+
+	public int getProductInventory(String id) throws RemoteException {
 		return productDAO.getOne(id).getInventory();
 	}
 
-	public ArrayList<ProductPromotionDetail> getListProductPromotionAvailable(String productID) throws RemoteException{
+	public ArrayList<ProductPromotionDetail> getListProductPromotionAvailable(String productID) throws RemoteException {
 		ArrayList<ProductPromotionDetail> result = new ArrayList<>();
 
 		return result;
 	}
 
 //    Handle saved Order
-	public ArrayList<Bill> getSavedOrders() throws RemoteException{
+	public ArrayList<Bill> getSavedOrders() throws RemoteException {
 		ArrayList<Bill> result = orderDAO.getNotCompleteOrder();
 
 //        Lấy thông tin khách hàng của hóa đơn
@@ -165,7 +165,7 @@ public class Sales_BUSImpl extends UnicastRemoteObject implements Sales_BUS {
 		return result;
 	}
 
-	public Bill getOrder(String id) throws RemoteException{
+	public Bill getOrder(String id) throws RemoteException {
 		Bill result = orderDAO.getOne(id);
 		// System.out.println("LOG" + result);
 		try {
@@ -174,9 +174,9 @@ public class Sales_BUSImpl extends UnicastRemoteObject implements Sales_BUS {
 			result.setCustomer(fullInfoCustomer);
 
 //Lấy thông tin sản phẩm
-			for (OrderDetail item : result.getOrderDetail()) {
-				item.setProduct(productDAO.getOne(item.getProduct().getProductID()));
-			}
+//			for (OrderDetail item : result.getOrderDetail()) {
+//				item.setProduct(productDAO.getOne(item.getProduct().getProductID()));
+//			}
 		} catch (Exception ex) {
 			Logger.getLogger(Sales_BUSImpl.class.getName()).log(Level.SEVERE, null, ex);
 			ex.printStackTrace();
@@ -184,12 +184,12 @@ public class Sales_BUSImpl extends UnicastRemoteObject implements Sales_BUS {
 		return result;
 	}
 
-	public boolean deleteOrder(String id) throws RemoteException{
+	public boolean deleteOrder(String id) throws RemoteException {
 		return orderDAO.delete(id);
 	}
 
 //    Promotion
-	public ArrayList<ProductPromotionDetail> getPromotionOfProductAvailable(String productID) throws RemoteException{
+	public ArrayList<ProductPromotionDetail> getPromotionOfProductAvailable(String productID) throws RemoteException {
 		ArrayList<ProductPromotionDetail> result = productPromotionDetail_DAO.getAllForProductAndAvailable(productID);
 
 //        Get full data
@@ -203,7 +203,7 @@ public class Sales_BUSImpl extends UnicastRemoteObject implements Sales_BUS {
 		return result;
 	}
 
-	public double getBestProductPromotionDiscountAmountAvailable(String productID) throws RemoteException{
+	public double getBestProductPromotionDiscountAmountAvailable(String productID) throws RemoteException {
 		ArrayList<ProductPromotionDetail> promotionList = getPromotionOfProductAvailable(productID);
 
 //        Nếu không có khuyến mãi nào thì trả về null
@@ -214,7 +214,7 @@ public class Sales_BUSImpl extends UnicastRemoteObject implements Sales_BUS {
 //        Mặc định là thằng đầu tiên
 		double bestDiscount = 0;
 
-		for (ProductPromotionDetail item : promotionList){
+		for (ProductPromotionDetail item : promotionList) {
 			DiscountType discountType = item.getPromotion().getTypeDiscount();
 			double discountAmount = item.getPromotion().getDiscount();
 			double discountValue = discountType == DiscountType.PERCENT
@@ -228,15 +228,15 @@ public class Sales_BUSImpl extends UnicastRemoteObject implements Sales_BUS {
 		return bestDiscount;
 	}
 
-	public ArrayList<Promotion> getPromotionOfOrderAvailable(int customerRank) throws RemoteException{
+	public ArrayList<Promotion> getPromotionOfOrderAvailable(int customerRank) throws RemoteException {
 		return promotionDAO.getPromotionOrderAvailable(CustomerRank.fromInt(customerRank));
 	}
 
-	public Promotion getPromotion(String promotionID) throws RemoteException{
+	public Promotion getPromotion(String promotionID) throws RemoteException {
 		return promotionDAO.getOne(promotionID);
 	}
 
-	public int getSavedOrderQuantity() throws RemoteException{
+	public int getSavedOrderQuantity() throws RemoteException {
 		return orderDAO.getQuantityOrderSaved();
 	}
 }
