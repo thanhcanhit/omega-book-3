@@ -40,7 +40,7 @@ public class ProductManagement_BUSImpl extends UnicastRemoteObject implements Pr
     private final Brand_DAO brandDAO = new Brand_DAO();
 
     public ArrayList<Product> getDataOfPage(int page) throws RemoteException{
-        return productDAO.getPage(page);
+        return (ArrayList<Product>) productDAO.getPage(page);
     }
 
     public Product getProduct(String ID) throws RemoteException{

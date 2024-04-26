@@ -71,7 +71,7 @@ public class MainView extends JLayeredPane {
 		salesForm = new Sales_GUI();
 		Application.showForm(salesForm);
 	}
-
+	
 	private void initMenuArrowIcon() {
 		if (btn_menu == null) {
 			btn_menu = new JButton();

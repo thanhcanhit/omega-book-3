@@ -32,7 +32,7 @@ public class CashCountSheet implements Serializable{
 	@Id
     private String cashCountSheetID;
 	
-	@OneToMany(mappedBy = "cashCountSheet", cascade = CascadeType.ALL, orphanRemoval = true)
+	@OneToMany(mappedBy = "cashCountSheet", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
 	private List<CashCount> cashCountList = new ArrayList<>();
 	
 	@Temporal(TemporalType.TIMESTAMP)
@@ -42,7 +42,7 @@ public class CashCountSheet implements Serializable{
     private double total;
     private double difference;
 
-    @OneToMany(mappedBy = "cashCountSheet", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "cashCountSheet", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<CashCountSheetDetail> cashCountSheetDetailList;
 
     public CashCountSheet() {

@@ -155,7 +155,7 @@ public class Application extends javax.swing.JFrame {
 		shift_BUS.updateShift(shift);
 		Notifications.getInstance().show(Notifications.Type.INFO, "Đăng xuất khỏi hệ thống thành công");
 	}
-
+	
 
 	public static void close() {
 		System.exit(0);

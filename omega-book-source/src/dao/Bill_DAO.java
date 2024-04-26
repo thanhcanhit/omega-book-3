@@ -16,6 +16,7 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
+import entity.AcountingVoucher;
 //import entity.Customer;
 //import entity.Employee;
 import entity.Bill;
@@ -198,29 +199,43 @@ public class Bill_DAO implements DAOBase<Bill> {
 	 * @param acountingVoucherID Mã phiếu kết toán
 	 * @author Hoàng Khang
 	 */
-	public synchronized boolean updateOrderAcountingVoucher(String orderID, String accountingVoucherID) {
+	public synchronized boolean updateOrderAcountingVoucher(Bill order, AcountingVoucher accountingVoucher) {
 
 		try {
 			entityManager.getTransaction().begin();
-
-			// Sử dụng câu truy vấn HQL để cập nhật trường acountingVoucherID của Order
-			String hql = "UPDATE Bill o SET o.accountingVoucherID = :accountingVoucherID "
-					+ "WHERE o.orderID = :orderID";
-			int updatedEntities = entityManager.createQuery(hql)
-					.setParameter("accountingVoucherID", accountingVoucherID).setParameter("orderID", orderID)
-					.executeUpdate();
-
+			order.setAccountingVoucher(accountingVoucher);
+			entityManager.merge(order);
 			entityManager.getTransaction().commit();
-			return updatedEntities > 0;
+			return true;
 
 		} catch (Exception e) {
-			if (entityManager.getTransaction() != null && entityManager.getTransaction().isActive()) {
-				entityManager.getTransaction().rollback();
-			}
+			entityManager.getTransaction().rollback();
 			e.printStackTrace();
 			return false;
-
 		}
+
+//		try {
+//			entityManager.getTransaction().begin();
+//
+//            // Sử dụng câu truy vấn HQL để cập nhật trường acountingVoucherID của Order
+//            String hql = "UPDATE Bill o SET o.accountingVoucherID = :accountingVoucherID " +
+//                         "WHERE o.orderID = :orderID";
+//            int updatedEntities = entityManager.createQuery(hql)
+//                    .setParameter("accountingVoucherID", accountingVoucherID)
+//                    .setParameter("orderID", orderID)
+//                    .executeUpdate();
+//
+//			entityManager.getTransaction().commit();
+//			return updatedEntities > 0;
+//
+//		} catch (Exception e) {
+//			if (entityManager.getTransaction() != null && entityManager.getTransaction().isActive()) {
+//				entityManager.getTransaction().rollback();
+//			}
+//			e.printStackTrace();
+//			return false;
+//
+//		}
 	}
 
 	/**

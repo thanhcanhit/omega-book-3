@@ -58,8 +58,10 @@ public class AcountingVoucher_DAO implements interfaces.DAOBase<AcountingVoucher
 			entityManager.getTransaction().begin();
 			entityManager.persist(acountingVoucher);
 			entityManager.getTransaction().commit();
+			System.out.println("tạo phiếu kế toán mới!");
 			return true;
 		} catch (Exception e) {
+			System.out.println("Không thể tạo phiếu kế toán mới!");
 			entityManager.getTransaction().rollback();
 //			entityManager.clear();
 		}

@@ -6,7 +6,9 @@ package dao;
 
 import java.util.List;
 
+import entity.CashCount;
 import entity.CashCountSheet;
+import entity.CashCountSheetDetail;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.NoResultException;
 import jakarta.persistence.TypedQuery;
@@ -27,20 +29,23 @@ public class CashCountSheet_DAO {
 
     public CashCountSheet getOne(String id) {
         CashCountSheet cashCountSheet = null;
-
+    
         try {
             TypedQuery<CashCountSheet> query = em.createQuery(
-                "SELECT c FROM CashCountSheet c WHERE c.cashCountSheetID = :id", 
+                "SELECT c FROM CashCountSheet c JOIN FETCH c.cashCountSheetDetailList WHERE c.cashCountSheetID = :id", 
                 CashCountSheet.class);
             query.setParameter("id", id);
             cashCountSheet = query.getSingleResult();
+            List<CashCountSheetDetail> cashCountSheetDetailList = cashCountSheet.getCashCountSheetDetailList();
+            for (CashCountSheetDetail cashCountSheetDetail : cashCountSheetDetailList) {
+                cashCountSheetDetail.getEmployee(); // Truy cập vào tất cả các thuộc tính cần thiết
+            }
         } catch (NoResultException e) {
             e.printStackTrace();
         }
-
+    
         return cashCountSheet;
     }
-
     
     /**
      * Lấy ra tất cả các CashCountSheet
@@ -67,6 +72,10 @@ public class CashCountSheet_DAO {
         }
     }
     public synchronized Boolean create(CashCountSheet cashCountSheet) {
+//    	Gán giá trị cho thuộc tính cashCountSheet cho từn cashCount trong cashCountSheet
+    	for(CashCount cashCount : cashCountSheet.getCashCountList()) {
+    		cashCount.setCashCountSheet(cashCountSheet);
+    	}
         try {
             em.getTransaction().begin();
             em.persist(cashCountSheet);

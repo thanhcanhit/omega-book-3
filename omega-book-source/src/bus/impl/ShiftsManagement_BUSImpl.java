@@ -91,4 +91,9 @@ public class ShiftsManagement_BUSImpl extends UnicastRemoteObject implements Shi
 	public Account findAccount(Employee employee) {
 		return acc_dao.getOne(employee.getEmployeeID());
 	}
+
+	@Override
+	public Shift getFirstLogin(Employee employee) throws RemoteException {
+		return shift_DAO.getFirstLogin(employee);
+	}
 }

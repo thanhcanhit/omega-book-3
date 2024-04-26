@@ -91,6 +91,16 @@ public class Product implements Serializable{
 		setType(type);
 		this.price = price;
 	}
+	
+	
+
+	public Product(String productID, String name, Double costPrice, Integer inventory, Double price) throws Exception {
+		setProductID(productID);
+		setName(name);
+		setCostPrice(costPrice);
+		setInventory(inventory);
+		this.price = price;
+	}
 
 	@Override
 	public boolean equals(Object obj) {

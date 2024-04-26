@@ -138,7 +138,7 @@ public class StatementAcounting_GUI extends javax.swing.JPanel {
 	public void initForm() throws RemoteException {
 		// Lấy thời gian kết thúc phiếu kết toán trước đó (Thời gian bắt đầu
 		// lần kết toán này)
-		Date start = acountingVoucher_BUS.getLastAcounting().getEndedDate();
+		Date start = acountingVoucher_BUS.getLastAcounting(employee1).getEndedDate();
 		// Hiển thị thời gian bắt đầu -> kết thúc kết toán
 		SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
 		String endStr = formatter.format(endDate);
@@ -146,7 +146,7 @@ public class StatementAcounting_GUI extends javax.swing.JPanel {
 		txt_timeAccounting.setText(startStr + " - " + endStr);
 		// Hiển thị mã phiếu kết toán
 		txt_acountingVoucherID.setText(acountingVoucher_BUS.generateID(endDate));
-		listOrder = acountingVoucher_BUS.getAllOrderInAcounting(acountingVoucher_BUS.getLastAcounting().getEndedDate(),
+		listOrder = acountingVoucher_BUS.getAllOrderInAcounting(acountingVoucher_BUS.getLastAcounting(employee1).getEndedDate(),
 				endDate, employee1.getEmployeeID());
 		sale = acountingVoucher_BUS.getSale(listOrder);
 		payViaATM = acountingVoucher_BUS.getPayViaATM(listOrder);
@@ -157,7 +157,8 @@ public class StatementAcounting_GUI extends javax.swing.JPanel {
 		txt_withdraw.setText(FormatNumber.toVND(withdraw));
 		txt_difference.setText(FormatNumber.toVND(difference));
 	}
-
+	
+	
 	public void alterTable() {
 		DefaultTableCellRenderer rightAlign = new DefaultTableCellRenderer();
 		rightAlign.setHorizontalAlignment(JLabel.RIGHT);
@@ -402,7 +403,7 @@ public class StatementAcounting_GUI extends javax.swing.JPanel {
 
 		txt_employeeAccounting1.setEditable(false);
 		txt_employeeAccounting1.setFont(txt_employeeAccounting1.getFont().deriveFont((float) 16));
-		txt_employeeAccounting1.setText("NV010020232300 - Lê Hoàng Khang");
+		txt_employeeAccounting1.setText(employee1.getName()+" - "+employee1.getEmployeeID());
 		txt_employeeAccounting1.setBorder(null);
 		txt_employeeAccounting1.setCursor(new java.awt.Cursor(java.awt.Cursor.TEXT_CURSOR));
 		txt_employeeAccounting1.setFocusable(false);
@@ -709,7 +710,6 @@ public class StatementAcounting_GUI extends javax.swing.JPanel {
 		// TODO add your handling code here:
 		if (employee2 != null) {
 			acountingVoucher_BUS.createAcountingVoucher(Application.employee ,getCashCountSheet(), endDate);
-			Notifications.getInstance().show(Notifications.Type.SUCCESS, "Tạo phiếu kết toán thành công");
 			
 		} else {
 			Notifications.getInstance().show(Notifications.Type.ERROR, "Chưa có người đồng kiểm!");
@@ -759,7 +759,6 @@ public class StatementAcounting_GUI extends javax.swing.JPanel {
 			if (e.equals(employee1)) {
 				Notifications.getInstance().show(Notifications.Type.ERROR,
 						"Nhân viên chứng kiến không được là nhân viên kiểm!");
-
 			} else {
 				employee2 = e;
 				txt_employeeAccounting2.setText(employee2.getEmployeeID() + " - " + employee2.getName());

@@ -10,6 +10,8 @@ import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+
+import entity.Employee;
 import entity.Shift;
 import interfaces.DAOBase;
 import jakarta.persistence.EntityManager;
@@ -214,6 +216,20 @@ public class Shift_DAO implements DAOBase<Shift> {
 				.getResultList();
 		ArrayList<Shift> result = new ArrayList<>(list);
 		return result;
+	}
+
+	/**
+	 * Get the first login of an employee in a day
+	 * @param employee
+	 * @return
+	 */
+	public Shift getFirstLogin(Employee employee) {
+		String hql = "FROM Shift s JOIN s.account a WHERE a.employee.employeeID LIKE :id AND s.startedAt >= :startOfDay AND s.startedAt <= :endOfDay ORDER BY s.startedAt ASC";
+		return entityManager.createQuery(hql, Shift.class).setParameter("id", employee.getEmployeeID())
+				.setParameter("startOfDay", Date.from(LocalDate.now().atStartOfDay(ZoneId.systemDefault()).toInstant()))
+				.setParameter("endOfDay",
+						Date.from(LocalDate.now().plusDays(1).atStartOfDay(ZoneId.systemDefault()).toInstant()))
+				.setMaxResults(1).getSingleResult();
 	}
 
 }
